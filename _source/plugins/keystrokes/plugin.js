@@ -15,6 +15,8 @@ CKEDITOR.plugins.add( 'keystrokes',
 		 * @example
 		 */
 		editor.keystrokeHandler = new CKEDITOR.keystrokeHandler( editor );
+
+		editor.specialKeys = {};
 	},
 
 	init : function( editor )
@@ -75,6 +77,8 @@ CKEDITOR.keystrokeHandler = function( editor )
 
 (function()
 {
+	var cancel;
+
 	var onKeyDown = function( event )
 	{
 		// The DOM event object is passed by the "data" property.
@@ -82,22 +86,41 @@ CKEDITOR.keystrokeHandler = function( editor )
 
 		var keyCombination = event.getKeystroke();
 		var command = this.keystrokes[ keyCombination ];
+		var editor = this._.editor;
 
-		var cancel = !this._.editor.fire( 'key', { keyCode : keyCombination } );
+		cancel = ( editor.fire( 'key', { keyCode : keyCombination } ) === true );
 
 		if ( !cancel )
 		{
 			if ( command )
-				cancel = ( this._.editor.execCommand( command ) !== false );
+			{
+				var data = { from : 'keystrokeHandler' };
+				cancel = ( editor.execCommand( command, data ) !== false );
+			}
 
-			if ( !cancel )
-				cancel = !!this.blockedKeystrokes[ keyCombination ];
+			if  ( !cancel )
+			{
+				var handler = editor.specialKeys[ keyCombination ];
+				cancel = ( handler && handler( editor ) === true );
+
+				if ( !cancel )
+					cancel = !!this.blockedKeystrokes[ keyCombination ];
+			}
 		}
 
 		if ( cancel )
 			event.preventDefault( true );
 
 		return !cancel;
+	};
+
+	var onKeyPress = function( event )
+	{
+		if ( cancel )
+		{
+			cancel = false;
+			event.data.preventDefault( true );
+		}
 	};
 
 	CKEDITOR.keystrokeHandler.prototype =
@@ -111,7 +134,14 @@ CKEDITOR.keystrokeHandler = function( editor )
 		 */
 		attach : function( domObject )
 		{
+			// For most browsers, it is enough to listen to the keydown event
+			// only.
 			domObject.on( 'keydown', onKeyDown, this );
+
+			// Some browsers instead, don't cancel key events in the keydown, but in the
+			// keypress. So we must do a longer trip in those cases.
+			if ( CKEDITOR.env.opera || ( CKEDITOR.env.gecko && CKEDITOR.env.mac ) )
+				domObject.on( 'keypress', onKeyPress, this );
 		}
 	};
 })();
@@ -142,17 +172,17 @@ CKEDITOR.config.keystrokes =
 	[ CKEDITOR.ALT + 121 /*F10*/, 'toolbarFocus' ],
 	[ CKEDITOR.ALT + 122 /*F11*/, 'elementsPathFocus' ],
 
-	[ CKEDITOR.CTRL + 86 /*V*/, 'paste' ],
-	[ CKEDITOR.SHIFT + 45 /*INS*/, 'paste' ],
-	[ CKEDITOR.CTRL + 88 /*X*/, 'cut' ],
-	[ CKEDITOR.SHIFT + 46 /*DEL*/, 'cut' ],
+	[ CKEDITOR.SHIFT + 121 /*F10*/, 'contextMenu' ],
+
 	[ CKEDITOR.CTRL + 90 /*Z*/, 'undo' ],
 	[ CKEDITOR.CTRL + 89 /*Y*/, 'redo' ],
 	[ CKEDITOR.CTRL + CKEDITOR.SHIFT + 90 /*Z*/, 'redo' ],
+
 	[ CKEDITOR.CTRL + 76 /*L*/, 'link' ],
+
 	[ CKEDITOR.CTRL + 66 /*B*/, 'bold' ],
 	[ CKEDITOR.CTRL + 73 /*I*/, 'italic' ],
 	[ CKEDITOR.CTRL + 85 /*U*/, 'underline' ],
-	[ CKEDITOR.CTRL + CKEDITOR.ALT + 13 /*ENTER*/, 'fitWindow' ],
-	[ CKEDITOR.SHIFT + 32 /*SPACE*/, 'nbsp' ]
+
+	[ CKEDITOR.ALT + 109 /*-*/, 'toolbarCollapse' ]
 ];

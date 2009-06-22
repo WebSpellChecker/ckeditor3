@@ -38,8 +38,22 @@ CKEDITOR.htmlParser.comment.prototype =
 	 * @param {CKEDITOR.htmlWriter} writer The writer to which write the HTML.
 	 * @example
 	 */
-	writeHtml : function( writer )
+	writeHtml : function( writer, filter )
 	{
-		writer.comment( this.value );
+		var comment = this.value;
+
+		if ( filter )
+		{
+			if ( !( comment = filter.onComment( comment ) ) )
+				return;
+
+			if ( typeof comment != 'string' )
+			{
+				comment.writeHtml( writer, filter );
+				return;
+			}
+		}
+
+		writer.comment( comment );
 	}
 };

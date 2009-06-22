@@ -19,7 +19,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		 * @type String
 		 * @example
 		 */
-		this.value = value.replace( spacesRegex, ' ' );
+		this.value = value;
 
 		/** @private */
 		this._ =
@@ -42,9 +42,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		 * @param {CKEDITOR.htmlWriter} writer The writer to which write the HTML.
 		 * @example
 		 */
-		writeHtml : function( writer )
+		writeHtml : function( writer, filter )
 		{
-			writer.text( this.value );
+			var text = this.value;
+
+			if ( filter && !( text = filter.onText( text, this ) ) )
+				return;
+
+			writer.text( text );
 		}
 	};
 })();

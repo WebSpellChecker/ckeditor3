@@ -27,46 +27,17 @@ CKEDITOR.UI_BUTTON = 1;
  */
 CKEDITOR.ui.button = function( definition )
 {
-	/**
-	 * The button label.
-	 * @name CKEDITOR.ui.button.prototype.label
-	 * @type String
-	 * @example
-	 */
-	this.label = definition.label;
-
-	/**
-	 * The button advisory title. It is usually displayed as the button tooltip.
-	 * If not defined, the label is used.
-	 * @name CKEDITOR.ui.button.prototype.title
-	 * @type String
-	 * @example
-	 */
-	this.title = definition.title || definition.label;
-
-	/**
-	 * The command name associated to the button. If no command is defined, the
-	 * "click" event is used.
-	 * @name CKEDITOR.ui.button.prototype.command
-	 * @type String
-	 * @example
-	 */
-	this.command = definition.command;
-
-	this.className = definition.className || ( definition.command && 'cke_button_' + definition.command ) || '';
-
-	/**
-	 * The function to be called when the user clicks the button. If not
-	 * defined, the "command" property is required, and the command gets
-	 * executed on click.
-	 * @function
-	 * @name CKEDITOR.ui.button.prototype.click
-	 * @example
-	 */
-	this.click = definition.click || function( editor )
+	// Copy all definition properties to this object.
+	CKEDITOR.tools.extend( this, definition,
+		// Set defaults.
 		{
-			editor.execCommand( definition.command );
-		};
+			title		: definition.label,
+			className	: definition.className || ( definition.command && 'cke_button_' + definition.command ) || '',
+			click		: definition.click || function( editor )
+				{
+					editor.execCommand( definition.command );
+				}
+		});
 
 	this._ = {};
 };
@@ -86,6 +57,8 @@ CKEDITOR.ui.button.handler =
 
 CKEDITOR.ui.button.prototype =
 {
+	canGroup : true,
+
 	/**
 	 * Renders the button.
 	 * @param {CKEDITOR.editor} editor The editor instance which this button is
@@ -99,6 +72,7 @@ CKEDITOR.ui.button.prototype =
 		var env = CKEDITOR.env;
 
 		var id = this._.id = 'cke_' + CKEDITOR.tools.getNextNumber();
+		this._.editor = editor;
 
 		var instance =
 		{
@@ -116,6 +90,12 @@ CKEDITOR.ui.button.prototype =
 			}
 		};
 
+		var clickFn = CKEDITOR.tools.addFunction( instance.execute, instance );
+
+		var index = CKEDITOR.ui.button._.instances.push( instance ) - 1;
+
+		var classes = '';
+
 		// Get the command name.
 		var command = this.command;
 
@@ -130,16 +110,27 @@ CKEDITOR.ui.button.prototype =
 					{
 						this.setState( command.state );
 					}, this);
+
+				classes += 'cke_' + (
+					command.state == CKEDITOR.TRISTATE_ON ? 'on' :
+					command.state == CKEDITOR.TRISTATE_DISABLED ? 'disabled' :
+					'off' );
 			}
 		}
 
-		var index = CKEDITOR.ui.button._.instances.push( instance ) - 1;
+		if ( !command )
+			classes	+= 'cke_off';
+
+		if ( this.className )
+			classes += ' ' + this.className;
 
 		output.push(
+			'<span class="cke_button">',
 			'<a id="', id, '"' +
-				' class="cke_button ', this.className, '" href="javascript:void(\'', ( this.label || '' ).replace( "'", '' ), '\')"' +
+				' class="', classes, '" href="javascript:void(\'', ( this.title || '' ).replace( "'", '' ), '\')"' +
 				' title="', this.title, '"' +
 				' tabindex="-1"' +
+				' role="button"' +
 				' hidefocus="true"' );
 
 		// Some browsers don't cancel key events in the keydown but in the
@@ -161,36 +152,58 @@ CKEDITOR.ui.button.prototype =
 
 		output.push(
 				' onkeydown="return CKEDITOR.ui.button._.keydown(', index, ', event);"' +
-				' onclick="return CKEDITOR.ui.button._.click(', index, ', event);">' +
-					'<span class="cke_icon"></span>' +
-					'<span class="cke_label">', this.label, '</span>' +
-			'</a>' );
+				' onfocus="return CKEDITOR.ui.button._.focus(', index, ', event);"' +
+				' onclick="CKEDITOR.tools.callFunction(', clickFn, ', this); return false;">' +
+					'<span class="cke_icon"' );
+
+		if ( this.icon )
+		{
+			var offset = ( this.iconOffset || 0 ) * -16;
+			output.push( ' style="background-image:url(', CKEDITOR.getUrl( this.icon ), ');background-position:0 ' + offset + 'px;"' );
+		}
+
+		output.push(
+					'></span>' +
+					'<span class="cke_label">', this.label, '</span>' );
+
+		if ( this.hasArrow )
+		{
+			output.push(
+					'<span class="cke_buttonarrow"></span>' );
+		}
+
+		output.push(
+			'</a>',
+			'</span>' );
+
+		if ( this.onRender )
+			this.onRender();
 
 		return instance;
 	},
 
 	setState : function( state )
 	{
+		if ( this._.state == state )
+			return;
+
 		var element = CKEDITOR.document.getById( this._.id );
 
-		switch ( state )
+		if ( element )
 		{
-			case CKEDITOR.TRISTATE_ON :
-				element.addClass( 'cke_on' );
-				element.removeClass( 'cke_off' );
-				element.removeClass( 'cke_disabled' );
-				break;
-			case CKEDITOR.TRISTATE_DISABLED :
-				element.addClass( 'cke_disabled' );
-				element.removeClass( 'cke_off' );
-				element.removeClass( 'cke_on' );
-				break;
-			default :
-				element.addClass( 'cke_off' );
-				element.removeClass( 'cke_on' );
-				element.removeClass( 'cke_disabled' );
-				break;
+			element.setState( state );
+
+			var htmlTitle = this.title,
+				unavailable = this._.editor.lang.common.unavailable,
+				labelElement = element.getChild( 1 );
+
+			if ( state == CKEDITOR.TRISTATE_DISABLED )
+				htmlTitle = unavailable.replace( '%1', this.title );
+
+			labelElement.setHtml( htmlTitle );
 		}
+
+		this._.state = state;
 	}
 };
 
@@ -202,12 +215,6 @@ CKEDITOR.ui.button._ =
 {
 	instances : [],
 
-	click : function( index )
-	{
-		CKEDITOR.ui.button._.instances[ index ].execute();
-		return false;
-	},
-
 	keydown : function( index, ev )
 	{
 		var instance = CKEDITOR.ui.button._.instances[ index ];
@@ -217,6 +224,20 @@ CKEDITOR.ui.button._ =
 			ev = new CKEDITOR.dom.event( ev );
 			return ( instance.onkey( instance, ev.getKeystroke() ) !== false );
 		}
+	},
+
+	focus : function( index, ev )
+	{
+		var instance = CKEDITOR.ui.button._.instances[ index ],
+			retVal;
+
+		if ( instance.onfocus )
+			retVal = ( instance.onfocus( instance, new CKEDITOR.dom.event( ev ) ) !== false );
+
+		// FF2: prevent focus event been bubbled up to editor container, which caused unexpected editor focus.
+		if ( CKEDITOR.env.gecko && CKEDITOR.env.version < 10900 )
+			ev.preventBubble();
+		return retVal;
 	}
 };
 

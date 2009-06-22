@@ -12,44 +12,65 @@ CKEDITOR.plugins.add( 'sourcearea',
 {
 	requires : [ 'editingblock' ],
 
-	init : function( editor, pluginPath )
+	init : function( editor )
 	{
 		var sourcearea = CKEDITOR.plugins.sourcearea;
 
 		editor.on( 'editingBlockReady', function()
 			{
-				var textarea;
+				var textarea,
+					onResize;
 
 				editor.addMode( 'source',
 					{
 						load : function( holderElement, data )
 						{
+							if ( CKEDITOR.env.ie && CKEDITOR.env.version < 8 )
+								holderElement.setStyle( 'position', 'relative' );
+
 							// Create the source area <textarea>.
-							textarea = new CKEDITOR.dom.element( 'textarea' );
-							textarea.setAttribute( 'dir', 'ltr' );
+							editor.textarea = textarea = new CKEDITOR.dom.element( 'textarea' );
+							textarea.setAttributes(
+								{
+									dir : 'ltr',
+									tabIndex : -1
+								});
 							textarea.addClass( 'cke_source' );
-							textarea.setStyles({
+
+							var styles =
+							{
 								width	: '100%',
 								height	: '100%',
 								resize	: 'none',
 								outline	: 'none',
-								'text-align' : 'left' });
+								'text-align' : 'left'
+							};
 
 							// The textarea height/width='100%' doesn't
 							// constraint to the 'td' in IE strick mode
 							if ( CKEDITOR.env.ie )
 							{
-								textarea.setStyles({
-									height : holderElement.$.clientHeight + 'px',
-									width : holderElement.$.clientWidth + 'px' });
+								if ( !CKEDITOR.env.ie8Compat )
+								{
+									onResize = function()
+										{
+											// Holder rectange size is stretched by textarea,
+											// so hide it just for a moment.
+											textarea.hide();
+											textarea.setStyle( 'height', holderElement.$.clientHeight + 'px' );
+											// When we have proper holder size, show textarea again.
+											textarea.show();
+										};
+									editor.on( 'resize', onResize );
+									styles.height = holderElement.$.clientHeight + 'px';
+								}
 							}
-
-							// By some yet unknown reason, we must stop the
-							// mousedown propagation for the textarea,
-							// otherwise it's not possible to place the caret
-							// inside of it (non IE).
-							if ( !CKEDITOR.env.ie )
+							else
 							{
+								// By some yet unknown reason, we must stop the
+								// mousedown propagation for the textarea,
+								// otherwise it's not possible to place the caret
+								// inside of it (non IE).
 								textarea.on( 'mousedown', function( evt )
 									{
 										evt = evt.data.$;
@@ -62,6 +83,7 @@ CKEDITOR.plugins.add( 'sourcearea',
 							// <textarea> to it.
 							holderElement.setHtml( '' );
 							holderElement.append( textarea );
+							textarea.setStyles( styles );
 
 							// The editor data "may be dirty" after this point.
 							editor.mayBeDirty = true;
@@ -69,8 +91,16 @@ CKEDITOR.plugins.add( 'sourcearea',
 							// Set the <textarea> value.
 							this.loadData( data );
 
-							editor.mode = 'source';
-							editor.fire( 'mode' );
+							var keystrokeHandler = editor.keystrokeHandler;
+							if ( keystrokeHandler )
+								keystrokeHandler.attach( textarea );
+
+							setTimeout( function()
+							{
+								editor.mode = 'source';
+								editor.fire( 'mode' );
+							},
+							( CKEDITOR.env.gecko || CKEDITOR.env.webkit ) ? 100 : 0 );
 						},
 
 						loadData : function( data )
@@ -90,7 +120,10 @@ CKEDITOR.plugins.add( 'sourcearea',
 
 						unload : function( holderElement )
 						{
-							textarea = null;
+							editor.textarea = textarea = null;
+
+							if ( onResize )
+								editor.removeListener( 'resize', onResize );
 						},
 
 						focus : function()
@@ -113,9 +146,10 @@ CKEDITOR.plugins.add( 'sourcearea',
 
 		editor.on( 'mode', function()
 			{
-				var command = editor.getCommand( 'source' );
-				command.state = ( editor.mode == 'source' ? CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF );
-				command.fire( 'state' );
+				editor.getCommand( 'source' ).setState(
+					editor.mode == 'source' ?
+						CKEDITOR.TRISTATE_ON :
+						CKEDITOR.TRISTATE_OFF );
 			});
 	}
 });
@@ -131,10 +165,17 @@ CKEDITOR.plugins.sourcearea =
 	{
 		source :
 		{
+			modes : { wysiwyg:1, source:1 },
+
 			exec : function( editor )
 			{
+				if ( editor.mode == 'wysiwyg' )
+					editor.fire( 'saveSnapshot' );
+				editor.getCommand( 'source' ).setState( CKEDITOR.TRISTATE_DISABLED );
 				editor.setMode( editor.mode == 'source' ? 'wysiwyg' : 'source' );
-			}
+			},
+
+			canUndo : false
 		}
 	}
 };

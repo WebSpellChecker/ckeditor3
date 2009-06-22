@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -31,6 +31,8 @@ CKEDITOR.dom.range = function( document )
 	// V2
 	var execContentsAction = function( range, action, docFrag )
 	{
+		range.optimizeBookmark();
+
 		var startNode	= range.startContainer;
 		var endNode		= range.endContainer;
 
@@ -259,95 +261,50 @@ CKEDITOR.dom.range = function( document )
 
 	var inlineChildReqElements = { abbr:1,acronym:1,b:1,bdo:1,big:1,cite:1,code:1,del:1,dfn:1,em:1,font:1,i:1,ins:1,label:1,kbd:1,q:1,samp:1,small:1,span:1,strike:1,strong:1,sub:1,sup:1,tt:1,u:1,'var':1 };
 
-	var getBoundaryNodes = function()
+	// Creates the appropriate node evaluator for the dom walker used inside
+	// check(Start|End)OfBlock.
+	function getCheckStartEndBlockEvalFunction( isStart )
 	{
-		var startNode = this.startContainer,
-			endNode = this.endContainer,
-			startOffset = this.startOffset,
-			endOffset = this.endOffset,
-			childCount;
-
-		if ( startNode.type == CKEDITOR.NODE_ELEMENT )
+		var hadBr = false, bookmarkEvaluator = CKEDITOR.dom.walker.bookmark( true );
+		return function( node )
 		{
-			childCount = startNode.getChildCount();
-			if ( childCount > startOffset )
-				startNode = startNode.getChild( startOffset );
-			else if ( childCount < 1 )
-				startNode = startNode.getPreviousSourceNode();
-			else		// startOffset > childCount but childCount is not 0
+			// First ignore bookmark nodes.
+			if ( bookmarkEvaluator( node ) )
+				return true;
+
+			if ( node.type == CKEDITOR.NODE_TEXT )
 			{
-				// Try to take the node just after the current position.
-				startNode = startNode.$;
-				while ( startNode.lastChild )
-					startNode = startNode.lastChild;
-				startNode = new CKEDITOR.dom.node( startNode );
-
-				// Normally we should take the next node in DFS order. But it
-				// is also possible that we've already reached the end of
-				// document.
-				startNode = startNode.getNextSourceNode() || startNode;
-			}
-		}
-		if ( endNode.type == CKEDITOR.NODE_ELEMENT )
-		{
-			childCount = endNode.getChildCount();
-			if ( childCount > endOffset )
-				endNode = endNode.getChild( endOffset ).getPreviousSourceNode();
-			else if ( childCount < 1 )
-				endNode = endNode.getPreviousSourceNode();
-			else		// endOffset > childCount but childCount is not 0
-			{
-				// Try to take the node just before the current position.
-				endNode = endNode.$;
-				while ( endNode.lastChild )
-					endNode = endNode.lastChild;
-				endNode = new CKEDITOR.dom.node( endNode );
-			}
-		}
-
-		return { startNode : startNode, endNode : endNode };
-	};
-
-	// Check every node between the block boundary and the startNode or endNode.
-	var getCheckStartEndBlockFunction = function( isStart )
-	{
-		return function( evt )
-		{
-			// Don't check the block boundary itself.
-			if ( this.stopped() || !evt.data.node )
-				return;
-
-			var node = evt.data.node,
-				hadBr = false;
-			if ( node.type == CKEDITOR.NODE_ELEMENT )
+				// If there's any visible text, then we're not at the start.
+				if ( CKEDITOR.tools.trim( node.getText() ).length )
+					return false;
+				}
+			else
 			{
 				// If there are non-empty inline elements (e.g. <img />), then we're not
 				// at the start.
 				if ( !inlineChildReqElements[ node.getName() ] )
 				{
-					// If we're working at the end-of-block, forgive the first <br />.
-					if ( !isStart && node.getName() == 'br' && !hadBr )
+					// If we're working at the end-of-block, forgive the first <br /> in non-IE
+					// browsers.
+					if ( !isStart && !CKEDITOR.env.ie && node.getName() == 'br' && !hadBr )
 						hadBr = true;
 					else
-					{
-						this.checkFailed = true;
-						this.stop();
-					}
+						return false;
 				}
 			}
-			else if ( node.type == CKEDITOR.NODE_TEXT )
-			{
-				// If there's any visible text, then we're not at the start.
-				var visibleText = CKEDITOR.tools.trim( node.getText() );
-				if ( visibleText.length > 0 )
-				{
-					this.checkFailed = true;
-					this.stop();
-				}
-			}
+			return true;
 		};
-	};
+	}
 
+	// Evaluator for CKEDITOR.dom.element::checkBoundaryOfElement, reject any
+	// text node and non-empty elements unless it's being bookmark text.
+	function elementBoundaryEval( node )
+	{
+		// Reject any text node unless it's being bookmark.
+		return node.type != CKEDITOR.NODE_TEXT
+		       && node.getName() in CKEDITOR.dtd.$removeEmpty
+			   || node.getParent().hasAttribute( '_fck_bookmark' );
+	}
 
 	CKEDITOR.dom.range.prototype =
 	{
@@ -409,15 +366,25 @@ CKEDITOR.dom.range = function( document )
 			return docFrag;
 		},
 
-		// This is an "intrusive" way to create a bookmark. It includes <span> tags
-		// in the range boundaries. The advantage of it is that it is possible to
-		// handle DOM mutations when moving back to the bookmark.
-		// Attention: the inclusion of nodes in the DOM is a design choice and
-		// should not be changed as there are other points in the code that may be
-		// using those nodes to perform operations. See GetBookmarkNode.
-		createBookmark : function()
+		/**
+		 * Creates a bookmark object, which can be later used to restore the
+		 * range by using the moveToBookmark function.
+		 * This is an "intrusive" way to create a bookmark. It includes <span> tags
+		 * in the range boundaries. The advantage of it is that it is possible to
+		 * handle DOM mutations when moving back to the bookmark.
+		 * Attention: the inclusion of nodes in the DOM is a design choice and
+		 * should not be changed as there are other points in the code that may be
+		 * using those nodes to perform operations. See GetBookmarkNode.
+		 * @param {Boolean} [serializable] Indicates that the bookmark nodes
+		 *		must contain ids, which can be used to restore the range even
+		 *		when these nodes suffer mutations (like a clonation or innerHTML
+		 *		change).
+		 * @returns {Object} And object representing a bookmark.
+		 */
+		createBookmark : function( serializable )
 		{
 			var startNode, endNode;
+			var baseId;
 			var clone;
 
 			startNode = this.document.createElement( 'span' );
@@ -428,11 +395,20 @@ CKEDITOR.dom.range = function( document )
 			// removed during DOM operations.
 			startNode.setHtml( '&nbsp;' );
 
+			if ( serializable )
+			{
+				baseId = 'cke_bm_' + CKEDITOR.tools.getNextNumber();
+				startNode.setAttribute( 'id', baseId + 'S' );
+			}
+
 			// If collapsed, the endNode will not be created.
 			if ( !this.collapsed )
 			{
 				endNode = startNode.clone();
 				endNode.setHtml( '&nbsp;' );
+
+				if ( serializable )
+					endNode.setAttribute( 'id', baseId + 'E' );
 
 				clone = this.clone();
 				clone.collapse();
@@ -453,57 +429,229 @@ CKEDITOR.dom.range = function( document )
 				this.moveToPosition( startNode, CKEDITOR.POSITION_AFTER_END );
 
 			return {
-				startNode : startNode,
-				endNode : endNode
+				startNode : serializable ? baseId + 'S' : startNode,
+				endNode : serializable ? baseId + 'E' : endNode,
+				serializable : serializable
+			};
+		},
+
+		/**
+		 * Creates a "non intrusive" and "mutation sensible" bookmark. This
+		 * kind of bookmark should be used only when the DOM is supposed to
+		 * remain stable after its creation.
+		 * @param {Boolean} [normalized] Indicates that the bookmark must
+		 *		normalized. When normalized, the successive text nodes are
+		 *		considered a single node. To sucessful load a normalized
+		 *		bookmark, the DOM tree must be also normalized before calling
+		 *		moveToBookmark.
+		 * @returns {Object} An object representing the bookmark.
+		 */
+		createBookmark2 : function( normalized )
+		{
+			var startContainer	= this.startContainer,
+				endContainer	= this.endContainer;
+
+			var startOffset	= this.startOffset,
+				endOffset	= this.endOffset;
+
+			var child, previous;
+
+			// If there is no range then get out of here.
+			// It happens on initial load in Safari #962 and if the editor it's
+			// hidden also in Firefox
+			if ( !startContainer || !endContainer )
+				return { start : 0, end : 0 };
+
+			if ( normalized )
+			{
+				// Find out if the start is pointing to a text node that will
+				// be normalized.
+				if ( startContainer.type == CKEDITOR.NODE_ELEMENT )
+				{
+					child = startContainer.getChild( startOffset );
+
+					// In this case, move the start information to that text
+					// node.
+					if ( child && child.type == CKEDITOR.NODE_TEXT
+							&& startOffset > 0 && child.getPrevious().type == CKEDITOR.NODE_TEXT )
+					{
+						startContainer = child;
+						startOffset = 0;
+					}
+				}
+
+				// Normalize the start.
+				while ( startContainer.type == CKEDITOR.NODE_TEXT
+						&& ( previous = startContainer.getPrevious() )
+						&& previous.type == CKEDITOR.NODE_TEXT )
+				{
+					startContainer = previous;
+					startOffset += previous.getLength();
+				}
+
+				// Process the end only if not normalized.
+				if ( !this.isCollapsed )
+				{
+					// Find out if the start is pointing to a text node that
+					// will be normalized.
+					if ( endContainer.type == CKEDITOR.NODE_ELEMENT )
+					{
+						child = endContainer.getChild( endOffset );
+
+						// In this case, move the start information to that
+						// text node.
+						if ( child && child.type == CKEDITOR.NODE_TEXT
+								&& endOffset > 0 && child.getPrevious().type == CKEDITOR.NODE_TEXT )
+						{
+							endContainer = child;
+							endOffset = 0;
+						}
+					}
+
+					// Normalize the end.
+					while ( endContainer.type == CKEDITOR.NODE_TEXT
+							&& ( previous = endContainer.getPrevious() )
+							&& previous.type == CKEDITOR.NODE_TEXT )
+					{
+						endContainer = previous;
+						endOffset += previous.getLength();
+					}
+				}
+			}
+
+			return {
+				start		: startContainer.getAddress( normalized ),
+				end			: this.isCollapsed ? null : endContainer.getAddress( normalized ),
+				startOffset	: startOffset,
+				endOffset	: endOffset,
+				normalized	: normalized,
+				is2			: true		// It's a createBookmark2 bookmark.
 			};
 		},
 
 		moveToBookmark : function( bookmark )
 		{
-			// Set the range start at the bookmark start node position.
-			this.setStartBefore( bookmark.startNode );
-
-			// Remove it, because it may interfere in the setEndBefore call.
-			bookmark.startNode.remove();
-
-			// Set the range end at the bookmark end node position, or simply
-			// collapse it if it is not available.
-			var endNode = bookmark.endNode;
-			if ( endNode )
+			if ( bookmark.is2 )		// Created with createBookmark2().
 			{
-				this.setEndBefore( endNode );
-				endNode.remove();
+				// Get the start information.
+				var startContainer	= this.document.getByAddress( bookmark.start, bookmark.normalized ),
+					startOffset	= bookmark.startOffset;
+
+				// Get the end information.
+				var endContainer	= bookmark.end && this.document.getByAddress( bookmark.end, bookmark.normalized ),
+					endOffset	= bookmark.endOffset;
+
+				// Set the start boundary.
+				this.setStart( startContainer, startOffset );
+
+				// Set the end boundary. If not available, collapse it.
+				if ( endContainer )
+					this.setEnd( endContainer, endOffset );
+				else
+					this.collapse( true );
 			}
-			else
-				this.collapse( true );
+			else					// Created with createBookmark().
+			{
+				var serializable = bookmark.serializable,
+					startNode	= serializable ? this.document.getById( bookmark.startNode ) : bookmark.startNode,
+					endNode		= serializable ? this.document.getById( bookmark.endNode ) : bookmark.endNode;
+
+				// Set the range start at the bookmark start node position.
+				this.setStartBefore( startNode );
+
+				// Remove it, because it may interfere in the setEndBefore call.
+				startNode.remove();
+
+				// Set the range end at the bookmark end node position, or simply
+				// collapse it if it is not available.
+				if ( endNode )
+				{
+					this.setEndBefore( endNode );
+					endNode.remove();
+				}
+				else
+					this.collapse( true );
+			}
 		},
 
-		getCommonAncestor : function( includeSelf )
+		getBoundaryNodes : function()
 		{
-			var start = this.startContainer;
-			var end = this.endContainer;
+			var startNode = this.startContainer,
+				endNode = this.endContainer,
+				startOffset = this.startOffset,
+				endOffset = this.endOffset,
+				childCount;
+
+			if ( startNode.type == CKEDITOR.NODE_ELEMENT )
+			{
+				childCount = startNode.getChildCount();
+				if ( childCount > startOffset )
+					startNode = startNode.getChild( startOffset );
+				else if ( childCount < 1 )
+					startNode = startNode.getPreviousSourceNode();
+				else		// startOffset > childCount but childCount is not 0
+				{
+					// Try to take the node just after the current position.
+					startNode = startNode.$;
+					while ( startNode.lastChild )
+						startNode = startNode.lastChild;
+					startNode = new CKEDITOR.dom.node( startNode );
+
+					// Normally we should take the next node in DFS order. But it
+					// is also possible that we've already reached the end of
+					// document.
+					startNode = startNode.getNextSourceNode() || startNode;
+				}
+			}
+			if ( endNode.type == CKEDITOR.NODE_ELEMENT )
+			{
+				childCount = endNode.getChildCount();
+				if ( childCount > endOffset )
+					endNode = endNode.getChild( endOffset ).getPreviousSourceNode( true );
+				else if ( childCount < 1 )
+					endNode = endNode.getPreviousSourceNode();
+				else		// endOffset > childCount but childCount is not 0
+				{
+					// Try to take the node just before the current position.
+					endNode = endNode.$;
+					while ( endNode.lastChild )
+						endNode = endNode.lastChild;
+					endNode = new CKEDITOR.dom.node( endNode );
+				}
+			}
+
+			// Sometimes the endNode will come right before startNode for collapsed
+			// ranges. Fix it. (#3780)
+			if ( startNode.getPosition( endNode ) & CKEDITOR.POSITION_FOLLOWING )
+				startNode = endNode;
+
+			return { startNode : startNode, endNode : endNode };
+		},
+
+		/**
+		 * Find the node which fully contains the range.
+		 * @param includeSelf
+		 * @param {Boolean} ignoreTextNode Whether ignore CKEDITOR.NODE_TEXT type.
+		 */
+		getCommonAncestor : function( includeSelf , ignoreTextNode )
+		{
+			var start = this.startContainer,
+				end = this.endContainer,
+				ancestor;
 
 			if ( start.equals( end ) )
 			{
-				if ( includeSelf && start.type == CKEDITOR.NODE_ELEMENT && this.startOffset == this.endOffset - 1 )
-					return start.getChild( this.startOffset );
-				return start;
+				if ( includeSelf
+						&& start.type == CKEDITOR.NODE_ELEMENT
+						&& this.startOffset == this.endOffset - 1 )
+					ancestor = start.getChild( this.startOffset );
+				else
+					ancestor = start;
 			}
+			else
+				ancestor = start.getCommonAncestor( end );
 
-			if ( end.type == CKEDITOR.NODE_ELEMENT && end.contains( start ) )
-				return end;
-
-			if ( start.type != CKEDITOR.NODE_ELEMENT )
-				start = start.getParent();
-
-			do
-			{
-				if ( start.contains( end ) )
-					return start;
-			}
-			while( ( start = start.getParent() ) )
-
-			return null;
+			return ignoreTextNode && !ancestor.is ? ancestor.getParent() : ancestor;
 		},
 
 		/**
@@ -537,15 +685,29 @@ CKEDITOR.dom.range = function( document )
 			}
 		},
 
+		/**
+		 * Move the range out of bookmark nodes if they're been the container.
+		 */
+		optimizeBookmark: function()
+		{
+			var startNode = this.startContainer,
+				endNode = this.endContainer;
+
+			if ( startNode.is && startNode.is( 'span' )
+				&& startNode.hasAttribute( '_fck_bookmark' ) )
+				this.setStartAt( startNode, CKEDITOR.POSITION_BEFORE_START );
+			if ( endNode && endNode.is && endNode.is( 'span' )
+				&& endNode.hasAttribute( '_fck_bookmark' ) )
+				this.setEndAt( endNode,  CKEDITOR.POSITION_AFTER_END );
+		},
+
 		trim : function( ignoreStart, ignoreEnd )
 		{
-			var startContainer = this.startContainer;
-			var startOffset = this.startOffset;
-
-			var endContainer = this.endContainer;
-			var endOffset = this.endOffset;
-
-			if ( !ignoreStart && startContainer && startContainer.type == CKEDITOR.NODE_TEXT )
+			var startContainer = this.startContainer,
+				startOffset = this.startOffset,
+				collapsed = this.collapsed;
+			if ( ( !ignoreStart || collapsed )
+				 && startContainer && startContainer.type == CKEDITOR.NODE_TEXT )
 			{
 				// If the offset is zero, we just insert the new node before
 				// the start.
@@ -569,18 +731,22 @@ CKEDITOR.dom.range = function( document )
 
 					startOffset = startContainer.getIndex() + 1;
 					startContainer = startContainer.getParent();
-
 					// Check if it is necessary to update the end boundary.
-					if ( this.collapsed )
-						this.setEnd( startContainer, startOffset );
-					else if ( this.startContainer.equals( this.endContainer ) )
+					if ( !collapsed && this.startContainer.equals( this.endContainer ) )
 						this.setEnd( nextText, this.endOffset - this.startOffset );
 				}
 
 				this.setStart( startContainer, startOffset );
+
+				if ( collapsed )
+					this.collapse( true );
 			}
 
-			if ( !ignoreEnd && endContainer && !this.collapsed && endContainer.type == CKEDITOR.NODE_TEXT )
+			var endContainer = this.endContainer;
+			var endOffset = this.endOffset;
+
+			if ( !( ignoreEnd || collapsed )
+				 && endContainer && endContainer.type == CKEDITOR.NODE_TEXT )
 			{
 				// If the offset is zero, we just insert the new node before
 				// the start.
@@ -729,7 +895,9 @@ CKEDITOR.dom.range = function( document )
 							else
 							{
 								// If this is a visible element.
-								if ( sibling.$.offsetWidth > 0 )
+								// We need to check for the bookmark attribute because IE insists on
+								// rendering the display:none nodes we use for bookmarks. (#3363)
+								if ( sibling.$.offsetWidth > 0 && !sibling.getAttribute( '_fck_bookmark' ) )
 								{
 									// We'll accept it only if we need
 									// whitespace, and this is an inline
@@ -886,7 +1054,9 @@ CKEDITOR.dom.range = function( document )
 							else
 							{
 								// If this is a visible element.
-								if ( sibling.$.offsetWidth > 0 )
+								// We need to check for the bookmark attribute because IE insists on
+								// rendering the display:none nodes we use for bookmarks. (#3363)
+								if ( sibling.$.offsetWidth > 0 && !sibling.getAttribute( '_fck_bookmark' ) )
 								{
 									// We'll accept it only if we need
 									// whitespace, and this is an inline
@@ -968,28 +1138,83 @@ CKEDITOR.dom.range = function( document )
 
 				case CKEDITOR.ENLARGE_BLOCK_CONTENTS:
 				case CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS:
-					// DFS backward to get the block/list item boundary at or before the start.
-					var boundaryNodes = getBoundaryNodes.apply( this ),
-						startNode = boundaryNodes.startNode,
-						endNode = boundaryNodes.endNode,
-						guardFunction = ( unit == CKEDITOR.ENLARGE_BLOCK_CONTENTS ?
-							CKEDITOR.dom.domWalker.blockBoundary() :
-							CKEDITOR.dom.domWalker.listItemBoundary() ),
-						walker = new CKEDITOR.dom.domWalker( startNode ),
-						data = walker.reverse( guardFunction ),
-						boundaryEvent = data.events.shift();
 
-					this.setStartBefore( boundaryEvent.from );
+					// Enlarging the start boundary.
+					var walkerRange = new CKEDITOR.dom.range( this.document );
 
-					// DFS forward to get the block/list item boundary at or before the end.
-					walker.setNode( endNode );
-					data = walker.forward( guardFunction );
-					boundaryEvent = data.events.shift();
+					body = this.document.getBody();
 
-					this.setEndAfter( boundaryEvent.from );
-					break;
+					walkerRange.setStartAt( body, CKEDITOR.POSITION_AFTER_START );
+					walkerRange.setEnd( this.startContainer, this.startOffset );
 
-				default:
+					var walker = new CKEDITOR.dom.walker( walkerRange ),
+					    blockBoundary,  // The node on which the enlarging should stop.
+						tailBr, //
+					    defaultGuard = CKEDITOR.dom.walker.blockBoundary(
+								( unit == CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS ) ? { br : 1 } : null ),
+						// Record the encountered 'blockBoundary' for later use.
+						boundaryGuard = function( node )
+						{
+							var retval = defaultGuard( node );
+							if ( !retval )
+								blockBoundary = node;
+							return retval;
+						},
+						// Record the encounted 'tailBr' for later use.
+						tailBrGuard = function( node )
+						{
+							var retval = boundaryGuard( node );
+							if ( !retval && node.is && node.is( 'br' ) )
+								tailBr = node;
+							return retval;
+						};
+
+					walker.guard = boundaryGuard;
+
+
+					if ( ( enlargeable = walker.lastBackward() ) )
+					{
+						// It's the body which stop the enlaring if no block boundary found.
+						blockBoundary = blockBoundary || body;
+
+						// Start the range at different position by comparing
+						// the document position of it with 'enlargeable' node.
+						this.setStartAt(
+								blockBoundary,
+								blockBoundary.contains( enlargeable ) ?
+									CKEDITOR.POSITION_AFTER_START :
+									CKEDITOR.POSITION_AFTER_END );
+					}
+
+					// Enlarging the end boundary.
+					walkerRange = this.clone();
+					walkerRange.collapse();
+					walkerRange.setEndAt( body, CKEDITOR.POSITION_BEFORE_END );
+					walker = new CKEDITOR.dom.walker( walkerRange );
+
+					// tailBrGuard only used for on range end.
+					walker.guard = ( unit == CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS ) ?
+						tailBrGuard : boundaryGuard;
+					blockBoundary = null;
+					// End the range right before the block boundary node.
+
+					if ( ( enlargeable = walker.lastForward() ) )
+					{
+						// It's the body which stop the enlaring if no block boundary found.
+						blockBoundary = blockBoundary || body;
+
+						// Start the range at different position by comparing
+						// the document position of it with 'enlargeable' node.
+						this.setEndAt(
+								blockBoundary,
+								blockBoundary.contains( enlargeable ) ?
+									CKEDITOR.POSITION_BEFORE_END :
+									CKEDITOR.POSITION_BEFORE_START );
+					}
+					// We must include the <br> at the end of range if there's
+					// one and we're expanding list item contents
+					if ( tailBr )
+						this.setEndAfter( tailBr );
 			}
 		},
 
@@ -999,6 +1224,7 @@ CKEDITOR.dom.range = function( document )
 		 */
 		insertNode : function( node )
 		{
+			this.optimizeBookmark();
 			this.trim( false, true );
 
 			var startContainer = this.startContainer;
@@ -1155,30 +1381,41 @@ CKEDITOR.dom.range = function( document )
 			updateCollapsed( this );
 		},
 
-		// TODO: The fixed block isn't trimmed, does not work for <pre>.
-		// TODO: Does not add bogus <br> to empty fixed blocks.
 		fixBlock : function( isStart, blockTag )
 		{
 			var bookmark = this.createBookmark(),
-				fixedBlock = new CKEDITOR.dom.element( blockTag, this.document );
+				fixedBlock = this.document.createElement( blockTag );
+
 			this.collapse( isStart );
+
 			this.enlarge( CKEDITOR.ENLARGE_BLOCK_CONTENTS );
+
 			this.extractContents().appendTo( fixedBlock );
+			fixedBlock.trim();
+
+			if ( !CKEDITOR.env.ie )
+				fixedBlock.appendBogus();
+
 			this.insertNode( fixedBlock );
+
 			this.moveToBookmark( bookmark );
+
 			return fixedBlock;
 		},
 
 		splitBlock : function( blockTag )
 		{
-			var startPath = new CKEDITOR.dom.elementPath( this.startContainer ),
-				endPath = new CKEDITOR.dom.elementPath( this.endContainer ),
-				startBlockLimit = startPath.blockLimit,
-				endBlockLimit = endPath.blockLimit,
-				startBlock = startPath.block,
-				endBlock = endPath.block,
-				elementPath = null;
+			var startPath	= new CKEDITOR.dom.elementPath( this.startContainer ),
+				endPath		= new CKEDITOR.dom.elementPath( this.endContainer );
 
+			var startBlockLimit	= startPath.blockLimit,
+				endBlockLimit	= endPath.blockLimit;
+
+			var startBlock	= startPath.block,
+				endBlock	= endPath.block;
+
+			var elementPath = null;
+			// Do nothing if the boundaries are in different block limits.
 			if ( !startBlockLimit.equals( endBlockLimit ) )
 				return null;
 
@@ -1188,7 +1425,7 @@ CKEDITOR.dom.range = function( document )
 				if ( !startBlock )
 				{
 					startBlock = this.fixBlock( true, blockTag );
-					endBlock = new CKEDITOR.dom.elementPath( this.endContainer );
+					endBlock = new CKEDITOR.dom.elementPath( this.endContainer ).block;
 				}
 
 				if ( !endBlock )
@@ -1226,14 +1463,17 @@ CKEDITOR.dom.range = function( document )
 
 					// Duplicate the block element after it.
 					endBlock = startBlock.clone( false );
-					endBlock.removeAttribute( 'id' );
 
 					// Place the extracted contents into the duplicated block.
 					documentFragment.appendTo( endBlock );
 					endBlock.insertAfter( startBlock );
 					this.moveToPosition( startBlock, CKEDITOR.POSITION_AFTER_END );
 
-					// TODO: Append bogus br to startBlock for Gecko
+					// In Gecko, the last child node must be a bogus <br>.
+					// Note: bogus <br> added under <ul> or <ol> would cause
+					// lists to be incorrectly rendered.
+					if ( !CKEDITOR.env.ie && !startBlock.is( 'ul', 'ol') )
+						startBlock.appendBogus() ;
 				}
 			}
 
@@ -1246,6 +1486,29 @@ CKEDITOR.dom.range = function( document )
 			};
 		},
 
+		/**
+		 * Check whether current range is on the inner edge of the specified element.
+		 * @param {Number} checkType ( CKEDITOR.START | CKEDITOR.END ) The checking side.
+		 * @param {CKEDITOR.dom.element} element The target element to check.
+		 */
+		checkBoundaryOfElement : function( element, checkType )
+		{
+			var walkerRange = this.clone();
+			// Expand the range to element boundary.
+			walkerRange[ checkType == CKEDITOR.START ?
+			 'setStartAt' : 'setEndAt' ]
+			 ( element, checkType == CKEDITOR.START ?
+			   CKEDITOR.POSITION_AFTER_START
+			   : CKEDITOR.POSITION_BEFORE_END );
+
+			var walker = new CKEDITOR.dom.walker( walkerRange ),
+			 retval = false;
+			walker.evaluator = elementBoundaryEval;
+			return walker[ checkType == CKEDITOR.START ?
+				'checkBackward' : 'checkForward' ]();
+		},
+		// Calls to this function may produce changes to the DOM. The range may
+		// be updated to reflect such changes.
 		checkStartOfBlock : function()
 		{
 			var startContainer = this.startContainer,
@@ -1253,21 +1516,31 @@ CKEDITOR.dom.range = function( document )
 
 			// If the starting node is a text node, and non-empty before the offset,
 			// then we're surely not at the start of block.
-			if ( startContainer.type == CKEDITOR.NODE_TEXT )
+			if ( startOffset && startContainer.type == CKEDITOR.NODE_TEXT )
 			{
-				var textBefore = CKEDITOR.tools.ltrim( startContainer.getText().substr( 0, startOffset ) );
-				if ( textBefore.length > 0 )
+				var textBefore = CKEDITOR.tools.ltrim( startContainer.substring( 0, startOffset ) );
+				if ( textBefore.length )
 					return false;
 			}
 
-			var startNode = getBoundaryNodes.apply( this ).startNode,
-				walker = new CKEDITOR.dom.domWalker( startNode );
+			// Antecipate the trim() call here, so the walker will not make
+			// changes to the DOM, which would not get reflected into this
+			// range otherwise.
+			this.trim();
 
-			// DFS backwards until the block boundary, with the checker function.
-			walker.on( 'step', getCheckStartEndBlockFunction( true ), null, null, 20 );
-			walker.reverse( CKEDITOR.dom.domWalker.blockBoundary() );
+			// We need to grab the block element holding the start boundary, so
+			// let's use an element path for it.
+			var path = new CKEDITOR.dom.elementPath( this.startContainer );
 
-			return !walker.checkFailed;
+			// Creates a range starting at the block start until the range start.
+			var walkerRange = this.clone();
+			walkerRange.collapse( true );
+			walkerRange.setStartAt( path.block || path.blockLimit, CKEDITOR.POSITION_AFTER_START );
+
+			var walker = new CKEDITOR.dom.walker( walkerRange );
+			walker.evaluator = getCheckStartEndBlockEvalFunction( true );
+
+			return walker.checkBackward();
 		},
 
 		checkEndOfBlock : function()
@@ -1279,19 +1552,75 @@ CKEDITOR.dom.range = function( document )
 			// then we're surely not at the end of block.
 			if ( endContainer.type == CKEDITOR.NODE_TEXT )
 			{
-				var textAfter = CKEDITOR.tools.rtrim( endContainer.getText().substr( endOffset ) );
-				if ( textAfter.length > 0 )
+				var textAfter = CKEDITOR.tools.rtrim( endContainer.substring( endOffset ) );
+				if ( textAfter.length )
 					return false;
 			}
 
-			var endNode = getBoundaryNodes.apply( this ).endNode,
-				walker = new CKEDITOR.dom.domWalker( endNode );
+			// Antecipate the trim() call here, so the walker will not make
+			// changes to the DOM, which would not get reflected into this
+			// range otherwise.
+			this.trim();
 
-			// DFS forward until the block boundary, with the checker function.
-			walker.on( 'step', getCheckStartEndBlockFunction( false ), null, null, 20 );
-			walker.forward( CKEDITOR.dom.domWalker.blockBoundary() );
+			// We need to grab the block element holding the start boundary, so
+			// let's use an element path for it.
+			var path = new CKEDITOR.dom.elementPath( this.endContainer );
 
-			return !walker.checkFailed;
+			// Creates a range starting at the block start until the range start.
+			var walkerRange = this.clone();
+			walkerRange.collapse( false );
+			walkerRange.setEndAt( path.block || path.blockLimit, CKEDITOR.POSITION_BEFORE_END );
+
+			var walker = new CKEDITOR.dom.walker( walkerRange );
+			walker.evaluator = getCheckStartEndBlockEvalFunction( false );
+
+			return walker.checkForward();
+		},
+
+		/**
+		 * Moves the range boundaries to the first editing point inside an
+		 * element. For example, in an element tree like
+		 * "&lt;p&gt;&lt;b&gt;&lt;i&gt;&lt;/i&gt;&lt;/b&gt; Text&lt;/p&gt;", the start editing point is
+		 * "&lt;p&gt;&lt;b&gt;&lt;i&gt;^&lt;/i&gt;&lt;/b&gt; Text&lt;/p&gt;" (inside &lt;i&gt;).
+		 * @param {CKEDITOR.dom.element} targetElement The element into which
+		 *		look for the editing spot.
+		 */
+		moveToElementEditStart : function( targetElement )
+		{
+			var editableElement;
+
+			while ( targetElement && targetElement.type == CKEDITOR.NODE_ELEMENT )
+			{
+				if ( targetElement.isEditable() )
+					editableElement = targetElement;
+				else if ( editableElement )
+					break ;		// If we already found an editable element, stop the loop.
+
+				targetElement = targetElement.getFirst();
+			}
+
+			if ( editableElement )
+				this.moveToPosition( editableElement, CKEDITOR.POSITION_AFTER_START );
+		},
+
+		getTouchedStartNode : function()
+		{
+			var container = this.startContainer ;
+
+			if ( this.collapsed || container.type != CKEDITOR.NODE_ELEMENT )
+				return container ;
+
+			return container.getChild( this.startOffset ) || container ;
+		},
+
+		getTouchedEndNode : function()
+		{
+			var container = this.endContainer ;
+
+			if ( this.collapsed || container.type != CKEDITOR.NODE_ELEMENT )
+				return container ;
+
+			return container.getChild( this.endOffset - 1 ) || container ;
 		}
 	};
 })();
@@ -1304,3 +1633,11 @@ CKEDITOR.POSITION_AFTER_END		= 4;	// <element>contents</element>^		"text"
 CKEDITOR.ENLARGE_ELEMENT = 1;
 CKEDITOR.ENLARGE_BLOCK_CONTENTS = 2;
 CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS = 3;
+
+/**
+ * Check boundary types.
+ * @see CKEDITOR.dom.range::checkBoundaryOfElement
+ */
+CKEDITOR.START = 1;
+CKEDITOR.END = 2;
+CKEDITOR.STARTEND = 3;

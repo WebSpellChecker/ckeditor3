@@ -58,7 +58,15 @@ CKEDITOR.test =
 	 */
 	getInnerHtml : function( elementOrId )
 	{
-		var html = ( elementOrId.nodeType ? elementOrId : document.getElementById( elementOrId ) ).innerHTML;
+		var html;
+
+		if ( typeof elementOrId == 'string' )
+			html = document.getElementById( elementOrId ).innerHTML;
+		else if ( elementOrId.getHtml )
+			html = elementOrId.getHtml();
+		else
+			html = elementOrId.innerHTML || '';
+
 		html = html.toLowerCase();
 		html = html.replace( /[\n\r]/g, '' );
 
@@ -71,11 +79,11 @@ CKEDITOR.test =
 					{
 						if ( attName == 'style' )
 						{
+							// Safari adds some extra space to the end.
+							attValue = attValue.replace( /\s+/g, '' );
+
 							// IE doesn't add the final ";"
 							attValue = attValue.replace( /([^"';\s])\s*(["']?)$/, '$1;$2' );
-
-							// Safari adds some extra space to the end.
-							attValue = attValue.replace( /\s+(["']?)$/, '$1' );
 						}
 
 						// IE may have 'class' more than once.

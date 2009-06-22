@@ -73,6 +73,38 @@ CKEDITOR.dom.element.createFromHtml = function( html, ownerDocument )
 	return temp.getFirst().remove();
 };
 
+CKEDITOR.dom.element.setMarker = function( database, element, name, value )
+{
+	var id = element.getCustomData( 'list_marker_id' ) ||
+			( element.setCustomData( 'list_marker_id', CKEDITOR.tools.getNextNumber() ).getCustomData( 'list_marker_id' ) ),
+		markerNames = element.getCustomData( 'list_marker_names' ) ||
+			( element.setCustomData( 'list_marker_names', {} ).getCustomData( 'list_marker_names' ) );
+	database[id] = element;
+	markerNames[name] = 1;
+
+	return element.setCustomData( name, value );
+};
+
+CKEDITOR.dom.element.clearAllMarkers = function( database )
+{
+	for ( var i in database )
+		CKEDITOR.dom.element.clearMarkers( database, database[i], true );
+};
+
+CKEDITOR.dom.element.clearMarkers = function( database, element, removeFromDatabase )
+{
+	var names = element.getCustomData( 'list_marker_names' ),
+		id = element.getCustomData( 'list_marker_id' );
+	for ( var i in names )
+		element.removeCustomData( i );
+	element.removeCustomData( 'list_marker_names' );
+	if ( removeFromDatabase )
+	{
+		element.removeCustomData( 'list_marker_id' );
+		delete database[id];
+	}
+};
+
 CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 	/** @lends CKEDITOR.dom.element.prototype */
 	{
@@ -119,20 +151,26 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		 */
 		removeClass : function( className )
 		{
-			var c = this.$.className;
+			var c = this.getAttribute( 'class' );
 			if ( c )
 			{
-				var regex = new RegExp( '(?:^|\\s+)' + className + '(?=\\s|$)', '' );
+				var regex = new RegExp( '(?:^|\\s+)' + className + '(?=\\s|$)', 'i' );
 				if ( regex.test( c ) )
 				{
 					c = c.replace( regex, '' ).replace( /^\s+/, '' );
 
 					if ( c )
-						this.$.className = c;
+						this.setAttribute( 'class', c );
 					else
 						this.removeAttribute( 'class' );
 				}
 			}
+		},
+
+		hasClass : function( className )
+		{
+			var regex = new RegExp( '(?:^|\\s+)' + className + '(?=\\s|$)', '' );
+			return regex.test( this.getAttribute('class') );
 		},
 
 		/**
@@ -155,7 +193,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		append : function( node, toStart )
 		{
 			if ( typeof node == 'string' )
-				node = new CKEDITOR.dom.element( node );
+				node = this.getDocument().createElement( node );
 
 			if ( toStart )
 				this.$.insertBefore( node.$, this.$.firstChild );
@@ -163,6 +201,18 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 				this.$.appendChild( node.$ );
 
 			return node;
+		},
+
+		appendHtml : function( html )
+		{
+			if ( !this.$.childNodes.length )
+				this.setHtml( html );
+			else
+			{
+				var temp = new CKEDITOR.dom.element( 'div', this.getDocument() );
+				temp.setHtml( html );
+				temp.moveChildren( this );
+			}
 		},
 
 		/**
@@ -182,6 +232,22 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 				this.$.text += text;
 			else
 				this.append( new CKEDITOR.dom.text( text ) );
+		},
+
+		appendBogus : function()
+		{
+			var lastChild = this.getLast() ;
+
+			// Ignore empty/spaces text.
+			while ( lastChild && lastChild.type == CKEDITOR.NODE_TEXT && !CKEDITOR.tools.rtrim( lastChild.getText() ) )
+				lastChild = lastChild.getPrevious();
+			if ( !lastChild || !lastChild.is || !lastChild.is( 'br' ) )
+			{
+				this.append(
+					CKEDITOR.env.opera ?
+						this.getDocument().createText('') :
+						this.getDocument().createElement( 'br' ) );
+			}
 		},
 
 		/**
@@ -244,7 +310,13 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		 */
 		focus : function()
 		{
-			this.$.focus();
+			// IE throws error if the element is not visible.
+			try
+			{
+				this.$.focus();
+			}
+			catch (e)
+			{}
 		},
 
 		/**
@@ -257,6 +329,20 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		getHtml : function()
 		{
 			return this.$.innerHTML;
+		},
+
+		getOuterHtml : function()
+		{
+			if ( this.$.outerHTML )
+			{
+				// IE includes the <?xml:namespace> tag in the outerHTML of
+				// namespaced element. So, we must strip it here. (#3341)
+				return this.$.outerHTML.replace( /<\?[^>]*>/, '' );
+			}
+
+			var tmpDiv = this.$.ownerDocument.createElement( 'div' );
+			tmpDiv.appendChild( this.$.cloneNode( true ) );
+			return tmpDiv.innerHTML;
 		},
 
 		/**
@@ -314,7 +400,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 				return this.$.getAttribute( name, 2 );
 			};
 
-			if ( CKEDITOR.env.ie )
+			if ( CKEDITOR.env.ie && ( CKEDITOR.env.ie7Compat || CKEDITOR.env.ie6Compat ) )
 			{
 				return function( name )
 				{
@@ -337,6 +423,17 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 
 							return tabIndex;
 							break;
+
+						case 'checked':
+							return this.$.checked;
+							break;
+
+						case 'style':
+							// IE does not return inline styles via getAttribute(). See #2947.
+							var styleText = this.$.style.cssText;
+							return styleText.toLowerCase().replace(
+								/\s*(?:;\s*|$)/, ';').replace(
+									/([^;])$/, '$1;');
 					}
 
 					return standard.call( this, name );
@@ -390,10 +487,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			return dtd;
 		},
 
-		getElementsByTag : function( tagName )
-		{
-			return new CKEDITOR.dom.nodeList( this.$.getElementsByTagName( tagName ) );
-		},
+		getElementsByTag : CKEDITOR.dom.document.prototype.getElementsByTag,
 
 		/**
 		 * Gets the computed tabindex for this element.
@@ -459,7 +553,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		 */
 		getText : function()
 		{
-			return this.$.textContent || this.$.innerText;
+			return this.$.textContent || this.$.innerText || '';
 		},
 
 		/**
@@ -509,6 +603,13 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			// Cache the lowercased name inside a closure.
 			var nodeName = this.$.nodeName.toLowerCase();
 
+			if ( CKEDITOR.env.ie )
+			{
+				var scopeName = this.$.scopeName;
+				if ( scopeName != 'HTML' )
+					nodeName = scopeName.toLowerCase() + ':' + nodeName;
+			}
+
 			return (
 			/** @ignore */
 			this.getName = function()
@@ -542,25 +643,22 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			return $ ? new CKEDITOR.dom.node( $ ) : null;
 		},
 
-		getLast : function()
+		/**
+		 * @param ignoreEmpty Skip empty text nodes.
+		 */
+		getLast : function( ignoreEmpty )
 		{
 			var $ = this.$.lastChild;
-			return $ ? new CKEDITOR.dom.node( $ ) : null;
+			if ( ignoreEmpty && $ && ( $.nodeType == CKEDITOR.NODE_TEXT )
+					&& !CKEDITOR.tools.trim( $.nodeValue ) )
+				return new CKEDITOR.dom.node( $ ).getPrevious( true );
+			else
+				return $ ? new CKEDITOR.dom.node( $ ) : null;
 		},
 
-		/**
-		 * Gets the node that follows this element in its parent's child list.
-		 * @returns {CKEDITOR.dom.node} The next node or null if not
-		 *		available.
-		 * @example
-		 * var element = CKEDITOR.dom.element.createFromHtml( '&lt;div&gt;&lt;b&gt;Example&lt;/b&gt; &lt;i&gt;next&lt;/i&gt;&lt;/div&gt;' );
-		 * var first = <b>element.getFirst().getNext()</b>;
-		 * alert( first.getName() );  // "i"
-		 */
-		getNext : function()
+		getStyle : function( name )
 		{
-			var $ = this.$.nextSibling;
-			return $ ? new CKEDITOR.dom.node( $ ) : null;
+			return this.$.style[ CKEDITOR.tools.cssStyleToDomStyle( name ) ];
 		},
 
 		/**
@@ -585,6 +683,68 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			return false;
 		},
 
+		isEditable : function()
+		{
+			// Get the element name.
+			var name = this.getName();
+
+			// Get the element DTD (defaults to span for unknown elements).
+			var dtd = !CKEDITOR.dtd.$nonEditable[ name ]
+						&& ( CKEDITOR.dtd[ name ] || CKEDITOR.dtd.span );
+
+			// In the DTD # == text node.
+			return ( dtd && dtd['#'] );
+		},
+
+		isIdentical : function( otherElement )
+		{
+			if ( this.getName() != otherElement.getName() )
+				return false;
+
+			var thisAttribs = this.$.attributes,
+				otherAttribs = otherElement.$.attributes;
+
+			var thisLength = thisAttribs.length,
+				otherLength = otherAttribs.length;
+
+			if ( !CKEDITOR.env.ie && thisLength != otherLength )
+				return false;
+
+			for ( var i = 0 ; i < thisLength ; i++ )
+			{
+				var attribute = thisAttribs[ i ];
+
+				if ( ( !CKEDITOR.env.ie || ( attribute.specified && attribute.nodeName != '_cke_expando' ) ) && attribute.nodeValue != otherElement.getAttribute( attribute.nodeName ) )
+					return false;
+			}
+
+			// For IE, we have to for both elements, because it's difficult to
+			// know how the atttibutes collection is organized in its DOM.
+			if ( CKEDITOR.env.ie )
+			{
+				for ( i = 0 ; i < otherLength ; i++ )
+				{
+					attribute = otherAttribs[ i ];
+
+					if ( ( !CKEDITOR.env.ie || ( attribute.specified && attribute.nodeName != '_cke_expando' ) ) && attribute.nodeValue != thisAttribs.getAttribute( attribute.nodeName ) )
+						return false;
+				}
+			}
+
+			return true;
+		},
+
+		/**
+		 * Checks if this element is visible. May not work if the element is
+		 * child of an element with visibility set to "hidden", but works well
+		 * on the great majority of cases.
+		 * @return {Boolean} True if the element is visible.
+		 */
+		isVisible : function()
+		{
+			return this.$.offsetWidth && ( this.$.style.visibility != 'hidden' );
+		},
+
 		/**
 		 * Indicates that the element has defined attributes.
 		 * @returns {Boolean} True if the element has attributes.
@@ -596,7 +756,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		 * alert( <b>element.hasAttributes()</b> );  "false"
 		 */
 		hasAttributes :
-			CKEDITOR.env.ie ?
+			CKEDITOR.env.ie && ( CKEDITOR.env.ie7Compat || CKEDITOR.env.ie6Compat ) ?
 				function()
 				{
 					var attributes = this.$.attributes;
@@ -614,7 +774,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 								// outerHTML of the element is not displaying the class attribute.
 								// Note : I was not able to reproduce it outside the editor,
 								// but I've faced it while working on the TC of #1391.
-								if ( this.$.className.length > 0 )
+								if ( this.getAttribute( 'class' ) > 0 )
 									return true;
 
 							// Attributes to be ignored.
@@ -634,8 +794,21 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			:
 				function()
 				{
-					return this.$.attributes.length > 0;
+					var attributes = this.$.attributes;
+					return ( attributes.length > 1 || ( attributes.length == 1 && attributes[0].nodeName != '_cke_expando' ) );
 				},
+
+		/**
+		 * Indicates whether a specified attribute is defined for this element.
+		 * @returns {Boolean} True if the specified attribute is defined.
+		 * @param (String) name The attribute name.
+		 * @example
+		 */
+		hasAttribute : function( name )
+		{
+			var $attr = this.$.attributes.getNamedItem( name );
+			return !!( $attr && $attr.specified );
+		},
 
 		/**
 		 * Hides this element (display:none).
@@ -660,12 +833,12 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 
 			if ( toStart )
 			{
-				while ( (child = $.lastChild) )
+				while ( ( child = $.lastChild ) )
 					target.insertBefore( $.removeChild( child ), target.firstChild );
 			}
 			else
 			{
-				while ( (child = $.firstChild) )
+				while ( ( child = $.firstChild ) )
 					target.appendChild( $.removeChild( child ) );
 			}
 		},
@@ -704,14 +877,18 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 				return this;
 			};
 
-			if ( CKEDITOR.env.ie )
+			if ( CKEDITOR.env.ie && ( CKEDITOR.env.ie7Compat || CKEDITOR.env.ie6Compat ) )
 			{
 				return function( name, value )
 				{
 					if ( name == 'class' )
 						this.$.className = value;
-					if ( name == 'style' )
+					else if ( name == 'style' )
 						this.$.style.cssText = value;
+					else if ( name == 'tabindex' )	// Case sensitive.
+						this.$.tabIndex = value;
+					else if ( name == 'checked' )
+						this.$.checked = value;
 					else
 						standard.apply( this, arguments );
 					return this;
@@ -766,12 +943,14 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 				this.$.removeAttribute( name );
 			};
 
-			if ( CKEDITOR.env.ie )
+			if ( CKEDITOR.env.ie && ( CKEDITOR.env.ie7Compat || CKEDITOR.env.ie6Compat ) )
 			{
 				return function( name )
 				{
 					if ( name == 'class' )
 						name = 'className';
+					else if ( name == 'tabindex' )
+						name = 'tabIndex';
 					standard.call( this, name );
 				};
 			}
@@ -795,7 +974,10 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		 */
 		removeStyle : function( name )
 		{
-			this.setStyle( name, '' );
+			if ( this.$.style.removeAttribute )
+				this.$.style.removeAttribute( CKEDITOR.tools.cssStyleToDomStyle( name ) );
+			else
+				this.setStyle( name, '' );
 
 			if ( !this.$.style.cssText )
 				this.removeAttribute( 'style' );
@@ -899,5 +1081,305 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 							}
 						}
 					}
+				},
+
+		getPositionedAncestor : function()
+		{
+			var current = this;
+			while ( current.getName() != 'html' )
+			{
+				if ( current.getComputedStyle( 'position' ) != 'static' )
+					return current;
+
+				current = current.getParent();
+			}
+			return null;
+		},
+
+		getDocumentPosition : function( refDocument )
+		{
+			var x = 0, y = 0,
+				body = this.getDocument().getBody(),
+				quirks = this.getDocument().$.compatMode == 'BackCompat';
+
+			var doc = this.getDocument();
+
+			if ( document.documentElement[ "getBoundingClientRect" ] )
+			{
+				var box  = this.$.getBoundingClientRect(),
+					$doc = doc.$,
+					$docElem = $doc.documentElement;
+
+				var clientTop = $docElem.clientTop || body.$.clientTop || 0,
+					clientLeft = $docElem.clientLeft || body.$.clientLeft || 0,
+					needAdjustScrollAndBorders = true;
+
+				/*
+				 * #3804: getBoundingClientRect() works differently on IE and non-IE
+				 * browsers, regarding scroll positions.
+				 *
+				 * On IE, the top position of the <html> element is always 0, no matter
+				 * how much you scrolled down.
+				 *
+				 * On other browsers, the top position of the <html> element is negative
+				 * scrollTop.
+				 */
+				if ( CKEDITOR.env.ie )
+				{
+					var inDocElem = doc.getDocumentElement().contains( this ),
+						inBody = doc.getBody().contains( this );
+
+					needAdjustScrollAndBorders = ( quirks && inBody ) || ( !quirks && inDocElem );
 				}
+
+				if ( needAdjustScrollAndBorders )
+				{
+					x = box.left + ( !quirks && $docElem.scrollLeft || body.$.scrollLeft );
+					x -= clientLeft;
+					y = box.top  + ( !quirks && $docElem.scrollTop || body.$.scrollTop );
+					y -= clientTop;
+				}
+			}
+			else
+ 			{
+				var current = this, previous = null, offsetParent;
+				while ( current && !( current.getName() == 'body' || current.getName() == 'html' ) )
+				{
+					x += current.$.offsetLeft - current.$.scrollLeft;
+					y += current.$.offsetTop - current.$.scrollTop;
+
+					// Opera includes clientTop|Left into offsetTop|Left.
+					if ( !current.equals( this ) )
+					{
+						x += ( current.$.clientLeft || 0 );
+						y += ( current.$.clientTop || 0 );
+					}
+
+					var scrollElement = previous;
+					while ( scrollElement && !scrollElement.equals( current ) )
+					{
+						x -= scrollElement.$.scrollLeft;
+						y -= scrollElement.$.scrollTop;
+						scrollElement = scrollElement.getParent();
+					}
+
+					previous = current;
+					current = ( offsetParent = current.$.offsetParent ) ?
+					          new CKEDITOR.dom.element( offsetParent ) : null;
+				}
+			}
+
+			if ( refDocument )
+			{
+				var currentWindow = this.getWindow(),
+					refWindow = refDocument.getWindow();
+
+				if ( !currentWindow.equals( refWindow ) && currentWindow.$.frameElement )
+				{
+					var iframePosition = ( new CKEDITOR.dom.element( currentWindow.$.frameElement ) ).getDocumentPosition( refDocument );
+
+					x += iframePosition.x;
+					y += iframePosition.y;
+				}
+			}
+
+			if ( !document.documentElement[ "getBoundingClientRect" ] )
+			{
+				// In Firefox, we'll endup one pixel before the element positions,
+				// so we must add it here.
+				if ( CKEDITOR.env.gecko && !quirks )
+				{
+					x += this.$.clientLeft ? 1 : 0;
+					y += this.$.clientTop ? 1 : 0;
+				}
+			}
+
+			return { x : x, y : y };
+		},
+
+		scrollIntoView : function( alignTop )
+		{
+			// Get the element window.
+			var win = this.getWindow(),
+				winHeight = win.getViewPaneSize().height;
+
+			// Starts from the offset that will be scrolled with the negative value of
+			// the visible window height.
+			var offset = winHeight * -1;
+
+			// Append the view pane's height if align to top.
+			// Append element height if we are aligning to the bottom.
+			if ( alignTop )
+				offset += winHeight;
+			else
+			{
+				offset += this.$.offsetHeight || 0;
+
+				// Consider the margin in the scroll, which is ok for our current needs, but
+				// needs investigation if we will be using this function in other places.
+				offset += parseInt( this.getComputedStyle( 'marginBottom' ) || 0, 10 ) || 0;
+			}
+
+			// Append the offsets for the entire element hierarchy.
+			var elementPosition = this.getDocumentPosition();
+			offset += elementPosition.y;
+			// Scroll the window to the desired position, if not already visible.
+			var currentScroll = win.getScrollPosition().y;
+
+			// Though the computed offset value maybe out of range ( e.g.
+			// a negative value ), browser will try to scroll as much as possible. (#3692)
+			win.$.scrollTo( 0, offset > 0 ? offset : 0 );
+		},
+
+		setState : function( state )
+		{
+			switch ( state )
+			{
+				case CKEDITOR.TRISTATE_ON :
+					this.addClass( 'cke_on' );
+					this.removeClass( 'cke_off' );
+					this.removeClass( 'cke_disabled' );
+					break;
+				case CKEDITOR.TRISTATE_DISABLED :
+					this.addClass( 'cke_disabled' );
+					this.removeClass( 'cke_off' );
+					this.removeClass( 'cke_on' );
+					break;
+				default :
+					this.addClass( 'cke_off' );
+					this.removeClass( 'cke_on' );
+					this.removeClass( 'cke_disabled' );
+					break;
+			}
+		},
+
+		/**
+		 * Returns the inner document of this IFRAME element.
+		 * @returns {CKEDITOR.dom.document} The inner document.
+		 */
+		getFrameDocument : function()
+		{
+			var $ = this.$;
+
+			try
+			{
+				// In IE, with custom document.domain, it may happen that
+				// the iframe is not yet available, resulting in "Access
+				// Denied" for the following property access.
+				$.contentWindow.document;
+			}
+			catch ( e )
+			{
+				// Trick to solve this issue, forcing the iframe to get ready
+				// by simply setting its "src" property.
+				$.src = $.src;
+
+				// In IE6 though, the above is not enough, so we must pause the
+				// execution for a while, giving it time to think.
+				if ( CKEDITOR.env.ie && CKEDITOR.env.version < 7 )
+				{
+					window.showModalDialog(
+						'javascript:document.write("' +
+							'<script>' +
+								'window.setTimeout(' +
+									'function(){window.close();}' +
+									',50);' +
+							'</script>")' );
+				}
+			}
+
+			return $ && new CKEDITOR.dom.document( $.contentWindow.document );
+		},
+
+		/**
+		 * Copy all the attributes from one node to the other, kinda like a clone
+		 * skipAttributes is an object with the attributes that must NOT be copied.
+		 * @param {CKEDITOR.dom.element} dest The destination element.
+		 * @param {Object} skipAttributes A dictionary of attributes to skip.
+		 * @example
+		 */
+		copyAttributes : function( dest, skipAttributes )
+		{
+			var attributes = this.$.attributes;
+			skipAttributes = skipAttributes || {};
+
+			for ( var n = 0 ; n < attributes.length ; n++ )
+			{
+				var attribute = attributes[n];
+
+				// IE BUG: value attribute is never specified even if it exists.
+				if ( attribute.specified ||
+				  ( CKEDITOR.env.ie && attribute.nodeValue && attribute.nodeName.toLowerCase() == 'value' ) )
+				{
+					var attrName = attribute.nodeName;
+					// We can set the type only once, so do it with the proper value, not copying it.
+					if ( attrName in skipAttributes )
+						continue;
+
+					var attrValue = this.getAttribute( attrName );
+					if ( attrValue === null )
+						attrValue = attribute.nodeValue;
+
+					dest.setAttribute( attrName, attrValue );
+				}
+			}
+
+			// The style:
+			if ( this.$.style.cssText !== '' )
+				dest.$.style.cssText = this.$.style.cssText;
+		},
+
+		/**
+		 * Changes the tag name of the current element.
+		 * @param {String} newTag The new tag for the element.
+		 */
+		renameNode : function( newTag )
+		{
+			// If it's already correct exit here.
+			if ( this.getName() == newTag )
+				return;
+
+			var doc = this.getDocument();
+
+			// Create the new node.
+			var newNode = new CKEDITOR.dom.element( newTag, doc );
+
+			// Copy all attributes.
+			this.copyAttributes( newNode );
+
+			// Move children to the new node.
+			this.moveChildren( newNode );
+
+			// Replace the node.
+			this.$.parentNode.replaceChild( newNode.$, this.$ );
+			newNode.$._cke_expando = this.$._cke_expando;
+			this.$ = newNode.$;
+		},
+
+		/**
+		 * Gets a DOM tree descendant under the current node.
+		 * @param {Array|Number} indices The child index or array of child indices under the node.
+		 * @returns {CKEDITOR.dom.node} The specified DOM child under the current node. Null if child does not exist.
+		 * @example
+		 * var strong = p.getChild(0);
+		 */
+		getChild : function( indices )
+		{
+			var rawNode = this.$;
+
+			if ( !indices.slice )
+				rawNode = rawNode.childNodes[ indices ];
+			else
+			{
+				while ( indices.length > 0 && rawNode )
+					rawNode = rawNode.childNodes[ indices.shift() ];
+			}
+
+			return rawNode ? new CKEDITOR.dom.node( rawNode ) : null;
+		},
+
+		getChildCount : function()
+		{
+			return this.$.childNodes.length;
+ 		}
 	});

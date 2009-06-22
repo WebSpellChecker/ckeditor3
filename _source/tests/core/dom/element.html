@@ -172,7 +172,7 @@ CKEDITOR.test.addTestCase( (function()
 			var element = new CKEDITOR.dom.element( document.getElementById( 'test1' ) );
 			element.setAttribute( 'style', 'position: absolute;' );
 
-			assert.areEqual( 'position:absolute', document.getElementById( 'test1' ).style.cssText.replace( /[\s;]/g, '' ).toLowerCase() );
+			assert.areEqual( 'position: absolute;', element.getAttribute( 'style' ) );
 		},
 
 		test_setAttribute3 : function()
@@ -201,7 +201,7 @@ CKEDITOR.test.addTestCase( (function()
 				'rows'	: 5 });
 
 			assert.areSame( 'Test', document.getElementById( 'test1' ).className, 'class is wrong' );
-			assert.areEqual( 'position:absolute', document.getElementById( 'test1' ).style.cssText.replace( /[\s;]/g, '' ).toLowerCase(), 'style is wrong' );
+			assert.areEqual( 'position: absolute;', element.getAttribute( 'style'), 'style is wrong' );
 			assert.areEqual( 'TestName', document.getElementById( 'test1' ).name, 'name is wrong' );
 			assert.areEqual( 5, document.getElementById( 'test1' ).rows, 'rows is wrong' );
 		},
@@ -226,8 +226,8 @@ CKEDITOR.test.addTestCase( (function()
 		{
 			var element = new CKEDITOR.dom.element( document.getElementById( 'setStyle' ) );
 			element.setStyles({
-					 'position' : 'absolute',
-					 'float' : 'right'
+					'position' : 'absolute',
+					'float' : 'right'
 				});
 
 			assert.areEqual( 'absolute', document.getElementById( 'setStyle' ).style.position );
@@ -401,6 +401,26 @@ CKEDITOR.test.addTestCase( (function()
 			assert.areEqual( null, element.getAttribute( 'tabindex' ) );
 		},
 
+		/**
+		 *  Test getAttribute and getAttribute will ingore  '_cke_expando' attribute.
+		 */
+		test_getAttribute_ignoreExpandoAttributes : function()
+		{
+			var element = new CKEDITOR.dom.element( document.getElementById( 'testExpandoAttributes' ) );
+
+			assert.areEqual( 1, element.getAttribute( 'tabindex' ), 'tabindex is wrong' );
+			element.removeAttribute( 'tabindex' );
+
+			assert.areEqual( 'hasExpando', element.getAttribute( 'class' ), 'class is wrong' );
+			element.removeAttribute( 'class' );
+
+			assert.areEqual( 'float: right;', element.getAttribute( 'style' ) );
+
+			element.removeAttribute( 'style' );
+			element.removeAttribute( 'id' );
+			assert.isFalse( element.hasAttributes(), 'hasAttributes should be false' );
+		},
+
 		test_getTabIndex1 : function()
 		{
 			var element = new CKEDITOR.dom.element( document.getElementById( 'tabIndex10' ) );
@@ -436,7 +456,7 @@ CKEDITOR.test.addTestCase( (function()
 			var a = new CKEDITOR.dom.element( document.getElementById( 'test1' ) );
 			var b = new CKEDITOR.dom.element( document.getElementById( 'test1' ) );
 
-			assert.areSame( a._, b._ );
+			assert.areSame( a.getPrivate(), b.getPrivate() );
 		},
 
 		test_private2 : function()
@@ -444,7 +464,7 @@ CKEDITOR.test.addTestCase( (function()
 			var a = new CKEDITOR.dom.element( document.getElementById( 'test1' ) );
 			var b = new CKEDITOR.dom.element( document.getElementById( 'test2' ) );
 
-			assert.areNotSame( a._, b._ );
+			assert.areNotSame( a.getPrivate(), b.getPrivate() );
 		},
 
 		test_getText1 : function()
@@ -487,12 +507,77 @@ CKEDITOR.test.addTestCase( (function()
 			assert.isTrue( element.hasAttributes() );
 		},
 
+		test_getDocumentPosition : function()
+		{
+			// Assign the page location of the element.
+			YAHOO.util.Dom.setXY('DocPositionTarget', [ 350, 450 ] );
+			var pos = CKEDITOR.document.getById( 'DocPositionTarget' ).getDocumentPosition();
+			if ( !CKEDITOR.env.ie )
+			{
+				assert.areEqual( 350, pos.x, 'Position coordinates:x relative to document doesn\'t match.' );
+				assert.areEqual( 450, pos.y, 'Position coordinates:y relative to document doesn\'t match.' );
+			}
+			else
+			{
+				assert.isTrue( pos.x == 348 || pos.x == 349, 'Position coordinates:x relative to document doesn\'t match.' );
+				assert.areEqual( 448, pos.y, 'Position coordinates:y relative to document doesn\'t match.' );
+			}
+		},
+
 		name : document.title
 	};
 })() );
 
 	//]]>
 	</script>
+	<style type="text/css" media="screen">
+		#test-computed {
+		    width:50%;
+		    margin:auto;
+		    padding:10px;
+		    z-index: 2;
+		}
+		.scroll
+		{
+			overflow: visible;
+		}
+		.block1
+		{
+			width: 100%;
+			height: 100px;
+			background-color: blue;
+			text-align: center;
+		}
+		.block2
+		{
+			margin: auto;
+			width: 200px;
+			height: 200px;
+			background-color: green;
+			position : relative;
+		}
+		.block3
+		{
+			position: absolute;
+			float:right;
+			width: 300px;
+			height: 300px;
+			background-color: black;
+		}
+		.block4
+		{
+			position: absolute;
+			left: 50px;
+			right: 50px;
+			width: 400px;
+			height: 400px;
+			background-color: pink;
+		}
+		#DocPositionTarget
+		{
+			background-color: red;
+		}
+	</style>
 </head>
 <body>
 	<textarea id="test1" rows="10" cols="80"></textarea>
@@ -505,6 +590,7 @@ CKEDITOR.test.addTestCase( (function()
 	<div id="removeClass"></div>
 	<div id="removeOuter"><b id="removeInner"></b></div>
 	<div id="tabIndex10" tabindex="10"></div>
+	<div id="testExpandoAttributes" _cke_expando ="1" class="hasExpando" tabindex="1" style="float:right"></div>
 	<div id="tabIndexDef"></div>
 	<input id="tabIndexInputDef" />
 	<input id="tabIndexInput20" tabindex="20" />
@@ -515,5 +601,8 @@ CKEDITOR.test.addTestCase( (function()
 B</div>
 	<big>Test</big>
 	<small title="Testing">Test</small>
+
+	<div class="block1 scroll" id="block1"><div class="block2 scroll" id="block2"><div class="block3 scroll" id="block3"><div class="block4 scroll" id="block4"><div id="DocPositionTarget">target</div></div></div></div></div>
+
 </body>
 </html>

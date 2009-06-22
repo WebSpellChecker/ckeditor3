@@ -31,6 +31,7 @@ if ( !CKEDITOR.env )
 			 *     alert( "I'm on IE!" );
 			 */
 			ie		: /*@cc_on!@*/false,
+
 			/**
 			 * Indicates that CKEditor is running on Opera.
 			 * @type Boolean
@@ -39,6 +40,7 @@ if ( !CKEDITOR.env )
 			 *     alert( "I'm on Opera!" );
 			 */
 			opera	: ( !!opera && opera.version ),
+
 			/**
 			 * Indicates that CKEditor is running on a WebKit based browser, like
 			 * Safari.
@@ -48,6 +50,7 @@ if ( !CKEDITOR.env )
 			 *     alert( "I'm on WebKit!" );
 			 */
 			webkit	: ( agent.indexOf( ' applewebkit/' ) > -1 ),
+
 			/**
 			 * Indicates that CKEditor is running on Adobe AIR.
 			 * @type Boolean
@@ -56,6 +59,7 @@ if ( !CKEDITOR.env )
 			 *     alert( "I'm on AIR!" );
 			 */
 			air		: ( agent.indexOf( ' adobeair/' ) > -1 ),
+
 			/**
 			 * Indicates that CKEditor is running on Macintosh.
 			 * @type Boolean
@@ -63,7 +67,14 @@ if ( !CKEDITOR.env )
 			 * if ( CKEDITOR.env.mac )
 			 *     alert( "I love apples!" );
 			 */
-			mac	: ( agent.indexOf( 'macintosh' ) > -1 )
+			mac	: ( agent.indexOf( 'macintosh' ) > -1 ),
+
+			quirks : ( document.compatMode == 'BackCompat' ),
+
+			isCustomDomain : function()
+			{
+				return this.ie && document.domain != window.location.hostname;
+			}
 		};
 
 		/**
@@ -85,6 +96,24 @@ if ( !CKEDITOR.env )
 			version = parseFloat( agent.match( /msie (\d+)/ )[1] );
 
 			/**
+			 *  Indicate IE8 browser.
+			 */
+			env.ie8 = !!document.documentMode;
+
+			/**
+			 * Indicte IE8 document mode.
+			 */
+			env.ie8Compat = document.documentMode == 8;
+
+			/**
+			 * Indicates that CKEditor is running on an IE7-like environment, which
+			 * includes IE7 itself and IE8's IE7 document mode.
+			 * @type Boolean
+			 */
+			env.ie7Compat = ( ( version == 7 && !document.documentMode )
+					|| document.documentMode == 7 );
+
+			/**
 			 * Indicates that CKEditor is running on an IE6-like environment, which
 			 * includes IE6 itself and IE7 and IE8 quirks mode.
 			 * @type Boolean
@@ -92,7 +121,8 @@ if ( !CKEDITOR.env )
 			 * if ( CKEDITOR.env.ie6Compat )
 			 *     alert( "I'm on IE6 or quirks mode!" );
 			 */
-			env.ie6Compat = ( version < 7 || document.compatMode == 'BackCompat' );
+			env.ie6Compat = ( version < 7 || env.quirks );
+
 		}
 
 		// Gecko.
@@ -102,7 +132,7 @@ if ( !CKEDITOR.env )
 			if ( geckoRelease )
 			{
 				geckoRelease = geckoRelease[1].split( '.' );
-				version = geckoRelease[0] * 10000 + ( geckoRelease[1] || 0 ) * 100 + ( geckoRelease[2] || 0 );
+				version = geckoRelease[0] * 10000 + ( geckoRelease[1] || 0 ) * 100 + ( geckoRelease[2] || 0 ) * 1;
 			}
 		}
 
@@ -152,6 +182,34 @@ if ( !CKEDITOR.env )
 			( env.air && version >= 1 ) ||
 			( env.webkit && version >= 522 ) ||
 			false;
+
+		// The CSS class to be appended on the main UI containers, making it
+		// easy to apply browser specific styles to it.
+		env.cssClass =
+			'cke_browser_' + (
+				env.ie ? 'ie' :
+				env.gecko ? 'gecko' :
+				env.opera ? 'opera' :
+				env.air ? 'air' :
+				env.webkit ? 'webkit' :
+				'unknown' );
+
+		if ( env.quirks )
+			env.cssClass += ' cke_browser_quirks';
+
+		if ( env.ie )
+		{
+			env.cssClass += ' cke_browser_ie' + (
+				env.version < 7 ? '6' :
+				env.version >= 8 ? '8' :
+				'7' );
+
+			if ( env.quirks )
+				env.cssClass += ' cke_browser_iequirks';
+		}
+
+		if ( env.gecko && version < 10900 )
+			env.cssClass += ' cke_browser_gecko18';
 
 		return env;
 	})();

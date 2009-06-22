@@ -95,39 +95,101 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 		 * @param {CKEDITOR.htmlWriter} writer The writer to which write the HTML.
 		 * @example
 		 */
-		writeHtml : function( writer )
+		writeHtml : function( writer, filter )
 		{
-			// Open element tag.
-			writer.openTag( this.name, this.attributes );
+			var attributes = this.attributes;
 
-			// Copy all attributes to an array.
-			var attribsArray = [];
-			for ( var a in this.attributes )
-				attribsArray.push( [ a, this.attributes[ a ] ] );
-
-			// Sort the attributes by name.
-			attribsArray.sort( sortAttribs );
-
-			// Send the attributes.
-			for ( var i = 0, len = attribsArray.length ; i < len ; i++ )
+			// The "_cke_replacedata" indicates that this element is replacing
+			// a data snippet, which should be outputted as is.
+			if ( attributes._cke_replacedata )
 			{
-				var attrib = attribsArray[ i ];
-				// IE's treated expand fields as dom attributes, skip it
-				if ( CKEDITOR.env.ie && attrib === '_cke_expando' )
-					continue;
-				writer.attribute( attrib[0], attrib[1] );
+				writer.write( attributes._cke_replacedata );
+				return;
+			}
+
+			// Ignore cke: prefixes when writing HTML.
+			var element = this,
+				writeName = element.name,
+				a, value;
+
+			if ( filter )
+			{
+				while ( true )
+				{
+					if ( !( writeName = filter.onElementName( writeName ) ) )
+						return;
+
+					element.name = writeName;
+
+					if ( !( element = filter.onElement( element ) ) )
+						return;
+
+					if ( element.name == writeName )
+						break;
+
+					writeName = element.name;
+					if ( !writeName )	// Send children.
+					{
+						CKEDITOR.htmlParser.fragment.prototype.writeHtml.apply( element, arguments );
+						return;
+					}
+				}
+
+				// The element may have been changed, so update the local
+				// references.
+				attributes = element.attributes;
+			}
+
+			// Open element tag.
+			writer.openTag( writeName, attributes );
+
+			if ( writer.sortAttributes )
+			{
+				// Copy all attributes to an array.
+				var attribsArray = [];
+				for ( a in attributes )
+				{
+					value = attributes[ a ];
+
+					if ( filter && ( !( a = filter.onAttributeName( a ) ) || ( value = filter.onAttribute( element, a, value ) ) === false ) )
+						continue;
+
+					attribsArray.push( [ a, value ] );
+				}
+
+				// Sort the attributes by name.
+				attribsArray.sort( sortAttribs );
+
+				// Send the attributes.
+				for ( var i = 0, len = attribsArray.length ; i < len ; i++ )
+				{
+					var attrib = attribsArray[ i ];
+					writer.attribute( attrib[0], attrib[1] );
+				}
+			}
+			else
+			{
+				for ( a in attributes )
+				{
+					value = attributes[ a ];
+
+					if ( filter && ( !( a = filter.onAttributeName( a ) ) || ( value = filter.onAttribute( element, a, value ) ) === false ) )
+						continue;
+
+					writer.attribute( a, value );
+				}
 			}
 
 			// Close the tag.
-			writer.openTagClose( this.name, this.isEmpty );
+			writer.openTagClose( writeName, element.isEmpty );
 
-			if ( !this.isEmpty )
+			if ( !element.isEmpty )
 			{
 				// Send children.
-				CKEDITOR.htmlParser.fragment.prototype.writeHtml.apply( this, arguments );
+				CKEDITOR.htmlParser.fragment.prototype.writeHtml.apply( element, arguments );
 
 				// Close the element.
-				writer.closeTag( this.name );
+				writer.closeTag( writeName );
 			}
 		}
 	};

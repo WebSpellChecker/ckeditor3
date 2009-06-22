@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -18,6 +18,7 @@ CKEDITOR.skins = (function()
 	// Holds the list of loaded skins.
 	var loaded = {};
 	var preloaded = {};
+	var paths = {};
 
 	var loadedPart = function( skinName, part, callback )
 	{
@@ -28,9 +29,7 @@ CKEDITOR.skins = (function()
 		{
 			for ( var n = 0 ; n < fileNames.length ; n++ )
 			{
-				fileNames[ n ] = CKEDITOR.getUrl(
-					'_source/' +	// %REMOVE_LINE%
-					'skins/' + skinName + '/' + fileNames[ n ] );
+				fileNames[ n ] = CKEDITOR.getUrl( paths[ skinName ] + fileNames[ n ] );
 			}
 		};
 
@@ -133,9 +132,11 @@ CKEDITOR.skins = (function()
 		{
 			loaded[ skinName ] = skinDefinition;
 
-			skinDefinition.skinPath = CKEDITOR.getUrl(
-					'_source/' +	// %REMOVE_LINE%
-					'skins/' + skinName + '/' );
+			skinDefinition.skinPath = paths[ skinName ]
+				|| ( paths[ skinName ] =
+						CKEDITOR.getUrl(
+							'_source/' +	// %REMOVE_LINE%
+							'skins/' + skinName + '/' ) );
 		},
 
 		/**
@@ -149,19 +150,37 @@ CKEDITOR.skins = (function()
 		 *		part files are loaded.
 		 * @example
 		 */
-		load : function( skinName, skinPart, callback )
+		load : function( editor, skinPart, callback )
 		{
+			var skinName = editor.skinName,
+				skinPath = editor.skinPath;
+
 			if ( loaded[ skinName ] )
+			{
 				loadedPart( skinName, skinPart, callback );
+
+				// Get the skin definition.
+				var skinDefinition = loaded[ skinName ];
+
+				// Trigger init function if any.
+				if ( skinDefinition.init )
+					skinDefinition.init( editor );
+			}
 			else
 			{
-				CKEDITOR.scriptLoader.load( CKEDITOR.getUrl(
-					'_source/' +	// %REMOVE_LINE%
-					'skins/' + skinName + '/skin.js' ), function()
+				paths[ skinName ] = skinPath;
+				CKEDITOR.scriptLoader.load( skinPath + 'skin.js', function()
 						{
 							loadedPart( skinName, skinPart, callback );
-						} );
+
+							// Get the skin definition.
+							var skinDefinition = loaded[ skinName ];
+
+							// Trigger init function if any.
+							if ( skinDefinition.init )
+								skinDefinition.init( editor );
+						});
 			}
 		}
-	 };
+	};
 })();

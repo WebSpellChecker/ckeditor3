@@ -21,7 +21,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	CKEDITOR.plugins.add( 'editingblock',
 	{
-		init : function( editor, pluginPath )
+		init : function( editor )
 		{
 			if ( !editor.config.editingBlock )
 				return;
@@ -40,18 +40,29 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			editor.on( 'uiReady', function()
 				{
 					editor.setMode( editor.config.startupMode );
-
-					if ( editor.config.startupFocus )
-						editor.focus();
 				});
 
 			editor.on( 'afterSetData', function()
 				{
-					if ( !isHandlingData && editor.mode )
+					if ( !isHandlingData )
 					{
-						isHandlingData = true;
-						getMode( editor ).loadData( editor.getData() );
-						isHandlingData = false;
+						function setData()
+						{
+							isHandlingData = true;
+							getMode( editor ).loadData( editor.getData() );
+							isHandlingData = false;
+						}
+
+						if ( editor.mode )
+							setData();
+						else
+						{
+							editor.on( 'mode', function()
+								{
+									setData();
+									editor.removeListener( 'mode', arguments.callee );
+								});
+						}
 					}
 				});
 
@@ -69,6 +80,50 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					if ( editor.mode )
 						event.data = getMode( editor ).getSnapshotData();
+				});
+
+			editor.on( 'loadSnapshot', function( event )
+				{
+					if ( editor.mode )
+						getMode( editor ).loadSnapshotData( event.data );
+				});
+
+			// For the first "mode" call, we'll also fire the "instanceReady"
+			// event.
+			editor.on( 'mode', function( event )
+				{
+					// Do that once only.
+					event.removeListener();
+
+					// Grab editor focus if the editor container is focused. (#3104)
+					var focusGrabber = editor.container;
+
+					// Safari 3 can't handle tabindex in all elements, so we do
+					// a trick to make it move the focus to the editor on TAB.
+					if ( CKEDITOR.env.webkit && CKEDITOR.env.version < 528 )
+					{
+						var tabIndex = editor.config.tabIndex || editor.element.getAttribute( 'tabindex' ) || 0;
+						focusGrabber = focusGrabber.append( CKEDITOR.dom.element.createFromHtml(
+							'<input' +
+								' tabindex="' + tabIndex + '"' +
+								' style="position:absolute; left:-10000">' ) );
+					}
+
+					focusGrabber.on( 'focus', function()
+						{
+							editor.focus();
+						});
+
+					if ( editor.config.startupFocus )
+						editor.focus();
+
+					// Fire instanceReady for both the editor and CKEDITOR, but
+					// defer this until the whole execution has completed
+					// to guarantee the editor is fully responsible.
+					setTimeout( function(){
+						editor.fireOnce( 'instanceReady' );
+						CKEDITOR.fire( 'instanceReady', null, editor );
+					} );
 				});
 		}
 	});
@@ -136,7 +191,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				});
 		}
 
-		modeEditor.load( holderElement, data || this.getData() );
+		modeEditor.load( holderElement, ( typeof data ) != 'string'  ? this.getData() : data);
 	};
 
 	/**

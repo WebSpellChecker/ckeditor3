@@ -25,11 +25,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	};
 
+	var emptyHtml = '<span class="cke_empty">&nbsp;</span>';
+
 	CKEDITOR.plugins.add( 'elementspath',
 	{
 		requires : [ 'selection' ],
 
-		init : function( editor, pluginPath )
+		init : function( editor )
 		{
 			var spaceId = 'cke_path_' + editor.name;
 			var spaceElement;
@@ -47,7 +49,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			editor.on( 'themeSpace', function( event )
 				{
 					if ( event.data.space == 'bottom' )
-						event.data.html += '<div id="' + spaceId + '" class="cke_path"><br></div>';
+						event.data.html += '<div id="' + spaceId + '" class="cke_path">' + emptyHtml + '</div>';
 				});
 
 			editor.on( 'selectionChange', function( ev )
@@ -90,6 +92,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								' href="javascript:void(\'', name, '\')"' +
 								' tabindex="-1"' +
 								' title="', editor.lang.elementsPath.eleTitle.replace( /%1/, name ), '"' +
+								( ( CKEDITOR.env.gecko && CKEDITOR.env.version < 10900 ) ?
+								' onfocus="event.preventBubble();"' : '' ) +
+								' hidefocus="true" ' +
 								' onkeydown="return CKEDITOR._.elementsPath.keydown(\'', this.name, '\',', index, ', event);"' +
 								extra ,
 								' onclick="return CKEDITOR._.elementsPath.click(\'', this.name, '\',', index, ');">',
@@ -102,12 +107,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						element = element.getParent();
 					}
 
-					getSpaceElement().setHtml( html.join('') );
+					getSpaceElement().setHtml( html.join('') + emptyHtml );
 				});
 
 			editor.on( 'contentDomUnload', function()
 				{
-					getSpaceElement().setHtml( '<br>' );
+					getSpaceElement().setHtml( emptyHtml );
 				});
 
 			editor.addCommand( 'elementsPathFocus', commands.toolbarFocus );

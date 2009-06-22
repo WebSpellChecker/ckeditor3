@@ -13,6 +13,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	var toolbox = function()
 	{
 		this.toolbars = [];
+		this.focusCommandExecuted = false;
 	};
 
 	toolbox.prototype.focus = function()
@@ -34,17 +35,27 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		toolbarFocus :
 		{
+			modes : { wysiwyg : 1, source : 1 },
+
 			exec : function( editor )
 			{
 				if ( editor.toolbox )
-					editor.toolbox.focus();
+				{
+					editor.toolbox.focusCommandExecuted = true;
+
+					// Make the first button focus accessible. (#3417)
+					if ( CKEDITOR.env.ie )
+						setTimeout( function(){ editor.toolbox.focus(); }, 100 );
+					else
+						editor.toolbox.focus();
+				}
 			}
 		}
 	};
 
 	CKEDITOR.plugins.add( 'toolbar',
 	{
-		init : function( editor, pluginPath )
+		init : function( editor )
 		{
 			var itemKeystroke = function( item, keystroke )
 			{
@@ -101,10 +112,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						editor.toolbox = new toolbox();
 
-						var output = [ '<div class="cke_toolbox">' ];
+						var output = [ '<div class="cke_toolbox"' ],
+							expanded =  editor.config.toolbarStartupExpanded,
+							groupStarted;
+
+						output.push( expanded ? '>' : ' style="display:none">' );
 
 						var toolbars = editor.toolbox.toolbars,
-							toolbar = editor.config.toolbar;
+							toolbar =
+									( editor.config.toolbar instanceof Array ) ?
+										editor.config.toolbar
+									:
+										editor.config[ 'toolbar_' + editor.config.toolbar ];
 
 						for ( var r = 0 ; r < toolbar.length ; r++ )
 						{
@@ -112,7 +131,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								toolbarId = 'cke_' + CKEDITOR.tools.getNextNumber(),
 								toolbarObj = { id : toolbarId, items : [] };
 
-							output.push( '<div id="', toolbarId, '" class="cke_toolbar">' );
+							if ( groupStarted )
+							{
+								output.push( '</div>' );
+								groupStarted = 0;
+							}
+
+							if ( row === '/' )
+							{
+								output.push( '<div class="cke_break"></div>' );
+								continue;
+							}
+
+							output.push( '<span id="', toolbarId, '" class="cke_toolbar"><span class="cke_toolbar_start"></span>' );
 
 							// Add the toolbar to the "editor.toolbox.toolbars"
 							// array.
@@ -134,10 +165,24 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								if ( itemName == '-' )
 									item = CKEDITOR.ui.separator;
 								else
-									item = editor.ui.get( itemName );
+									item = editor.ui.create( itemName );
 
 								if ( item )
 								{
+									if ( item.canGroup )
+									{
+										if ( !groupStarted )
+										{
+											output.push( '<span class="cke_toolgroup">' );
+											groupStarted = 1;
+										}
+									}
+									else if ( groupStarted )
+									{
+										output.push( '</span>' );
+										groupStarted = 0;
+									}
+
 									var itemObj = item.render( editor, output );
 									index = toolbarObj.items.push( itemObj ) - 1;
 
@@ -149,13 +194,76 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 									itemObj.toolbar = toolbarObj;
 									itemObj.onkey = itemKeystroke;
+
+									/*
+									 * Fix for #3052:
+									 * Prevent JAWS from focusing the toolbar after document load.
+									 */
+									itemObj.onfocus = function()
+									{
+										if ( !editor.toolbox.focusCommandExecuted )
+											editor.focus();
+									};
 								}
 							}
 
-							output.push( '</div>' );
+							if ( groupStarted )
+							{
+								output.push( '</span>' );
+								groupStarted = 0;
+							}
+
+							output.push( '<span class="cke_toolbar_end"></span></span>' );
 						}
 
 						output.push( '</div>' );
+
+						if ( editor.config.toolbarCanCollapse )
+						{
+							var collapserFn = CKEDITOR.tools.addFunction(
+								function()
+								{
+									editor.execCommand( 'toolbarCollapse' );
+								} );
+
+							var collapserId = 'cke_' + CKEDITOR.tools.getNextNumber();
+
+							editor.addCommand( 'toolbarCollapse',
+								{
+									exec : function( editor )
+									{
+										var collapser = CKEDITOR.document.getById( collapserId );
+										var toolbox = collapser.getPrevious();
+										var contents = editor.getThemeSpace( 'contents' );
+										var toolboxContainer = toolbox.getParent();
+										var contentHeight = parseInt( contents.$.style.height, 10 );
+										var previousHeight = toolboxContainer.$.offsetHeight;
+
+										if ( toolbox.isVisible() )
+										{
+											toolbox.hide();
+											collapser.addClass( 'cke_toolbox_collapser_min' );
+										}
+										else
+										{
+											toolbox.show();
+											collapser.removeClass( 'cke_toolbox_collapser_min' );
+										}
+
+										var dy = toolboxContainer.$.offsetHeight - previousHeight;
+										contents.setStyle( 'height', ( contentHeight - dy ) + 'px' );
+									},
+
+									modes : { wysiwyg : 1, source : 1 }
+								} );
+
+							output.push( '<a id="' + collapserId + '" class="cke_toolbox_collapser' );
+
+							if ( !expanded )
+								output.push( ' cke_toolbox_collapser_min' );
+
+							output.push( '" onclick="CKEDITOR.tools.callFunction(' + collapserFn + ')"></a>' );
+						}
 
 						event.data.html += output.join( '' );
 					}
@@ -192,9 +300,43 @@ CKEDITOR.ui.separator =
 CKEDITOR.config.toolbarLocation = 'top';
 
 /**
- * The toolbox (alias toolbar) definition. It is an array of toolbars (strips),
+ * The toolbar definition. It is an array of toolbars (strips),
  * each one being also an array, containing a list of UI items.
  * @type Array
+ * @example
+ * // Defines a toolbar with only one strip containing the "Source" button, a
+ * // separator and the "Bold" and "Italic" buttons.
+ * <b>CKEDITOR.config.toolbar_Basic =
+ * [
+ *     [ 'Source', '-', 'Bold', 'Italic' ]
+ * ]</b>;
+ */
+CKEDITOR.config.toolbar_Basic =
+[
+	['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','About']
+];
+
+CKEDITOR.config.toolbar_Full =
+[
+	['Source','-','Save','NewPage','Preview','-','Templates'],
+	['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
+	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+	['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
+	'/',
+	['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+	['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+	['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+	['Link','Unlink','Anchor'],	['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+	'/',
+	['Styles','Format','Font','FontSize'],
+	['TextColor','BGColor'],
+	['Maximize', 'ShowBlocks','-','About']
+];
+
+/**
+ * The toolbox (alias toolbar) definition. It is a toolbar name or an array of toolbars (strips),
+ * each one being also an array, containing a list of UI items.
+ * @type Array or String
  * @example
  * // Defines a toolbar with only one strip containing the "Source" button, a
  * // separator and the "Bold" and "Italic" buttons.
@@ -202,15 +344,10 @@ CKEDITOR.config.toolbarLocation = 'top';
  * [
  *     [ 'Source', '-', 'Bold', 'Italic' ]
  * ]</b>;
+ * // Load toolbar_Name where Name = Basic.
+ * <b>CKEDITOR.config.toolbar = 'Basic';
  */
-CKEDITOR.config.toolbar =
-[
-	[
-		'Source', '-',
-		'NewPage', '-',
-		'Bold', 'Italic', 'Underline', 'Strike', '-',
-		'Subscript', 'Superscript', '-',
-		'SelectAll', 'RemoveFormat', '-',
-		'Smiley', 'HorizontalRule', 'SpecialChar'
-	]
-];
+CKEDITOR.config.toolbar = 'Full';
+
+CKEDITOR.config.toolbarCanCollapse = true;
+CKEDITOR.config.toolbarStartupExpanded = true;

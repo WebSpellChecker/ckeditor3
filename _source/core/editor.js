@@ -35,7 +35,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		var loadedConfig = loadConfigLoaded[ customConfig ] || ( loadConfigLoaded[ customConfig ] = {} );
 
-
 		// If the custom config has already been downloaded, reuse it.
 		if ( loadedConfig.fn )
 		{
@@ -74,14 +73,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Setup the lister for the "customConfigLoaded" event.
 		editor.on( 'customConfigLoaded', function()
 			{
-				// Overwrite the settings from the in-page config.
 				if ( instanceConfig )
+				{
+					// Register the events that may have been set at the instance
+					// configuration object.
+					if ( instanceConfig.on )
+					{
+						for ( var eventName in instanceConfig.on )
+						{
+							editor.on( eventName, instanceConfig.on[ eventName ] );
+						}
+					}
+
+					// Overwrite the settings from the in-page config.
 					CKEDITOR.tools.extend( editor.config, instanceConfig, true );
 
-				// Fire the "configLoaded" event.
-				editor.fireOnce( 'configLoaded' );
+					delete editor.config.on;
+				}
 
-				loadLang( editor );
+				onConfigLoaded( editor );
 			});
 
 		// The instance config may override the customConfig setting to avoid
@@ -96,9 +106,30 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	// ##### END: Config Privates
 
+	var onConfigLoaded = function( editor )
+	{
+		// Set config related properties.
+
+		var skin = editor.config.skin.split( ',' ),
+			skinName = skin[ 0 ],
+			skinPath = CKEDITOR.getUrl( skin[ 1 ] || (
+				'_source/' +	// %REMOVE_LINE%
+				'skins/' + skinName + '/' ) );
+
+		editor.skinName = skinName;
+		editor.skinPath = skinPath;
+		editor.skinClass = 'cke_skin_' + skinName;
+
+		// Fire the "configLoaded" event.
+		editor.fireOnce( 'configLoaded' );
+
+		// Load language file.
+		loadLang( editor );
+	};
+
 	var loadLang = function( editor )
 	{
-		CKEDITOR.lang.load( editor.config.defaultLanguage, editor.config.autoLanguage, function( languageCode, lang )
+		CKEDITOR.lang.load( editor.config.language, editor.config.defaultLanguage, function( languageCode, lang )
 			{
 				editor.langCode = languageCode;
 
@@ -107,14 +138,38 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				// not a direct reference to it.
 				editor.lang = CKEDITOR.tools.prototypedCopy( lang );
 
+				// We're not able to support RTL in Firefox 2 at this time.
+				if ( CKEDITOR.env.gecko && CKEDITOR.env.version < 10900 && editor.lang.dir == 'rtl' )
+					editor.lang.dir = 'ltr';
+
 				loadPlugins( editor );
 			});
 	};
 
 	var loadPlugins = function( editor )
 	{
+		var config			= editor.config,
+			plugins			= config.plugins,
+			extraPlugins	= config.extraPlugins,
+			removePlugins	= config.removePlugins;
+
+		if ( extraPlugins )
+		{
+			// Remove them first to avoid duplications.
+			var removeRegex = new RegExp( '(?:^|,)(?:' + extraPlugins.replace( /\s*,\s*/g, '|' ) + ')(?=,|$)' , 'g' );
+			plugins = plugins.replace( removeRegex, '' );
+
+			plugins += ',' + extraPlugins;
+		}
+
+		if ( removePlugins )
+		{
+			removeRegex = new RegExp( '(?:^|,)(?:' + removePlugins.replace( /\s*,\s*/g, '|' ) + ')(?=,|$)' , 'g' );
+			plugins = plugins.replace( removeRegex, '' );
+		}
+
 		// Load all plugins defined in the "plugins" setting.
-		CKEDITOR.plugins.load( editor.config.plugins.split( ',' ), function( plugins )
+		CKEDITOR.plugins.load( plugins.split( ',' ), function( plugins )
 			{
 				// The list of plugins.
 				var pluginsArray = [];
@@ -172,7 +227,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				CKEDITOR.scriptLoader.load( languageFiles, function()
 					{
 						// Initialize all plugins that have the "beforeInit" and "init" methods defined.
-						var methods = [ 'beforeInit', 'init' ];
+						var methods = [ 'beforeInit', 'init', 'afterInit' ];
 						for ( var m = 0 ; m < methods.length ; m++ )
 						{
 							for ( var i = 0 ; i < pluginsArray.length ; i++ )
@@ -198,7 +253,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	var loadSkin = function( editor )
 	{
-		CKEDITOR.skins.load( editor.config.skin, 'editor', function()
+		CKEDITOR.skins.load( editor, 'editor', function()
 			{
 				loadTheme( editor );
 			});
@@ -225,7 +280,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// If are replacing a textarea, we must
 		if ( editor.elementMode == CKEDITOR.ELEMENT_MODE_REPLACE && element.is( 'textarea' ) )
 		{
-			var form = new CKEDITOR.dom.element( element.$.form );
+			var form = element.$.form && new CKEDITOR.dom.element( element.$.form );
 			if ( form )
 			{
 				form.on( 'submit', function()
@@ -233,21 +288,41 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						editor.updateElement();
 					});
 
-				// If we have a submit function, override it also, because it doesn't fire the "submit" event.
-				if ( form.submit && form.submit.call )
+				// Setup the submit function because it doesn't fire the
+				// "submit" event.
+				if ( !form.$.submit.nodeName )
 				{
-					CKEDITOR.tools.override( form.submit, function( originalSubmit )
+					form.$.submit = CKEDITOR.tools.override( form.$.submit, function( originalSubmit )
 						{
 							return function()
 								{
 									editor.updateElement();
-									originalSubmit.apply( this, arguments );
+
+									// For IE, the DOM submit function is not a
+									// function, so we need thid check.
+									if ( originalSubmit.apply )
+										originalSubmit.apply( this, arguments );
+									else
+										originalSubmit();
 								};
 						});
 				}
 			}
 		}
 	};
+
+	function updateCommandsMode()
+	{
+		var command,
+			commands = this._.commands,
+			mode = this.mode;
+
+		for ( var name in commands )
+		{
+			command = commands[ name ];
+			command[ command.modes[ mode ] ? 'enable' : 'disable' ]();
+		}
+	}
 
 	/**
 	 * Initializes the editor instance. This function is called by the editor
@@ -264,6 +339,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			delete this._.instanceConfig;
 
 			this._.commands = {};
+			this._.styles = [];
 
 			/**
 			 * The DOM element that has been replaced by this editor instance. This
@@ -322,6 +398,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			CKEDITOR.fire( 'instanceCreated', null, this );
 
+			this.on( 'mode', updateCommandsMode, null, null, 1 );
+
 			initConfig( this, instanceConfig );
 		};
 })();
@@ -345,7 +423,12 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 		 */
 		addCommand : function( commandName, commandDefinition )
 		{
-			this._.commands[ commandName ] = new CKEDITOR.command( this, commandDefinition );
+			return this._.commands[ commandName ] = new CKEDITOR.command( this, commandDefinition );
+		},
+
+		addCss : function( css )
+		{
+			this._.styles.push( css );
 		},
 
 		/**
@@ -380,8 +463,25 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 		execCommand : function( commandName, data )
 		{
 			var command = this.getCommand( commandName );
+
+			var eventData =
+			{
+				name: commandName,
+				commandData: data,
+				command: command
+			};
+
 			if ( command && command.state != CKEDITOR.TRISTATE_DISABLED )
-				return command.exec( this, data );
+			{
+				if ( this.fire( 'beforeCommandExec', eventData ) !== true )
+				{
+					eventData.returnValue = command.exec( eventData.commandData );
+
+					// Fire the 'afterCommandExec' immediately if command is synchronous.
+					if ( !command.async && this.fire( 'afterCommandExec', eventData ) !== true )
+						return eventData.returnValue;
+				}
+			}
 
 			// throw 'Unknown command name "' + commandName + '"';
 			return false;
@@ -446,6 +546,11 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 			}
 
 			return data;
+		},
+
+		loadSnapshot : function( snapshot )
+		{
+			this.fire( 'loadSnapshot', snapshot );
 		},
 
 		/**

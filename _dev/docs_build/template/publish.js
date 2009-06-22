@@ -87,6 +87,12 @@ function publish(symbolSet) {
 		allFiles[offset] = documentedFiles[i];
 	}
 
+	//Correct file names in files.html
+	for (var i = 0; i < allFiles.length; i++) {
+		allFiles[i].alias = allFiles[i].alias.replace( /\/\\/, "\\" ).replace( /.*_source(\/|\\)+/, '' );
+		allFiles[i].name = allFiles[i].alias;
+	}
+
 	allFiles = allFiles.sort( ckeditor_sortFiles );
 
 	var filesIndex = fileindexTemplate.process(allFiles);
@@ -123,7 +129,7 @@ function makeSrcFile(path, srcDir, name) {
 	if (JSDOC.opt.s) return;
 
 	if (!name) {
-		name = path.replace(/.*\.\.?[\\\/](.*)/g, "$1").replace(/[\\\/]/g, "_");
+		name = path.replace(/.*\.\.?[\\\/](.*)/g, "$1").replace( /\/\\/, "\\" ).replace(/[\\\/]/g, "_").replace(/.*?_source_/, "");
 		name = name.replace(/\:/g, "_");
 	}
 
@@ -169,8 +175,8 @@ function resolveLinks(str, from) {
 
 function ckeditor_sortFiles( a, b )
 {
-	a = a.srcFile.replace( /.*[\\\/]/, '' );
-	b = b.srcFile.replace( /.*[\\\/]/, '' );
+	a = a.name;
+	b = b.name;
 	return a < b ? -1 : a > b ? 1 : 0;
 }
 
@@ -205,9 +211,9 @@ function ckeditor_FileLink( filePath )
 	if ( /_source/.test( text ) )
 	{
 		text = text.replace( /[\/\\]+/g, '/' );
-		text = text.replace( /.*_source\/+/, '' );
+		text = text.replace( /.*_source(\/|\\)+/, '' );
 
-		return new Link().toSrc( filePath ).withText( text );
+		return new Link().toSrc( text ).withText( text );
 	}
 
 	return new Link().toSrc( filePath );

@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -7,6 +7,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @fileOverview Defines the {@link CKEDITOR.config} object, which holds the
  * default configuration settings.
  */
+
+CKEDITOR.ENTER_P	= 1;
+CKEDITOR.ENTER_BR	= 2;
+CKEDITOR.ENTER_DIV	= 3;
 
 /**
  * Holds the default configuration settings. Changes to this object are
@@ -73,21 +77,20 @@ CKEDITOR.config =
 	contentsLangDirection : 'ltr',
 
 	/**
-	 * Instructs the editor to automatically localize the editor to the user
-	 * language, if possible. If set to false, the [@link #defaultLanguage]
-	 * language is used.
+	 * The user interface language localization to use. If empty, the editor
+	 * automatically localize the editor to the user language, if supported,
+	 * otherwise the [@link #defaultLanguage] language is used.
 	 * @default true
 	 * @type Boolean
 	 * @example
-	 * // Forces the editor to always load the German interface.
-	 * config.autoLanguage = false;
-	 * config.defaultLanguage = 'de';
+	 * // Load the German interface.
+	 * config.language = 'de';
 	 */
-	autoLanguage : true,
+	language : '',
 
 	/**
-	 * The language to be used if [@link #autoLanguage] is set to false, or
-	 * when it's not possible to localize the editor to the user language.
+	 * The language to be used if [@link #language] is left empty and it's not
+	 * possible to localize the editor to the user language.
 	 * @default 'en'
 	 * @type String
 	 * @example
@@ -95,8 +98,8 @@ CKEDITOR.config =
 	 */
 	defaultLanguage : 'en',
 
-	enterMode : 'p',
-	shiftEnterMode : 'br',
+	enterMode : CKEDITOR.ENTER_P,
+	shiftEnterMode : CKEDITOR.ENTER_BR,
 
 	/**
 	 * A comma separated list of plugins that are not related to editor
@@ -146,7 +149,47 @@ CKEDITOR.config =
 	 * @example
 	 * config.plugins = 'basicstyles,button,htmldataprocessor,toolbar,wysiwygarea';
 	 */
-	plugins : 'basicstyles,button,elementspath,horizontalrule,htmldataprocessor,keystrokes,newpage,removeformat,smiley,sourcearea,specialchar,tab,toolbar,wysiwygarea',
+	plugins : 'about,basicstyles,blockquote,button,clipboard,colorbutton,contextmenu,elementspath,enterkey,entities,filebrowser,find,flash,font,format,forms,horizontalrule,htmldataprocessor,image,indent,justify,keystrokes,link,list,maximize,newpage,pagebreak,pastefromword,pastetext,popup,preview,print,removeformat,resize,save,scayt,smiley,showblocks,sourcearea,stylescombo,table,tabletools,specialchar,tab,templates,toolbar,undo,wysiwygarea,wsc',
+
+	/**
+	 * List of additional plugins to be loaded. This is a tool setting which
+	 * makes it easier to add new plugins, whithout having to touch and
+	 * possibly breaking the <i>plugins</i> setting.
+	 * @type String
+	 * @example
+	 * config.extraPlugins = 'myplugin,anotherplugin';
+	 */
+	extraPlugins : '',
+
+	/**
+	 * List of plugins that must not be loaded. This is a tool setting which
+	 * makes it easier to avoid loading plugins definied in the <i>plugins</i>
+	 * setting, whithout having to touch and possibly breaking it.
+	 * @type String
+	 * @example
+	 * config.removePlugins = 'elementspath,save,font';
+	 */
+	removePlugins : '',
+
+	/**
+	 * List of regular expressions to be executed over the input HTML,
+	 * indicating code that must stay untouched.
+	 * @type Array
+	 * @example
+	 * config.protectedSource.push( /<\?[\s\S]*?\?>/g );   // PHP Code
+	 * config.protectedSource.push( /<%[\s\S]*?%>/g );   // ASP Code
+	 * config.protectedSource.push( /(<asp:[^\>]+>[\s|\S]*?<\/asp:[^\>]+>)|(<asp:[^\>]+\/>)/gi );   // ASP.Net Code
+	 */
+	protectedSource : [],
+
+	/**
+	 * The editor tabindex value.
+	 * @type Number
+	 * @default 0 (zero)
+	 * @example
+	 * config.tabIndex = 1;
+	 */
+	tabIndex : 0,
 
 	/**
 	 * The theme to be used to build the UI.
@@ -159,13 +202,16 @@ CKEDITOR.config =
 	theme : 'default',
 
 	/**
-	 * The skin to load.
+	 * The skin to load. It may be the name of the skin folder inside the
+	 * editor installation path, or the name and the path separated by a comma.
 	 * @type String
 	 * @default 'default'
 	 * @example
 	 * config.skin = 'v2';
+	 * @example
+	 * config.skin = 'myskin,/customstuff/myskin/';
 	 */
-	skin : 'default',
+	skin : 'kama',
 
 	/**
 	 * The editor width in CSS size format or pixel integer.

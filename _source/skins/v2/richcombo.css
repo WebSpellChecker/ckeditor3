@@ -135,8 +135,8 @@
 {
 	display: inline-block;
 
-	background-position: center center;
-	background-image: url(images/arrowdown.gif);
+	background-position: 5px -715px;
+	background-image: url(images/sprites.png);
 	background-repeat: no-repeat;
 
 	border-top: 1px solid #8f8f73;

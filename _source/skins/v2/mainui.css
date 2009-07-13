@@ -84,14 +84,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	margin-top: 12px;
 	display: block;
 	float: right;
-	background-image: url(images/resizer.gif);
+	/* resizer.gif*/
+	background-image: url(images/sprites.png);
+	background-position: 0 -801px;
+	background-repeat: no-repeat;
 	cursor: se-resize;
 }
 
 .cke_skin_v2 .cke_rtl .cke_resizer
 {
 	cursor: sw-resize;
-	background-image: url(images/resizer_rtl.gif);
+	/* resizer_rtl.gif*/
+	background-position: 0 -828px;
 	float: left;
 }
 

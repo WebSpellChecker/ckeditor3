@@ -268,7 +268,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	display: inline-block;
 	height: 17px;
 	width: 8px;
-	background-position: 2px -1344px;
+	background-position: 2px -1469px; /* (+2, -5) */
 	background-image: url(images/sprites.png);
 	_background-image: url(images/sprites_ie6.png);
 	background-repeat: no-repeat;
@@ -277,7 +277,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 .cke_skin_kama .cke_rtl .cke_button .cke_buttonarrow
 {
-	background-position: 0 -1344px;
+	background-position: 0 -1469px; /* (0, -5) */
 	float: right;
 }
 

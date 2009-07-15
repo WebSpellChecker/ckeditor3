@@ -429,6 +429,7 @@ body .cke_dialog
 	height: 21px;
 	width: 21px;
 	top: 4px;
+	_top: 9px;
 
 	/* IE6 does not support full color transparent PNG. */
 	_background-image: url(images/sprites_ie6.png);
@@ -450,6 +451,19 @@ body .cke_dialog
 	left: 10px;
 	_left: 22px;
 }
+
+/* Correct button position on IE7 & 8 quirks mode, which differs from IE6 (strict and quirks). */
+.cke_skin_office2003 .cke_browser_ie8 .cke_dialog_close_button,
+.cke_skin_office2003 .cke_browser_ie7 .cke_dialog_close_button
+{
+	_left: 13px;
+}
+
+.cke_skin_office2003 .cke_ltr .cke_dialog_close_button
+{
+	_left: auto;
+}
+/* END Correct button position */
 
 .cke_skin_office2003 .cke_browser_ie6.cke_rtl .cke_dialog_close_button
 {

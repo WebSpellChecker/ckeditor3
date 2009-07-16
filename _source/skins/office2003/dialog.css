@@ -133,7 +133,7 @@ body .cke_dialog
 	background-image: url(images/dialog_sides_rtl.png);
 
 	/* IE6 does not support full color transparent PNG. */
-	_background-image: url(images/dialog_sides_rtl.gif);
+	_background-image: url(images/dialog_sides.gif);
 }
 
 .cke_skin_office2003 .cke_dialog_ml

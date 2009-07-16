@@ -142,7 +142,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 {
 	/* arrowright.gif*/
 	background-image: url(images/sprites.png);
-	background-image: url(images/sprites_ie6.png);
+	_background-image: url(images/sprites_ie6.png);
 	background-position: 0 -1411px;
 	background-repeat: no-repeat;
 	height: 5px;
@@ -159,7 +159,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	margin-left: 2px;
 	/* arrowleft.gif*/
 	background-image: url(images/sprites.png);
-	background-image: url(images/sprites_ie6.png);
+	_background-image: url(images/sprites_ie6.png);
 	background-position: 0px -1390px;
 	background-repeat: no-repeat;
 }

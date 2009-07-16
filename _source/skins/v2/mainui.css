@@ -81,11 +81,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 {
 	width: 12px;
 	height: 12px;
-	margin-top: 12px;
+	margin-top: 16px;
 	display: block;
 	float: right;
 	/* resizer.gif*/
 	background-image: url(images/sprites.png);
+	_background-image: url(images/sprites_ie6.png);
 	background-position: 0 -801px;
 	background-repeat: no-repeat;
 	cursor: se-resize;

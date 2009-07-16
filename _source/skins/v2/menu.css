@@ -143,6 +143,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 {
 	/* arrowright.gif*/
 	background-image: url(images/sprites.png);
+	_background-image: url(images/sprites_ie6.png);
 	background-position: 0 -784px;
 	background-repeat: no-repeat;
 	height: 5px;

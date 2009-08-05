@@ -10,7 +10,6 @@ fixLineEnds : true,
 ignore :
 [
 	'_dev',
-	'_docs/api',
 	'_samples',
 	'_source/adapters',
 	'.svn',
@@ -57,12 +56,6 @@ packages :
 [
 	'ckeditor.pack'
 ],
-
-documentation :
-{
-	config: '_dev/docs_build/docs_build.conf',
-	target: '_docs/api'
-},
 
 samples :
 {

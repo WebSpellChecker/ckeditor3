@@ -283,10 +283,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var form = element.$.form && new CKEDITOR.dom.element( element.$.form );
 			if ( form )
 			{
-				form.on( 'submit', function()
-					{
-						editor.updateElement();
-					});
+				function onSubmit()
+				{
+					editor.updateElement();
+				}
+				form.on( 'submit',onSubmit );
 
 				// Setup the submit function because it doesn't fire the
 				// "submit" event.
@@ -308,7 +309,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						});
 				}
 			}
-		}
+
+				// Remove 'submit' events registered on form element before destroying.(#3988)
+				editor.on( 'destroy', function()
+				{
+					form.removeListener( 'submit', onSubmit );
+				} );
+			}
 	};
 
 	function updateCommandsMode()
@@ -364,6 +371,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			this.name = ( element && ( this.elementMode == CKEDITOR.ELEMENT_MODE_REPLACE )
 							&& ( element.getId() || element.getNameAtt() ) )
 						|| getNewName();
+
+			if ( this.name in CKEDITOR.instances )
+				throw '[CKEDITOR.editor] The instance "' + this.name + '" already exists.';
 
 			/**
 			 * The configurations for this editor instance. It inherits all
@@ -448,6 +458,7 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 				this.updateElement();
 
 			this.theme.destroy( this );
+			this.fire( 'destroy' );
 			CKEDITOR.remove( this );
 		},
 

@@ -19,7 +19,11 @@ CKEDITOR.plugins.add( 'pastefromword',
 				command : 'pastefromword'
 			} );
 		
-		var config = editor.config;
+		var config = editor.config,
+			keepHeadingStructure = config.pasteFromWordKeepsStructure,
+			ignoreFontFace = config.pasteFromWordIgnoreFontFace,
+			removeStyleAttr = config.pasteFromWordRemoveStyle;
+
 		editor.on( 'paste', function( evt )
 		{
 			var mswordHtml;
@@ -27,12 +31,151 @@ CKEDITOR.plugins.add( 'pastefromword',
 			if ( ( mswordHtml = evt.data[ 'html' ] )
 				 && /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml ) )
 			{
+				var onlyChildOf = function( element )
+				{
+					var children = element.children,
+						count = children.length,
+						firstChild = count && children[ 0 ];
+					return firstChild;
+				};
+
+				var falsyFilter = function()
+					 {
+						return false;
+					 },
+					 dropStyles = function( styles )
+					 {
+						 return function( styleText )
+						 {
+							 var rules = [];
+							 styleText.replace( /(?:"| |;|^ )\s*([^ :]+?)\s*:\s*([^;"]+?)\s*(?=;|"|$)/g,
+								 function( match, name, value )
+								 {
+									 name = name.toLowerCase();
+									 var namePattern,
+										 valuePattern;
+									 for( var i = 0 ; i < styles.length ; i++ )
+									 {
+										namePattern = styles[ i ][ 0 ],
+										valuePattern = styles[ i ][ 1 ];
+
+										if ( !( name.match( namePattern ) && ( !valuePattern || value.match( valuePattern ) ) ) )
+											rules.push( [ name, value ] );
+									 }
+								 } );
+
+							 for ( var i = 0 ; i < rules.length ; i++ )
+								 rules[ i ] = rules[ i ].join( ':' );
+							 return rules && ( rules.join( ';' ).replace( /\s+/g, '' ) + ';' );
+						 };
+					 };
+
 				var filter = editor.pasteProcessor.dataFilter;
-				// TODO: Migrate the 'CKEDITOR.plugins.pastefromword' to filter rules.
 				filter.addRules(
 				{
+					elementNames :
+					[
+						// Remove style, meta and link elements.
+						[ /style|meta|link/, '' ]
+					],
 
-				} );
+					elements :
+					{
+						$ : function( element )
+						{
+							var tagName = element.name,
+								child = onlyChildOf( element );
+
+							var match, level;
+							// Processing headings.
+							if ( ( match = tagName.match( /h(\d)/i ) ) && ( level = match[ 1 ] ) )
+							{
+								// Remove empty headings.
+								if( child
+									&& child.type == CKEDITOR.NODE_TEXT
+									&& !CKEDITOR.tools.trim( child.value ) )
+									return false;
+
+								// The original <Hn> tag send from Word is something like this: <Hn style="margin-top:0px;margin-bottom:0px">
+								delete element.attributes;
+
+								if ( keepHeadingStructure )
+								{
+									// Word likes to insert extra <font> tags, when using MSIE. (Wierd).
+									if ( child && child.type == CKEDITOR.NODE_ELEMENT
+											&& child.name.match( /em|font/ ) )
+										element.children = child.children;
+								}
+								else
+								{
+									// Transform headings to divs.
+									element.name = 'div';
+									var bold = new CKEDITOR.htmlParser.element( 'b' ),
+										font = new CKEDITOR.htmlParser.element( 'font', { size : Math.abs( 7 - level ) } );
+									font.children = element.children;
+									bold.children  = [ font ];
+									element.children = [ bold ];
+								}
+							}
+							// Remove empty space inline wrapper.
+							else if( tagName.match( /u|i|strike|/ ) )
+							{
+								if ( child
+									 && child.type == CKEDITOR.NODE_TEXT
+									 && CKEDITOR.tools.trim( child.value ) == '&nbsp;' )
+									delete element.name;
+							}
+							// Remove dummy wrapper span.
+							else if( tagName.match( /span|font/ ) )
+							{
+								if( !element.attributes )
+									delete element.name;
+							}
+							// Remove namespaced element while preserving the content.
+							else if( tagName.indexOf( ':' ) != -1 )
+							{
+								delete element.name;
+							}
+						}
+					},
+
+					attributeNames :
+					[
+						// Remove onmouseover and onmouseout events (from MS Word comments effect)
+						[ /^onmouse(:?out|over)/, '' ],
+						// Remove lang/language attributes.
+						[ /^lang/, '' ],
+						removeStyleAttr ? [ 'style', '' ] :
+						ignoreFontFace ? [ 'face', '' ] : null
+					],
+
+					attributes :
+					{
+						// Remove mso-xxx styles.
+						// Remove margin styles.
+						'style' : dropStyles(
+						[
+							[ /^mso-/ ],
+							[ 'margin', /0(?:cm|in) 0(?:cm|in) 0pt/ ],
+							[ 'text-indent', '0cm' ],
+							[ 'page-break-before' ],
+							[ 'tab-stops' ],
+							[ 'display', 'none' ],
+							ignoreFontFace ? [ 'font-family' ] : null
+						] ),
+						
+						'class' : falsyFilter,
+
+						// Remove align="left" attribute.
+						'align' : function( value )
+						{
+							return ! ( value == 'left ' );
+						}
+					},
+					// Remove comments [SF BUG-1481861].
+					comment : falsyFilter
+				}, 5 );
+
 			}
 		} );
 
@@ -41,6 +184,9 @@ CKEDITOR.plugins.add( 'pastefromword',
 
 CKEDITOR.plugins.pastefromword =
 {
+	/**
+	 * @depprecated Leave it here for reference.
+	 */
 	cleanWord : function( editor, html, ignoreFont, removeStyles )
 	{
 		// Remove comments [SF BUG-1481861].
@@ -178,7 +324,7 @@ CKEDITOR.config.pasteFromWordIgnoreFontFace = true;
  * @example
  * config.pasteFromWordRemoveStyle = true;
  */
-CKEDITOR.config.pasteFromWordRemoveStyle = false;
+CKEDITOR.config.pasteFromWordRemoveStyle = true;
 
 /**
  * Whether to keep structure markup (&lt;h1&gt;, &lt;h2&gt;, etc.) or replace
@@ -189,4 +335,4 @@ CKEDITOR.config.pasteFromWordRemoveStyle = false;
  * @example
  * config.pasteFromWordKeepsStructure = true;
  */
-CKEDITOR.config.pasteFromWordKeepsStructure = false;
+CKEDITOR.config.pasteFromWordKeepsStructure = true;

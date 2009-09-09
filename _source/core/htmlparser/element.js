@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -98,14 +98,6 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 		writeHtml : function( writer, filter )
 		{
 			var attributes = this.attributes;
-
-			// The "_cke_replacedata" indicates that this element is replacing
-			// a data snippet, which should be outputted as is.
-			if ( attributes._cke_replacedata )
-			{
-				writer.write( attributes._cke_replacedata );
-				return;
-			}
 
 			// Ignore cke: prefixes when writing HTML.
 			var element = this,

@@ -22,7 +22,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				return;
 			}
 
-			editor.insertText( window.clipboardData.getData( 'Text' ) );
+			editor.fire( 'paste', { 'text' : window.clipboardData.getData( 'Text' ) } );
 		}
 	};
 

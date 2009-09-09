@@ -18,7 +18,7 @@ CKEDITOR.plugins.add( 'pastefromword',
 				label : editor.lang.pastefromword.toolbar,
 				command : 'pastefromword'
 			} );
-
+		
 		var config = editor.config;
 		editor.on( 'paste', function( evt )
 		{
@@ -27,17 +27,14 @@ CKEDITOR.plugins.add( 'pastefromword',
 			if ( ( mswordHtml = evt.data[ 'html' ] )
 				 && /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml ) )
 			{
-				// Perform cleaning with default configuration.
-				editor.insertHtml(
-					CKEDITOR.plugins.pastefromword.cleanWord(
-						editor, mswordHtml,
-						config.pasteFromWordIgnoreFontFace,
-						config.pasteFromWordRemoveStyle));
+				var filter = editor.pasteProcessor.dataFilter;
+				// TODO: Migrate the 'CKEDITOR.plugins.pastefromword' to filter rules.
+				filter.addRules(
+				{
 
-				// Cancel other html paste handlers.
-				evt.cancel();
+				} );
 			}
-		}, null, null, 9 );
+		} );
 
 	}
 } );

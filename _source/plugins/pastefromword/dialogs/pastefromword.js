@@ -102,13 +102,12 @@ CKEDITOR.dialog.add( 'pastefromword', function( editor )
 			var container = this.getContentElement( 'general', 'editing_area' ).getElement(),
 				iframe = container.getElementsByTag( 'iframe' ).getItem( 0 ),
 				editor = this.getParentEditor(),
-				html = this.definition.cleanWord( editor, iframe.$.contentWindow.document.body.innerHTML,
-						this.getValueOf( 'general', 'ignoreFontFace' ),
-						this.getValueOf( 'general', 'removeStyle' ) );
+				//TODO: Bring those dialog-based configs to the paste processor.
+				html = iframe.$.contentWindow.document.body.innerHTML;
 
 				// Insertion should happen after main document design mode turned on.
 				setTimeout( function(){
-					editor.insertHtml( html );
+					editor.fire( 'paste', { 'html' : html } );
 				}, 0 );
 		},
 		onHide : function()

@@ -111,6 +111,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 
 				return value;
+			},
+
+			clone : function()
+			{
+				var clone = new CKEDITOR.htmlParser.filter();
+				// Shallow copy all the rules.
+				clone._ = CKEDITOR.tools.clone( this._ );
+				return clone;
 			}
 		}
 	});

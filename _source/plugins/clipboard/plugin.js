@@ -130,11 +130,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				else if( CKEDITOR.env.opera 
 						 || CKEDITOR.env.gecko && CKEDITOR.env.version < 10900 )
 					editor.document.getBody().fire( 'paste' );
-					
-				setTimeout( function()
-					{
-						editor.fire( 'saveSnapshot' );		// Save after paste
-					}, 0 );
 				return;
 
 			// Cut
@@ -222,13 +217,45 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	// Register the plugin.
 	CKEDITOR.plugins.add( 'clipboard',
 		{
+			requires : [ 'htmldataprocessor' ],
 			init : function( editor )
 			{
-				// Provide default 'html' paste handler. 
+				// The paste processor here is just a reduced copy of html data processor.
+				CKEDITOR.pasteProcessor = function( editor )
+				{
+					this.editor = editor;
+					this.dataFilter = this.editor.dataProcessor.dataFilter.clone();
+				};
+				CKEDITOR.pasteProcessor.prototype =
+				{
+					toHtml : CKEDITOR.htmlDataProcessor.prototype.toHtml
+				};
+
+				// The very first handler which initialize the processor.
 				editor.on( 'paste', function( evt )
 				{
-					editor.insertHtml( evt.data[ 'html' ] );
-				} );
+					// The processor is a transient instance life cycled to the
+					// 'paste' event since the processing rules will be added
+					// on demand accordingly to clipboard data flavor.
+					editor.pasteProcessor = new CKEDITOR.pasteProcessor( editor );
+					
+				}, null, null, 1 );
+
+				// The very last handler which insert final data into the editor at the end of the chain.
+				editor.on( 'paste', function( evt )
+				{
+					var data = evt.data;
+
+					if ( data[ 'html'] )
+						editor.insertHtml(editor.pasteProcessor.toHtml(data[ 'html' ], false));
+					else if ( data[ 'text'] )
+						editor.insertText(data[ 'text' ]);
+
+					delete editor.pasteProcessor;
+
+					editor.fire( 'saveSnapshot' ); // Save after inserted.
+
+				}, null, null, 1000 );
 
 				function addButtonCommand( buttonName, commandName, command, ctxMenuOrder )
 				{
@@ -277,7 +304,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									};
 								
 								editor.fire( 'paste', dataTransfer );
-								editor.fire( 'saveSnapshot' );		// Save after paste
 							} );
 						} );
 
@@ -304,6 +330,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 			}
 		});
+
+
 })();
 
 /**

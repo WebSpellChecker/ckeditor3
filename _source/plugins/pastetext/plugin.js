@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -42,18 +42,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			CKEDITOR.dialog.add( commandName, CKEDITOR.getUrl( this.path + 'dialogs/pastetext.js' ) );
 
-			if ( editor.config.forcePasteAsPlainText )
+			if( editor.config.forcePasteAsPlainText )
 			{
-				editor.on( 'beforePaste', function( event )
-					{
-						if ( editor.mode == "wysiwyg" )
-						{
-							setTimeout( function() { command.exec(); }, 0 );
-							event.cancel();
-						}
-					},
-					null, null, 20 );
+				editor.on( 'pasteDialog', function ( evt )
+				{
+					editor.execCommand( 'pastetext' );
+					evt.cancel();
+				}, null, null, 0 );
+
 			}
+
 		},
 		requires : [ 'clipboard' ]
 	});

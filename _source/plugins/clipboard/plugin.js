@@ -85,11 +85,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// Prevent IE from pasting at the begining of the document.
 					editor.focus();
 
-					if ( !editor.fire( 'beforePaste' )
-						&& !execIECommand( editor, 'paste' ) )
-					{
-							editor.openDialog( 'paste' );
-					}
+					if ( !execIECommand( editor, 'paste' ) )
+						editor.fire( 'pasteDialog' );
 				}
 			}
 		:
@@ -98,7 +95,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					try
 					{
-						if ( !editor.fire( 'beforePaste' )
+						if ( !editor.document.getBody().fire( 'beforepaste' )
 							&& !editor.document.$.execCommand( 'Paste', false, null ) )
 						{
 							throw 0;
@@ -106,8 +103,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					}
 					catch ( e )
 					{
-						// Open the paste dialog.
-						editor.openDialog( 'paste' );
+						setTimeout( function()
+						{
+							editor.fire( 'pasteDialog' );
+						}, 0 )
 					}
 				}
 			};
@@ -121,15 +120,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			case CKEDITOR.CTRL + 86 :		// CTRL+V
 			case CKEDITOR.SHIFT + 45 :		// SHIFT+INS
 
-				var editor = this;
+				var editor = this,
+					body = editor.document.getBody();
+
 				editor.fire( 'saveSnapshot' );		// Save before paste
 
-				if ( editor.fire( 'beforePaste' ) )
+				// Simulate 'beforepaste' event for all none-IEs.
+				if ( !CKEDITOR.env.ie && body.fire( 'beforepaste' ) )
 					event.cancel();
-				// Simulate native 'paste' event for Opera/Firefox2. 
-				else if( CKEDITOR.env.opera 
+				// Simulate 'paste' event for Opera/Firefox2.
+				else if( CKEDITOR.env.opera
 						 || CKEDITOR.env.gecko && CKEDITOR.env.version < 10900 )
-					editor.document.getBody().fire( 'paste' );
+					body.fire( 'paste' );
 				return;
 
 			// Cut
@@ -148,7 +150,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	// Allow to peek clipboard content by redirecting the
 	// pasting content into a temporary bin and grab the content of it.
-	function getPasteBin( evt, callback ) {
+	function getPasteBin( evt, mode, callback ) {
 
 		var doc = this.document;
 
@@ -160,7 +162,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			range = new CKEDITOR.dom.range( doc );
 
 		// Create container to paste into
-		var pastebin = CKEDITOR.dom.element.createFromHtml( '<div id="cke_pastebin">&nbsp;</div>', doc );
+		var pastebin = new CKEDITOR.dom.element( mode == 'text' ? 'textarea' : 'div', doc );
+		pastebin.setAttribute( 'id', 'cke_pastebin' );
 		doc.getBody().append( pastebin );
 
 		// Position the bin exactly at the position of the selected element
@@ -184,16 +187,27 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			ieRange.execCommand( 'Paste' );
 			pastebin.remove();
 			evt.data.preventDefault();
-			callback( pastebin );
+			callback( pastebin[ 'get' + ( mode == 'text' ? 'Value' : 'Html' ) ]() );
 		}
 		else
 		{
 			var bms = sel.createBookmarks();
-			range.selectNodeContents( pastebin );
-			range.select();
+			// Turn off design mode temporarily,
+			// give focus to the paste bin.
+			if ( mode == 'text' )
+			{
+				doc.$.designMode = 'off';
+				pastebin.$.focus();
+			}
+			else
+			{
+				range.setStartAt( pastebin, CKEDITOR.POSITION_AFTER_START );
+				range.select();
+			}
 			// Wait a while and grab the pasted contents
 			window.setTimeout( function() {
 
+				doc.$.designMode = 'on';
 				pastebin.remove();
 
 				// Grab the HTML contents
@@ -207,7 +221,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				// Restore the old selection
 				sel.selectBookmarks( bms );
-				callback( pastebin );
+				callback( pastebin[ 'get' + ( mode == 'text' ? 'Value' : 'Html' ) ]() );
 
 			}, 0 );
 		}
@@ -257,6 +271,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				}, null, null, 1000 );
 
+				editor.on( 'pasteDialog', function( evt )
+				{
+					// Open default paste dialog. 
+					editor.openDialog( 'paste' );
+				} );
+
 				function addButtonCommand( buttonName, commandName, command, ctxMenuOrder )
 				{
 					var lang = editor.lang[ commandName ];
@@ -290,24 +310,30 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				editor.on( 'key', onKey, editor );
 
 				if( editor.config.autoDetectPaste )
+				{
+					var mode = editor.config.forcePasteAsPlainText ? 'text' : 'html';
 					editor.on( 'contentDom', function()
 					{
 						var body = editor.document.getBody();
-						body.on( 'paste', function( evt )
-						{
-							getPasteBin.call( editor, evt, function ( pasteBin )
-							{
-								var html = pasteBin.getHtml(),
-									dataTransfer =
+						body.on( ( mode == 'text' && !CKEDITOR.env.ie ) ?
+						          'beforepaste' : 'paste',
+								function( evt )
+								{
+									getPasteBin.call( editor, evt, mode, function ( data )
 									{
-										'html' : html
-									};
-								
-								editor.fire( 'paste', dataTransfer );
-							} );
-						} );
+										// The very last guard to make sure the
+										// paste has really happened.
+										if ( !data )
+											return;
+
+										var dataTransfer = {};
+										dataTransfer[ mode ] = data;
+										editor.fire( 'paste', dataTransfer );
+									} );
+								} );
 
 					} );
+				}
 
 				// If the "contextmenu" plugin is loaded, register the listeners.
 				if ( editor.contextMenu )

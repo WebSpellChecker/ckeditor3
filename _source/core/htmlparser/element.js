@@ -104,6 +104,20 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 				writeName = element.name,
 				a, value;
 
+			var isChildrenFiltered;
+
+			/**
+			 * Providing an option for bottom-up filtering order ( element
+			 * children to be pre-filtered before the element itself ).
+			 */
+			element.filterChildren = function()
+			{
+				var writer = new CKEDITOR.htmlParser.basicWriter();
+				CKEDITOR.htmlParser.fragment.prototype.writeHtml.call( element, writer, filter );
+				element.children = new CKEDITOR.htmlParser.fragment.fromHtml( writer.getHtml() ).children;
+				isChildrenFiltered = 1;
+			};
+
 			if ( filter )
 			{
 				while ( true )
@@ -120,9 +134,12 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 						break;
 
 					writeName = element.name;
-					if ( !writeName )	// Send children.
+
+					// This indicate that the element has been dropped by
+					// filter but not the children.
+					if ( !writeName )
 					{
-						CKEDITOR.htmlParser.fragment.prototype.writeHtml.apply( element, arguments );
+						this.writeChildrenHtml( writer, isChildrenFiltered ? null : filter );
 						return;
 					}
 				}
@@ -177,12 +194,17 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 
 			if ( !element.isEmpty )
 			{
-				// Send children.
-				CKEDITOR.htmlParser.fragment.prototype.writeHtml.apply( element, arguments );
-
+				this.writeChildrenHtml( writer, isChildrenFiltered ? null : filter );
 				// Close the element.
 				writer.closeTag( writeName );
 			}
+		},
+
+		writeChildrenHtml : function( writer, filter )
+		{
+			// Send children.
+			CKEDITOR.htmlParser.fragment.prototype.writeHtml.apply( this, arguments );
+
 		}
 	};
 })();

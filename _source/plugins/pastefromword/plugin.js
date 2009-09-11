@@ -83,16 +83,18 @@ CKEDITOR.plugins.add( 'pastefromword',
 					{
 						$ : function( element )
 						{
-							var tagName = element.name,
-								child = onlyChildOf( element );
+
+							var tagName = element.name;
 
 							var match, level;
 							// Processing headings.
 							if ( ( match = tagName.match( /h(\d)/i ) ) && ( level = match[ 1 ] ) )
 							{
+								element.filterChildren();
+								var child = onlyChildOf( element );
+
 								// Remove empty headings.
-								if( child
-									&& child.type == CKEDITOR.NODE_TEXT
+								if( child && child.value
 									&& !CKEDITOR.tools.trim( child.value ) )
 									return false;
 
@@ -102,8 +104,7 @@ CKEDITOR.plugins.add( 'pastefromword',
 								if ( keepHeadingStructure )
 								{
 									// Word likes to insert extra <font> tags, when using MSIE. (Wierd).
-									if ( child && child.type == CKEDITOR.NODE_ELEMENT
-											&& child.name.match( /em|font/ ) )
+									if ( child && /em|font/.exec( child.name ) )
 										element.children = child.children;
 								}
 								else
@@ -117,15 +118,15 @@ CKEDITOR.plugins.add( 'pastefromword',
 									element.children = [ bold ];
 								}
 							}
-							// Remove empty space inline wrapper.
-							else if( tagName.match( /u|i|strike|/ ) )
+							// Remove inline elements which contain only empty spaces.
+							else if( tagName.match( /^(:?b|u|i|strike|span)$/ ) )
 							{
-								if ( child
-									 && child.type == CKEDITOR.NODE_TEXT
-									 && CKEDITOR.tools.trim( child.value ) == '&nbsp;' )
+								element.filterChildren();
+								var child = onlyChildOf( element );
+								if ( child && /(:?\s|&nbsp;)+/.exec( child.value ) )
 									delete element.name;
 							}
-							// Remove dummy wrapper span.
+							// Remove dummy inline wrappers.
 							else if( tagName.match( /span|font/ ) )
 							{
 								if( !element.attributes )
@@ -169,7 +170,7 @@ CKEDITOR.plugins.add( 'pastefromword',
 						// Remove align="left" attribute.
 						'align' : function( value )
 						{
-							return ! ( value == 'left ' );
+							return value == 'left ' ? false : value;
 						}
 					},
 					// Remove comments [SF BUG-1481861].

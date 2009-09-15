@@ -26,25 +26,26 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			editor.on( 'paste', function( evt )
 			{
-				var mswordHtml;
+				var data = evt.data,
+					mswordHtml;
 				// MS-WORD format sniffing.
-				if ( ( mswordHtml = evt.data[ 'html' ] )
+				if ( ( mswordHtml = data[ 'html' ] )
 					 && /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml ) )
 				{
-					// 1. Pre fixing downlevel-revealed IE conditional comments for the parser.
-					//    e.g. <!--[if !vml]--><img ... /><!--[endif]-->
-					// 2. Join consequent IE comments into one for easy handling.
-					if( !CKEDITOR.env.ie )
-						evt.data[ 'html' ] =
-							mswordHtml.replace( /(<!--\[if[^<]*?\])-->([\S\s]*?)<!--(\[endif\]-->)/gi, '$1$2$3' )
-									  .replace( /(\[endif\])--(>\s*<)!--(\[if)/gi, '$1$2$3' );
+					// Firefox will be confused by those downlevel-revealed IE conditional
+					// comments, revealing them first.
+					// e.g. <![if !vml]>...<![endif]>
+					if( CKEDITOR.env.gecko )
+					{
+						data[ 'html' ] =
+							mswordHtml.replace( /<!--\[if[^<]*?\]-->([\S\s]*?)<!--\[endif\]-->/gi, '$1' );
+					}
 
-					var filter = editor.pasteProcessor.dataFilter;
+					var filter = data.processor.dataFilter;
 					// These rules will have higher priorities than default ones.
 					filter.addRules( CKEDITOR.plugins.pastefromword.getRules( editor ), 5 );
 				}
 			} );
-
 		}
 	} );
 
@@ -250,25 +251,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						         // Remove attribute if there's no styles.
 								 : false;
 					 };
-				},
-
-				listFilter : function( element )
-				{
-					var children = element.children,
-						length = children.length,
-						child, previousChild;
-					for( var i = 0 ; i < length; i++ )
-					{
-						child = children[ i ];
-
-						// Wrap nested list root with the previous list item.
-						if ( child.name && child.name in { ul : 1, ol : 1 } )
-						{
-							children.splice( i, 1 );
-							previousChild.children.push( child );
-						}
-						previousChild = child;
-					}
 				}
 
 			},
@@ -277,7 +259,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var falsyFilter = this.filters.falsyFilter,
 				stylesFilter = this.filters.stylesFilter,
-				listFilter = this.filters.listFilter,
 				createListBulletMarker = this.utils.createListBulletMarker,
 				config = editor.config,
 				ignoreFontFace = config.pasteFromWordIgnoreFontFace,
@@ -334,7 +315,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						else if( tagName.indexOf( ':' ) != -1
 								 && tagName.indexOf( 'cke' ) == -1 )
 						{
-							delete element.name;
+							element.filterChildren();
+
+							// Restore img element from vml.
+							if( tagName == 'v:imagedata' )
+							{
+								var href = element.attributes[ 'o:href' ];
+								if ( href )
+									element.attributes.src = href;
+								element.name = 'img';
+							}
+							else
+								delete element.name;
 						}
 						// Any dtd-valid element which could contain a list.
 						else if( !tagName && element.children
@@ -397,8 +389,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 					},
 
-					'ul' : listFilter,
-					'ol' : listFilter,
 					'p' : function( element )
 					{
 						element.filterChildren();
@@ -434,28 +424,54 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						element.filterChildren();
 
-						var attrs = element.attributes,
-							styles = attrs && attrs.style;
-						if( styles )
+						// For none-Firefox, list item bullet type is supposed to be indicated by
+						// the text of a span with style 'mso-list : Ignore'.
+						if( !CKEDITOR.env.gecko )
 						{
-							var marker;
-							stylesFilter(
-							[
-								[ 'mso-list', 'Ignore', function( value, element )
-								{
+							var attrs = element.attributes,
+									styles = attrs && attrs.style;
+							if( styles )
+							{
+								var marker;
+								stylesFilter(
+										[
+											[ 'mso-list', 'Ignore', function( value, element )
+											{
+												var listType = element.firstTextChild().value.match( /([^\s])([.)]?)/ );
+												marker = createListBulletMarker( listType );
+											} ]
+										] )( styles, element );
 
-									var listType = element.firstTextChild().value.match( /([^\s])([.)]?)/ );
-									marker = createListBulletMarker( listType );
-								} ]
-							] )( styles, element );
+								if( marker )
+									return marker;
+							}
 
-							if( marker )
-								return marker;
+							// Kill an additional wrapping span.
+							var onlyChild = element.onlyChild();
+							if( onlyChild && 'cke:listbullet' == onlyChild.name )
+								return onlyChild;
 						}
 
-						var onlyChild = element.onlyChild();
-						if( onlyChild && 'cke:listbullet' == onlyChild.name )
-							return onlyChild;
+						// Update the src attribute of image element with href.
+						var children = element.children,
+							firstChild = children && children[ 0 ],
+							secondChild;
+						if( 'cke:imagesource' == firstChild.name )
+						{
+							secondChild = children[ 1 ];
+							if ( 'img' == secondChild.name )
+								secondChild.attributes.src = firstChild.attributes.src;
+							children.splice( 0, 1 );
+							delete element.name;
+						}
+					},
+
+					'v:imagedata' : function( element )
+					{
+						var href = element.attributes['o:href'];
+						if( href )
+							element.attributes.src = href;
+						element.name = 'img';
 					}
 				},
 
@@ -463,6 +479,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				[
 					// Remove onmouseover and onmouseout events (from MS Word comments effect)
 					[ /^onmouse(:?out|over)/, '' ],
+					// Remove office and vml attribute from elements.
+					[ /(?:v|o):\w+/, '' ],
 					// Remove lang/language attributes.
 					[ /^lang/, '' ],
 					ignoreFontFace ? [ 'face', '' ] : null
@@ -492,23 +510,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						return value == 'left' ? false : value;
 					}
 				},
-				comment : function( value )
+
+				// Fore none-IE, some useful data might be buried under these IE-conditional
+				// comments where RegExp were the right approach to dig them. The usual approach
+				// here is transform it into a semantic element node.
+				comment : !CKEDITOR.env.ie ? function( value )
 				{
-					var imageSource = value.match( /<img.*?>/ ),
+					var imageSource = value.match( /<v:imagedata[^>]*o:href=['"](.*?)['"]/ ),
 						listInfo = value.match( /^\[if !supportLists\]([\s\S]*?)\[endif\]$/ );
 
-					// Image 'src' attribute might be embedded within vml.
+					// Try to reveal the real image 'src' attribute from vml elements.
 					if( imageSource )
 					{
-						var image = CKEDITOR.htmlParser.fragment.fromHtml( imageSource ).children[ 0 ],
-							attrs = image.attributes;
-						delete attrs[ 'v:shapes'];
-
-						// Try to reveal the real image source from vml elements.
-						var imageData = value.match( /<v:imagedata[^>]*o:href=['"](.*?)['"]/ ),
-							imageSrc = imageData && imageData[ 1 ];
-						imageSrc && ( attrs.src = imageSrc );
-						return image;
+						return new CKEDITOR.htmlParser.element( 'cke:imagesource', { src : imageSource[ 1 ] } );
 					}
 					// Seek for list bullet style indicator.
 					else if ( listInfo )
@@ -519,7 +533,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						return createListBulletMarker( listType );
 					}
 					return false;
-				}
+				} : falsyFilter
 			};
 		}
 	}

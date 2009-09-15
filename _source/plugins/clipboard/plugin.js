@@ -244,18 +244,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					toHtml : function( data )
 					{
-						var oldDtd = CKEDITOR.dtd.ul;
-						CKEDITOR.dtd.ul = CKEDITOR.dtd.ol =
-						    CKEDITOR.tools.extend( CKEDITOR.tools.clone( oldDtd ), { ol : 1, ul : 1 } );
-
 						var fragment = CKEDITOR.htmlParser.fragment.fromHtml( data, false ),
 							writer = new CKEDITOR.htmlParser.basicWriter();
 
-						CKEDITOR.dtd.ul = CKEDITOR.dtd.ol = oldDtd;
-
 						fragment.writeHtml( writer, this.dataFilter );
-						// Go through the default processor at last.
-						return this.editor.dataProcessor.toHtml( writer.getHtml( true ) );
+						return writer.getHtml( true );
 					}
 				};
 
@@ -265,21 +258,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// The processor is a transient instance life cycled to the
 					// 'paste' event since the processing rules will be added
 					// on demand accordingly to clipboard data flavor.
-					editor.pasteProcessor = new CKEDITOR.pasteProcessor( editor );
+					evt.data.processor = new CKEDITOR.pasteProcessor( editor );
 					
 				}, null, null, 1 );
 
 				// The very last handler which insert final data into the editor at the end of the chain.
 				editor.on( 'paste', function( evt )
 				{
-					var data = evt.data;
+					var data = evt.data,
+						processor = data.processor;
 
-					if ( data[ 'html'] )
-						editor.insertHtml(editor.pasteProcessor.toHtml(data[ 'html' ], false));
-					else if ( data[ 'text'] )
-						editor.insertText(data[ 'text' ]);
-
-					delete editor.pasteProcessor;
+					if ( data[ 'html' ] )
+						editor.insertHtml( processor.toHtml( data[ 'html' ], false ) );
+					else if ( data[ 'text' ] )
+						editor.insertText( data[ 'text' ] );
 
 					editor.fire( 'saveSnapshot' ); // Save after inserted.
 

@@ -242,7 +242,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				};
 				CKEDITOR.pasteProcessor.prototype =
 				{
-					toHtml : CKEDITOR.htmlDataProcessor.prototype.toHtml
+					toHtml : function( data )
+					{
+						var oldDtd = CKEDITOR.dtd.ul;
+						CKEDITOR.dtd.ul = CKEDITOR.dtd.ol =
+						    CKEDITOR.tools.extend( CKEDITOR.tools.clone( oldDtd ), { ol : 1, ul : 1 } );
+
+						var fragment = CKEDITOR.htmlParser.fragment.fromHtml( data, false ),
+							writer = new CKEDITOR.htmlParser.basicWriter();
+
+						CKEDITOR.dtd.ul = CKEDITOR.dtd.ol = oldDtd;
+
+						fragment.writeHtml( writer, this.dataFilter );
+						// Go through the default processor at last.
+						return this.editor.dataProcessor.toHtml( writer.getHtml( true ) );
+					}
 				};
 
 				// The very first handler which initialize the processor.

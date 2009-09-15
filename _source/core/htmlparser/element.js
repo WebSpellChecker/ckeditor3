@@ -113,7 +113,7 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 			element.filterChildren = function()
 			{
 				var writer = new CKEDITOR.htmlParser.basicWriter();
-				CKEDITOR.htmlParser.fragment.prototype.writeHtml.call( element, writer, filter );
+				CKEDITOR.htmlParser.fragment.prototype.writeChildrenHtml.call( element, writer, filter );
 				element.children = new CKEDITOR.htmlParser.fragment.fromHtml( writer.getHtml() ).children;
 				isChildrenFiltered = 1;
 			};
@@ -139,7 +139,7 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 					// filter but not the children.
 					if ( !writeName )
 					{
-						this.writeChildrenHtml( writer, isChildrenFiltered ? null : filter );
+						this.writeChildrenHtml.call( element, writer, isChildrenFiltered ? null : filter );
 						return;
 					}
 				}
@@ -194,7 +194,7 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 
 			if ( !element.isEmpty )
 			{
-				this.writeChildrenHtml( writer, isChildrenFiltered ? null : filter );
+				this.writeChildrenHtml.call( element, writer, isChildrenFiltered ? null : filter );
 				// Close the element.
 				writer.closeTag( writeName );
 			}
@@ -203,7 +203,7 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 		writeChildrenHtml : function( writer, filter )
 		{
 			// Send children.
-			CKEDITOR.htmlParser.fragment.prototype.writeHtml.apply( this, arguments );
+			CKEDITOR.htmlParser.fragment.prototype.writeChildrenHtml.apply( this, arguments );
 
 		}
 	};

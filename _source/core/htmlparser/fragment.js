@@ -425,10 +425,28 @@ CKEDITOR.htmlParser.fragment = function()
 		 * fragment.writeHtml( writer )
 		 * alert( writer.getHtml() );  "&lt;p&gt;&lt;b&gt;Example&lt;/b&gt;&lt;/p&gt;"
 		 */
-		writeHtml : function( writer, filter )
+		writeHtml : function( writer, filter, skipSelf )
+		{
+			var isChildrenFiltered;
+			this.filterChildren = function()
+			{
+				var writer = new CKEDITOR.htmlParser.basicWriter();
+				this.writeChildrenHtml.call( this, writer, filter, true );
+				this.children = new CKEDITOR.htmlParser.fragment.fromHtml( writer.getHtml() ).children;
+				isChildrenFiltered = 1;
+			};
+
+			if ( !filter.onElement( this ) )
+				return;
+
+			this.writeChildrenHtml( writer, isChildrenFiltered ? null : filter );
+		},
+
+		writeChildrenHtml : function( writer, filter )
 		{
 			for ( var i = 0, len = this.children.length ; i < len ; i++ )
 				this.children[i].writeHtml( writer, filter );
 		}
+
 	};
 })();

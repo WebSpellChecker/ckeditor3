@@ -246,8 +246,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						 for ( var i = 0 ; i < rules.length ; i++ )
 							 rules[ i ] = rules[ i ].join( ':' );
-						 return rules.length ?
-						         ( rules.join( ';' ).replace( /\s+/g, '' ) + ';' )
+						return rules.length ?
+						         ( rules.join( ';' ) + ';' )
 						         // Remove attribute if there's no styles.
 								 : false;
 					 };
@@ -276,7 +276,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					$ : function( element )
 					{
-
 						var tagName = element.name || '';
 
 						var match, level;
@@ -327,6 +326,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							}
 							else
 								delete element.name;
+						}
+						else if ( !tagName )
+						{
+							// Trim &nbsp; at the beginning of document for IE. 
+							if( CKEDITOR.env.ie )
+							{
+								var firstTextChild = element.firstTextChild();
+								if ( firstTextChild
+									 && CKEDITOR.tools.trim( firstTextChild.value ).match( /(?:&nbsp;)+/ ) )
+									element.children.splice( 0, 1 );
+							}
 						}
 						// Any dtd-valid element which could contain a list.
 						else if( !tagName && element.children
@@ -397,9 +407,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						element.filterChildren();
 
 						var attrs = element.attributes,
+							parent = element.parent,
 							children = element.children,
 							firstChild = children && children[ 0 ];
 
+						// Drop the single wrapper paragraph within table cell
+						// while preserve the styles.
+						if( /td|th/.test( parent.name )
+							&& parent.onlyChild() )
+						{
+							if( attrs && attrs.style )
+								parent.attributes.style += ( attrs.style + ';' );
+							delete element.name;
+							return;
+						}
 						// <cke:listbullet> been the first child of any paragraph
 						// indicate a list item.
 						if( 'cke:listbullet' == firstChild.name )
@@ -455,7 +476,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							if( onlyChild && 'cke:listbullet' == onlyChild.name )
 								return onlyChild;
 						}
-
+						
 						// Update the src attribute of image element with href.
 						var children = element.children,
 							firstChild = children && children[ 0 ],
@@ -498,6 +519,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					'style' : stylesFilter(
 					[
 						[ /mso-/ ],
+						[ /-moz-/ ],
 						[ 'margin', /0(?:cm|in) 0(?:cm|in) 0pt/ ],
 						[ 'text-indent', '0cm' ],
 						[ 'page-break-before' ],
@@ -506,7 +528,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						[ 'text-align', 'left' ],
 						ignoreFontFace ? [ 'font-family' ] : null,
 					] ),
-
+					'width' : function( element )
+					{
+						// Prefer width style over attribute on table cell.
+						if( element.name in { td : 1, th : 1 } )
+							return false;
+					},
 					'class' : falsyFilter,
 
 					// Remove align="left" attribute.
@@ -545,15 +572,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	}
 
-	CKEDITOR.htmlParser.element.prototype.onlyChild = function()
+	var fragmentPrototype = CKEDITOR.htmlParser.fragment.prototype,
+		elementPrototype = CKEDITOR.htmlParser.element.prototype;
+
+	fragmentPrototype.onlyChild = elementPrototype.onlyChild = function()
 	{
 		var children = this.children,
 			count = children.length,
-			firstChild = count && children[ 0 ];
+			firstChild = ( count == 1 ) && children[ 0 ];
 		return firstChild || null;
 	};
 
-	CKEDITOR.htmlParser.element.prototype.firstTextChild = function()
+	fragmentPrototype.firstTextChild = elementPrototype.firstTextChild = function()
 	{
 		var child;
 		for( var i = 0 ; i < this.children.length ; i++ )

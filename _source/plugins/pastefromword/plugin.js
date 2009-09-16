@@ -33,12 +33,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					 && /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml ) )
 				{
 					// Firefox will be confused by those downlevel-revealed IE conditional
-					// comments, revealing them first.
+					// comments, fixing them first( convert it to upperlevel-revealed one ).
 					// e.g. <![if !vml]>...<![endif]>
 					if( CKEDITOR.env.gecko )
 					{
 						data[ 'html' ] =
-							mswordHtml.replace( /<!--\[if[^<]*?\]-->([\S\s]*?)<!--\[endif\]-->/gi, '$1' );
+							mswordHtml.replace( /(<!--\[if[^<]*?\])-->([\S\s]*?)<!--(\[endif\]-->)/gi, '$1$2$3' );
 					}
 
 					var filter = data.processor.dataFilter;
@@ -424,7 +424,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						element.filterChildren();
 
-						// For none-Firefox, list item bullet type is supposed to be indicated by
+						// List item bullet type is supposed to be indicated by
 						// the text of a span with style 'mso-list : Ignore'.
 						if( !CKEDITOR.env.gecko )
 						{
@@ -437,6 +437,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										[
 											[ 'mso-list', 'Ignore', function( value, element )
 											{
+
 												var listType = element.firstTextChild().value.match( /([^\s])([.)]?)/ );
 												marker = createListBulletMarker( listType );
 											} ]
@@ -456,7 +457,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						var children = element.children,
 							firstChild = children && children[ 0 ],
 							secondChild;
-						if( 'cke:imagesource' == firstChild.name )
+						if( firstChild
+							&& 'cke:imagesource' == firstChild.name )
 						{
 							secondChild = children[ 1 ];
 							if ( 'img' == secondChild.name )
@@ -512,18 +514,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				},
 
 				// Fore none-IE, some useful data might be buried under these IE-conditional
-				// comments where RegExp were the right approach to dig them. The usual approach
-				// here is transform it into a semantic element node.
+				// comments where RegExp were the right approach to dig them out where usual approach
+				// is transform it into a fake element node which hold the desired data.
 				comment : !CKEDITOR.env.ie ? function( value )
 				{
-					var imageSource = value.match( /<v:imagedata[^>]*o:href=['"](.*?)['"]/ ),
+					var imageInfo = value.match( /<img.*?>/ ),
+						imageSource = value.match( /<v:imagedata[^>]*o:href=['"](.*?)['"]/ ),
 						listInfo = value.match( /^\[if !supportLists\]([\s\S]*?)\[endif\]$/ );
 
-					// Try to reveal the real image 'src' attribute from vml elements.
+					// Reveal the <img> element in conditional comments for Firefox.
+					if( CKEDITOR.env.gecko && imageInfo )
+						return CKEDITOR.htmlParser.fragment.fromHtml( imageInfo[ 0 ] ).children[ 0 ];
+					// Try to dig the real image link from vml markup.
 					if( imageSource )
-					{
 						return new CKEDITOR.htmlParser.element( 'cke:imagesource', { src : imageSource[ 1 ] } );
-					}
 					// Seek for list bullet style indicator.
 					else if ( listInfo )
 					{

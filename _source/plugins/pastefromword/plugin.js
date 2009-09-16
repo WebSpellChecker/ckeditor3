@@ -175,24 +175,40 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		utils :
 		{
 			// Create a <cke:listbullet> which indicate an list item type.
-			createListBulletMarker : function ( type )
+			createListBulletMarker : function ( bulletStyle )
 			{
 				var marker = new CKEDITOR.htmlParser.element( 'cke:listbullet' ),
-					// We took the decimal as default because we
-					// use 'ol' as root list.
-					defaultListType = 'decimal';
+					listType,
+					defaultBulletStyle = 'decimal';
 
-				// TODO: Support more list type mapping rules.
-				if( !isNaN( type[ 1 ] ) && type[ 2 ] == '.' )
-					type = 'decimal';
-				else if ( type[ 1 ].search( /[l·]/ ) != -1 )
-					type = 'disc';
+				// TODO: Support more list style type from MS-Word.
+				if( bulletStyle[ 2 ].search( /[.)]/ ) != -1 )
+				{
+					if( !isNaN( bulletStyle[ 1 ] ) )
+						bulletStyle = 'decimal';
+					else if( bulletStyle[ 1 ].search( /[a-z]/ ) != -1 )
+						bulletStyle = 'lower-latin';
+					else if( bulletStyle[ 1 ].search( /[A-Z]/ ) != -1 )
+						bulletStyle = 'upper-latin';
+				}
+				else if ( bulletStyle[ 1 ].search( /[l·•]/ ) != -1 )
+					bulletStyle = 'disc';
+				else if ( bulletStyle[ 1 ].search( /[oØ]/ ) != -1 )
+					bulletStyle = 'circle';
+				else if ( bulletStyle[ 1 ].search( /[n◆]/ ) != -1 )
+					bulletStyle = 'square';
 				else
-					type = defaultListType;
+					bulletStyle = defaultBulletStyle;
+
+				listType = bulletStyle == 'decimal' ? 'ol'
+						   : bulletStyle == 'disc' ? 'ul' : '';
 
 				// Represent list type as CSS style.
-				if( type != defaultListType )
-					marker.attributes = { style : 'list-style-type:' + type };
+				marker.attributes =
+				{
+					'cke:listtype' : listType,
+					'style' : 'list-style-type:' + bulletStyle
+				};
 
 				return marker;
 			}
@@ -251,6 +267,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						         // Remove attribute if there's no styles.
 								 : false;
 					 };
+				},
+
+				/**
+				 * A filter which remove cke-namespaced-attribute on
+				 * all none-cke-namespaced elements. 
+				 * @param value
+				 * @param element
+				 */
+				bogusAttrFilter : function( value, element )
+				{
+					if( element.name.indexOf( 'cke:' ) == -1 )
+						return false;
 				}
 
 			},
@@ -259,7 +287,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var falsyFilter = this.filters.falsyFilter,
 				stylesFilter = this.filters.stylesFilter,
+				bogusAttrFilter = this.filters.bogusAttrFilter,
 				createListBulletMarker = this.utils.createListBulletMarker,
+				listDtdParents = CKEDITOR.dtd.parentOf( 'ol' ),
 				config = editor.config,
 				ignoreFontFace = config.pasteFromWordIgnoreFontFace,
 				removeStyleAttr = config.pasteFromWordRemoveStyle;
@@ -338,14 +368,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									element.children.splice( 0, 1 );
 							}
 						}
+
 						// Any dtd-valid element which could contain a list.
-						else if( !tagName && element.children
-								 || tagName in CKEDITOR.dtd.parentOf( 'ol' ) )
+						if( !tagName && element.children
+								 || tagName in listDtdParents )
 						{
 							element.filterChildren();
 
 							var children = element.children, child,
 								listItem,   // The current processing cke:li element.
+								listItemAttrs,
+								listType,   // Determine the root type of the list.
 								listItemIndent, // Indent attribute represent the level of it.
 								lastListItem, // The previous one just been added to the list.
 								list, parentList, // Current staging list and it's parent list if any.  
@@ -358,17 +391,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								if ( 'cke:li' == child.name )
 								{
 									child.name = 'li';
-
 									listItem = child;
-
+									listItemAttrs = listItem.attributes;
+									listType = listItem.attributes[ 'cke:listtype' ];
 									// The indent attribute might not present.
-									listItemIndent = listItem.attributes && listItem.attributes.indent || 0;
-									if ( listItemIndent )
-										delete listItem.attributes.indent;
+									listItemIndent = listItemAttrs[ 'cke:indent' ] || 0;
+
+									// Ignore the 'list-style-type' attribute if it's matched with
+									// the list root element type.
+									if( ( !parentList && listType )
+										|| listType == ( parentList && parentList.name ) )
+										listItemAttrs.style = stylesFilter(
+										[ [ 'list-style-type' ] ] )( listItemAttrs.style ) || '' ;
 
 									if ( !list )
 									{
-										parentList = list = new CKEDITOR.htmlParser.element( 'ol' );
+										parentList = list = new CKEDITOR.htmlParser.element( listType || 'ol' );
 										list.add( listItem );
 										children[ i ] = list;
 									}
@@ -399,6 +437,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									list = null;
 							}
 
+							// Filter childrens again for cleaning up
+							// the list attributes.
+							element.filterChildren();
 						}
 					},
 
@@ -432,15 +473,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								[ 'margin-left', null, function( value )
 								{
 									// Resolve indent level from 'margin-left' style.
-									attrs.indent = parseInt( value );
+									attrs[ 'cke:indent' ] = parseInt( value );
 								} ]
 							] )( attrs.style, element ) || '' ;
 
 							// Inherit list-type-style from bullet. 
 							var listBulletAttrs = firstChild.attributes,
-								listBulletStyle = listBulletAttrs && listBulletAttrs.style;
-							if( listBulletStyle )
-								attrs.style = listBulletStyle;
+								listBulletStyle = listBulletAttrs.style;
+							attrs.style += ( listBulletStyle + ';' );
+							CKEDITOR.tools.extend( attrs, listBulletAttrs );
 							children.splice( 0, 1 );
 						}
 					},
@@ -514,6 +555,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				attributes :
 				{
+					'cke:listtype' : bogusAttrFilter,
+					'cke:indent' : bogusAttrFilter,
 					// Remove mso-xxx styles.
 					// Remove margin styles.
 					'style' : stylesFilter(

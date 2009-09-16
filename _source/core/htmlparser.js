@@ -172,14 +172,13 @@ CKEDITOR.htmlParser = function()
 				if ( ( tagName = parts[ 3 ] ) )
 				{
 					tagName = tagName.toLowerCase();
-					var attribs,
+					var attribs = {},
 						attribMatch,
 						attribsPart = parts[ 4 ],
 						selfClosing = !!( attribsPart && attribsPart.charAt( attribsPart.length - 1 ) == '/' );
 
 					if ( attribsPart )
 					{
-						attribs = {};
 						while ( ( attribMatch = attribsRegex.exec( attribsPart ) ) )
 						{
 							var attName = attribMatch[1].toLowerCase(),

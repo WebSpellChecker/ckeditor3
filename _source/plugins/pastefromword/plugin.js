@@ -182,7 +182,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// use 'ol' as root list.
 					defaultListType = 'decimal';
 
-				// TODO: Support more list type mapping rules. 
+				// TODO: Support more list type mapping rules.
 				if( !isNaN( type[ 1 ] ) && type[ 2 ] == '.' )
 					type = 'decimal';
 				else if ( type[ 1 ].search( /[l·]/ ) != -1 )
@@ -348,10 +348,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								if ( 'cke:li' == child.name )
 								{
 									child.name = 'li';
-									
+
 									listItem = child;
-									listItemIndent = listItem.attributes.indent,
-									delete listItem.attributes.indent;
+
+									// The indent attribute might not present.
+									listItemIndent = listItem.attributes && listItem.attributes.indent || 0;
+									if ( listItemIndent )
+										delete listItem.attributes.indent;
 
 									if ( !list )
 									{

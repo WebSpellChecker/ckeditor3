@@ -1,3 +1,5 @@
+
+
 /*
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
@@ -149,8 +151,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			for ( j = itemsLength - 1 ; j >= 0 ; j-- )
 			{
 				var item = items[ j ];
-				item.pri = priority;
-				list.splice( i, 0, item );
+				if( item )
+				{
+					item.pri = priority;
+					list.splice( i, 0, item );
+				}
 			}
 		}
 	}

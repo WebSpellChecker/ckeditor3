@@ -5,6 +5,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 CKEDITOR.dialog.add( 'pastefromword', function( editor )
 {
+	// Help to switch the editor config entry temporarily.
+	function getConfigSwitcher( config, entryName )
+	{
+		var originalValue = config[ entryName ];
+
+		return function( newValue )
+		{
+			config[ entryName ] =
+				typeof newValue != 'undefined' ? newValue : originalValue;
+		}
+	}
+
 	return {
 		title : editor.lang.pastefromword.title,
 		minWidth : CKEDITOR.env.ie && CKEDITOR.env.quirks ? 370 : 350,
@@ -102,13 +114,20 @@ CKEDITOR.dialog.add( 'pastefromword', function( editor )
 			var container = this.getContentElement( 'general', 'editing_area' ).getElement(),
 				iframe = container.getElementsByTag( 'iframe' ).getItem( 0 ),
 				editor = this.getParentEditor(),
+				config = editor.config,
+				ignoreFontFace = this.getValueOf( 'general', 'ignoreFontFace' ),
 				//TODO: Bring those dialog-based configs to the paste processor.
 				html = iframe.$.contentWindow.document.body.innerHTML;
 
-				// Insertion should happen after main document design mode turned on.
-				setTimeout( function(){
-					editor.fire( 'paste', { 'html' : html } );
-				}, 0 );
+			// Insertion should happen after main document design mode turned on.
+			 setTimeout( function(){
+
+				var switcher;
+				( switcher = getConfigSwitcher( editor.config,'pasteFromWordIgnoreFontFace' ) )
+						( ignoreFontFace );
+				editor.fire( 'paste', { 'html' : html } );
+				switcher();
+			}, 0 );
 		},
 		onHide : function()
 		{
@@ -173,12 +192,6 @@ CKEDITOR.dialog.add( 'pastefromword', function( editor )
 								id : 'ignoreFontFace',
 								label : editor.lang.pastefromword.ignoreFontFace,
 								'default' : editor.config.pasteFromWordIgnoreFontFace
-							},
-							{
-								type : 'checkbox',
-								id : 'removeStyle',
-								label : editor.lang.pastefromword.removeStyle,
-								'default' : editor.config.pasteFromWordRemoveStyle
 							}
 						]
 					}

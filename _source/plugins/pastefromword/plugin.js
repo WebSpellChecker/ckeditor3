@@ -20,10 +20,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					command : 'pastefromword'
 				} );
 
-			var config = editor.config,
-				ignoreFontFace = config.pasteFromWordIgnoreFontFace,
-				removeStyleAttr = config.pasteFromWordRemoveStyle;
-
 			editor.on( 'paste', function( evt )
 			{
 				var data = evt.data,
@@ -233,22 +229,27 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					return function( styleText, element )
 					{
 						 var rules = [];
-						 styleText.replace( /\s*([^ :;]+?)\s*:\s*([^;"]+?)\s*(?=;|$)/g,
+						// quote might be html-encoded which confused the next regexp.
+						 styleText.replace( /&quot;/g, '"' )
+								  .replace( /\s*([^ :;]+?)\s*:\s*([^;]+?)\s*(?=;|$)/g,
 							 function( match, name, value )
 							 {
 								 name = name.toLowerCase();
 								 var namePattern,
 									 valuePattern,
-									 newValue;
+									 newValue,
+									 newName;
 								 for( var i = 0 ; i < styles.length && styles[ i ] ; i++ )
 								 {
 									namePattern = styles[ i ][ 0 ];
 									valuePattern = styles[ i ][ 1 ];
 									newValue = styles[ i ][ 2 ];
+									newName = styles[ i ][ 3 ];
 
 									if ( name.match( namePattern )
 										 && ( !valuePattern || value.match( valuePattern ) ) )
 									{
+										name = newName || name;
 										if( typeof newValue == 'function' )
 											newValue = newValue( value, element );
 										if( typeof newValue == 'string' )
@@ -260,10 +261,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 							 } );
 
-						 for ( var i = 0 ; i < rules.length ; i++ )
+						for ( var i = 0 ; i < rules.length ; i++ )
 							 rules[ i ] = rules[ i ].join( ':' );
 						return rules.length ?
-						         ( rules.join( ';' ) + ';' )
+						         ( rules.join( ';' ) + ';' ).replace( /"/g, '&quot;' )
 						         // Remove attribute if there's no styles.
 								 : false;
 					 };
@@ -291,15 +292,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				createListBulletMarker = this.utils.createListBulletMarker,
 				listDtdParents = CKEDITOR.dtd.parentOf( 'ol' ),
 				config = editor.config,
-				ignoreFontFace = config.pasteFromWordIgnoreFontFace,
-				removeStyleAttr = config.pasteFromWordRemoveStyle;
+				ignoreFontFace = config.pasteFromWordIgnoreFontFace;
 
 			return {
 
 				elementNames :
 				[
-					// Remove style, meta and link elements.
-					[ /style|meta|link/, '' ]
+					// Remove script, meta and link elements.
+					[ /meta|link|script|style/, '' ]
 				],
 
 				elements :
@@ -308,30 +308,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						var tagName = element.name || '';
 
-						var match, level;
 						// Processing headings.
-						if ( ( match = tagName.match( /h(\d)/i ) ) && ( level = match[ 1 ] ) )
+						if ( tagName.match( /h(\d)/i ) )
 						{
 							element.filterChildren();
-							var child = element.onlyChild();
-
+							var onlyChild = element.onlyChild();
 							// Remove empty headings.
-							if( child && child.value
-								&& !CKEDITOR.tools.trim( child.value ) )
+							if( onlyChild && onlyChild.value
+								&& !CKEDITOR.tools.trim( onlyChild.value ) )
 								return false;
-							// The original <Hn> tag send from Word is something like this: <Hn style="margin-top:0px;margin-bottom:0px">
 							delete element.attributes;
-
-							// Word likes to insert extra <font> tags, when using MSIE. (Wierd).
-							if ( child && /em|font/.exec( child.name ) )
-								element.children = child.children;
 						}
 						// Remove inline elements which contain only empty spaces.
 						else if( tagName.match( /^(:?b|u|i|strike|span)$/ ) )
 						{
 							element.filterChildren();
 							var child = element.onlyChild();
-							if ( child && /(:?\s|&nbsp;)+/.exec( child.value ) )
+							if ( child && /^(:?\s|&nbsp;)+$/.exec( child.value ) )
 								delete element.name;
 						}
 						// Remove dummy inline wrappers.
@@ -339,6 +332,41 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						{
 							if( !element.attributes )
 								delete element.name;
+							// Normalize <font> into <span> + style text.
+							else if( tagName == 'font' )
+							{
+								element.filterChildren();
+								// Merge nested <font> tags.
+								var parent = element.parent;
+								if( 'font' == parent.name )
+								{
+									CKEDITOR.tools.extend( parent.attributes,
+											element.attributes );
+									delete element.name;
+									return;
+								}
+								// Convert the topmost into a span with font-styles. 
+								else
+								{
+									var attrs = element.attributes,
+										styleText = '';
+									if( attrs.color )
+										styleText += 'color:' + attrs.color + ';';
+									if( attrs.face )
+										styleText += 'font-family:' + attrs.face + ';';
+									// TODO: Mapping size in ranges of xx-small,
+									// x-small, small, medium, large, x-large, xx-large.
+									if( attrs.size )
+										styleText += 'font-size:' +
+										            ( attrs.size > 3 ? 'larger'
+												      : ( attrs.size < 3 ? 'smaller' : 'medium' ) )+ ';';
+
+									if( styleText )
+										element.attributes = { 'style' : styleText };
+
+									element.name = 'span';
+								}
+							}
 						}
 						// Remove namespaced element while preserving the content.
 						else if( tagName.indexOf( ':' ) != -1
@@ -359,12 +387,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 						else if ( !tagName )
 						{
-							// Trim &nbsp; at the beginning of document for IE. 
+							// Trim empty spaces at the beginning of document for IE. 
 							if( CKEDITOR.env.ie )
 							{
 								var firstTextChild = element.firstTextChild();
 								if ( firstTextChild
-									 && CKEDITOR.tools.trim( firstTextChild.value ).match( /(?:&nbsp;)+/ ) )
+									 && firstTextChild.value.match( /^(:?\s|&nbsp;)+$/ ) )
 									element.children.splice( 0, 1 );
 							}
 						}
@@ -550,7 +578,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					[ /(?:v|o):\w+/, '' ],
 					// Remove lang/language attributes.
 					[ /^lang/, '' ],
-					ignoreFontFace ? [ 'face', '' ] : null
+					ignoreFontFace ? [ /^(?:face|font|size)/, '' ] : null
 				],
 
 				attributes :
@@ -563,15 +591,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					[
 						[ /mso-/ ],
 						[ /-moz-/ ],
+						// Replace verbose background color style.
+						[ /^background$/, null, function( value )
+						{
+							return value.match( /^[^\s]+/ )[ 0 ];
+						}, 'background-color' ],
+						[ 'background-color', 'transparent' ],
+						// Remove verbose border-color style for Firefox.
+						CKEDITOR.env.gecko ? [ 'border-color', /(:?windowtext|-moz-use-text-color|\s)*/ ] : null,
 						[ 'margin', /0(?:cm|in) 0(?:cm|in) 0pt/ ],
 						[ 'text-indent', '0cm' ],
 						[ 'page-break-before' ],
 						[ 'tab-stops' ],
 						[ 'display', 'none' ],
 						[ 'text-align', 'left' ],
-						ignoreFontFace ? [ 'font-family' ] : null,
+						ignoreFontFace ? [ /font-?/ ] : null,
 					] ),
-					'width' : function( element )
+					'width' : function( value, element )
 					{
 						// Prefer width style over attribute on table cell.
 						if( element.name in { td : 1, th : 1 } )
@@ -663,25 +699,4 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @example
  * config.pasteFromWordIgnoreFontFace = false;
  */
-CKEDITOR.config.pasteFromWordIgnoreFontFace = true;
-
-/**
- * Whether the "Remove styles definitions" checkbox is enabled by default in
- * the Paste from Word dialog.
- * @type Boolean
- * @default false
- * @example
- * config.pasteFromWordRemoveStyle = true;
- */
-CKEDITOR.config.pasteFromWordRemoveStyle = true;
-
-/**
- * Whether to keep structure markup (&lt;h1&gt;, &lt;h2&gt;, etc.) or replace
- * it with elements that create more similar pasting results when pasting
- * content from Microsoft Word into the Paste from Word dialog.
- * @type Boolean
- * @default false
- * @example
- * config.pasteFromWordKeepsStructure = true;
- */
-CKEDITOR.config.pasteFromWordKeepsStructure = true;
+CKEDITOR.config.pasteFromWordIgnoreFontFace = false;

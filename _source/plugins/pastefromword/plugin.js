@@ -239,22 +239,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									 valuePattern,
 									 newValue,
 									 newName;
-								 for( var i = 0 ; i < styles.length && styles[ i ] ; i++ )
+								 for( var i = 0 ; i < styles.length; i++ )
 								 {
-									namePattern = styles[ i ][ 0 ];
-									valuePattern = styles[ i ][ 1 ];
-									newValue = styles[ i ][ 2 ];
-									newName = styles[ i ][ 3 ];
-
-									if ( name.match( namePattern )
-										 && ( !valuePattern || value.match( valuePattern ) ) )
+									if( styles[ i ] )
 									{
-										name = newName || name;
-										if( typeof newValue == 'function' )
-											newValue = newValue( value, element );
-										if( typeof newValue == 'string' )
-											rules.push( [ name, newValue ] );
-										return;
+										namePattern = styles[ i ][ 0 ];
+										valuePattern = styles[ i ][ 1 ];
+										newValue = styles[ i ][ 2 ];
+										newName = styles[ i ][ 3 ];
+
+										if ( name.match( namePattern )
+											 && ( !valuePattern || value.match( valuePattern ) ) )
+										{
+											name = newName || name;
+											if( typeof newValue == 'function' )
+												newValue = newValue( value, element );
+											if( typeof newValue == 'string' )
+												rules.push( [ name, newValue ] );
+											return;
+										}
 									}
 								 }
 								 rules.push( [ name, value ] );
@@ -268,6 +271,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						         // Remove attribute if there's no styles.
 								 : false;
 					 };
+				},
+
+				styleMigrateFilter : function ( styleDefiniton )
+				{
+					return function( element )
+					{
+						var styleDef = styleDefiniton;
+						element.name = styleDef.element;
+						element.attributes = CKEDITOR.tools.clone( styleDef.attributes ) || {};
+						var attrs = element.attributes;
+						attrs.style = ( attrs.style || '' ) + CKEDITOR.style.getStyleText( styleDef );
+					}
 				},
 
 				/**
@@ -288,6 +303,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var falsyFilter = this.filters.falsyFilter,
 				stylesFilter = this.filters.stylesFilter,
+				styleMigrateFilter = this.filters.styleMigrateFilter,
 				bogusAttrFilter = this.filters.bogusAttrFilter,
 				createListBulletMarker = this.utils.createListBulletMarker,
 				listDtdParents = CKEDITOR.dtd.parentOf( 'ol' ),
@@ -560,7 +576,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							delete element.name;
 						}
 					},
-
+					// Migrate basic style formats to editor configured ones.
+					'b' : styleMigrateFilter( config[ 'coreStyles_bold' ] ),
+					'i' : styleMigrateFilter( config[ 'coreStyles_italic' ] ),
+					'u' : styleMigrateFilter( config[ 'coreStyles_underline' ] ),
+					's' : styleMigrateFilter( config[ 'coreStyles_strike' ] ),
+					'sup' : styleMigrateFilter( config[ 'coreStyles_superscript' ] ),
+					'sub' : styleMigrateFilter( config[ 'coreStyles_subscript' ] ),
 					'v:imagedata' : function( element )
 					{
 						var href = element.attributes['o:href'];
@@ -597,9 +619,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							return value.match( /^[^\s]+/ )[ 0 ];
 						}, 'background-color' ],
 						[ 'background-color', 'transparent' ],
-						// Remove verbose border-color style for Firefox.
+						// Remove verbose border-color style within Firefox.
 						CKEDITOR.env.gecko ? [ 'border-color', /(:?windowtext|-moz-use-text-color|\s)*/ ] : null,
-						[ 'margin', /0(?:cm|in) 0(?:cm|in) 0pt/ ],
+						// 'Indent' format migration(to use editor's indent unit).
+						[ /margin-?/, null, function( value, element )
+						{
+							if( element.name == 'p' )
+							{
+								value = value.replace( /\d*\.?\d+pt/g, function( length )
+								{
+									var pt = parseInt( length );
+									// Assume MS-Word indent unit length as '11pt'.
+									return ( pt / 11 * config.indentOffset ) + config.indentUnit;
+								} );
+							}
+							return value;
+						} ],
+						[ 'margin', /0(?:cm|in) 0(?:cm|in) 0pt/, function(){ debugger; } ],
 						[ 'text-indent', '0cm' ],
 						[ 'page-break-before' ],
 						[ 'tab-stops' ],
@@ -615,11 +651,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					},
 					'class' : falsyFilter,
 
-					// Remove align="left" attribute.
-					'align' : function( value )
-					{
-						return value == 'left' ? false : value;
-					}
+					// We always have both 'text-align' style company with
+					// 'align' attribute, drop the attribute.
+					'align' : falsyFilter
 				},
 
 				// Fore none-IE, some useful data might be buried under these IE-conditional

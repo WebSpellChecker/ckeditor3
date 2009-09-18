@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -78,7 +78,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// Event attributes (onXYZ) must not be directly set. They can become
 			// active in the editing area (IE|WebKit).
 			[ ( /^on/ ), '_cke_pa_on' ]
-		]
+		],
+		elements :
+		{
+			'span' : function( element )
+			{
+				var attrs = element.attributes;
+				for( var attr in attrs )
+				{
+					if( attrs.hasOwnProperty( attr ) )
+					{
+						return;
+					}
+				}
+				delete element.name;
+			}
+		}
 	};
 
 	var defaultDataBlockFilterRules = { elements : {} };

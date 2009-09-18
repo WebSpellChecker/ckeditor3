@@ -112,10 +112,13 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 			 */
 			element.filterChildren = function()
 			{
-				var writer = new CKEDITOR.htmlParser.basicWriter();
-				CKEDITOR.htmlParser.fragment.prototype.writeChildrenHtml.call( element, writer, filter );
-				element.children = new CKEDITOR.htmlParser.fragment.fromHtml( writer.getHtml() ).children;
-				isChildrenFiltered = 1;
+				if( !isChildrenFiltered )
+				{
+					var writer = new CKEDITOR.htmlParser.basicWriter();
+					CKEDITOR.htmlParser.fragment.prototype.writeChildrenHtml.call( element, writer, filter );
+					element.children = new CKEDITOR.htmlParser.fragment.fromHtml( writer.getHtml() ).children;
+					isChildrenFiltered = 1;
+				}
 			};
 
 			if ( filter )

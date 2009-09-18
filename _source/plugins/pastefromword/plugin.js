@@ -229,12 +229,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					return function( styleText, element )
 					{
 						 var rules = [];
-						// quote might be html-encoded which confused the next regexp.
+						// html-encoded quote might be introduced by 'font-family'
+						// from MS-Word which confused the following regexp. e.g.
+						//'font-family: &quot;Lucida, Console&quot;'
 						 styleText.replace( /&quot;/g, '"' )
 								  .replace( /\s*([^ :;]+?)\s*:\s*([^;]+?)\s*(?=;|$)/g,
 							 function( match, name, value )
 							 {
 								 name = name.toLowerCase();
+								 if ( name == 'font-family' )
+									value = value.replace( /"/g, '' );
+
 								 var namePattern,
 									 valuePattern,
 									 newValue,
@@ -267,17 +272,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						for ( var i = 0 ; i < rules.length ; i++ )
 							 rules[ i ] = rules[ i ].join( ':' );
 						return rules.length ?
-						         ( rules.join( ';' ) + ';' ).replace( /"/g, '&quot;' )
-						         // Remove attribute if there's no styles.
-								 : false;
+						         ( rules.join( ';' ) + ';' ) : false;
 					 };
 				},
 
-				styleMigrateFilter : function ( styleDefiniton )
+				/**
+				 * Migrate the element by decorate styles on it.
+				 * @param styleDefiniton
+				 * @param variables
+				 */
+				elementMigrateFilter : function ( styleDefiniton, variables )
 				{
 					return function( element )
 					{
-						var styleDef = styleDefiniton;
+						var styleDef =
+								variables ?
+									new CKEDITOR.style( styleDefiniton, variables )._.definition
+									: styleDefiniton;
 						element.name = styleDef.element;
 						element.attributes = CKEDITOR.tools.clone( styleDef.attributes ) || {};
 						var attrs = element.attributes;
@@ -285,6 +296,28 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					}
 				},
 
+				/**
+				 * Migrate styles by creating a new nested stylish element.    
+				 * @param styleDefinition
+				 */
+				styleMigrateFilter : function( styleDefinition, variableName )
+				{
+
+					var elementMigrateFilter = this.elementMigrateFilter;
+					return function( value, element )
+					{
+						// Build an stylish element first.
+						var styleElement = new CKEDITOR.htmlParser.element(),
+							varialbes = {};
+
+						varialbes[ variableName ] = value;
+						elementMigrateFilter( styleDefinition, varialbes )( styleElement );
+						// Place the new element inside the existing span.
+						styleElement.children = element.children;
+						element.children = [ styleElement ];
+					};
+				},
+				
 				/**
 				 * A filter which remove cke-namespaced-attribute on
 				 * all none-cke-namespaced elements. 
@@ -303,7 +336,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var falsyFilter = this.filters.falsyFilter,
 				stylesFilter = this.filters.stylesFilter,
-				styleMigrateFilter = this.filters.styleMigrateFilter,
+				elementMigrateFilter = this.filters.elementMigrateFilter,
+				styleMigrateFilter = CKEDITOR.tools.bind( this.filters.styleMigrateFilter, this.filters ),
 				bogusAttrFilter = this.filters.bogusAttrFilter,
 				createListBulletMarker = this.utils.createListBulletMarker,
 				listDtdParents = CKEDITOR.dtd.parentOf( 'ol' ),
@@ -342,47 +376,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							var child = element.onlyChild();
 							if ( child && /^(:?\s|&nbsp;)+$/.exec( child.value ) )
 								delete element.name;
-						}
-						// Remove dummy inline wrappers.
-						else if( tagName.match( /span|font/ ) )
-						{
-							if( !element.attributes )
-								delete element.name;
-							// Normalize <font> into <span> + style text.
-							else if( tagName == 'font' )
-							{
-								element.filterChildren();
-								// Merge nested <font> tags.
-								var parent = element.parent;
-								if( 'font' == parent.name )
-								{
-									CKEDITOR.tools.extend( parent.attributes,
-											element.attributes );
-									delete element.name;
-									return;
-								}
-								// Convert the topmost into a span with font-styles. 
-								else
-								{
-									var attrs = element.attributes,
-										styleText = '';
-									if( attrs.color )
-										styleText += 'color:' + attrs.color + ';';
-									if( attrs.face )
-										styleText += 'font-family:' + attrs.face + ';';
-									// TODO: Mapping size in ranges of xx-small,
-									// x-small, small, medium, large, x-large, xx-large.
-									if( attrs.size )
-										styleText += 'font-size:' +
-										            ( attrs.size > 3 ? 'larger'
-												      : ( attrs.size < 3 ? 'smaller' : 'medium' ) )+ ';';
-
-									if( styleText )
-										element.attributes = { 'style' : styleText };
-
-									element.name = 'span';
-								}
-							}
 						}
 						// Remove namespaced element while preserving the content.
 						else if( tagName.indexOf( ':' ) != -1
@@ -529,6 +522,43 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							children.splice( 0, 1 );
 						}
 					},
+
+					// Deprecates <font> in favor of stylish <span>.
+					'font' : function( element )
+					{
+						element.filterChildren();
+						// Merge nested <font> tags.
+						var parent = element.parent;
+						if( 'font' == parent.name )
+						{
+							CKEDITOR.tools.extend( parent.attributes,
+									element.attributes );
+							delete element.name;
+							return;
+						}
+						// Convert the topmost into a span with font-styles.
+						else
+						{
+							var attrs = element.attributes,
+								styleText = '';
+							if( attrs.color )
+								styleText += 'color:' + attrs.color + ';';
+							if( attrs.face )
+								styleText += 'font-family:' + attrs.face + ';';
+							// TODO: Mapping size in ranges of xx-small,
+							// x-small, small, medium, large, x-large, xx-large.
+							if( attrs.size )
+								styleText += 'font-size:' +
+								            ( attrs.size > 3 ? 'larger'
+										      : ( attrs.size < 3 ? 'smaller' : 'medium' ) )+ ';';
+
+							if( styleText )
+								element.attributes = { 'style' : styleText };
+
+							element.name = 'span';
+						}
+					},
+
 					'span' : function( element )
 					{
 						element.filterChildren();
@@ -575,14 +605,29 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							children.splice( 0, 1 );
 							delete element.name;
 						}
+
+						// Migrate font related styles.
+						var attrs = element.attributes,
+							styleText = attrs && attrs.style;
+						if( styleText )
+						attrs.style = stylesFilter(
+									[
+										[ 'font-family', null, styleMigrateFilter( config[ 'font_style' ], 'family' ) ],
+										// TODO: Convert 'pt' length unit into 'px'.
+										[ 'font-size', null, styleMigrateFilter( config[ 'fontSize_style' ], 'size' ) ],
+										// TODO: Convert 'rgb' and 'descriptive' color into 'hexadecimal'. 
+										[ /^color$/, null, styleMigrateFilter( config[ 'colorButton_foreStyle' ], 'color' ) ],
+										[ 'background-color', null, styleMigrateFilter( config[ 'colorButton_backStyle' ], 'color' ) ]
+									] )( styleText, element ) || '';
 					},
+
 					// Migrate basic style formats to editor configured ones.
-					'b' : styleMigrateFilter( config[ 'coreStyles_bold' ] ),
-					'i' : styleMigrateFilter( config[ 'coreStyles_italic' ] ),
-					'u' : styleMigrateFilter( config[ 'coreStyles_underline' ] ),
-					's' : styleMigrateFilter( config[ 'coreStyles_strike' ] ),
-					'sup' : styleMigrateFilter( config[ 'coreStyles_superscript' ] ),
-					'sub' : styleMigrateFilter( config[ 'coreStyles_subscript' ] ),
+					'b' : elementMigrateFilter( config[ 'coreStyles_bold' ] ),
+					'i' : elementMigrateFilter( config[ 'coreStyles_italic' ] ),
+					'u' : elementMigrateFilter( config[ 'coreStyles_underline' ] ),
+					's' : elementMigrateFilter( config[ 'coreStyles_strike' ] ),
+					'sup' : elementMigrateFilter( config[ 'coreStyles_superscript' ] ),
+					'sub' : elementMigrateFilter( config[ 'coreStyles_subscript' ] ),
 					'v:imagedata' : function( element )
 					{
 						var href = element.attributes['o:href'];
@@ -635,7 +680,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							}
 							return value;
 						} ],
-						[ 'margin', /0(?:cm|in) 0(?:cm|in) 0pt/, function(){ debugger; } ],
+						[ 'margin', /0(?:cm|in) 0(?:cm|in) 0pt/ ],
 						[ 'text-indent', '0cm' ],
 						[ 'page-break-before' ],
 						[ 'tab-stops' ],

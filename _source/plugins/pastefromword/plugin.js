@@ -27,8 +27,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				// MS-WORD format sniffing.
 				if ( ( mswordHtml = data[ 'html' ] )
 					 && ( evt.data[ 'ms-word' ]
-						|| /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml )
-						   && confirm( editor.lang.pastefromword.confirmCleanup ) ) )
+						  || /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml )
+						     && confirm( editor.lang.pastefromword.confirmCleanup ) ) )
 				{
 					// Firefox will be confused by those downlevel-revealed IE conditional
 					// comments, fixing them first( convert it to upperlevel-revealed one ).
@@ -55,18 +55,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			createListBulletMarker : function ( bulletStyle )
 			{
 				var marker = new CKEDITOR.htmlParser.element( 'cke:listbullet' ),
-					listType,
-					defaultBulletStyle = 'decimal';
+					listType;
 
 				// TODO: Support more list style type from MS-Word.
-				if ( bulletStyle[ 2 ].search(/[.)]/) != -1 )
+				if ( bulletStyle[ 2 ] )
 				{
-					if ( !isNaN(bulletStyle[ 1 ]) )
+					if ( !isNaN( bulletStyle[ 1 ] ) )
 						bulletStyle = 'decimal';
 					else if ( bulletStyle[ 1 ].search(/[a-z]/) != -1 )
 						bulletStyle = 'lower-latin';
 					else if ( bulletStyle[ 1 ].search(/[A-Z]/) != -1 )
-							bulletStyle = 'upper-latin';
+						bulletStyle = 'upper-latin';
+					else
+						bulletStyle = 'decimal';
 
 					listType = 'ol';
 				}
@@ -78,6 +79,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						bulletStyle = 'circle';
 					else if ( bulletStyle[ 1 ].search(/[n◆]/) != -1 )
 						bulletStyle = 'square';
+					else
+						bulletStyle = 'disc';
 
 					listType = 'ul';
 				}
@@ -85,13 +88,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				// Represent list type as CSS style.
 				marker.attributes =
 				{
-					'cke:listtype' : listType
+					'cke:listtype' : listType,
+					'style' : 'list-style-type:' + bulletStyle 
 				};
 
-				if( bulletStyle )
-					marker.attributes[ 'style' ] = 'list-style-type:' + bulletStyle;
-
 				return marker;
+			},
+
+			isListBulletIndicator : function( element )
+			{
+				var styleText = element.attributes && element.attributes.style;
+				if( styleText == 'mso-list: Ignore' )
+					return true;
 			}
 
 		},
@@ -175,7 +183,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									new CKEDITOR.style( styleDefiniton, variables )._.definition
 									: styleDefiniton;
 						element.name = styleDef.element;
-						element.attributes = CKEDITOR.tools.clone( styleDef.attributes ) || {};
+						CKEDITOR.tools.extend( element.attributes, CKEDITOR.tools.clone( styleDef.attributes ) );
 						var attrs = element.attributes;
 						attrs.style = ( attrs.style || '' ) + CKEDITOR.style.getStyleText( styleDef );
 					}
@@ -192,7 +200,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					return function( value, element )
 					{
 						// Build an stylish element first.
-						var styleElement = new CKEDITOR.htmlParser.element(),
+						var styleElement = new CKEDITOR.htmlParser.element( null, {} ),
 							varialbes = {};
 
 						varialbes[ variableName ] = value;
@@ -225,6 +233,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				styleMigrateFilter = CKEDITOR.tools.bind( this.filters.styleMigrateFilter, this.filters ),
 				bogusAttrFilter = this.filters.bogusAttrFilter,
 				createListBulletMarker = this.utils.createListBulletMarker,
+				isListBulletIndicator = this.utils.isListBulletIndicator,
 				listDtdParents = CKEDITOR.dtd.parentOf( 'ol' ),
 				config = editor.config,
 				ignoreFontFace = config.pasteFromWordIgnoreFontFace;
@@ -322,11 +331,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									listItemIndent = listItemAttrs[ 'cke:indent' ] || 0;
 
 									// Ignore the 'list-style-type' attribute if it's matched with
-									// the list root element type.
-									if( ( !parentList && listType )
-										|| listType == ( parentList && parentList.name ) )
-										listItemAttrs.style = stylesFilter(
-										[ [ 'list-style-type' ] ] )( listItemAttrs.style ) || '' ;
+									// the list root element's default style type.
+									listItemAttrs.style = stylesFilter(
+										[ [ 'list-style-type', listType == 'ol'? 'decimal' : 'disc' ] ] )( listItemAttrs.style ) || '' ;
 
 									if ( !list )
 									{
@@ -346,6 +353,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										else if( listItemIndent < indent )
 										{
 											list = parentList;
+											parentList = list.parent ? list.parent.parent : list;
 											list.add( listItem );
 										}
 										else
@@ -386,10 +394,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							delete element.name;
 							return;
 						}
-						// <cke:listbullet> been the first child of any paragraph
-						// indicate a list item.
-						if( 'cke:listbullet' == firstChild.name )
+						// <cke:listbullet> lies inside any paragraph indicate a list item.
+						var childs;
+						if( ( childs = element.anyChildWithName( 'cke:listbullet' ) )
+							 && childs.length )
 						{
+							var listMaker = childs[ 0 ];
 							element.name = 'cke:li';
 							attrs.style = stylesFilter(
 							[
@@ -402,7 +412,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							] )( attrs.style, element ) || '' ;
 
 							// Inherit list-type-style from bullet. 
-							var listBulletAttrs = firstChild.attributes,
+							var listBulletAttrs = listMaker.attributes,
 								listBulletStyle = listBulletAttrs.style;
 							attrs.style += ( listBulletStyle + ';' );
 							CKEDITOR.tools.extend( attrs, listBulletAttrs );
@@ -425,6 +435,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// Deprecates <font> in favor of stylish <span>.
 					'font' : function( element )
 					{
+						// IE: drop the font tag if it comes from list bullet text. 
+						if ( CKEDITOR.env.ie && isListBulletIndicator( element.parent ) )
+						{
+							delete element.name;
+							return;
+						}
+
 						element.filterChildren();
 						// Merge nested <font> tags.
 						var parent = element.parent;
@@ -460,36 +477,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					'span' : function( element )
 					{
+						// IE: remove the span if it comes from list bullet text.
+						if ( CKEDITOR.env.ie && isListBulletIndicator( element.parent ) )
+							return false;
+
 						element.filterChildren();
 
 						// List item bullet type is supposed to be indicated by
 						// the text of a span with style 'mso-list : Ignore'.
-						if( !CKEDITOR.env.gecko )
-						{
-							var attrs = element.attributes,
-									styles = attrs && attrs.style;
-							if( styles )
-							{
-								var marker;
-								stylesFilter(
-										[
-											[ 'mso-list', 'Ignore', function( value, element )
-											{
-
-												var listType = element.firstTextChild().value.match( /([^\s])([.)]?)/ );
-												marker = createListBulletMarker( listType );
-											} ]
-										] )( styles, element );
-
-								if( marker )
-									return marker;
-							}
-
-							// Kill an additional wrapping span.
-							var onlyChild = element.onlyChild();
-							if( onlyChild && 'cke:listbullet' == onlyChild.name )
-								return onlyChild;
-						}
+						if ( CKEDITOR.env.ie && isListBulletIndicator( element ) )
+							return createListBulletMarker( element.firstTextChild().value.match( /([^\s])([.)]?)/ ) );
 						
 						// Update the src attribute of image element with href.
 						var children = element.children,
@@ -596,7 +593,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					
 					'class' : function( value )
 					{
-						if( value.match( /^(:?Mso|Spell)/i ) )
+						if( value.match( /^(:?Mso|Spell|ListParagraph)/i ) )
 							return false;
 					},
 
@@ -643,6 +640,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			count = children.length,
 			firstChild = ( count == 1 ) && children[ 0 ];
 		return firstChild || null;
+	};
+
+	elementPrototype.anyChildWithName = function( tagName, includingSelf )
+	{
+		var children = this.children,
+			count = children && children.length,
+			childs = [];
+
+		if( includingSelf && this.name == tagName )
+			childs.push( this );
+
+		for ( var i = 0; i < count; i++ )
+		{
+			if( children[ i ].name  )
+				childs = childs.concat( children[ i ].anyChildWithName( tagName, true ) );
+		}
+		return childs;
 	};
 
 	fragmentPrototype.firstTextChild = elementPrototype.firstTextChild = function()

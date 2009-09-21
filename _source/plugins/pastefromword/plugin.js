@@ -89,7 +89,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				marker.attributes =
 				{
 					'cke:listtype' : listType,
-					'style' : 'list-style-type:' + bulletStyle 
+					'style' : 'list-style-type:' + bulletStyle + ';' 
 				};
 
 				return marker;
@@ -98,7 +98,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			isListBulletIndicator : function( element )
 			{
 				var styleText = element.attributes && element.attributes.style;
-				if( styleText == 'mso-list: Ignore' )
+				if( /mso-list:\s*Ignore/i.test( styleText ) )
 					return true;
 			}
 
@@ -126,7 +126,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						// from MS-Word which confused the following regexp. e.g.
 						//'font-family: &quot;Lucida, Console&quot;'
 						 styleText.replace( /&quot;/g, '"' )
-								  .replace( /\s*([^ :;]+?)\s*:\s*([^;]+?)\s*(?=;|$)/g,
+								  .replace( /\s*([^ :;]+)\s*:\s*([^;]+)\s*(?=;|$)/g,
 							 function( match, name, value )
 							 {
 								 name = name.toLowerCase();
@@ -414,7 +414,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// Inherit list-type-style from bullet. 
 							var listBulletAttrs = listMaker.attributes,
 								listBulletStyle = listBulletAttrs.style;
-							attrs.style += ( listBulletStyle + ';' );
+
+							attrs.style += listBulletStyle;
 							CKEDITOR.tools.extend( attrs, listBulletAttrs );
 							children.splice( 0, 1 );
 							return;
@@ -435,8 +436,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// Deprecates <font> in favor of stylish <span>.
 					'font' : function( element )
 					{
-						// IE: drop the font tag if it comes from list bullet text. 
-						if ( CKEDITOR.env.ie && isListBulletIndicator( element.parent ) )
+						// IE/Safari: drop the font tag if it comes from list bullet text.
+						if ( !CKEDITOR.env.gecko && isListBulletIndicator( element.parent ) )
 						{
 							delete element.name;
 							return;
@@ -477,15 +478,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					'span' : function( element )
 					{
-						// IE: remove the span if it comes from list bullet text.
-						if ( CKEDITOR.env.ie && isListBulletIndicator( element.parent ) )
+						// IE/Safari: remove the span if it comes from list bullet text.
+						if ( !CKEDITOR.env.gecko && isListBulletIndicator( element.parent ) )
 							return false;
 
 						element.filterChildren();
 
-						// List item bullet type is supposed to be indicated by
+						// For IE/Safari: List item bullet type is supposed to be indicated by
 						// the text of a span with style 'mso-list : Ignore'.
-						if ( CKEDITOR.env.ie && isListBulletIndicator( element ) )
+						if ( !CKEDITOR.env.gecko && isListBulletIndicator( element ) )
 							return createListBulletMarker( element.firstTextChild().value.match( /([^\s])([.)]?)/ ) );
 						
 						// Update the src attribute of image element with href.

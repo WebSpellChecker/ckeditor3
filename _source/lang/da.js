@@ -513,6 +513,7 @@ CKEDITOR.lang['da'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Indsæt fra Word',
 		title : 'Indsæt fra Word',
 		advice : 'Indsæt i feltet herunder (<STRONG>Ctrl+V</STRONG>) og klik <STRONG>OK</STRONG>.',

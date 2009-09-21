@@ -513,6 +513,7 @@ CKEDITOR.lang['en-au'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Paste from Word',
 		title : 'Paste from Word',
 		advice : 'Please paste inside the following box using the keyboard (<strong>Ctrl+V</strong>) and hit <strong>OK</strong>.',

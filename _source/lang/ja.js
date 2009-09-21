@@ -513,6 +513,7 @@ CKEDITOR.lang['ja'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'ワード文章から貼り付け',
 		title : 'ワード文章から貼り付け',
 		advice : 'キーボード(<STRONG>Ctrl+V</STRONG>)を使用して、次の入力エリア内で貼って、<STRONG>OK</STRONG>を押してください。',

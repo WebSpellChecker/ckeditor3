@@ -238,7 +238,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				CKEDITOR.pasteProcessor = function( editor )
 				{
 					this.editor = editor;
-					this.dataFilter = this.editor.dataProcessor.dataFilter.clone();
+					this.dataFilter = new CKEDITOR.htmlParser.filter();
 				};
 				CKEDITOR.pasteProcessor.prototype =
 				{

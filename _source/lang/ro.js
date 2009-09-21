@@ -513,6 +513,7 @@ CKEDITOR.lang['ro'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Adaugă din Word',
 		title : 'Adaugă din Word',
 		advice : 'Vă rugăm adăugaţi în căsuţa următoare folosind tastatura (<STRONG>Ctrl+V</STRONG>) şi apăsaţi <STRONG>OK</STRONG>.',

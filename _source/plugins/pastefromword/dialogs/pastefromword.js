@@ -125,7 +125,7 @@ CKEDITOR.dialog.add( 'pastefromword', function( editor )
 				var switcher;
 				( switcher = getConfigSwitcher( editor.config,'pasteFromWordIgnoreFontFace' ) )
 						( ignoreFontFace );
-				editor.fire( 'paste', { 'html' : html } );
+				editor.fire( 'paste', { 'html' : html, 'ms-word' : true } );
 				switcher();
 			}, 0 );
 		},

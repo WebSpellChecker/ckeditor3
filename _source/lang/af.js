@@ -513,6 +513,7 @@ CKEDITOR.lang['af'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Van Word af byvoeg',
 		title : 'Van Word af byvoeg',
 		advice : 'Voeg asseblief die inhoud in die gegewe box by met sleutel kombenasie(<STRONG>Ctrl+V</STRONG>) en druk <STRONG>OK</STRONG>.',

@@ -513,6 +513,7 @@ CKEDITOR.lang['ko'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'MS Word 형식에서 붙여넣기',
 		title : 'MS Word 형식에서 붙여넣기',
 		advice : '키보드의 (<STRONG>Ctrl+V</STRONG>) 를 이용해서 상자안에 붙여넣고 <STRONG>OK</STRONG> 를 누르세요.',

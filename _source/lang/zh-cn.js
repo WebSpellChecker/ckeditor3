@@ -513,6 +513,7 @@ CKEDITOR.lang['zh-cn'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : '从 MS Word 粘贴',
 		title : '从 MS Word 粘贴',
 		advice : '请使用键盘快捷键(<STRONG>Ctrl+V</STRONG>)把内容粘贴到下面的方框里，再按 <STRONG>确定</STRONG>',

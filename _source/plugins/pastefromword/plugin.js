@@ -26,7 +26,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					mswordHtml;
 				// MS-WORD format sniffing.
 				if ( ( mswordHtml = data[ 'html' ] )
-					 && /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml ) )
+					 && ( evt.data[ 'ms-word' ]
+						|| /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml )
+						   && confirm( editor.lang.pastefromword.confirmCleanup ) ) )
 				{
 					// Firefox will be confused by those downlevel-revealed IE conditional
 					// comments, fixing them first( convert it to upperlevel-revealed one ).
@@ -359,7 +361,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						var tagName = element.name || '';
 
 						// Processing headings.
-						if ( tagName.match( /h(\d)/i ) )
+						if ( tagName.match( /h\d/ ) )
 						{
 							element.filterChildren();
 							var onlyChild = element.onlyChild();
@@ -368,6 +370,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								&& !CKEDITOR.tools.trim( onlyChild.value ) )
 								return false;
 							delete element.attributes;
+							// Migrate heading formatting to editor configured ones.
+							elementMigrateFilter( config[ 'format_' + tagName ] )( element );
 						}
 						// Remove inline elements which contain only empty spaces.
 						else if( tagName.match( /^(:?b|u|i|strike|span)$/ ) )
@@ -520,9 +524,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							attrs.style += ( listBulletStyle + ';' );
 							CKEDITOR.tools.extend( attrs, listBulletAttrs );
 							children.splice( 0, 1 );
+							return;
 						}
+
+						// Migrate paragraph formatting based on editor's enter-mode.
+						if( config.enterMode == CKEDITOR.ENTER_BR )
+						{
+							delete element.name;
+							element.add( new CKEDITOR.htmlParser.element( 'br' ) );
+						}
+						else
+							elementMigrateFilter( config[ 'format_' + ( config.enterMode == CKEDITOR.ENTER_P ? 'p' : 'div' ) ] )( element );
 					},
 
+					'div' : elementMigrateFilter( config[ 'format_' + ( config.enterMode == CKEDITOR.ENTER_P ? 'p' : 'div' ) ] ),
+					
 					// Deprecates <font> in favor of stylish <span>.
 					'font' : function( element )
 					{
@@ -694,7 +710,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if( element.name in { td : 1, th : 1 } )
 							return false;
 					},
-					'class' : falsyFilter,
+					
+					'class' : function( value )
+					{
+						if( value.match( /^(:?Mso|Spell)/i ) )
+							return false;
+					},
 
 					// We always have both 'text-align' style company with
 					// 'align' attribute, drop the attribute.

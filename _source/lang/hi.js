@@ -513,6 +513,7 @@ CKEDITOR.lang['hi'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'पेस्ट (वर्ड से)',
 		title : 'पेस्ट (वर्ड से)',
 		advice : 'Ctrl+V का प्रयोग करके पेस्ट करें और ठीक है करें.',

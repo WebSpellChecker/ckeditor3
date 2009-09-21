@@ -513,6 +513,7 @@ CKEDITOR.lang['bg'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Вмъкни от MS Word',
 		title : 'Вмъкни от MS Word',
 		advice : 'Вмъкнете тук съдъжанието с клавиатуарата (<STRONG>Ctrl+V</STRONG>) и натиснете <STRONG>OK</STRONG>.',

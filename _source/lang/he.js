@@ -513,6 +513,7 @@ CKEDITOR.lang['he'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'הדבקה מ-וורד',
 		title : 'הדבקה מ-וורד',
 		advice : 'אנא הדבק בתוך הקופסה באמצעות  (<STRONG>Ctrl+V</STRONG>) ולחץ על  <STRONG>אישור</STRONG>.',

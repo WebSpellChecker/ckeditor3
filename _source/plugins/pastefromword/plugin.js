@@ -58,7 +58,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					listType;
 
 				// TODO: Support more list style type from MS-Word.
-				if ( bulletStyle[ 2 ] )
+				if( !bulletStyle )
+				{
+					bulletStyle = 'decimal';
+					listType = 'ol';
+				}
+				else if ( bulletStyle[ 2 ] )
 				{
 					if ( !isNaN( bulletStyle[ 1 ] ) )
 						bulletStyle = 'decimal';
@@ -73,11 +78,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 				else
 				{
-					if ( bulletStyle[ 1 ].search(/[l·•]/) != -1 )
+					if ( bulletStyle[ 1 ].search(/[l\u00B7\u2002]/) != -1 ) //l·•
 						bulletStyle = 'disc';
-					else if ( bulletStyle[ 1 ].search(/[oØ]/) != -1 )
+					else if ( bulletStyle[ 1 ].search(/[\u006F\u00D8]/) != -1 )  //oØ
 						bulletStyle = 'circle';
-					else if ( bulletStyle[ 1 ].search(/[n◆]/) != -1 )
+					else if ( bulletStyle[ 1 ].search(/[\u006E\u25C6]/) != -1 ) //n◆
 						bulletStyle = 'square';
 					else
 						bulletStyle = 'disc';
@@ -100,6 +105,38 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				var styleText = element.attributes && element.attributes.style;
 				if( /mso-list:\s*Ignore/i.test( styleText ) )
 					return true;
+			},
+
+			resolveList : function( element )
+			{
+				// <cke:listbullet> lies inside indicate a list item.
+				var children = element.children,
+					attrs = element.attributes,
+					listMarker;
+				if( ( listMarker = element.anyChildWithName( 'cke:listbullet' ) )
+					  && listMarker.length
+					  && ( listMarker = listMarker[ 0 ] ) )
+				{
+					element.name = 'cke:li';
+					attrs.style = CKEDITOR.plugins.pastefromword.filters.stylesFilter(
+					[
+						[ 'text-indent' ],
+						[ 'margin-left', null, function( value )
+						{
+							// Resolve indent level from 'margin-left' style.
+							attrs[ 'cke:indent' ] = parseInt( value );
+						} ]
+					] )( attrs.style, element ) || '' ;
+
+					// Inherit list-type-style from bullet.
+					var listBulletAttrs = listMarker.attributes,
+						listBulletStyle = listBulletAttrs.style;
+
+					attrs.style += listBulletStyle;
+					CKEDITOR.tools.extend( attrs, listBulletAttrs );
+					children.splice( 0, 1 );
+					return true;
+				}
 			}
 
 		},
@@ -184,8 +221,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									: styleDefiniton;
 						element.name = styleDef.element;
 						CKEDITOR.tools.extend( element.attributes, CKEDITOR.tools.clone( styleDef.attributes ) );
-						var attrs = element.attributes;
-						attrs.style = ( attrs.style || '' ) + CKEDITOR.style.getStyleText( styleDef );
+						element.addStyle( CKEDITOR.style.getStyleText( styleDef ) );
 					}
 				},
 
@@ -234,6 +270,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				bogusAttrFilter = this.filters.bogusAttrFilter,
 				createListBulletMarker = this.utils.createListBulletMarker,
 				isListBulletIndicator = this.utils.isListBulletIndicator,
+				resolveList = this.utils.resolveList,
 				listDtdParents = CKEDITOR.dtd.parentOf( 'ol' ),
 				config = editor.config,
 				ignoreFontFace = config.pasteFromWordIgnoreFontFace;
@@ -256,12 +293,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if ( tagName.match( /h\d/ ) )
 						{
 							element.filterChildren();
-							var onlyChild = element.onlyChild();
-							// Remove empty headings.
-							if( onlyChild && onlyChild.value
-								&& !CKEDITOR.tools.trim( onlyChild.value ) )
-								return false;
-							delete element.attributes;
+							// Heading might be a list.
+							if( resolveList( element ) )
+								return;
+
 							// Migrate heading formatting to editor configured ones.
 							elementMigrateFilter( config[ 'format_' + tagName ] )( element );
 						}
@@ -273,7 +308,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							if ( child && /^(:?\s|&nbsp;)+$/.exec( child.value ) )
 								delete element.name;
 						}
-						// Remove namespaced element while preserving the content.
+						// Remove ms-office namespaced element while preserving the content.
 						else if( tagName.indexOf( ':' ) != -1
 								 && tagName.indexOf( 'cke' ) == -1 )
 						{
@@ -390,36 +425,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							&& parent.onlyChild() )
 						{
 							if( attrs && attrs.style )
-								parent.attributes.style += ( attrs.style + ';' );
+								parent.addStyle( attrs.style  );
+
 							delete element.name;
 							return;
 						}
-						// <cke:listbullet> lies inside any paragraph indicate a list item.
-						var childs;
-						if( ( childs = element.anyChildWithName( 'cke:listbullet' ) )
-							 && childs.length )
-						{
-							var listMaker = childs[ 0 ];
-							element.name = 'cke:li';
-							attrs.style = stylesFilter(
-							[
-								[ 'text-indent' ],
-								[ 'margin-left', null, function( value )
-								{
-									// Resolve indent level from 'margin-left' style.
-									attrs[ 'cke:indent' ] = parseInt( value );
-								} ]
-							] )( attrs.style, element ) || '' ;
 
-							// Inherit list-type-style from bullet. 
-							var listBulletAttrs = listMaker.attributes,
-								listBulletStyle = listBulletAttrs.style;
-
-							attrs.style += listBulletStyle;
-							CKEDITOR.tools.extend( attrs, listBulletAttrs );
-							children.splice( 0, 1 );
+						// Paragraph might be a list.
+						if( resolveList( element ) )
 							return;
-						}
 
 						// Migrate paragraph formatting based on editor's enter-mode.
 						if( config.enterMode == CKEDITOR.ENTER_BR )
@@ -509,12 +523,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if( styleText )
 						attrs.style = stylesFilter(
 									[
-										[ 'font-family', null, styleMigrateFilter( config[ 'font_style' ], 'family' ) ],
+										[ /^font-family$/, null, styleMigrateFilter( config[ 'font_style' ], 'family' ) ],
 										// TODO: Convert 'pt' length unit into 'px'.
-										[ 'font-size', null, styleMigrateFilter( config[ 'fontSize_style' ], 'size' ) ],
+										[ /^font-size$/, null, styleMigrateFilter( config[ 'fontSize_style' ], 'size' ) ],
 										// TODO: Convert 'rgb' and 'descriptive' color into 'hexadecimal'. 
 										[ /^color$/, null, styleMigrateFilter( config[ 'colorButton_foreStyle' ], 'color' ) ],
-										[ 'background-color', null, styleMigrateFilter( config[ 'colorButton_backStyle' ], 'color' ) ]
+										[ /^background-color$/, null, styleMigrateFilter( config[ 'colorButton_backStyle' ], 'color' ) ]
 									] )( styleText, element ) || '';
 					},
 
@@ -555,24 +569,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					[
 						[ /mso-/ ],
 						[ /-moz-/ ],
-						// Replace verbose background color style.
-						[ /^background$/, null, function( value )
-						{
-							return value.match( /^[^\s]+/ )[ 0 ];
-						}, 'background-color' ],
 						[ 'background-color', 'transparent' ],
-						// Remove verbose border-color style within Firefox.
-						CKEDITOR.env.gecko ? [ 'border-color', /(:?windowtext|-moz-use-text-color|\s)*/ ] : null,
+						// Firefox: replacing Mozilla-specific color value.
+						CKEDITOR.env.gecko ? [ '-color', null, function( value, element )
+						{
+							return value.replace( /-moz-use-text-color/g, 'transparent' );	
+						} ]: null,
+						// Remove default border style.
+						[ /^border$/, /^(:?medium\s*)?none\s*$/ ],
 						// 'Indent' format migration(to use editor's indent unit).
 						[ /margin-?/, null, function( value, element )
 						{
 							if( element.name == 'p' )
 							{
+								//TODO: Migrate to 'indentClasses' based indenting format.  
 								value = value.replace( /\d*\.?\d+pt/g, function( length )
 								{
 									var pt = parseInt( length );
-									// Assume MS-Word indent unit length as '11pt'.
-									return ( pt / 11 * config.indentOffset ) + config.indentUnit;
+									// MS-Word indent unit is roughly 11pt.
+									return Math.round( pt / 11 * config.indentOffset ) + config.indentUnit;
 								} );
 							}
 							return value;
@@ -598,9 +613,26 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							return false;
 					},
 
-					// We always have both 'text-align' style company with
-					// 'align' attribute, drop the attribute.
-					'align' : falsyFilter
+					// MS-Word always generate both 'text-align' along with
+					// 'align' attribute( 'background-color' along with 'bgcolor'),
+					// simply drop the deprecated attributes.
+					'align' : falsyFilter,
+					'bgcolor' : falsyFilter,
+					// Deprecate 'valign' attribute in favor of 'vertical-align'.
+					'valign' : function( value, element )
+					{
+						// TODO: The style chang doesn't work now because of filtering system. 
+						if( value != 'top' )
+							element.addStyle( 'vertical-align', value );
+						return false;
+					},
+
+					// Avoid table 'border' attribute in favor of cell border styles.
+					'border' : function( value, element )
+					{
+						if( element.name == 'table' )
+							return false;
+					}
 				},
 
 				// Fore none-IE, some useful data might be buried under these IE-conditional
@@ -659,6 +691,37 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 		return childs;
 	};
+
+	// Adding a (set) of styles to the element's attributes.
+	elementPrototype.addStyle = function( name, value )
+	{
+		var styleText, addingStyleText = '';
+		// style literal.
+		if( typeof name == 'object' )
+		{
+			for( var style in name )
+			{
+				if( name.hasOwnProperty( style) )
+					addingStyleText += style + ':' + name[ style ] + ';';
+			}
+		}
+		// name/value pair.
+		else if( value )
+			addingStyleText += name + ':' + value + ';';
+		// raw style text form.
+		else
+			addingStyleText += name;
+
+		if( !this.attributes )
+			this.attributes = {};
+		styleText = this.attributes.style;
+		if( !styleText )
+			this.attributes.style = "";
+		else if( !/;$/.test( styleText ) )
+			this.attributes.style = styleText + ';';
+
+		this.attributes.style += addingStyleText;
+	}
 
 	fragmentPrototype.firstTextChild = elementPrototype.firstTextChild = function()
 	{

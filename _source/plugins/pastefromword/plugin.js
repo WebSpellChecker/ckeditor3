@@ -263,11 +263,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		getRules : function( editor )
 		{
-			var falsyFilter = this.filters.falsyFilter,
-				stylesFilter = this.filters.stylesFilter,
-				elementMigrateFilter = this.filters.elementMigrateFilter,
+			var filters = this.filters,
+				falsyFilter = filters.falsyFilter,
+				stylesFilter = filters.stylesFilter,
+				elementMigrateFilter = filters.elementMigrateFilter,
 				styleMigrateFilter = CKEDITOR.tools.bind( this.filters.styleMigrateFilter, this.filters ),
-				bogusAttrFilter = this.filters.bogusAttrFilter,
+				bogusAttrFilter = filters.bogusAttrFilter,
 				createListBulletMarker = this.utils.createListBulletMarker,
 				isListBulletIndicator = this.utils.isListBulletIndicator,
 				resolveList = this.utils.resolveList,
@@ -280,7 +281,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				elementNames :
 				[
 					// Remove script, meta and link elements.
-					[ /meta|link|script|style/, '' ]
+					[ /meta|link|script/, '' ]
 				],
 
 				elements :
@@ -288,6 +289,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					$ : function( element )
 					{
 						var tagName = element.name || '';
+
+						// Resolve inline css style for Firefox.
+						var applyStyleFilter;
+						if( CKEDITOR.env.gecko && ( applyStyleFilter = filters.applyStyleFilter ) )
+							applyStyleFilter( element );
+
 
 						// Processing headings.
 						if ( tagName.match( /h\d/ ) )
@@ -409,7 +416,62 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							element.filterChildren();
 						}
 					},
+					// We would like drop any style sheet, but Firefox conclude
+					// certain styles in it, so we're required to change them into
+					// inline ones.
+					'style' : function( element )
+					{
+						if( CKEDITOR.env.gecko && !filters.applyStyleFilter )
+						{
+							var styleDefSection = element.onlyChild().value.match( /\/\* Style Definitions \*\/([\s\S]*?)\/\*/ ),
+								styleDefText = styleDefSection && styleDefSection[ 1 ],
+								rules = {};
 
+							if( styleDefText )
+							{
+								styleDefText.replace(/[\n\r]/g,'') // remove line-breaks.
+											// Extract selectors and rules.
+											.replace( /(.+?)\s*\{(.+?)\}/g,
+								function( rule, selectors, styleBlock )
+								{
+									selectors = selectors.split( ',' );
+									var length = selectors.length,
+										selector;
+									for ( var i = 0; i < length; i++ )
+									{
+										CKEDITOR.tools.trim( selectors[ i ] )
+													  .replace( /^(\w+?)(\.[\w-]+)?$/g,
+										function( match, tagName, className )
+										{
+											tagName = tagName || '*';
+											className = className.substring( 1, className.length );
+											if( !rules[ tagName ] )
+												rules[ tagName ] = {};
+											if( className )
+												rules[ tagName ][ className ] = styleBlock;
+											else
+												rules[ tagName ] = styleBlock;
+										} );
+									}
+								} );
+
+								filters.applyStyleFilter = function( element )
+								{
+									var name = rules[ '*' ] ? '*' : element.name,
+										className = element.attributes && element.attributes[ 'class' ],
+										style;
+									if( name in rules )
+									{
+										style = rules[ name ];
+										if( typeof style == 'object' )
+											style = style[ className ];
+										style && element.addStyle( style );
+									}
+								};
+							}
+						}
+						return false;
+					},
 					'p' : function( element )
 					{
 						element.filterChildren();
@@ -445,8 +507,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							elementMigrateFilter( config[ 'format_' + ( config.enterMode == CKEDITOR.ENTER_P ? 'p' : 'div' ) ] )( element );
 					},
 
-					'div' : elementMigrateFilter( config[ 'format_' + ( config.enterMode == CKEDITOR.ENTER_P ? 'p' : 'div' ) ] ),
-					
 					// Deprecates <font> in favor of stylish <span>.
 					'font' : function( element )
 					{
@@ -472,21 +532,29 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						{
 							var attrs = element.attributes,
 								styleText = '';
-							if( attrs.color )
+							if ( attrs.color )
+							{
 								styleText += 'color:' + attrs.color + ';';
-							if( attrs.face )
+								delete attrs.color;
+							}
+							if ( attrs.face )
+							{
 								styleText += 'font-family:' + attrs.face + ';';
+								delete attrs.face;
+							}
 							// TODO: Mapping size in ranges of xx-small,
 							// x-small, small, medium, large, x-large, xx-large.
-							if( attrs.size )
+							if ( attrs.size )
+							{
 								styleText += 'font-size:' +
-								            ( attrs.size > 3 ? 'larger'
-										      : ( attrs.size < 3 ? 'smaller' : 'medium' ) )+ ';';
-
-							if( styleText )
-								element.attributes = { 'style' : styleText };
+								             ( attrs.size > 3 ? 'large'
+										             : ( attrs.size < 3 ? 'small' : 'medium' ) ) + ';';
+								delete attrs.size;
+							}
 
 							element.name = 'span';
+							element.addStyle( styleText );
+
 						}
 					},
 
@@ -524,9 +592,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						attrs.style = stylesFilter(
 									[
 										[ /^font-family$/, null, styleMigrateFilter( config[ 'font_style' ], 'family' ) ],
-										// TODO: Convert 'pt' length unit into 'px'.
 										[ /^font-size$/, null, styleMigrateFilter( config[ 'fontSize_style' ], 'size' ) ],
-										// TODO: Convert 'rgb' and 'descriptive' color into 'hexadecimal'. 
 										[ /^color$/, null, styleMigrateFilter( config[ 'colorButton_foreStyle' ], 'color' ) ],
 										[ /^background-color$/, null, styleMigrateFilter( config[ 'colorButton_backStyle' ], 'color' ) ]
 									] )( styleText, element ) || '';
@@ -545,6 +611,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if( href )
 							element.attributes.src = href;
 						element.name = 'img';
+					},
+					// Editor doesn't support anchor with content currently(#3582),
+					// drop such anchors.
+					'a' : function( element )
+					{
+						var attrs = element.attributes;
+						if( attrs && !attrs.href && attrs.name )
+							delete element.name;
 					}
 				},
 
@@ -709,7 +783,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		else if( value )
 			addingStyleText += name + ':' + value + ';';
 		// raw style text form.
-		else
+		else if( name )
 			addingStyleText += name;
 
 		if( !this.attributes )

@@ -53,7 +53,8 @@ CKEDITOR.dtd = (function()
 		P = X({form:1},A,D,E,I),
 		Q = {li:1};
 
-	var block = {address:1,blockquote:1,center:1,dir:1,div:1,dl:1,fieldset:1,form:1,h1:1,h2:1,h3:1,h4:1,h5:1,h6:1,hr:1,isindex:1,menu:1,noframes:1,ol:1,p:1,pre:1,table:1,ul:1};
+	var block = {address:1,blockquote:1,center:1,dir:1,div:1,dl:1,fieldset:1,form:1,h1:1,h2:1,h3:1,h4:1,h5:1,h6:1,hr:1,isindex:1,menu:1,noframes:1,ol:1,p:1,pre:1,table:1,ul:1},
+		nonEmptyInline = { abbr:1,acronym:1,b:1,bdo:1,big:1,cite:1,code:1,del:1,dfn:1,em:1,font:1,i:1,ins:1,label:1,kbd:1,q:1,samp:1,small:1,span:1,strike:1,strong:1,sub:1,sup:1,tt:1,u:1,'var':1 };
 
     return /** @lends CKEDITOR.dtd */ {
 
@@ -65,6 +66,13 @@ CKEDITOR.dtd = (function()
 		 * @example
 		 */
 		$block : block,
+
+	    /**
+	     * List of non-empty inline elements, like "b" or "a".
+	     * @type Object
+	     * @example
+	     */
+	    $nonEmptyInline : nonEmptyInline,
 
 		$body : X({script:1}, block),
 

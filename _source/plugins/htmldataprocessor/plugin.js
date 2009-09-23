@@ -77,7 +77,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		[
 			// Event attributes (onXYZ) must not be directly set. They can become
 			// active in the editing area (IE|WebKit).
-			[ ( /^on/ ), '_cke_pa_on' ]
+			[ ( /^on/ ), '_cke_pa_on' ],
+			// Bogus attributes.  
+			[ /^cke:/, '' ]
 		],
 		elements :
 		{

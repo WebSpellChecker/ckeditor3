@@ -49,6 +49,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	CKEDITOR.plugins.pastefromword =
 	{
+		_ :
+		{
+			cachedRules : null
+		},
+
 		utils :
 		{
 			// Create a <cke:listbullet> which indicate an list item type.
@@ -107,6 +112,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					return true;
 			},
 
+			isContainingOnlySpaces : function( element )
+			{
+				var text;
+				return ( ( text = element.onlyChild() )
+					    && /^(:?\s|&nbsp;)+$/.exec( text.value ) );
+			},
+
 			resolveList : function( element )
 			{
 				// <cke:listbullet> lies inside indicate a list item.
@@ -141,7 +153,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		},
 
-		filters : {
+		filters :
+		{
 				/**
 				 * A simple filter which always rejecting.
 				 */
@@ -257,13 +270,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					if( element.name.indexOf( 'cke:' ) == -1 )
 						return false;
-				}
+				},
+
+				/**
+				 * A filter which will be used to apply inline css style according the stylesheet
+				 * definition rules, is generated lazily when filtering.  
+				 */
+				applyStyleFilter : null
 
 			},
 
 		getRules : function( editor )
 		{
-			var filters = this.filters,
+			var cached;
+			if( cached = this._.cachedRules )
+				return cached;
+
+			var dtd = CKEDITOR.dtd,
+				listDtdParents = dtd.parentOf( 'ol' ),
+				filters = this.filters,
 				falsyFilter = filters.falsyFilter,
 				stylesFilter = filters.stylesFilter,
 				elementMigrateFilter = filters.elementMigrateFilter,
@@ -271,8 +296,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				bogusAttrFilter = filters.bogusAttrFilter,
 				createListBulletMarker = this.utils.createListBulletMarker,
 				isListBulletIndicator = this.utils.isListBulletIndicator,
-				resolveList = this.utils.resolveList,
-				listDtdParents = CKEDITOR.dtd.parentOf( 'ol' ),
+				containsNothingButSpaces = this.utils.isContainingOnlySpaces,
+				resolveListItem = this.utils.resolveList,
 				config = editor.config,
 				ignoreFontFace = config.pasteFromWordIgnoreFontFace;
 
@@ -290,63 +315,56 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						var tagName = element.name || '';
 
-						// Resolve inline css style for Firefox.
+						// Firefox: adding inline style. 
 						var applyStyleFilter;
 						if( CKEDITOR.env.gecko && ( applyStyleFilter = filters.applyStyleFilter ) )
 							applyStyleFilter( element );
 
-
+						// IE leave empty spaces at the beginning of body. 
+						if ( !tagName )
+						{
+							var textNode = element.firstTextChild();
+							if ( textNode && textNode.value.match( /^(:?\s|&nbsp;)+$/ ) )
+								element.children.splice( 0, 1 );
+						}
 						// Processing headings.
-						if ( tagName.match( /h\d/ ) )
+						else if ( tagName.match( /h\d/ ) )
 						{
 							element.filterChildren();
-							// Heading might be a list.
-							if( resolveList( element ) )
+							// Is the heading actually a list item?
+							if( resolveListItem( element ) )
 								return;
 
-							// Migrate heading formatting to editor configured ones.
+							// Adapt heading styles to editor's convention.
 							elementMigrateFilter( config[ 'format_' + tagName ] )( element );
 						}
 						// Remove inline elements which contain only empty spaces.
-						else if( tagName.match( /^(:?b|u|i|strike|span)$/ ) )
+						else if( tagName in dtd.$nonEmptyInline )
 						{
 							element.filterChildren();
-							var child = element.onlyChild();
-							if ( child && /^(:?\s|&nbsp;)+$/.exec( child.value ) )
+							if( containsNothingButSpaces( element ) )
 								delete element.name;
 						}
-						// Remove ms-office namespaced element while preserving the content.
+						// Remove ms-office namespaced element, with it's content preserved.
 						else if( tagName.indexOf( ':' ) != -1
 								 && tagName.indexOf( 'cke' ) == -1 )
 						{
 							element.filterChildren();
 
-							// Restore img element from vml.
+							// Restore image real link from vml.
 							if( tagName == 'v:imagedata' )
 							{
 								var href = element.attributes[ 'o:href' ];
 								if ( href )
 									element.attributes.src = href;
 								element.name = 'img';
+								return;
 							}
-							else
-								delete element.name;
-						}
-						else if ( !tagName )
-						{
-							// Trim empty spaces at the beginning of document for IE. 
-							if( CKEDITOR.env.ie )
-							{
-								var firstTextChild = element.firstTextChild();
-								if ( firstTextChild
-									 && firstTextChild.value.match( /^(:?\s|&nbsp;)+$/ ) )
-									element.children.splice( 0, 1 );
-							}
+							delete element.name;
 						}
 
-						// Any dtd-valid element which could contain a list.
-						if( !tagName && element.children
-								 || tagName in listDtdParents )
+						// Assembling list items into a whole list.
+						if( !tagName || tagName in listDtdParents )
 						{
 							element.filterChildren();
 
@@ -410,41 +428,40 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								else
 									list = null;
 							}
-
-							// Filter childrens again for cleaning up
-							// the list attributes.
-							element.filterChildren();
 						}
 					},
-					// We would like drop any style sheet, but Firefox conclude
-					// certain styles in it, so we're required to change them into
+					// We'll drop any style sheet, but Firefox conclude
+					// certain styles in it, so they're required to be changed into
 					// inline ones.
 					'style' : function( element )
 					{
 						if( CKEDITOR.env.gecko && !filters.applyStyleFilter )
 						{
+							// Grab only the style definition section.
 							var styleDefSection = element.onlyChild().value.match( /\/\* Style Definitions \*\/([\s\S]*?)\/\*/ ),
 								styleDefText = styleDefSection && styleDefSection[ 1 ],
-								rules = {};
+								rules = {}; // Storing the parsed result.   
 
 							if( styleDefText )
 							{
 								styleDefText.replace(/[\n\r]/g,'') // remove line-breaks.
-											// Extract selectors and rules.
-											.replace( /(.+?)\s*\{(.+?)\}/g,
+											// Extract selectors and style properties.
+											.replace( /(.+?)\{(.+?)\}/g,
 								function( rule, selectors, styleBlock )
 								{
 									selectors = selectors.split( ',' );
-									var length = selectors.length,
-										selector;
+									var length = selectors.length, selector;
 									for ( var i = 0; i < length; i++ )
 									{
+										// Assume MS-Word mostly generate only simple
+										// selector( [Type selector][Class selector]).
 										CKEDITOR.tools.trim( selectors[ i ] )
-													  .replace( /^(\w+?)(\.[\w-]+)?$/g,
+													  .replace( /^(\w+)(\.[\w-]+)?$/g,
 										function( match, tagName, className )
 										{
 											tagName = tagName || '*';
 											className = className.substring( 1, className.length );
+
 											if( !rules[ tagName ] )
 												rules[ tagName ] = {};
 											if( className )
@@ -478,28 +495,28 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						var attrs = element.attributes,
 							parent = element.parent,
-							children = element.children,
-							firstChild = children && children[ 0 ];
+							children = element.children;
 
 						// Drop the single wrapper paragraph within table cell
-						// while preserve the styles.
+						// with all attributes preserved to cell.
 						if( /td|th/.test( parent.name )
 							&& parent.onlyChild() )
 						{
-							if( attrs && attrs.style )
-								parent.addStyle( attrs.style  );
-
+							CKEDITOR.tools.extend( parent.attributes, attrs );
+							attrs && parent.addStyle( attrs.style  );
 							delete element.name;
 							return;
 						}
 
-						// Paragraph might be a list.
-						if( resolveList( element ) )
+						// Is the paragraph actually a list item?
+						if( resolveListItem( element ) )
 							return;
 
-						// Migrate paragraph formatting based on editor's enter-mode.
+						// Adapt paragraph formatting to editor's convention
+						// according to enter-mode.
 						if( config.enterMode == CKEDITOR.ENTER_BR )
 						{
+							// We suffer from attribute/style lost in this situation.   
 							delete element.name;
 							element.add( new CKEDITOR.htmlParser.element( 'br' ) );
 						}
@@ -518,20 +535,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 
 						element.filterChildren();
-						// Merge nested <font> tags.
-						var parent = element.parent;
-						if( 'font' == parent.name )
+
+						var attrs = element.attributes,
+							parent = element.parent;
+						
+						if( 'font' == parent.name )     // Merge nested <font> tags.
 						{
 							CKEDITOR.tools.extend( parent.attributes,
 									element.attributes );
+							attrs && parent.addStyle( attrs.style );
 							delete element.name;
 							return;
 						}
-						// Convert the topmost into a span with font-styles.
+						// Convert the merged into a span with all attributes preserved.
 						else
 						{
-							var attrs = element.attributes,
-								styleText = '';
+							var styleText = attrs.style || '';
+							// IE's having those deprecated attributes, normalize them.
 							if ( attrs.color )
 							{
 								styleText += 'color:' + attrs.color + ';';
@@ -551,10 +571,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										             : ( attrs.size < 3 ? 'small' : 'medium' ) ) + ';';
 								delete attrs.size;
 							}
-
 							element.name = 'span';
 							element.addStyle( styleText );
-
 						}
 					},
 
@@ -573,23 +591,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						
 						// Update the src attribute of image element with href.
 						var children = element.children,
-							firstChild = children && children[ 0 ],
-							secondChild;
-						if( firstChild
-							&& 'cke:imagesource' == firstChild.name )
+							attrs = element.attributes,
+							styleText = attrs && attrs.style,
+							firstChild = children && children[ 0 ];
+
+						if( firstChild && firstChild.name == 'cke:imagesource' )
 						{
-							secondChild = children[ 1 ];
+							var secondChild = children[ 1 ];
 							if ( 'img' == secondChild.name )
 								secondChild.attributes.src = firstChild.attributes.src;
 							children.splice( 0, 1 );
 							delete element.name;
 						}
 
-						// Migrate font related styles.
-						var attrs = element.attributes,
-							styleText = attrs && attrs.style;
+						// Assume MS-Word mostly carry font related styles on <span>,
+						// adapting them to editor's convention.
 						if( styleText )
-						attrs.style = stylesFilter(
+							attrs.style = stylesFilter(
 									[
 										[ /^font-family$/, null, styleMigrateFilter( config[ 'font_style' ], 'family' ) ],
 										[ /^font-size$/, null, styleMigrateFilter( config[ 'fontSize_style' ], 'size' ) ],
@@ -605,15 +623,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					's' : elementMigrateFilter( config[ 'coreStyles_strike' ] ),
 					'sup' : elementMigrateFilter( config[ 'coreStyles_superscript' ] ),
 					'sub' : elementMigrateFilter( config[ 'coreStyles_subscript' ] ),
-					'v:imagedata' : function( element )
-					{
-						var href = element.attributes['o:href'];
-						if( href )
-							element.attributes.src = href;
-						element.name = 'img';
-					},
-					// Editor doesn't support anchor with content currently(#3582),
-					// drop such anchors.
+					// Editor doesn't support anchor with content currently (#3582),
+					// drop such anchors with content preserved.
 					'a' : function( element )
 					{
 						var attrs = element.attributes;
@@ -635,10 +646,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				attributes :
 				{
-					'cke:listtype' : bogusAttrFilter,
-					'cke:indent' : bogusAttrFilter,
-					// Remove mso-xxx styles.
-					// Remove margin styles.
 					'style' : stylesFilter(
 					[
 						[ /mso-/ ],
@@ -674,39 +681,35 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						[ 'text-align', 'left' ],
 						ignoreFontFace ? [ /font-?/ ] : null,
 					] ),
+					// Prefer width styles over 'width' attributes.
 					'width' : function( value, element )
 					{
-						// Prefer width style over attribute on table cell.
-						if( element.name in { td : 1, th : 1 } )
+						if( element.name in dtd.$tableContent )
 							return false;
 					},
-					
-					'class' : function( value )
+					// Prefer border styles over table 'border' attributes.
+					'border' : function( value, element )
 					{
-						if( value.match( /^(:?Mso|Spell|ListParagraph)/i ) )
+						if( element.name in dtd.$tableContent )
 							return false;
 					},
+
+					'class' : falsyFilter,
 
 					// MS-Word always generate both 'text-align' along with
 					// 'align' attribute( 'background-color' along with 'bgcolor'),
 					// simply drop the deprecated attributes.
 					'align' : falsyFilter,
 					'bgcolor' : falsyFilter,
+
 					// Deprecate 'valign' attribute in favor of 'vertical-align'.
 					'valign' : function( value, element )
 					{
-						// TODO: The style chang doesn't work now because of filtering system. 
 						if( value != 'top' )
 							element.addStyle( 'vertical-align', value );
 						return false;
-					},
-
-					// Avoid table 'border' attribute in favor of cell border styles.
-					'border' : function( value, element )
-					{
-						if( element.name == 'table' )
-							return false;
 					}
+
 				},
 
 				// Fore none-IE, some useful data might be buried under these IE-conditional
@@ -725,18 +728,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					if( imageSource )
 						return new CKEDITOR.htmlParser.element( 'cke:imagesource', { src : imageSource[ 1 ] } );
 					// Seek for list bullet style indicator.
-					else if ( listInfo )
+					if ( listInfo )
 					{
 						var listSymbol = listInfo[ 1 ],
 							listType = listSymbol.match( />([^\s])([.)]?)</ );
-
 						return createListBulletMarker( listType );
 					}
 					return false;
 				} : falsyFilter
 			};
 		}
-	}
+	};
 
 	var fragmentPrototype = CKEDITOR.htmlParser.fragment.prototype,
 		elementPrototype = CKEDITOR.htmlParser.element.prototype;
@@ -764,6 +766,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				childs = childs.concat( children[ i ].anyChildWithName( tagName, true ) );
 		}
 		return childs;
+	};
+
+	fragmentPrototype.firstTextChild = elementPrototype.firstTextChild = function()
+	{
+		var child;
+		for( var i = 0 ; i < this.children.length ; i++ )
+		{
+			child = this.children[ i ];
+			if( child.value )
+				return child;
+		}
 	};
 
 	// Adding a (set) of styles to the element's attributes.
@@ -796,17 +809,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		this.attributes.style += addingStyleText;
 	}
-
-	fragmentPrototype.firstTextChild = elementPrototype.firstTextChild = function()
-	{
-		var child;
-		for( var i = 0 ; i < this.children.length ; i++ )
-		{
-			child = this.children[ i ];
-			if( child.value )
-				return child;
-		}
-	};
 
 	/**
 	 * Return the DTD-valid parent tag names of the specified one.

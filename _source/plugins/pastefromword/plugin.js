@@ -612,14 +612,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							children.splice( 0, 1 );
 							delete element.name;
 						}
-
+						
 						// Assume MS-Word mostly carry font related styles on <span>,
 						// adapting them to editor's convention.
 						if( styleText )
 							attrs.style = stylesFilter(
 									[
-										[ /^font-family$/, null, styleMigrateFilter( config[ 'font_style' ], 'family' ) ],
-										[ /^font-size$/, null, styleMigrateFilter( config[ 'fontSize_style' ], 'size' ) ],
+										!ignoreFontFace ? [ /^font-family$/, null, styleMigrateFilter( config[ 'font_style' ], 'family' ) ] : null,
+										!ignoreFontFace ? [ /^font-size$/, null, styleMigrateFilter( config[ 'fontSize_style' ], 'size' ) ] : null,
 										[ /^color$/, null, styleMigrateFilter( config[ 'colorButton_foreStyle' ], 'color' ) ],
 										[ /^background-color$/, null, styleMigrateFilter( config[ 'colorButton_backStyle' ], 'color' ) ]
 									] )( styleText, element ) || '';

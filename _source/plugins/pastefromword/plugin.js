@@ -342,7 +342,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						else if( tagName in dtd.$nonEmptyInline )
 						{
 							element.filterChildren();
-							if( containsNothingButSpaces( element ) )
+							if ( containsNothingButSpaces(element) )
 								delete element.name;
 						}
 						// Remove ms-office namespaced element, with it's content preserved.
@@ -431,11 +431,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 					},
 					// We'll drop any style sheet, but Firefox conclude
-					// certain styles in it, so they're required to be changed into
-					// inline ones.
+					// certain styles in a single style element, which are
+					// required to be changed into inline ones.
 					'style' : function( element )
 					{
-						if( CKEDITOR.env.gecko && !filters.applyStyleFilter )
+						if( CKEDITOR.env.gecko )
 						{
 							// Grab only the style definition section.
 							var styleDefSection = element.onlyChild().value.match( /\/\* Style Definitions \*\/([\s\S]*?)\/\*/ ),
@@ -461,6 +461,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										{
 											tagName = tagName || '*';
 											className = className.substring( 1, className.length );
+
+											// Reject MS-Word Normal styles.
+											if( className.match( /MsoNormal/ ) )
+												return;
 
 											if( !rules[ tagName ] )
 												rules[ tagName ] = {};
@@ -583,6 +587,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							return false;
 
 						element.filterChildren();
+						if( containsNothingButSpaces( element ) )
+						{
+							delete element.name;
+							return;
+						}
 
 						// For IE/Safari: List item bullet type is supposed to be indicated by
 						// the text of a span with style 'mso-list : Ignore'.

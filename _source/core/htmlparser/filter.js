@@ -91,6 +91,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						if ( ret && ret != element )
 							return this.onElement( ret );
+
+						// The element has been dismissed by one of the filters.
+						if( !element.name )
+							break;
 					}
 				}
 

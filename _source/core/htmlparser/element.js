@@ -102,7 +102,7 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 			// Ignore cke: prefixes when writing HTML.
 			var element = this,
 				writeName = element.name,
-				a, value;
+				a, newAttrName, value;
 
 			var isChildrenFiltered;
 
@@ -155,41 +155,35 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 			// Open element tag.
 			writer.openTag( writeName, attributes );
 
-			if ( writer.sortAttributes )
+			// Copy all attributes to an array.
+			var attribsArray = [];
+			// Iterate over the attributes twice since filters may alter
+			// other attributes.
+			for( var i = 0 ; i < 2; i++ )
 			{
-				// Copy all attributes to an array.
-				var attribsArray = [];
 				for ( a in attributes )
 				{
+					newAttrName = a;
 					value = attributes[ a ];
-
-					if ( filter && ( !( a = filter.onAttributeName( a ) ) || ( value = filter.onAttribute( element, a, value ) ) === false ) )
-						continue;
-
-					attribsArray.push( [ a, value ] );
-				}
-
-				// Sort the attributes by name.
-				attribsArray.sort( sortAttribs );
-
-				// Send the attributes.
-				for ( var i = 0, len = attribsArray.length ; i < len ; i++ )
-				{
-					var attrib = attribsArray[ i ];
-					writer.attribute( attrib[0], attrib[1] );
+					if( i == 1 )
+						attribsArray.push( [ a, value ] );
+					else if ( filter &&
+					          ( !( newAttrName = filter.onAttributeName( a ) )
+							          || ( value = filter.onAttribute( element, newAttrName, value ) ) === false ) )
+						delete attributes[ a ];
+					else
+						attributes[ newAttrName ] = value;
 				}
 			}
-			else
+			// Sort the attributes by name.
+			if ( writer.sortAttributes )
+				attribsArray.sort( sortAttribs );
+
+			// Send the attributes.
+			for ( i = 0, len = attribsArray.length ; i < len ; i++ )
 			{
-				for ( a in attributes )
-				{
-					value = attributes[ a ];
-
-					if ( filter && ( !( a = filter.onAttributeName( a ) ) || ( value = filter.onAttribute( element, a, value ) ) === false ) )
-						continue;
-
-					writer.attribute( a, value );
-				}
+				var attrib = attribsArray[ i ];
+				writer.attribute( attrib[0], attrib[1] );
 			}
 
 			// Close the tag.

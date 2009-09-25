@@ -47,13 +47,93 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	} );
 
+	var fragmentPrototype = CKEDITOR.htmlParser.fragment.prototype,
+		elementPrototype = CKEDITOR.htmlParser.element.prototype;
+
+	fragmentPrototype.onlyChild = elementPrototype.onlyChild = function()
+	{
+		var children = this.children,
+			count = children.length,
+			firstChild = ( count == 1 ) && children[ 0 ];
+		return firstChild || null;
+	};
+
+	elementPrototype.anyChildWithName = function( tagName, includingSelf )
+	{
+		var children = this.children,
+			count = children && children.length,
+			childs = [];
+
+		if( includingSelf && this.name == tagName )
+			childs.push( this );
+
+		for ( var i = 0; i < count; i++ )
+		{
+			if( children[ i ].name  )
+				childs = childs.concat( children[ i ].anyChildWithName( tagName, true ) );
+		}
+		return childs;
+	};
+
+	fragmentPrototype.firstTextChild = elementPrototype.firstTextChild = function()
+	{
+		var child;
+		for( var i = 0 ; i < this.children.length ; i++ )
+		{
+			child = this.children[ i ];
+			if( child.value )
+				return child;
+		}
+	};
+
+	// Adding a (set) of styles to the element's attributes.
+	elementPrototype.addStyle = function( name, value )
+	{
+		var styleText, addingStyleText = '';
+		// style literal.
+		if( typeof name == 'object' )
+		{
+			for( var style in name )
+			{
+				if( name.hasOwnProperty( style) )
+					addingStyleText += style + ':' + name[ style ] + ';';
+			}
+		}
+		// name/value pair.
+		else if( value )
+			addingStyleText += name + ':' + value + ';';
+		// raw style text form.
+		else if( name )
+			addingStyleText += name;
+
+		if( !this.attributes )
+			this.attributes = {};
+		styleText = this.attributes.style;
+		if( !styleText )
+			this.attributes.style = "";
+		else if( !/;$/.test( styleText ) )
+			this.attributes.style = styleText + ';';
+
+		this.attributes.style += addingStyleText;
+	}
+
+	/**
+	 * Return the DTD-valid parent tag names of the specified one.
+	 * @param tagName
+	 */
+	CKEDITOR.dtd.parentOf = function( tagName )
+	{
+		var result = {};
+		for( var tag in this )
+		{
+			if( tag.indexOf( '$' ) == -1 && this[ tag ][ tagName ] )
+				result[ tag ] = 1;
+		}
+		return result;
+	};
+	
 	CKEDITOR.plugins.pastefromword =
 	{
-		_ :
-		{
-			cachedRules : null
-		},
-
 		utils :
 		{
 			// Create a <cke:listbullet> which indicate an list item type.
@@ -149,8 +229,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					children.splice( 0, 1 );
 					return true;
 				}
-			}
+			},
 
+			listDtdParents : CKEDITOR.dtd.parentOf( 'ol' )
 		},
 
 		filters :
@@ -164,8 +245,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				},
 
 				/**
-				 * A filter dedicated on the 'style' attribute for dropping/replacing style rules.
-				 * @param styles {Array} A triple in form of [ styleNameRegexp, styleValueRegexp, newStyleValue ] where the last two are optional.
+				 * A filter dedicated on the 'style' attribute filtering, e.g. dropping/replacing style properties.
+				 * @param styles {Array} in form of [ styleNameRegexp, styleValueRegexp,
+				 *  newStyleValue/newStyleGenerator, newStyleName ] where only the first
+				 *  parameter is mandatory.
 				 */
 				stylesFilter : function( styles )
 				{
@@ -282,12 +365,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		getRules : function( editor )
 		{
-			var cached;
-			if( cached = this._.cachedRules )
-				return cached;
-
 			var dtd = CKEDITOR.dtd,
-				listDtdParents = dtd.parentOf( 'ol' ),
+				config = editor.config,
 				filters = this.filters,
 				falsyFilter = filters.falsyFilter,
 				stylesFilter = filters.stylesFilter,
@@ -298,7 +377,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				isListBulletIndicator = this.utils.isListBulletIndicator,
 				containsNothingButSpaces = this.utils.isContainingOnlySpaces,
 				resolveListItem = this.utils.resolveList,
-				config = editor.config,
+				listDtdParents = this.utils.listDtdParents,
 				ignoreFontFace = config.pasteFromWordIgnoreFontFace;
 
 			return {
@@ -649,22 +728,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// Remove office and vml attribute from elements.
 					[ /(?:v|o):\w+/, '' ],
 					// Remove lang/language attributes.
-					[ /^lang/, '' ],
-					ignoreFontFace ? [ /^(?:face|font|size)/, '' ] : null
+					[ /^lang/, '' ]
 				],
 
 				attributes :
 				{
 					'style' : stylesFilter(
 					[
-						[ /mso-/ ],
-						[ /-moz-/ ],
-						[ 'background-color', 'transparent' ],
-						// Firefox: replacing Mozilla-specific color value.
-						CKEDITOR.env.gecko ? [ '-color', null, function( value, element )
+						[ /^mso-/ ],
+						// Fixing color values.
+						[ /-color$/, null, function( value )
 						{
-							return value.replace( /-moz-use-text-color/g, 'transparent' );	
-						} ]: null,
+							if( value == 'transparent' )
+								return false;
+							if( CKEDITOR.env.gecko )
+								return value.replace( /-moz-use-text-color/g, 'transparent' );
+						} ],
 						// Remove default border style.
 						[ /^border$/, /^(:?medium\s*)?none\s*$/ ],
 						// 'Indent' format migration(to use editor's indent unit).
@@ -682,7 +761,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							}
 							return value;
 						} ],
-						[ 'margin', /0(?:cm|in) 0(?:cm|in) 0pt/ ],
+						[ /^margin$/, /0(?:cm|in) 0(?:cm|in) 0pt/ ],
 						[ 'text-indent', '0cm' ],
 						[ 'page-break-before' ],
 						[ 'tab-stops' ],
@@ -714,7 +793,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// Deprecate 'valign' attribute in favor of 'vertical-align'.
 					'valign' : function( value, element )
 					{
-						if( value != 'top' )
+						if ( value != 'top' )
 							element.addStyle( 'vertical-align', value );
 						return false;
 					}
@@ -748,92 +827,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			};
 		}
 	};
-
-	var fragmentPrototype = CKEDITOR.htmlParser.fragment.prototype,
-		elementPrototype = CKEDITOR.htmlParser.element.prototype;
-
-	fragmentPrototype.onlyChild = elementPrototype.onlyChild = function()
-	{
-		var children = this.children,
-			count = children.length,
-			firstChild = ( count == 1 ) && children[ 0 ];
-		return firstChild || null;
-	};
-
-	elementPrototype.anyChildWithName = function( tagName, includingSelf )
-	{
-		var children = this.children,
-			count = children && children.length,
-			childs = [];
-
-		if( includingSelf && this.name == tagName )
-			childs.push( this );
-
-		for ( var i = 0; i < count; i++ )
-		{
-			if( children[ i ].name  )
-				childs = childs.concat( children[ i ].anyChildWithName( tagName, true ) );
-		}
-		return childs;
-	};
-
-	fragmentPrototype.firstTextChild = elementPrototype.firstTextChild = function()
-	{
-		var child;
-		for( var i = 0 ; i < this.children.length ; i++ )
-		{
-			child = this.children[ i ];
-			if( child.value )
-				return child;
-		}
-	};
-
-	// Adding a (set) of styles to the element's attributes.
-	elementPrototype.addStyle = function( name, value )
-	{
-		var styleText, addingStyleText = '';
-		// style literal.
-		if( typeof name == 'object' )
-		{
-			for( var style in name )
-			{
-				if( name.hasOwnProperty( style) )
-					addingStyleText += style + ':' + name[ style ] + ';';
-			}
-		}
-		// name/value pair.
-		else if( value )
-			addingStyleText += name + ':' + value + ';';
-		// raw style text form.
-		else if( name )
-			addingStyleText += name;
-
-		if( !this.attributes )
-			this.attributes = {};
-		styleText = this.attributes.style;
-		if( !styleText )
-			this.attributes.style = "";
-		else if( !/;$/.test( styleText ) )
-			this.attributes.style = styleText + ';';
-
-		this.attributes.style += addingStyleText;
-	}
-
-	/**
-	 * Return the DTD-valid parent tag names of the specified one.
-	 * @param tagName
-	 */
-	CKEDITOR.dtd.parentOf = function( tagName )
-	{
-		var result = {};
-		for( var tag in this )
-		{
-			if( tag.indexOf( '$' ) == -1 && this[ tag ][ tagName ] )
-				result[ tag ] = 1;
-		}
-		return result;
-	};
-
 } )();
 
 

@@ -213,9 +213,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					attrs.style = CKEDITOR.plugins.pastefromword.filters.stylesFilter(
 					[
 						[ 'text-indent' ],
-						[ 'margin-left', null, function( value )
+						// Resolve indent level from 'margin-left' style.
+						[ /^margin(:?-left)?$/, null, function( value )
 						{
-							// Resolve indent level from 'margin-left' style.
+							// Deal with short-hand form. 
+							var values = value.split( ' ' );
+							value = values[ 3 ] || values[ 1 ] || values [ 0 ];
 							attrs[ 'cke:indent' ] = parseInt( value );
 						} ]
 					] )( attrs.style, element ) || '' ;

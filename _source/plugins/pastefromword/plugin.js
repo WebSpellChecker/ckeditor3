@@ -58,19 +58,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		return firstChild || null;
 	};
 
-	elementPrototype.anyChildWithName = function( tagName, includingSelf )
+	elementPrototype.removeAnyChildWithName = function( tagName )
 	{
 		var children = this.children,
 			count = children && children.length,
-			childs = [];
-
-		if( includingSelf && this.name == tagName )
-			childs.push( this );
+			childs = [],
+			child;
 
 		for ( var i = 0; i < count; i++ )
 		{
-			if( children[ i ].name  )
-				childs = childs.concat( children[ i ].anyChildWithName( tagName, true ) );
+			child = children[ i ];
+			if( !child.name )
+				continue;
+
+			if( child.name == tagName )
+			{
+				childs.push( child );
+				children.splice( ( count--, i-- ), 1 );
+			}
+			childs = childs.concat( child.removeAnyChildWithName( tagName ) );
 		}
 		return childs;
 	};
@@ -152,9 +158,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					if ( !isNaN( bulletStyle[ 1 ] ) )
 						bulletStyle = 'decimal';
-					else if ( bulletStyle[ 1 ].search(/[a-z]/) != -1 )
+					else if ( /[a-z]/.test( bulletStyle[ 1 ] ) )
 						bulletStyle = 'lower-alpha';
-					else if ( bulletStyle[ 1 ].search(/[A-Z]/) != -1 )
+					else if ( /[A-Z]/.test( bulletStyle[ 1 ] ) )
 						bulletStyle = 'upper-alpha';
 					else
 						bulletStyle = 'decimal';
@@ -163,11 +169,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 				else
 				{
-					if ( bulletStyle[ 1 ].search(/[l\u00B7\u2002]/) != -1 ) //l·•
+					if ( /[l\u00B7\u2002]/.test( bulletStyle[ 1 ] ) ) //l·•
 						bulletStyle = 'disc';
-					else if ( bulletStyle[ 1 ].search(/[\u006F\u00D8]/) != -1 )  //oØ
+					else if ( /[\u006F\u00D8]/.test( bulletStyle[ 1 ] ) )  //oØ
 						bulletStyle = 'circle';
-					else if ( bulletStyle[ 1 ].search(/[\u006E\u25C6]/) != -1 ) //n◆
+					else if ( /[\u006E\u25C6]/.test( bulletStyle[ 1 ] ) ) //n◆
 						bulletStyle = 'square';
 					else
 						bulletStyle = 'disc';
@@ -188,7 +194,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			isListBulletIndicator : function( element )
 			{
 				var styleText = element.attributes && element.attributes.style;
-				if( /mso-list:\s*Ignore/i.test( styleText ) )
+				if( /mso-list\s*:\s*Ignore/i.test( styleText ) )
 					return true;
 			},
 
@@ -196,16 +202,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				var text;
 				return ( ( text = element.onlyChild() )
-					    && /^(:?\s|&nbsp;)+$/.exec( text.value ) );
+					    && /^(:?\s|&nbsp;)+$/.test( text.value ) );
 			},
 
 			resolveList : function( element )
 			{
-				// <cke:listbullet> lies inside indicate a list item.
+				// <cke:listbullet> indicate a list item.
 				var children = element.children,
 					attrs = element.attributes,
 					listMarker;
-				if( ( listMarker = element.anyChildWithName( 'cke:listbullet' ) )
+				if( ( listMarker = element.removeAnyChildWithName( 'cke:listbullet' ) )
 					  && listMarker.length
 					  && ( listMarker = listMarker[ 0 ] ) )
 				{
@@ -213,6 +219,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					attrs.style = CKEDITOR.plugins.pastefromword.filters.stylesFilter(
 					[
 						[ 'text-indent' ],
+						[ 'line-height' ],
 						// Resolve indent level from 'margin-left' style.
 						[ /^margin(:?-left)?$/, null, function( value )
 						{
@@ -227,9 +234,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					var listBulletAttrs = listMarker.attributes,
 						listBulletStyle = listBulletAttrs.style;
 
-					attrs.style += listBulletStyle;
+					element.addStyle( listBulletStyle );
 					CKEDITOR.tools.extend( attrs, listBulletAttrs );
-					children.splice( 0, 1 );
 					return true;
 				}
 			},

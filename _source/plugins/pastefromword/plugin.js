@@ -153,9 +153,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					if ( !isNaN( bulletStyle[ 1 ] ) )
 						bulletStyle = 'decimal';
 					else if ( bulletStyle[ 1 ].search(/[a-z]/) != -1 )
-						bulletStyle = 'lower-latin';
+						bulletStyle = 'lower-alpha';
 					else if ( bulletStyle[ 1 ].search(/[A-Z]/) != -1 )
-						bulletStyle = 'upper-latin';
+						bulletStyle = 'upper-alpha';
 					else
 						bulletStyle = 'decimal';
 

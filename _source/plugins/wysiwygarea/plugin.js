@@ -273,7 +273,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						if ( CKEDITOR.env.gecko )
 						{
-							// Double checking the iframe will be loaded properly(#4058).
+						// Double checking the iframe will be loaded properly(#4058).
 							iframe.on( 'load', function( ev )
 							{
 								ev.removeListener();
@@ -344,7 +344,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						// Remove this script from the DOM.
 						var script = domDocument.getElementById( "cke_actscrpt" );
-						script.parentNode.removeChild( script );
+						if( script )
+							script.parentNode.removeChild( script );
 
 						delete CKEDITOR._[ 'contentDomReady' + editor.name ];
 
@@ -425,6 +426,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							} );
 						}
 
+						if( CKEDITOR.env.air )
+						{
+							//prevent clicking on hyperlinks and navigating away
+							domDocument.$.addEventListener( 'click', function( ev )
+								{
+									ev.preventDefault() ;
+									ev.stopPropagation() ;
+								}, true ) ;
+						}
 						var focusTarget = ( CKEDITOR.env.ie || CKEDITOR.env.webkit ) ?
 								domWindow : domDocument;
 
@@ -533,20 +543,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										data +
 									'</body>' +
 									'</html>' +
-									activationScript;
+									( !CKEDITOR.env.air ? activationScript : '' );
 
 								window[ '_cke_htmlToLoad_' + editor.name ] = data;
 								CKEDITOR._[ 'contentDomReady' + editor.name ] = contentDomReady;
 								createIFrame();
 
 								// Opera must use the old method for loading contents.
-								if ( CKEDITOR.env.opera )
+								if ( CKEDITOR.env.opera || CKEDITOR.env.air )
 								{
-									var doc = iframe.$.contentWindow.document;
-									doc.open();
+									var doc = new CKEDITOR.dom.document( iframe.$.contentWindow.document );
 									doc.write( data );
-									doc.close();
 								}
+
+								if( CKEDITOR.env.air )
+									contentDomReady( iframe.$.contentWindow );
 							},
 
 							getData : function()

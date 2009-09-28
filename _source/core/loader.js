@@ -93,7 +93,7 @@ if ( !CKEDITOR.loader )
 
 			// In IE (only) the script.src string is the raw valued entered in the
 			// HTML. Other browsers return the full resolved URL instead.
-			if ( path.indexOf('://') == -1 )
+			if ( path.indexOf(':/') == -1 )
 			{
 				// Absolute path.
 				if ( path.indexOf( '/' ) === 0 )

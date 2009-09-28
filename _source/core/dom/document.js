@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -206,5 +206,62 @@ CKEDITOR.tools.extend( CKEDITOR.dom.document.prototype,
 				{
 					return win;
 				})();
+		},
+
+		write : function( html )
+		{
+			if( !CKEDITOR.env.air )
+			{
+				this.$.open();
+				this.$.write( html );
+				this.$.close();
+			}
+			else
+			{
+				var doc = this;
+				// Grab all the <link> and <style> tags.
+				var stylesHtml = '';
+				html.replace( /<style[^>]*>[\s\S]*<\/style>|<link[^>]*?>/gi, function( match )
+				{
+					stylesHtml += match;
+				} );
+
+				if ( stylesHtml )
+				{
+					// Inject the <head> HTML inside a <div>.
+					// Do that before getDocumentHead because WebKit moves
+					// <link css> elements to the <head> at this point.
+					var div = new CKEDITOR.dom.element( 'div', doc );
+					div.setHtml( stylesHtml );
+					var getDocumentHead = function( doc )
+					{
+						var head ;
+						var heads = doc.getElementsByTagName( 'head' ) ;
+
+						if( heads && heads[0] )
+							head = heads[0] ;
+						else
+						{
+							head = doc.createElement( 'head' ) ;
+							doc.documentElement.insertBefore( head, doc.documentElement.firstChild ) ;
+						}
+
+						return head ;
+					} ;
+
+					// Move the <div> nodes to <head>.
+					div.moveChildren( new CKEDITOR.dom.element( getDocumentHead( doc.$ ) ) ) ;
+				}
+
+				var bodyMatch = html.match( /<body[^>]*>([\s\S]*)<\/body>/i ),
+					bodyContent = bodyMatch && bodyMatch[ 1 ],
+					body = bodyMatch && CKEDITOR.htmlParser.fragment.fromHtml( bodyMatch[ 0 ] ).children[ 0 ],
+					bodyAttrs = body.attributes,
+					docBody = doc.getBody();
+
+				docBody.setHtml( bodyContent );
+				if( bodyAttrs )
+					docBody.setAttributes( bodyAttrs );
+			}
 		}
 	});

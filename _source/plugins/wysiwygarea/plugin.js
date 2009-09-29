@@ -232,7 +232,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					var isCustomDomain = CKEDITOR.env.isCustomDomain();
 
 					// Creates the iframe that holds the editable document.
-					var createIFrame = function()
+					var createIFrame = function( data )
 					{
 						if ( iframe )
 							iframe.remove();
@@ -266,20 +266,36 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								' frameBorder="0"' +
 								' tabIndex="-1"' +
 								' allowTransparency="true"' +
-								' src="javascript:' + encodeURIComponent( src ) + '"' +
+								// The iframe must source from a 'application sandbox' file,
+								// otherwise the dynamically linked stylesheets and scripts
+								// won't work.
+								' src="' +
+								 ( CKEDITOR.env.air ? ( CKEDITOR.basePath + 'AIRSandboxFrame.html' )
+								 : ( 'javascript:' + encodeURIComponent( src ) ) ) + '"' + 
 								'></iframe>' );
 
 						var accTitle = editor.lang.editorTitle.replace( '%1', editor.name );
 
-						if ( CKEDITOR.env.gecko )
+						if ( CKEDITOR.env.gecko || CKEDITOR.env.air )
 						{
-						// Double checking the iframe will be loaded properly(#4058).
+							// Double checking the iframe will be loaded properly(#4058).
 							iframe.on( 'load', function( ev )
 							{
 								ev.removeListener();
-								contentDomReady( iframe.$.contentWindow );
+								var iframeWindow = iframe.$.contentWindow;
+								// We have no nother way to change iframe content
+								// in Adobe AIR beside DOM manipulation.  
+								if( CKEDITOR.env.air )
+								{
+									var doc = new CKEDITOR.dom.document( iframeWindow.document );
+									doc.write( data );
+								}
+								contentDomReady( iframeWindow );
 							} );
+						}
 
+						if ( CKEDITOR.env.gecko )
+						{
 							// Accessibility attributes for Firefox.
 							mainElement.setAttributes(
 								{
@@ -338,7 +354,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							return;
 
 						frameLoaded = 1;
-
+						
 						var domDocument = domWindow.document,
 							body = domDocument.body;
 
@@ -426,9 +442,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							} );
 						}
 
+
 						if( CKEDITOR.env.air )
 						{
-							//prevent clicking on hyperlinks and navigating away
+							// Hyperlinks is enabled in Adobe AIR wysiwyg mode.   
 							domDocument.$.addEventListener( 'click', function( ev )
 								{
 									ev.preventDefault() ;
@@ -543,21 +560,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										data +
 									'</body>' +
 									'</html>' +
+									// Scripts in HTML snippets is forbidden in Adobe AIR.   
 									( !CKEDITOR.env.air ? activationScript : '' );
 
 								window[ '_cke_htmlToLoad_' + editor.name ] = data;
 								CKEDITOR._[ 'contentDomReady' + editor.name ] = contentDomReady;
-								createIFrame();
+								createIFrame( data );
 
 								// Opera must use the old method for loading contents.
-								if ( CKEDITOR.env.opera || CKEDITOR.env.air )
+								if ( CKEDITOR.env.opera )
 								{
 									var doc = new CKEDITOR.dom.document( iframe.$.contentWindow.document );
 									doc.write( data );
 								}
 
-								if( CKEDITOR.env.air )
-									contentDomReady( iframe.$.contentWindow );
 							},
 
 							getData : function()

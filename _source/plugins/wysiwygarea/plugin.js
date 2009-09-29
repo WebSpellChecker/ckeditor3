@@ -270,7 +270,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								// otherwise the dynamically linked stylesheets and scripts
 								// won't work.
 								' src="' +
-								 ( CKEDITOR.env.air ? ( CKEDITOR.basePath + 'AIRSandboxFrame.html' )
+								 ( CKEDITOR.env.air ? ( CKEDITOR.basePath + 'air_sandbox_frame.html' )
 								 : ( 'javascript:' + encodeURIComponent( src ) ) ) + '"' + 
 								'></iframe>' );
 

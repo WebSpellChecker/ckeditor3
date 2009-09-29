@@ -167,12 +167,32 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 					value = attributes[ a ];
 					if( i == 1 )
 						attribsArray.push( [ a, value ] );
-					else if ( filter &&
-					          ( !( newAttrName = filter.onAttributeName( a ) )
-							          || ( value = filter.onAttribute( element, newAttrName, value ) ) === false ) )
-						delete attributes[ a ];
-					else
-						attributes[ newAttrName ] = value;
+					else if ( filter )
+					{
+						while ( true )
+						{
+							if ( !( newAttrName = filter.onAttributeName( a ) ) )
+							{
+								delete attributes[ a ];
+								break;
+							}
+							else if( newAttrName != a )
+							{
+								delete attributes[ a ];
+								a = newAttrName; 
+								continue;
+							}
+							else
+								break;
+						}
+						if( newAttrName )
+						{
+							if( ( value = filter.onAttribute( element, newAttrName, value ) ) === false )
+								delete attributes[ newAttrName ];
+							else
+								attributes [ newAttrName ] = value;
+						}
+					}
 				}
 			}
 			// Sort the attributes by name.

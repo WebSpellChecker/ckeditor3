@@ -164,6 +164,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Create container to paste into
 		var pastebin = new CKEDITOR.dom.element( mode == 'text' ? 'textarea' : 'div', doc );
 		pastebin.setAttribute( 'id', 'cke_pastebin' );
+
+		// IE require the bin to at least contain one piece of text otherwise the
+		// paste is treated as unauthorized.
+		if( mode != 'text' && CKEDITOR.env.ie )
+			pastebin.append( new CKEDITOR.dom.text( '&nbsp;' ) );
+
 		doc.getBody().append( pastebin );
 
 		// Position the bin exactly at the position of the selected element

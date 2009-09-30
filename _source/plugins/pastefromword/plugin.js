@@ -8,31 +8,37 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		init : function( editor )
 		{
-			// Whether bothering user of the clean-up.
-			var cleanupPrompt = 1,
-				resetCleanupPrompt = function()
+
+			// Flag indicate this command is actually been asked instead of a generic
+			// pasting.
+			var forceFromWord = 0,
+				resetFromWord = function()
 				{
-					cleanupPrompt = 1;
+					setTimeout( function()
+					{
+						forceFromWord = 0;
+					}, 0 );
 				};
-			// Register the command.
+
+			// Features bring by this command beside the normal process:
+			// 1. No more bothering of user about the clean-up.
+			// 2. Perform the clean-up even if content is not from MS-Word.
+			// (e.g. from a MS-Word similar application.)
 			editor.addCommand( 'pastefromword',
 			{
 				exec : function ()
 				{
-					cleanupPrompt = 0;
+					forceFromWord = 1;
 					if( !editor.execCommand( 'paste' ) )
 					{
 						editor.on( 'dialogHide', function ( evt )
 						{
 							evt.removeListener();
-							setTimeout( function ()
-							{
-								resetCleanupPrompt();
-							}, 0 );
+							resetFromWord();
 						} );
 					}
 					else
-						resetCleanupPrompt();
+						resetFromWord();
 				}
 			} );
 
@@ -49,8 +55,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					mswordHtml;
 				// MS-WORD format sniffing.
 				if ( ( mswordHtml = data[ 'html' ] )
-					 && /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml )
-					 && ( !cleanupPrompt || confirm( editor.lang.pastefromword.confirmCleanup ) ) )
+					 && ( forceFromWord || /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml ) )
+					 && ( !editor.config.pasteFromWordPromptCleanup
+						  || ( forceFromWord || confirm( editor.lang.pastefromword.confirmCleanup )  ) ) )
 				{
 					// Firefox will be confused by those downlevel-revealed IE conditional
 					// comments, fixing them first( convert it to upperlevel-revealed one ).
@@ -869,3 +876,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * config.pasteFromWordIgnoreFontFace = false;
  */
 CKEDITOR.config.pasteFromWordIgnoreFontFace = false;
+
+/**
+ * Whether prompt the user about the clean-up of content from MS-Word.
+ * @type Boolean
+ * @default true
+ * @example
+ * config.pasteFromWordPromptCleanup = true;
+ */
+CKEDITOR.config.pasteFromWordPromptCleanup = false;
+

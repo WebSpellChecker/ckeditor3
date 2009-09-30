@@ -86,7 +86,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					editor.focus();
 
 					if ( !execIECommand( editor, 'paste' ) )
+					{
 						editor.fire( 'pasteDialog' );
+						return false;
+					}
 				}
 			}
 		:
@@ -106,7 +109,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						setTimeout( function()
 						{
 							editor.fire( 'pasteDialog' );
-						}, 0 )
+						}, 0 );
+						return false;
 					}
 				}
 			};
@@ -150,7 +154,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	// Allow to peek clipboard content by redirecting the
 	// pasting content into a temporary bin and grab the content of it.
-	function getPasteBin( evt, mode, callback ) {
+	function getClipboardData( evt, mode, callback ) {
 
 		var doc = this.document;
 
@@ -165,10 +169,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		var pastebin = new CKEDITOR.dom.element( mode == 'text' ? 'textarea' : 'div', doc );
 		pastebin.setAttribute( 'id', 'cke_pastebin' );
 
-		// IE require the bin to at least contain one piece of text otherwise the
+		// IE6/7 require the bin to at least contain one piece of text otherwise the
 		// paste is treated as unauthorized.
 		if( mode != 'text' && CKEDITOR.env.ie )
-			pastebin.append( new CKEDITOR.dom.text( '&nbsp;' ) );
+			pastebin.append( new CKEDITOR.dom.text( '&nbsp;', doc ) );
 
 		doc.getBody().append( pastebin );
 
@@ -331,7 +335,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						          'beforepaste' : 'paste',
 								function( evt )
 								{
-									getPasteBin.call( editor, evt, mode, function ( data )
+									getClipboardData.call( editor, evt, mode, function ( data )
 									{
 										// The very last guard to make sure the
 										// paste has really happened.

@@ -8,14 +8,31 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		init : function( editor )
 		{
-			var cleanupPrompt = 1;
+			// Whether bothering user of the clean-up.
+			var cleanupPrompt = 1,
+				resetCleanupPrompt = function()
+				{
+					cleanupPrompt = 1;
+				};
 			// Register the command.
 			editor.addCommand( 'pastefromword',
 			{
 				exec : function ()
 				{
 					cleanupPrompt = 0;
-					editor.execCommand( 'paste' );
+					if( !editor.execCommand( 'paste' ) )
+					{
+						editor.on( 'dialogHide', function ( evt )
+						{
+							evt.removeListener();
+							setTimeout( function ()
+							{
+								resetCleanupPrompt();
+							}, 0 );
+						} );
+					}
+					else
+						resetCleanupPrompt();
 				}
 			} );
 
@@ -47,7 +64,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					var filter = data.processor.dataFilter;
 					// These rules will have higher priorities than default ones.
 					filter.addRules( CKEDITOR.plugins.pastefromword.getRules( editor ), 5 );
-					cleanupPrompt = 1;
 				}
 			} );
 		}

@@ -16,9 +16,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var clipboardText = CKEDITOR.getClipboardText( editor );
 			if ( !clipboardText )   // Clipboard access privilege is not granted.  
-				editor.openDialog( 'pastetext' );
+			{
+				editor.openDialog('pastetext');
+				return false;
+			}
 			else
-				editor.fire( 'paste', { 'text' : clipboardText } );
+				editor.fire('paste', { 'text' : clipboardText });
 		}
 	};
 

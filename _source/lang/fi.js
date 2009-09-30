@@ -515,10 +515,7 @@ CKEDITOR.lang['fi'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Liitä Wordista',
-		title : 'Liitä Wordista',
-		advice : 'Liitä painamalla (<STRONG>Ctrl+V</STRONG>) ja painamalla <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Jätä huomioimatta fonttimääritykset',
-		removeStyle : 'Poista tyylimääritykset'
+		title : 'Liitä Wordista'
 	},
 
 	pasteText :

@@ -515,10 +515,7 @@ CKEDITOR.lang['gu'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'પેસ્ટ (વડૅ ટેક્સ્ટ)',
-		title : 'પેસ્ટ (વડૅ ટેક્સ્ટ)',
-		advice : 'Ctrl+V નો પ્રયોગ કરી પેસ્ટ કરો',
-		ignoreFontFace : 'ફૉન્ટફેસ વ્યાખ્યાની અવગણના',
-		removeStyle : 'સ્ટાઇલ વ્યાખ્યા કાઢી નાખવી'
+		title : 'પેસ્ટ (વડૅ ટેક્સ્ટ)'
 	},
 
 	pasteText :

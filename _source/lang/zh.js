@@ -515,10 +515,7 @@ CKEDITOR.lang['zh'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : '自 Word 貼上',
-		title : '自 Word 貼上',
-		advice : '請使用快捷鍵 (<strong>Ctrl+V</strong>) 貼到下方區域中並按下 <strong>確定</strong>',
-		ignoreFontFace : '移除字型設定',
-		removeStyle : '移除樣式設定'
+		title : '自 Word 貼上'
 	},
 
 	pasteText :

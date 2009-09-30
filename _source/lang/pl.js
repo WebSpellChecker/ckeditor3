@@ -515,10 +515,7 @@ CKEDITOR.lang['pl'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Wklej z Worda',
-		title : 'Wklej z Worda',
-		advice : 'Proszę wkleić w poniższym polu używając klawiaturowego skrótu (<STRONG>Ctrl+V</STRONG>) i kliknąć <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignoruj definicje \'Font Face\'',
-		removeStyle : 'Usuń definicje Stylów'
+		title : 'Wklej z Worda'
 	},
 
 	pasteText :

@@ -515,10 +515,7 @@ CKEDITOR.lang['no'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Lim inn fra Word',
-		title : 'Lim inn fra Word',
-		advice : 'Vennligst lim inn i den følgende boksen med tastaturet (<STRONG>Ctrl+V</STRONG>) og trykk <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Fjern skrifttyper',
-		removeStyle : 'Fjern stildefinisjoner'
+		title : 'Lim inn fra Word'
 	},
 
 	pasteText :

@@ -515,10 +515,7 @@ CKEDITOR.lang['it'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Incolla da Word',
-		title : 'Incolla da Word',
-		advice : 'Incolla il testo all\'interno dell\'area sottostante usando la scorciatoia di tastiere (<STRONG>Ctrl+V</STRONG>) e premi <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignora le definizioni di Font',
-		removeStyle : 'Rimuovi le definizioni di Stile'
+		title : 'Incolla da Word'
 	},
 
 	pasteText :

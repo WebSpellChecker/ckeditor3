@@ -515,10 +515,7 @@ CKEDITOR.lang['sk'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Vložiť z Wordu',
-		title : 'Vložiť z Wordu',
-		advice : 'Prosím vložte nasledovný rámček použitím klávesnice (<STRONG>Ctrl+V</STRONG>) a stlačte <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignorovať nastavenia typu písma',
-		removeStyle : 'Odstrániť formátovanie'
+		title : 'Vložiť z Wordu'
 	},
 
 	pasteText :

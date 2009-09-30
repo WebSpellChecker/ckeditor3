@@ -515,10 +515,7 @@ CKEDITOR.lang['pt'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Colar do Word',
-		title : 'Colar do Word',
-		advice : 'Por favor, cole dentro da seguinte caixa usando o teclado (<STRONG>Ctrl+V</STRONG>) e prima <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignorar da definições do Tipo de Letra ',
-		removeStyle : 'Remover as definições de Estilos'
+		title : 'Colar do Word'
 	},
 
 	pasteText :

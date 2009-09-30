@@ -515,10 +515,7 @@ CKEDITOR.lang['sr'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Залепи из Worda',
-		title : 'Залепи из Worda',
-		advice : 'Молимо Вас да залепите унутар доње површине користећи тастатурну пречицу (<STRONG>Ctrl+V</STRONG>) и да притиснете <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Игнориши Font Face дефиниције',
-		removeStyle : 'Уклони дефиниције стилова'
+		title : 'Залепи из Worda'
 	},
 
 	pasteText :

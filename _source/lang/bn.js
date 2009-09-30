@@ -515,10 +515,7 @@ CKEDITOR.lang['bn'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'পেস্ট (শব্দ)',
-		title : 'পেস্ট (শব্দ)',
-		advice : 'অনুগ্রহ করে নীচের বাক্সে কিবোর্ড ব্যবহার করে (<STRONG>Ctrl+V</STRONG>) পেস্ট করুন এবং <STRONG>OK</STRONG> চাপ দিন',
-		ignoreFontFace : 'ফন্ট ফেস ডেফিনেশন ইগনোর করুন',
-		removeStyle : 'স্টাইল ডেফিনেশন সরিয়ে দিন'
+		title : 'পেস্ট (শব্দ)'
 	},
 
 	pasteText :

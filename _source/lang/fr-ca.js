@@ -515,10 +515,7 @@ CKEDITOR.lang['fr-ca'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Coller en tant que Word (formaté)',
-		title : 'Coller en tant que Word (formaté)',
-		advice : 'Veuillez coller dans la zone ci-dessous en utilisant le clavier (<STRONG>Ctrl+V</STRONG>) et appuyer sur <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignorer les polices de caractères',
-		removeStyle : 'Supprimer les styles'
+		title : 'Coller en tant que Word (formaté)'
 	},
 
 	pasteText :

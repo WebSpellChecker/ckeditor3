@@ -515,10 +515,7 @@ CKEDITOR.lang['gl'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Pegar dende Word',
-		title : 'Pegar dende Word',
-		advice : 'Por favor, pegue dentro do seguinte cadro usando o teclado (<STRONG>Ctrl+V</STRONG>) e pulse <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignorar as definicións de Tipografía',
-		removeStyle : 'Eliminar as definicións de Estilos'
+		title : 'Pegar dende Word'
 	},
 
 	pasteText :

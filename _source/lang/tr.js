@@ -515,10 +515,7 @@ CKEDITOR.lang['tr'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Word\'den Yapıştır',
-		title : 'Word\'den Yapıştır',
-		advice : 'Lütfen aşağıdaki kutunun içine yapıştırın. (<STRONG>Ctrl+V</STRONG>) ve <STRONG>Tamam</STRONG> butonunu tıklayın.',
-		ignoreFontFace : 'Yazı Tipi tanımlarını yoksay',
-		removeStyle : 'Biçem Tanımlarını çıkar'
+		title : 'Word\'den Yapıştır'
 	},
 
 	pasteText :

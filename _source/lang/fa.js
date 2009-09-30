@@ -515,10 +515,7 @@ CKEDITOR.lang['fa'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'چسباندن از Word',
-		title : 'چسباندن از Word',
-		advice : 'لطفا متن را با کلیدهای (<STRONG>Ctrl+V</STRONG>) در این جعبهٴ متنی بچسبانید و <STRONG>پذیرش</STRONG> را بزنید.',
-		ignoreFontFace : 'چشمپوشی از تعاریف نوع قلم',
-		removeStyle : 'چشمپوشی از تعاریف سبک (style)'
+		title : 'چسباندن از Word'
 	},
 
 	pasteText :

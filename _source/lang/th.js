@@ -515,10 +515,7 @@ CKEDITOR.lang['th'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'วางสำเนาจากตัวอักษรเวิร์ด',
-		title : 'วางสำเนาจากตัวอักษรเวิร์ด',
-		advice : 'กรุณาใช้คีย์บอร์ดเท่านั้น โดยกดปุ๋ม (<strong>Ctrl และ V</strong>)พร้อมๆกัน และกด <strong>OK</strong>.',
-		ignoreFontFace : 'ไม่สนใจ Font Face definitions',
-		removeStyle : 'ลบ Styles definitions'
+		title : 'วางสำเนาจากตัวอักษรเวิร์ด'
 	},
 
 	pasteText :

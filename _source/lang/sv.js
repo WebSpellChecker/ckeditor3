@@ -515,10 +515,7 @@ CKEDITOR.lang['sv'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Klistra in från Word',
-		title : 'Klistra in från Word',
-		advice : 'Var god och klistra in Er text i rutan nedan genom att använda (<STRONG>Ctrl+V</STRONG>) klicka sen på <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignorera typsnittsdefinitioner',
-		removeStyle : 'Radera Stildefinitioner'
+		title : 'Klistra in från Word'
 	},
 
 	pasteText :

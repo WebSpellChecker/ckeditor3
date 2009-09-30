@@ -515,10 +515,7 @@ CKEDITOR.lang['is'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Líma úr Word',
-		title : 'Líma úr Word',
-		advice : 'Límdu í svæðið hér að neðan og (<STRONG>Ctrl+V</STRONG>) og smelltu á <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Hunsa leturskilgreiningar',
-		removeStyle : 'Hunsa letureigindi'
+		title : 'Líma úr Word'
 	},
 
 	pasteText :

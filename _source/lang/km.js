@@ -515,10 +515,7 @@ CKEDITOR.lang['km'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'ចំលងដាក់ពី Word',
-		title : 'ចំលងដាក់ពី Word',
-		advice : 'សូមចំលងអត្ថបទទៅដាក់ក្នុងប្រអប់ដូចខាងក្រោមដោយប្រើប្រាស់ ឃី \u200b(<STRONG>Ctrl+V</STRONG>) ហើយចុច <STRONG>OK</STRONG> ។',
-		ignoreFontFace : 'មិនគិតអំពីប្រភេទពុម្ភអក្សរ',
-		removeStyle : 'លប់ម៉ូត'
+		title : 'ចំលងដាក់ពី Word'
 	},
 
 	pasteText :

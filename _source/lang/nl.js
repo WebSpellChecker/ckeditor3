@@ -515,10 +515,7 @@ CKEDITOR.lang['nl'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Plakken als Word-gegevens',
-		title : 'Plakken als Word-gegevens',
-		advice : 'Plak de tekst in het volgende vak gebruik makend van uw toetsenbord (<strong>Ctrl+V</strong>) en klik op <strong>OK</strong>.',
-		ignoreFontFace : 'Negeer "Font Face"-definities',
-		removeStyle : 'Verwijder "Style"-definities'
+		title : 'Plakken als Word-gegevens'
 	},
 
 	pasteText :

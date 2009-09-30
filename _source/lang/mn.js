@@ -515,10 +515,7 @@ CKEDITOR.lang['mn'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Word-оос буулгах',
-		title : 'Word-оос буулгах',
-		advice : '(<strong>Ctrl+V</strong>) товчийг ашиглан paste хийнэ үү. Мөн <strong>OK</strong> дар.',
-		ignoreFontFace : 'Тодорхойлогдсон Font Face зөвшөөрнө',
-		removeStyle : 'Тодорхойлогдсон загварыг авах'
+		title : 'Word-оос буулгах'
 	},
 
 	pasteText :

@@ -8,10 +8,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		init : function( editor )
 		{
+			var cleanupPrompt = 1;
 			// Register the command.
-			editor.addCommand( 'pastefromword', new CKEDITOR.dialogCommand( 'pastefromword' ) );
-			// Register the dialog.
-			CKEDITOR.dialog.add( 'pastefromword', this.path + 'dialogs/pastefromword.js' );
+			editor.addCommand( 'pastefromword',
+			{
+				exec : function ()
+				{
+					cleanupPrompt = 0;
+					editor.execCommand( 'paste' );
+				}
+			} );
 
 			// Register the toolbar button.
 			editor.ui.addButton( 'PasteFromWord',
@@ -26,9 +32,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					mswordHtml;
 				// MS-WORD format sniffing.
 				if ( ( mswordHtml = data[ 'html' ] )
-					 && ( evt.data[ 'ms-word' ]
-						  || /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml )
-						     && confirm( editor.lang.pastefromword.confirmCleanup ) ) )
+					 && /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml )
+					 && ( !cleanupPrompt || confirm( editor.lang.pastefromword.confirmCleanup ) ) )
 				{
 					// Firefox will be confused by those downlevel-revealed IE conditional
 					// comments, fixing them first( convert it to upperlevel-revealed one ).
@@ -42,6 +47,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					var filter = data.processor.dataFilter;
 					// These rules will have higher priorities than default ones.
 					filter.addRules( CKEDITOR.plugins.pastefromword.getRules( editor ), 5 );
+					cleanupPrompt = 1;
 				}
 			} );
 		}
@@ -840,8 +846,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 
 /**
- * Whether the "Ignore font face definitions" checkbox is enabled by default in
- * the Paste from Word dialog.
+ * Whether the ignore all font-related format from MS-Word.
  * @type Boolean
  * @default true
  * @example

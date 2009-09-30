@@ -515,10 +515,7 @@ CKEDITOR.lang['eo'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Interglui el Word',
-		title : 'Interglui el Word',
-		advice : 'Please paste inside the following box using the keyboard (<strong>Ctrl+V</strong>) and hit <strong>OK</strong>.', // MISSING
-		ignoreFontFace : 'Ignore Font Face definitions', // MISSING
-		removeStyle : 'Remove Styles definitions' // MISSING
+		title : 'Interglui el Word'
 	},
 
 	pasteText :

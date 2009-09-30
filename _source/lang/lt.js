@@ -515,10 +515,7 @@ CKEDITOR.lang['lt'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Įdėti iš Word',
-		title : 'Įdėti iš Word',
-		advice : 'Žemiau esančiame įvedimo lauke įdėkite tekstą, naudodami klaviatūrą (<STRONG>Ctrl+V</STRONG>) ir paspauskite mygtuką <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignoruoti šriftų nustatymus',
-		removeStyle : 'Pašalinti stilių nustatymus'
+		title : 'Įdėti iš Word'
 	},
 
 	pasteText :

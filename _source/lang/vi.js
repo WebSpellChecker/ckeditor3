@@ -515,10 +515,7 @@ CKEDITOR.lang['vi'] =
 	{
 		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?', // MISSING
 		toolbar : 'Dán với định dạng Word',
-		title : 'Dán với định dạng Word',
-		advice : 'Hãy dán nội dung vào trong khung bên dưới, sử dụng tổ hợp phím (<STRONG>Ctrl+V</STRONG>) và nhấn vào nút <STRONG>Đồng ý</STRONG>.',
-		ignoreFontFace : 'Chấp nhận các định dạng phông',
-		removeStyle : 'Gỡ bỏ các định dạng Styles'
+		title : 'Dán với định dạng Word'
 	},
 
 	pasteText :

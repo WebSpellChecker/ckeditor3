@@ -14,15 +14,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		exec : function( editor )
 		{
-			// We use getClipboardData just to test if the clipboard access has
-			// been granted by the user.
-			if ( CKEDITOR.getClipboardData() === false || !window.clipboardData )
-			{
+			var clipboardText = CKEDITOR.getClipboardText( editor );
+			if ( !clipboardText )   // Clipboard access privilege is not granted.  
 				editor.openDialog( 'pastetext' );
-				return;
-			}
-
-			editor.fire( 'paste', { 'text' : window.clipboardData.getData( 'Text' ) } );
+			else
+				editor.fire( 'paste', { 'text' : clipboardText } );
 		}
 	};
 
@@ -56,66 +52,66 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		requires : [ 'clipboard' ]
 	});
 
-	var clipboardDiv;
-
-	CKEDITOR.getClipboardData = function()
-	{
-		if ( !CKEDITOR.env.ie )
-			return false;
-
-		var doc = CKEDITOR.document,
-			body = doc.getBody();
-
-		if ( !clipboardDiv )
+	CKEDITOR.getClipboardText =
+		CKEDITOR.env.ie ? function()
 		{
-			clipboardDiv = doc.createElement( 'div',
-				{
-					attributes :
-						{
-							id: 'cke_hiddenDiv'
-						},
-					styles :
-						{
-							position : 'absolute',
-							visibility : 'hidden',
-							overflow : 'hidden',
-							width : '1px',
-							height : '1px'
-						}
-				});
-
-			clipboardDiv.setHtml( '' );
-
-			clipboardDiv.appendTo( body );
+			var clipboardAccess = window.clipboardData;
+			return clipboardAccess && clipboardAccess.getData( 'Text' );
 		}
-
-		// The "enabled" flag is used to check whether the paste operation has
-		// been completed (the onpaste event has been fired).
-		var	enabled = false;
-		var setEnabled = function()
+		:
+		CKEDITOR.env.gecko ? function(copytext)
 		{
-			enabled = true;
-		};
+			try {
+				if ( netscape.security.PrivilegeManager.enablePrivilege ) {
+					netscape.security.PrivilegeManager.enablePrivilege( "UniversalXPConnect" );
+				}
+				else
+					return;
+			} catch ( ex )
+			{
+				return;
+			}
 
-		body.on( 'paste', setEnabled );
+			var clip = Components.classes[ "@mozilla.org/widget/clipboard;1" ].getService(Components.interfaces.nsIClipboard);
+			if ( !clip ) return false;
 
-		// Create a text range and move it inside the div.
-		var textRange = body.$.createTextRange();
-		textRange.moveToElementText( clipboardDiv.$ );
+			var trans = Components.classes[ "@mozilla.org/widget/transferable;1" ].createInstance( Components.interfaces.nsITransferable );
+			if ( !trans ) return false;
+			trans.addDataFlavor( "text/unicode" );
+			clip.getData( trans, clip.kGlobalClipboard );
 
-		// The execCommand in will fire the "onpaste", only if the
-		// security settings are enabled.
-		textRange.execCommand( 'Paste' );
-
-		// Get the DIV html and reset it.
-		var html = clipboardDiv.getHtml();
-		clipboardDiv.setHtml( '' );
-
-		body.removeListener( 'paste', setEnabled );
-
-		// Return the HTML or false if not enabled.
-		return enabled && html;
-	};
+			var str = {}, strLength = {}, pastetext;
+			trans.getTransferData("text/unicode", str, strLength);
+			if ( str )
+				str = str.value.QueryInterface( Components.interfaces.nsISupportsString );
+			if ( str )
+				pastetext = str.data.substring( 0, strLength.value / 2 );
+			return pastetext;
+		}
+		// Currently in Safari 'paste' event is only available in response
+		// to the user action, while the codes below may work in the future. 
+//		: CKEDITOR.env.webkit ? function( editor )
+//		{
+//			var doc = editor.document,
+//				clipboardText;
+//			doc.on( 'paste', function( evt )
+//			{
+//			    evt.data.preventDefault( true );
+//				clipboardText = evt.clipboardData.getData( 'text/plain' );
+//			} );
+//			try
+//			{
+//				if ( !doc.$.execCommand( 'Paste', false, null ) )
+//					throw 0;
+//			}
+//			catch ( e )
+//			{
+//				return;
+//			}
+//			return clipboardData;
+//		}
+		// Opera has no support for clipboard access.
+		: function(){};
 })();
 
 CKEDITOR.editor.prototype.insertText = function( text )

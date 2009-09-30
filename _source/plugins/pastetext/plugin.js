@@ -104,4 +104,4 @@ CKEDITOR.editor.prototype.insertText = function( text )
  * @example
  * config.forcePasteAsPlainText = true;
  */
-CKEDITOR.config.forcePasteAsPlainText = true;
+CKEDITOR.config.forcePasteAsPlainText = false;

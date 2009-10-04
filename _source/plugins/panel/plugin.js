@@ -96,9 +96,19 @@ CKEDITOR.ui.panel.prototype =
 			output.push(
 						'<iframe id="', id, '_frame"' +
 							' frameborder="0"' +
-							' src="javascript:void(' );
+							' src="' );
 
-			output.push(
+			// The iframe must source from a 'application sandbox' file,
+			// otherwise the dynamically linked stylesheets and scripts
+			// won't work.
+			if( CKEDITOR.env.air )
+			{
+				output.push( CKEDITOR.basePath + 'air_sandbox_frame.html' );
+			}
+			else
+			{
+				output.push( 'javascript:void(' );
+				output.push(
 							// Support for custom document.domain in IE.
 							CKEDITOR.env.isCustomDomain() ?
 								'(function(){' +
@@ -108,9 +118,11 @@ CKEDITOR.ui.panel.prototype =
 								'})()'
 							:
 								'0' );
+				output.push( ')' );
+			}
 
 			output.push(
-						')"></iframe>' );
+						'"></iframe>' );
 		}
 
 		output.push(
@@ -141,51 +153,69 @@ CKEDITOR.ui.panel.prototype =
 
 				var onLoad = CKEDITOR.tools.addFunction( CKEDITOR.tools.bind( function( ev )
 					{
+						var doc = iframe.getFrameDocument(),
+							body = doc.getBody();
+
+						if ( CKEDITOR.env.air )
+							doc.write( data );
+
+						if ( !holder )
+							holder = body;
+						else
+						{
+							this._.holder.moveChildren( body );
+							this._.holder = body;
+						}
+
+						var win = doc.getWindow();
+
+						// Register the CKEDITOR global.
+						win.$.CKEDITOR = CKEDITOR;
+
+						doc.on( 'keydown', function( evt )
+							{
+								var keystroke = evt.data.getKeystroke();
+
+								// Delegate key processing to block.
+								if ( this._.onKeyDown && this._.onKeyDown( keystroke ) === false )
+								{
+									evt.data.preventDefault();
+									return;
+								}
+
+								if ( keystroke == 27 )		// ESC
+									this.onEscape && this.onEscape();
+							},
+							this );
+
 						this.isLoaded = true;
 						if ( this.onLoad )
 							this.onLoad();
 					}, this ) );
 
-				doc.write(
+				var data =
 					'<!DOCTYPE html>' +
 					'<html dir="' + dir + '" class="' + className + '_container" lang="' + langCode + '">' +
 						'<head>' +
 							'<style>.' + className + '_container{visibility:hidden}</style>' +
 						'</head>' +
-						'<body class="cke_' + dir + ' cke_panel_frame ' + CKEDITOR.env.cssClass + '" style="margin:0;padding:0"' +
-						' onload="( window.CKEDITOR || window.parent.CKEDITOR ).tools.callFunction(' + onLoad + ');">' +
+						'<body class="cke_' + dir + ' cke_panel_frame ' + CKEDITOR.env.cssClass + '" style="margin:0;padding:0" >' +
 						'</body>' +
 						// It looks strange, but for FF2, the styles must go
 						// after <body>, so it (body) becames immediatelly
 						// available. (#3031)
 						'<link type="text/css" rel=stylesheet href="' + this.css.join( '"><link type="text/css" rel="stylesheet" href="' ) + '">' +
-					'<\/html>' );
+					'<\/html>';
 
-				var win = doc.getWindow();
-
-				// Register the CKEDITOR global.
-				win.$.CKEDITOR = CKEDITOR;
-
-				doc.on( 'keydown', function( evt )
-					{
-						var keystroke = evt.data.getKeystroke();
-
-						// Delegate key processing to block.
-						if ( this._.onKeyDown && this._.onKeyDown( keystroke ) === false )
-						{
-							evt.data.preventDefault();
-							return;
-						}
-
-						if ( keystroke == 27 )		// ESC
-							this.onEscape && this.onEscape();
-					},
-					this );
-
-				holder = doc.getBody();
-
-				if( CKEDITOR.env.air )
+				iframe.on( 'load', function( evt )
+				{
 					CKEDITOR.tools.callFunction( onLoad );
+				} );
+				if( !CKEDITOR.env.air )
+					doc.write( data );
+
+				if( !holder )
+					holder = new CKEDITOR.dom.element( 'body', doc );
 			}
 			else
 				holder = this.document.getById( 'cke_' + this.id );

@@ -229,14 +229,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.node.prototype,
 		 */
 		getDocument : function()
 		{
-			var document = new CKEDITOR.dom.document( this.$.ownerDocument || this.$.parentNode.ownerDocument );
-
-			return (
-			/** @ignore */
-			this.getDocument = function()
-				{
-					return document;
-				})();
+			return new CKEDITOR.dom.document( this.$.ownerDocument || this.$.parentNode.ownerDocument );
 		},
 
 		getIndex : function()

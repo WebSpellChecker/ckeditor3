@@ -274,7 +274,12 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 				};
 
 			if ( this.init )
-				this.init();
+			{
+				var innerPanel = panel._.panel;
+				innerPanel.isLoaded ?
+				 this.init()
+				 : innerPanel.onLoad = CKEDITOR.tools.bind( this.init, this );
+			}
 		},
 
 		setValue : function( value, text )

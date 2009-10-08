@@ -68,7 +68,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var children = listItem.parent.children;
 			// Move into current list item.
-			listItem.children.push( next );
+			listItem.add( next );
 			children.splice( children.indexOf( next ), 1 );
 		}
 	}

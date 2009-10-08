@@ -47,6 +47,14 @@ CKEDITOR.htmlParser.fragment = function()
 			{table:1,ul:1,ol:1,dl:1},
 			CKEDITOR.dtd.table, CKEDITOR.dtd.ul, CKEDITOR.dtd.ol, CKEDITOR.dtd.dl );
 
+	// A looser type of dtd.
+	var dtd = CKEDITOR.tools.clone( CKEDITOR.dtd );
+	// 1. Allow nested list.
+	for( var i in dtd.$list )
+	{
+		dtd[ i ] = CKEDITOR.tools.extend( dtd[ i ], dtd.$list );
+	}
+
 	/**
 	 * Creates a {@link CKEDITOR.htmlParser.fragment} from an HTML string.
 	 * @param {String} fragmentHtml The HTML to be parsed, filling the fragment.
@@ -76,10 +84,10 @@ CKEDITOR.htmlParser.fragment = function()
 				{
 					var pendingElement = pendingInline[ i ],
 						pendingName = pendingElement.name,
-						pendingDtd = CKEDITOR.dtd[ pendingName ],
-						currentDtd = currentNode.name && CKEDITOR.dtd[ currentNode.name ];
+						pendingDtd = dtd[ pendingName ],
+						currentDtd = currentNode.name && dtd[ currentNode.name ];
 
-					if ( ( !currentDtd || currentDtd[ pendingName ] ) && ( !newTagName || !pendingDtd || pendingDtd[ newTagName ] || !CKEDITOR.dtd[ newTagName ] ) )
+					if ( ( !currentDtd || currentDtd[ pendingName ] ) && ( !newTagName || !pendingDtd || pendingDtd[ newTagName ] || !dtd[ newTagName ] ) )
 					{
 						// Get a clone for the pending element.
 						pendingElement = pendingElement.clone();
@@ -113,7 +121,7 @@ CKEDITOR.htmlParser.fragment = function()
 					elementName = realElementName;
 				else
 					elementName =  element.name;
-				if ( !( elementName in CKEDITOR.dtd.$body ) )
+				if ( !( elementName in dtd.$body ) )
 				{
 					var savedCurrent = currentNode;
 
@@ -165,7 +173,7 @@ CKEDITOR.htmlParser.fragment = function()
 				element.isEmpty = true;
 
 			// This is a tag to be removed if empty, so do not add it immediately.
-			if ( CKEDITOR.dtd.$removeEmpty[ tagName ] )
+			if ( dtd.$removeEmpty[ tagName ] )
 			{
 				pendingInline.push( element );
 				return;
@@ -179,7 +187,7 @@ CKEDITOR.htmlParser.fragment = function()
 			}
 
 			var currentName = currentNode.name,
-				currentDtd = ( currentName && CKEDITOR.dtd[ currentName ] ) || ( currentNode._.isBlockLike ? CKEDITOR.dtd.div : CKEDITOR.dtd.span );
+				currentDtd = ( currentName && dtd[ currentName ] ) || ( currentNode._.isBlockLike ? dtd.div : dtd.span );
 
 			// If the element cannot be child of the current element.
 			if ( !element.isUnknown && !currentNode.isUnknown && !currentDtd[ tagName ] )
@@ -359,7 +367,7 @@ CKEDITOR.htmlParser.fragment = function()
 			var parent = currentNode.parent,
 				node = currentNode;
 
-			if ( fixForBody && !parent.type && !CKEDITOR.dtd.$body[ node.name ] )
+			if ( fixForBody && !parent.type && !dtd.$body[ node.name ] )
 			{
 				currentNode = parent;
 				parser.onTagOpen( fixForBody, {} );
@@ -445,7 +453,7 @@ CKEDITOR.htmlParser.fragment = function()
 
 		writeChildrenHtml : function( writer, filter )
 		{
-			for ( var i = 0, len = this.children.length ; i < len ; i++ )
+			for ( var i = 0 ; i < this.children.length ; i++ )
 				this.children[i].writeHtml( writer, filter );
 		}
 

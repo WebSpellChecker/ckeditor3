@@ -59,6 +59,26 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			block.add( new CKEDITOR.htmlParser.text( '\xa0' ) );
 	}
 
+	// Join the nested lists with previous list item. 
+	function fixNestedList( listItem )
+	{
+		var next = listItem.next;
+		// Is next element nested list?
+		if( next && next.name in dtd.$list )
+		{
+			var children = listItem.parent.children;
+			// Move into current list item.
+			listItem.children.push( next );
+			children.splice( children.indexOf( next ), 1 );
+		}
+	}
+	// Glean orphan nested lists. 
+	function dropOrphanNestedList( list )
+	{
+		if( list.parent.name in dtd.$list )
+			delete list.name;
+	}
+	
 	var dtd = CKEDITOR.dtd;
 
 	// Find out the list of block-like tags that can contain <br>.
@@ -111,6 +131,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	for ( i in blockLikeTags )
 		defaultDataBlockFilterRules.elements[ i ] = extendBlockForDisplay;
+
+	// Fixing invalid form of nested list(#3828). 
+	for( var i in dtd.$listItem )
+		defaultDataFilterRules.elements[ i ] = fixNestedList;
+	for( var i in dtd.$list )
+		defaultDataFilterRules.elements[ i ] = dropOrphanNestedList;
 
 	var defaultHtmlFilterRules =
 		{

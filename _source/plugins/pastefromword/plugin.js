@@ -489,7 +489,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								listItem,   // The current processing cke:li element.
 								listItemAttrs,
 								listType,   // Determine the root type of the list.
-								listItemIndent, // Indent attribute represent the level of it.
+								listItemIndent, // Indent level of current list item.
 								lastListItem, // The previous one just been added to the list.
 								list, parentList, // Current staging list and it's parent list if any.  
 								indent;
@@ -505,7 +505,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									listItemAttrs = listItem.attributes;
 									listType = listItem.attributes[ 'cke:listtype' ];
 									// The indent attribute might not present.
-									listItemIndent = listItemAttrs[ 'cke:indent' ] || 0;
+									listItemIndent = parseInt( listItemAttrs[ 'cke:indent' ] ) || 0;
 
 									// Ignore the 'list-style-type' attribute if it's matched with
 									// the list root element's default style type.
@@ -784,21 +784,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						} ],
 						// Remove default border style.
 						[ /^border$/, /^(:?medium\s*)?none\s*$/ ],
-						// 'Indent' format migration(to use editor's indent unit).
-						[ /margin-?/, null, function( value, element )
-						{
-							if( element.name == 'p' )
-							{
-								//TODO: Migrate to 'indentClasses' based indenting format.  
-								value = value.replace( /\d*\.?\d+pt/g, function( length )
-								{
-									var pt = parseInt( length );
-									// MS-Word indent unit is roughly 11pt.
-									return Math.round( pt / 11 * config.indentOffset ) + config.indentUnit;
-								} );
-							}
-							return value;
-						} ],
+//						// 'Indent' format migration(to use editor's indent unit).
+//						[ /margin-?/, null, function( value, element )
+//						{
+//							if( element.name == 'p' )
+//							{
+//								//TODO: Migrate to 'indentClasses' based indenting format.
+//								value = value.replace( /\d*\.?\d+pt/g, function( length )
+//								{
+//									var pt = parseInt( length );
+//									// MS-Word indent unit is roughly 11pt.
+//									return Math.round( pt / 11 * config.indentOffset ) + config.indentUnit;
+//								} );
+//							}
+//							return value;
+//						} ],
 						[ /^margin$/, /0(?:cm|in) 0(?:cm|in) 0pt/ ],
 						[ 'text-indent', '0cm' ],
 						[ 'page-break-before' ],

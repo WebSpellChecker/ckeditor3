@@ -10,4 +10,4 @@ ECHO.
 
 :: rmdir /S /Q release
 
-java -jar ckreleaser/ckreleaser.jar ckreleaser.release ../.. release "3.0" ckeditor_3.0
+java -jar ckreleaser/ckreleaser.jar ckreleaser.release ../.. release "3.0.1" ckeditor_3.0.1

@@ -174,7 +174,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 		return result;
 	};
-	
+
+	var cssLengthRelativeUnit = /^(\d[.\d]*)+(em|ex|px|gd|rem|vw|vh|vm|ch|mm|cm|in|pt|pc|deg|rad|ms|s|hz|khz){1}?/i;
+
 	CKEDITOR.plugins.pastefromword =
 	{
 		utils :
@@ -276,6 +278,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					CKEDITOR.tools.extend( attrs, listBulletAttrs );
 					return true;
 				}
+			},
+
+			convertToPx : function( cssLength )
+			{
+				// Convert to 'px' in ignorance of DPI.
+				if( cssLengthRelativeUnit.test( cssLength ) )
+				{
+					var val,
+						calculator = CKEDITOR.dom.element.createFromHtml(
+										'<div style="position:absolute;left:-9999px;' +
+										'top:-9999px;margin:0px;padding:0px;border:0px;' +
+										'width:' + cssLength + '" ' +
+										'></div>' );
+					CKEDITOR.document.getBody().append( calculator );
+					val = calculator.$.clientWidth;
+					calculator.remove();
+					return val + 'px';
+				}
+				return cssLength;
 			},
 
 			listDtdParents : CKEDITOR.dtd.parentOf( 'ol' )
@@ -413,6 +434,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		getRules : function( editor )
 		{
 			var dtd = CKEDITOR.dtd,
+				blockLike = CKEDITOR.tools.extend( {}, dtd.$block, dtd.$listItem, dtd.$tableContent ),
 				config = editor.config,
 				filters = this.filters,
 				falsyFilter = filters.falsyFilter,
@@ -424,6 +446,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				isListBulletIndicator = this.utils.isListBulletIndicator,
 				containsNothingButSpaces = this.utils.isContainingOnlySpaces,
 				resolveListItem = this.utils.resolveList,
+				convertToPx = this.utils.convertToPx,
 				listDtdParents = this.utils.listDtdParents,
 				ignoreFontFace = config.pasteFromWordIgnoreFontFace;
 
@@ -439,12 +462,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					$ : function( element )
 					{
-						var tagName = element.name || '';
+						var tagName = element.name || '',
+							attrs = element.attributes;
 
 						// Firefox: adding inline style. 
 						var applyStyleFilter;
 						if( CKEDITOR.env.gecko && ( applyStyleFilter = filters.applyStyleFilter ) )
 							applyStyleFilter( element );
+
+						// Convert length unit of width/height on blocks to
+						// a more editor-friendly way (px).
+						if( tagName in blockLike
+							&& attrs.style )
+							attrs.style = stylesFilter(
+										[ [ /^width|height$/, null, convertToPx ] ] )( attrs.style ) || '';
 
 						// IE leave empty spaces at the beginning of body. 
 						if ( !tagName )
@@ -802,21 +833,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						} ],
 						// Remove default border style.
 						[ /^border$/, /^(:?medium\s*)?none\s*$/ ],
-//						// 'Indent' format migration(to use editor's indent unit).
-//						[ /margin-?/, null, function( value, element )
-//						{
-//							if( element.name == 'p' )
-//							{
-//								//TODO: Migrate to 'indentClasses' based indenting format.
-//								value = value.replace( /\d*\.?\d+pt/g, function( length )
-//								{
-//									var pt = parseInt( length );
-//									// MS-Word indent unit is roughly 11pt.
-//									return Math.round( pt / 11 * config.indentOffset ) + config.indentUnit;
-//								} );
-//							}
-//							return value;
-//						} ],
 						[ /^margin$/, /0(?:cm|in) 0(?:cm|in) 0pt/ ],
 						[ 'text-indent', '0cm' ],
 						[ 'page-break-before' ],

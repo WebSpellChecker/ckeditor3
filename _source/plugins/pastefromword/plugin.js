@@ -247,6 +247,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					element.name = 'cke:li';
 					attrs.style = CKEDITOR.plugins.pastefromword.filters.stylesFilter(
 					[
+						// Text-indent is not representing list item level any more.
 						[ 'text-indent' ],
 						[ 'line-height' ],
 						// Resolve indent level from 'margin-left' style.
@@ -735,6 +736,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if( styleText )
 							attrs.style = stylesFilter(
 									[
+										// Drop 'inline-height' style which make lines overlapping.
+										[ 'line-height' ],
 										!ignoreFontFace ? [ /^font-family$/, null, styleMigrateFilter( config[ 'font_style' ], 'family' ) ] : null,
 										!ignoreFontFace ? [ /^font-size$/, null, styleMigrateFilter( config[ 'fontSize_style' ], 'size' ) ] : null,
 										[ /^color$/, null, styleMigrateFilter( config[ 'colorButton_foreStyle' ], 'color' ) ],

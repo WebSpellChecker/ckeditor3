@@ -110,6 +110,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		return childs;
 	};
 
+	elementPrototype.nearestParent = function( tagName )
+	{
+		var parent = this.parent;
+		while( parent && !parent.name == tagName )
+			parent = parent.parent;
+		return parent;
+	};
+
 	fragmentPrototype.firstTextChild = elementPrototype.firstTextChild = function()
 	{
 		var child;
@@ -644,6 +652,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 						else
 							elementMigrateFilter( config[ 'format_' + ( config.enterMode == CKEDITOR.ENTER_P ? 'p' : 'div' ) ] )( element );
+					},
+
+					'td' : function ( element )
+					{
+						// 'td' in 'thead' is actually <th>.
+						if ( element.nearestParent( 'thead') )
+							element.name = 'th';
 					},
 
 					// Deprecates <font> in favor of stylish <span>.

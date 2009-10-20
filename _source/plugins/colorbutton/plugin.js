@@ -41,6 +41,8 @@ CKEDITOR.plugins.add( 'colorbutton',
 						block.element.addClass( 'cke_colorblock' );
 						block.element.setHtml( renderColors( panel, type ) );
 
+						CKEDITOR.ui.panelButton.fire( 'uiReady', this );
+
 						var keys = block.keys;
 						keys[ 39 ]	= 'next';					// ARROW-RIGHT
 						keys[ 9 ]	= 'next';					// TAB

@@ -48,6 +48,7 @@ CKEDITOR.plugins.add( 'format',
 						// Add the tag entry to the panel list.
 						this.add( tag, '<' + tag + '>' + label + '</' + tag + '>', label );
 					}
+					this.commit();
 				},
 
 				onClick : function( value )

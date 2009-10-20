@@ -51,6 +51,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						// Add the tag entry to the panel list.
 						this.add( name, '<span style="font-' + styleType + ':' + values[ i ] + '">' + name + '</span>', name );
 					}
+					this.commit();
 				},
 
 				onClick : function( value )

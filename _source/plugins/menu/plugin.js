@@ -151,9 +151,19 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 					},
 					this );
 
+					panel.onShow = function ()
+					{
+						var panelDoc = element.getDocument();
+						panelDoc.getBody().setStyle( 'overflow', 'hidden' );
+						panelDoc.getElementsByTag( 'html' ).getItem( 0 ).setStyle( 'overflow', 'hidden' );
+						editor.fire( 'menuShow', [ panel ] );
+					}
+
 					// Create an autosize block inside the panel.
 					var block = panel.addBlock( this.id );
 					block.autoSize = true;
+					element = this._.element = block.element;
+					element.addClass( editor.skinClass );
 
 					var keys = block.keys;
 					keys[ 40 ]	= 'next';					// ARROW-DOWN
@@ -163,12 +173,6 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 					keys[ 32 ]	= 'click';					// SPACE
 					keys[ 39 ]	= 'click';					// ARROW-RIGHT
 
-					element = this._.element = block.element;
-					element.addClass( editor.skinClass );
-
-					var elementDoc = element.getDocument();
-					elementDoc.getBody().setStyle( 'overflow', 'hidden' );
-					elementDoc.getElementsByTag( 'html' ).getItem( 0 ).setStyle( 'overflow', 'hidden' );
 
 					this._.itemOverFn = CKEDITOR.tools.addFunction( function( index )
 						{
@@ -227,13 +231,13 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 				// Inject the HTML inside the panel.
 				element.setHtml( output.join( '' ) );
 
+				CKEDITOR.menu.fire( 'uiReady', this );
+
 				// Show the panel.
 				if ( this.parent )
 					this.parent._.panel.showAsChild( panel, this.id, offsetParent, corner, offsetX, offsetY );
 				else
 					panel.showBlock( this.id, offsetParent, corner, offsetX, offsetY );
-				
-				editor.fire( 'menuShow', [ panel ] );
 			},
 
 			hide : function()
@@ -242,6 +246,7 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 			}
 		}
 	});
+	CKEDITOR.event.implementOn( CKEDITOR.menu, true );
 
 	function sortItems( items )
 	{

@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -98,18 +98,6 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 						_.panel.hide();
 						return;
 					}
-
-					if ( !_.committed )
-					{
-						_.list.commit();
-						_.committed = 1;
-					}
-
-					var value = this.getValue();
-					if ( value )
-						_.list.mark( value );
-					else
-						_.list.unmarkAll();
 
 					_.panel.showBlock( this.id, new CKEDITOR.dom.element( $element ), 4 );
 				},
@@ -214,6 +202,12 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 
 			panel.onShow = function()
 				{
+					var value = me.getValue();
+					if ( value )
+						me._.list.mark( value );
+					else
+						me._.list.unmarkAll();
+
 					if ( me.className )
 						this.element.getFirst().addClass( me.className + '_panel' );
 
@@ -264,22 +258,15 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 					panel.hide();
 				};
 
-			this._.panel = panel;
-			this._.list = list;
-
 			panel.getBlock( this.id ).onHide = function()
 				{
 					me._.on = 0;
 					me.setState( CKEDITOR.TRISTATE_OFF );
 				};
 
-			if ( this.init )
-			{
-				var innerPanel = panel._.panel;
-				innerPanel.isLoaded ?
-				 this.init()
-				 : innerPanel.onLoad = CKEDITOR.tools.bind( this.init, this );
-			}
+			this._.panel = panel;
+			this._.list = list;
+			this.init && this.init();
 		},
 
 		setValue : function( value, text )
@@ -342,6 +329,7 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 		commit : function()
 		{
 			this._.list.commit();
+			CKEDITOR.ui.richCombo.fire( 'uiReady', this );
 		},
 
 		setState : function( state )
@@ -355,6 +343,7 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 		}
 	}
 });
+CKEDITOR.event.implementOn( CKEDITOR.ui.richCombo, true );
 
 CKEDITOR.ui.prototype.addRichCombo = function( name, definition )
 {

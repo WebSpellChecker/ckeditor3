@@ -202,9 +202,12 @@ CKEDITOR.plugins.add( 'floatpanel',
 								opacity : '1'	// FF3 is ignoring "visibility"
 							});
 
-						if ( block.autoSize )
+						var panelLoad = CKEDITOR.tools.bind( function ()
 						{
-							function setHeight()
+							if ( this.onShow )
+								this.onShow.call( this );
+
+							if ( block.autoSize )
 							{
 								var target = element.getFirst();
 								var height = block.element.$.scrollHeight;
@@ -220,15 +223,13 @@ CKEDITOR.plugins.add( 'floatpanel',
 								// Fix IE < 8 visibility.
 								panel._.currentBlock.element.setStyle( 'display', 'none' ).removeStyle( 'display' );
 							}
-
-							if ( panel.isLoaded )
-								setHeight();
 							else
-								panel.onLoad = setHeight;
-						}
-						else
-							element.getFirst().removeStyle( 'height' );
+								element.getFirst().removeStyle( 'height' );
 
+							isShowing = false;
+						} , this );
+
+						panel.isLoaded ? panelLoad() : panel.onLoad = panelLoad;
 						// Set the IFrame focus, so the blur event gets fired.
 						CKEDITOR.tools.setTimeout( function()
 							{
@@ -255,10 +256,6 @@ CKEDITOR.plugins.add( 'floatpanel',
 					}, 0, this);
 				this.visible = 1;
 
-				if ( this.onShow )
-					this.onShow.call( this );
-
-				isShowing = false;
 			},
 
 			hide : function()

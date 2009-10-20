@@ -7,58 +7,110 @@ CKEDITOR.plugins.add( 'adobeair',
 {
 	init : function( editor )
 	{
-		if( CKEDITOR.env.air )
-			editor.on( 'uiReady', function()
+		function convertInlineHandlers( container, eventNameList )
+		{
+			for ( var i = 0; i < eventNameList.length; i++ )
 			{
-				( function ( container, eventNameList )
-				{
-					for ( var i = 0; i < eventNameList.length; i++ )
+				( function( eventName ){
+
+					var targetList =
+						 container.eachChildWithAttribute( 'on'+ eventName, function( item )
 					{
-						( function( eventName ){
+						item.on( eventName, function( evt )
+						{
+							var inlineEventHandler = item.getAttribute( 'on' + eventName ),
+								callFunc = /callFunction\(([^)]+)\)/.exec( inlineEventHandler ),
+								callFuncArgs = callFunc &&  callFunc[ 1 ].split( ',' ),
+								preventDefault = /return false;/.test( inlineEventHandler );
 
-							var targetList =
-								 container.eachChildWithAttribute( 'on'+ eventName, function( item )
+
+							if ( callFuncArgs )
 							{
-								item.on( eventName, function( evt )
+								var nums = callFuncArgs.length,
+									argName;
+								for ( var i = 0; i < nums; i++ )
 								{
-									var inlineEventHandler = item.getAttribute( 'on' + eventName ),
-										callFunc = /callFunction\(([^)]+)\)/.exec( inlineEventHandler ),
-										callFuncArgs = callFunc && callFunc[ 1 ].split( ',' ),
-										preventDefault = /return false;/.test( inlineEventHandler );
+									callFuncArgs[ i ] = argName
+										= CKEDITOR.tools.trim( callFuncArgs[ i ] );
 
-									if ( callFuncArgs )
+									// String form param.
+									var strPattern = argName.match( /^(["'])([^"']*?)\1$/ );
+									if ( strPattern )
 									{
-										var nums = callFuncArgs.length,
-											argName;
-										for ( var i = 0; i < nums; i++ )
-										{
-											switch( argName = CKEDITOR.tools.trim( callFuncArgs[ i ] ) )
-											{
-												case 'this' :
-													callFuncArgs[ i ] = item.$;
-													break;
-												case 'event' :
-													callFuncArgs[ i ] = evt.data.$;
-													break;
-												case 'null' :
-													callFuncArgs [ i ] = null;
-													break;
-											}
-										}
-
-										CKEDITOR.tools.callFunction.apply( window, callFuncArgs );
+										callFuncArgs[ i ] = strPattern[ 2 ];
+										continue;
 									}
 
-									if( preventDefault )
-										evt.data.preventDefault();
+									// Integer form param.
+									if ( argName.match( /\d+/ ) )
+									{
+										callFuncArgs[ i ] = parseInt( argName );
+										continue;
+									}
 
-								} );
-							} );
+									switch( argName )
+									{
+										case 'this' :
+											callFuncArgs[ i ] = item.$;
+											break;
+										case 'event' :
+											callFuncArgs[ i ] = evt.data.$;
+											break;
+										case 'null' :
+											callFuncArgs [ i ] = null;
+											break;
+									}
+								}
+								CKEDITOR.tools.callFunction.apply( window, callFuncArgs );
+							}
 
-						} )( eventNameList[ i ] );
-					}
-				} )( editor.container, [ 'click', 'keydown', 'mousedown', 'keypress' ] );
+							if( preventDefault )
+								evt.data.preventDefault();
+
+						} );
+					} );
+
+				} )( eventNameList[ i ] );
+			}
+		}
+
+		if( CKEDITOR.env.air )
+		{
+			editor.on( 'uiReady', function()
+			{
+				convertInlineHandlers( editor.container, [ 'click', 'keydown', 'mousedown', 'keypress' ] );
 			} );
+
+			var richCombo = CKEDITOR.ui.richCombo,
+				panelButton = CKEDITOR.ui.panelButton,
+				menu = CKEDITOR.menu,
+				pane;
+
+			function onPanelUIReady( evt )
+			{
+				var floatPanel = evt.data._.panel,
+					panel = floatPanel._.panel,
+					holder;
+
+				( function(){
+
+					// Off-line dom event is not supported in AIR, waiting for
+					// panel iframe loaded.
+					if ( !panel.isLoaded )
+					{
+						setTimeout( arguments.callee, 30 );
+						return;
+					}
+					holder = panel._.holder;
+					convertInlineHandlers( holder, [ 'click', 'keydown', 'mousedown', 'keypress' ] );
+				})();
+
+			}
+
+			richCombo && richCombo.on( 'uiReady', onPanelUIReady );
+			panelButton && panelButton.on( 'uiReady', onPanelUIReady );
+			menu && menu.on( 'uiReady', onPanelUIReady );
+		}
 	}
 });
 

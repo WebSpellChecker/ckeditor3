@@ -100,7 +100,7 @@ CKEDITOR.ui.panel.prototype =
 
 			// The iframe must source from a 'application sandbox' file,
 			// otherwise the dynamically linked stylesheets and scripts
-			// won't work.
+			// won't work in AIR.
 			if( CKEDITOR.env.air )
 			{
 				output.push( CKEDITOR.basePath + 'air_sandbox_frame.html' );

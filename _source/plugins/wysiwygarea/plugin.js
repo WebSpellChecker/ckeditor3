@@ -268,7 +268,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								' allowTransparency="true"' +
 								// The iframe must source from a 'application sandbox' file,
 								// otherwise the dynamically linked stylesheets and scripts
-								// won't work.
+								// won't work in AIR.
 								' src="' +
 								 ( CKEDITOR.env.air ? ( CKEDITOR.basePath + 'air_sandbox_frame.html' )
 								 : ( 'javascript:' + encodeURIComponent( src ) ) ) + '"' + 

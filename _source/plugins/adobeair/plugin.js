@@ -7,128 +7,140 @@ CKEDITOR.plugins.add( 'adobeair',
 {
 	init : function( editor )
 	{
-		function convertInlineHandlers( container, eventNameList )
-		{
-			for ( var i = 0; i < eventNameList.length; i++ )
-			{
-				( function( eventName ){
 
-					var targetList =
-						 container.eachChildWithAttribute( 'on'+ eventName, function( item )
+		// Body doesn't get default margin on AIR. 
+		editor.addCss( 'body { padding: 8px }' );
+
+
+		// document.querySelectAll() is not presented in AIR.
+		function eachChildWithAttribute( element, name, processor )
+		{
+		};
+
+
+		var eventNameList = [ 'click', 'keydown', 'mousedown', 'keypress' ];
+
+		// any inline event callbacks assigned via innerHTML/outerHTML such as
+		// onclick/onmouseover, are ignored in AIR.
+		// Use DOM2 event listeners to substitue inline handlers instead.
+		function convertInlineHandlers( container )
+		{
+			// TODO: document.querySelectorAll is not supported in AIR.
+			var children = container.getElementsByTag( '*' ),
+				count = children.count(),
+				child;
+			for ( var i = 0; i < count; i++ )
+			{
+				child = children.getItem( i );
+
+				( function( node )
+				{
+					for ( var j = 0; j < eventNameList.length; j++ )
 					{
-						item.on( eventName, function( evt )
+						( function( eventName )
 						{
-							var inlineEventHandler = item.getAttribute( 'on' + eventName ),
-								callFunc = /callFunction\(([^)]+)\)/.exec( inlineEventHandler ),
-								callFuncArgs = callFunc &&  callFunc[ 1 ].split( ',' ),
-								preventDefault = /return false;/.test( inlineEventHandler );
 
-
-							if ( callFuncArgs )
+							if( node.hasAttribute( 'on' + eventName ) )
 							{
-								var nums = callFuncArgs.length,
-									argName;
-								for ( var i = 0; i < nums; i++ )
+								node.on( eventName, function( evt )
 								{
-									callFuncArgs[ i ] = argName
-										= CKEDITOR.tools.trim( callFuncArgs[ i ] );
+									var inlineEventHandler = node.getAttribute( 'on' + eventName ),
+										callFunc = /callFunction\(([^)]+)\)/.exec( inlineEventHandler ),
+										callFuncArgs = callFunc &&  callFunc[ 1 ].split( ',' ),
+										preventDefault = /return false;/.test( inlineEventHandler );
 
-									// String form param.
-									var strPattern = argName.match( /^(["'])([^"']*?)\1$/ );
-									if ( strPattern )
+									if ( callFuncArgs )
 									{
-										callFuncArgs[ i ] = strPattern[ 2 ];
-										continue;
+										var nums = callFuncArgs.length,
+											argName;
+
+										for ( var i = 0; i < nums; i++ )
+										{
+											// Trim spaces around param.
+											callFuncArgs[ i ] = argName = CKEDITOR.tools.trim( callFuncArgs[ i ] );
+
+											// String form param.
+											var strPattern = argName.match( /^(["'])([^"']*?)\1$/ );
+											if ( strPattern )
+											{
+												callFuncArgs[ i ] = strPattern[ 2 ];
+												continue;
+											}
+
+											// Integer form param.
+											if ( argName.match( /\d+/ ) )
+											{
+												callFuncArgs[ i ] = parseInt( argName );
+												continue;
+											}
+
+											// Speical variables.
+											switch( argName )
+											{
+												case 'this' :
+													callFuncArgs[ i ] = node.$;
+													break;
+												case 'event' :
+													callFuncArgs[ i ] = evt.data.$;
+													break;
+												case 'null' :
+													callFuncArgs [ i ] = null;
+													break;
+											}
+										}
+
+										CKEDITOR.tools.callFunction.apply( window, callFuncArgs );
 									}
 
-									// Integer form param.
-									if ( argName.match( /\d+/ ) )
-									{
-										callFuncArgs[ i ] = parseInt( argName );
-										continue;
-									}
-
-									switch( argName )
-									{
-										case 'this' :
-											callFuncArgs[ i ] = item.$;
-											break;
-										case 'event' :
-											callFuncArgs[ i ] = evt.data.$;
-											break;
-										case 'null' :
-											callFuncArgs [ i ] = null;
-											break;
-									}
-								}
-								console.log( callFuncArgs );
-								CKEDITOR.tools.callFunction.apply( window, callFuncArgs );
+									if( preventDefault )
+										evt.data.preventDefault();
+								} );
 							}
-
-							if( preventDefault )
-								evt.data.preventDefault();
-
-						} );
-					} );
-
-				} )( eventNameList[ i ] );
-			}
-		}
-
-		if( CKEDITOR.env.air )
-		{
-			editor.on( 'uiReady', function()
-			{
-				convertInlineHandlers( editor.container, [ 'click', 'keydown', 'mousedown', 'keypress' ] );
-			} );
-
-			var richCombo = CKEDITOR.ui.richCombo,
-				panelButton = CKEDITOR.ui.panelButton,
-				menu = CKEDITOR.menu,
-				dialog = CKEDITOR.dialog;
-
-			function onPanelUIReady( evt )
-			{
-				var floatPanel = evt.data._.panel,
-					panel = floatPanel._.panel,
-					holder;
-
-				( function(){
-
-					// Off-line dom event is not supported in AIR, waiting for
-					// panel iframe loaded.
-					if ( !panel.isLoaded )
-					{
-						setTimeout( arguments.callee, 30 );
-						return;
+						} )( eventNameList[ j ] );
 					}
-					holder = panel._.holder;
-					convertInlineHandlers( holder, [ 'click', 'keydown', 'mousedown', 'keypress' ] );
-				})();
-
+					
+				} )( child );
 			}
+		}
 
-			richCombo && richCombo.on( 'uiReady', onPanelUIReady );
-			panelButton && panelButton.on( 'uiReady', onPanelUIReady );
-			menu && menu.on( 'uiReady', onPanelUIReady );
-			dialog && dialog.on( 'uiReady', function ( evt )
-			{
-				convertInlineHandlers( evt.data._.element, [ 'click', 'keydown', 'mousedown', 'keypress' ] );
-			} );
+		editor.on( 'uiReady', function()
+		{
+			convertInlineHandlers( editor.container );
+		} );
+
+		var richCombo = CKEDITOR.ui.richCombo,
+			panelButton = CKEDITOR.ui.panelButton,
+			menu = CKEDITOR.menu,
+			dialog = CKEDITOR.dialog;
+
+		function onPanelUIReady( evt )
+		{
+			var floatPanel = evt.data._.panel,
+				panel = floatPanel._.panel,
+				holder;
+
+			( function(){
+
+				// Adding dom event listeners off-line are not supported in AIR,
+				// waiting for panel iframe loaded.
+				if ( !panel.isLoaded )
+				{
+					setTimeout( arguments.callee, 30 );
+					return;
+				}
+				holder = panel._.holder;
+				convertInlineHandlers( holder );
+			})();
 
 		}
-	}
-});
 
-CKEDITOR.dom.element.prototype.eachChildWithAttribute = function( name, processor )
-{
-	var children = this.getElementsByTag( '*' ),
-		count = children.count(),
-		child;
-	for ( var i = 0; i < count; i++ )
-	{
-		child = children.getItem( i );
-		if( child.hasAttribute( name ) )
-			processor( child );
+		richCombo && richCombo.on( 'uiReady', onPanelUIReady );
+		panelButton && panelButton.on( 'uiReady', onPanelUIReady );
+		menu && menu.on( 'uiReady', onPanelUIReady );
+		dialog && dialog.on( 'uiReady', function ( evt )
+		{
+			convertInlineHandlers( evt.data._.element );
+		} );
 	}
-};
+} );
+

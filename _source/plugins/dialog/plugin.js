@@ -591,6 +591,8 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			else
 				return;
 
+			CKEDITOR.dialog.fire( 'uiReady', this );
+
 			// FIREFOX BUG: Fix vanishing caret for Firefox 2 or Gecko 1.8.
 			if ( CKEDITOR.env.gecko && CKEDITOR.env.version < 10900 )
 			{
@@ -1854,7 +1856,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 	var preventKeyBubbling = function( e )
 	{
 		if ( e.data.getKeystroke() in preventKeyBubblingKeys )
-			e.data.preventDefault( true );
+			e.data.stopPropagation();
 	};
 
 	(function()

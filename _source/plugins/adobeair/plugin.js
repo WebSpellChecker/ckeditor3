@@ -61,6 +61,7 @@ CKEDITOR.plugins.add( 'adobeair',
 											break;
 									}
 								}
+								console.log( callFuncArgs );
 								CKEDITOR.tools.callFunction.apply( window, callFuncArgs );
 							}
 
@@ -84,7 +85,7 @@ CKEDITOR.plugins.add( 'adobeair',
 			var richCombo = CKEDITOR.ui.richCombo,
 				panelButton = CKEDITOR.ui.panelButton,
 				menu = CKEDITOR.menu,
-				pane;
+				dialog = CKEDITOR.dialog;
 
 			function onPanelUIReady( evt )
 			{
@@ -110,6 +111,11 @@ CKEDITOR.plugins.add( 'adobeair',
 			richCombo && richCombo.on( 'uiReady', onPanelUIReady );
 			panelButton && panelButton.on( 'uiReady', onPanelUIReady );
 			menu && menu.on( 'uiReady', onPanelUIReady );
+			dialog && dialog.on( 'uiReady', function ( evt )
+			{
+				convertInlineHandlers( evt.data._.element, [ 'click', 'keydown', 'mousedown', 'keypress' ] );
+			} );
+
 		}
 	}
 });

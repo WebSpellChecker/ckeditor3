@@ -110,10 +110,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		return childs;
 	};
 
-	elementPrototype.nearestParent = function( tagName )
+	elementPrototype.getAncestor = function( tagName )
 	{
 		var parent = this.parent;
-		while( parent && !parent.name == tagName )
+		while( parent && parent.name != tagName )
 			parent = parent.parent;
 		return parent;
 	};
@@ -688,7 +688,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					'td' : function ( element )
 					{
 						// 'td' in 'thead' is actually <th>.
-						if ( element.nearestParent( 'thead') )
+						if ( element.getAncestor( 'thead') )
 							element.name = 'th';
 					},
 

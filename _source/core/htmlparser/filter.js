@@ -76,10 +76,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				// We must apply filters set to the specific element name as
 				// well as those set to the generic $ name. So, add both to an
 				// array and process them in a small loop.
-				var filters = [ this._.elements[ element.name ], this._.elements.$ ],
+				var filters = [ this._.elements[ '^' ], this._.elements[ element.name ], this._.elements.$ ],
 					filter, ret;
 
-				for ( var i = 0 ; i < 2 ; i++ )
+				for ( var i = 0 ; i < 3 ; i++ )
 				{
 					filter = filters[ i ];
 					if ( filter )
@@ -92,8 +92,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if ( ret && ret != element )
 							return this.onElement( ret );
 
-						// The element has been dismissed by one of the filters.
-						if( !element.name )
+						// The none-root element has been dismissed by one of the filters.
+						if( element.parent && !element.name )
 							break;
 					}
 				}

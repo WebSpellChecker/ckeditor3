@@ -255,20 +255,24 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					  && ( listMarker = listMarker[ 0 ] ) )
 				{
 					element.name = 'cke:li';
-					attrs.style = CKEDITOR.plugins.pastefromword.filters.stylesFilter(
-					[
-						// Text-indent is not representing list item level any more.
-						[ 'text-indent' ],
-						[ 'line-height' ],
-						// Resolve indent level from 'margin-left' style.
-						[ /^margin(:?-left)?$/, null, function( value )
-						{
-							// Deal with short-hand form. 
-							var values = value.split( ' ' );
-							value = values[ 3 ] || values[ 1 ] || values [ 0 ];
-							attrs[ 'cke:indent' ] = parseInt( value );
-						} ]
-					] )( attrs.style, element ) || '' ;
+
+					if( attrs.style )
+					{
+						attrs.style = CKEDITOR.plugins.pastefromword.filters.stylesFilter(
+						[
+							// Text-indent is not representing list item level any more.
+							[ 'text-indent' ],
+							[ 'line-height' ],
+							// Resolve indent level from 'margin-left' value.
+							[ /^margin(:?-left)?$/, null, function( value )
+							{
+								// Be able to deal with component/short-hand form style.
+								var values = value.split( ' ' );
+								value = values[ 3 ] || values[ 1 ] || values [ 0 ];
+								attrs[ 'cke:indent' ] = parseInt( value );
+							} ]
+						] )( attrs.style, element ) || '' ;
+					}
 
 					// Inherit list-type-style from bullet.
 					var listBulletAttrs = listMarker.attributes,
@@ -460,15 +464,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				elements :
 				{
+					'^' : function( element )
+					{
+						// Transform CSS style declaration to inline style.
+						var applyStyleFilter;
+						if ( CKEDITOR.env.gecko && ( applyStyleFilter = filters.applyStyleFilter ) )
+							applyStyleFilter( element );
+					},
+
 					$ : function( element )
 					{
 						var tagName = element.name || '',
 							attrs = element.attributes;
-
-						// Firefox: adding inline style. 
-						var applyStyleFilter;
-						if( CKEDITOR.env.gecko && ( applyStyleFilter = filters.applyStyleFilter ) )
-							applyStyleFilter( element );
 
 						// Convert length unit of width/height on blocks to
 						// a more editor-friendly way (px).
@@ -597,7 +604,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// Grab only the style definition section.
 							var styleDefSection = element.onlyChild().value.match( /\/\* Style Definitions \*\/([\s\S]*?)\/\*/ ),
 								styleDefText = styleDefSection && styleDefSection[ 1 ],
-								rules = {}; // Storing the parsed result.   
+								rules = {}; // Storing the parsed result.
 
 							if( styleDefText )
 							{

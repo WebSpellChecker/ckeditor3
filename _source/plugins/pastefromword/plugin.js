@@ -130,34 +130,39 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	};
 
 	// Adding a (set) of styles to the element's attributes.
-	elementPrototype.addStyle = function( name, value )
+	elementPrototype.addStyle = function( name, value, isPrepend )
 	{
 		var styleText, addingStyleText = '';
-		// style literal.
-		if( typeof name == 'object' )
-		{
-			for( var style in name )
-			{
-				if( name.hasOwnProperty( style) )
-					addingStyleText += style + ':' + name[ style ] + ';';
-			}
-		}
 		// name/value pair.
-		else if( value )
+		if ( typeof value == 'string' )
 			addingStyleText += name + ':' + value + ';';
-		// raw style text form.
-		else if( name )
-			addingStyleText += name;
+		else
+		{
+			// style literal.
+			if( typeof name == 'object' )
+			{
+				for( var style in name )
+				{
+					if( name.hasOwnProperty( style) )
+						addingStyleText += style + ':' + name[ style ] + ';';
+				}
+			}
+			// raw style text form.
+			else
+				addingStyleText += name;
+			isPrepend = value;
+		}
 
 		if( !this.attributes )
 			this.attributes = {};
-		styleText = this.attributes.style;
-		if( !styleText )
-			this.attributes.style = "";
-		else if( !/;$/.test( styleText ) )
-			this.attributes.style = styleText + ';';
 
-		this.attributes.style += addingStyleText;
+		styleText = this.attributes.style || '';
+
+		if( !/;$/.test( styleText ) )
+			styleText += ';';
+
+		this.attributes.style = isPrepend? 
+			addingStyleText += styleText : styleText += addingStyleText;
 	}
 
 	/**
@@ -650,7 +655,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										style = rules[ name ];
 										if( typeof style == 'object' )
 											style = style[ className ];
-										style && element.addStyle( style );
+										style && element.addStyle( style, true );
 									}
 								};
 							}

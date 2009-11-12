@@ -7,11 +7,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @fileOverview The floating dialog plugin.
  */
 
-CKEDITOR.plugins.add( 'dialog',
-	{
-		requires : [ 'dialogui' ]
-	});
-
 /**
  * No resize for this dialog.
  * @constant
@@ -72,9 +67,6 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 		return null;
 	}
-
-	// Stores dialog related data from skin definitions. e.g. margin sizes.
-	var skinData = {};
 
 	/**
 	 * This is the base class for runtime dialog objects. An instance of this
@@ -1437,7 +1429,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			element = dialog.getElement().getFirst(),
 			editor = dialog.getParentEditor(),
 			magnetDistance = editor.config.dialog_magnetDistance,
-			margins = skinData[ editor.skinName ].margins || [ 0, 0, 0, 0 ];
+			margins = editor.skin.margins || [ 0, 0, 0, 0 ];
 
 		if ( typeof magnetDistance == 'undefined' )
 			magnetDistance = 20;
@@ -1515,7 +1507,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			minWidth = definition.minWidth || 0,
 			minHeight = definition.minHeight || 0,
 			resizable = definition.resizable,
-			margins = skinData[ dialog.getParentEditor().skinName ].margins || [ 0, 0, 0, 0 ];
+			margins = dialog.getParentEditor().skin.margins || [ 0, 0, 0, 0 ];
 
 		function topSizer( coords, dy )
 		{
@@ -2672,17 +2664,6 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			}
 		};
 	})();
-
-	// Grab the margin data from skin definition and store it away.
-	CKEDITOR.skins.add = ( function()
-	{
-		var original = CKEDITOR.skins.add;
-		return function( skinName, skinDefinition )
-		{
-			skinData[ skinName ] = { margins : skinDefinition.margins };
-			return original.apply( this, arguments );
-		};
-	} )();
 })();
 
 // Extend the CKEDITOR.editor class with dialog specific functions.
@@ -2734,6 +2715,11 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 
 			return null;
 		}
+	});
+
+CKEDITOR.plugins.add( 'dialog',
+	{
+		requires : [ 'dialogui' ]
 	});
 
 // Dialog related configurations.

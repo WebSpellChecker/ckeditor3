@@ -124,7 +124,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		editor.fireOnce( 'configLoaded' );
 
 		// Load language file.
-		loadLang( editor );
+		loadSkin( editor );
 	};
 
 	var loadLang = function( editor )
@@ -246,7 +246,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						// Load the editor skin.
 						editor.fire( 'pluginsLoaded' );
-						loadSkin( editor );
+						loadTheme( editor );
 					});
 			});
 	};
@@ -255,7 +255,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		CKEDITOR.skins.load( editor, 'editor', function()
 			{
-				loadTheme( editor );
+				loadLang( editor );
 			});
 	};
 

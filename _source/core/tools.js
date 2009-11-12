@@ -189,6 +189,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			return ( !!object && object instanceof Array );
 		},
 
+		isEmpty : function ( object )
+		{
+			for ( var i in object )
+			{
+				if ( object.hasOwnProperty( i ) )
+					return false;
+			}
+			return true;
+		},
 		/**
 		 * Transforms a CSS property name to its relative DOM style name.
 		 * @param {String} cssName The CSS property name.
@@ -204,7 +213,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var cssFloat = ( typeof test.cssFloat != 'undefined' ) ? 'cssFloat'
 				: ( typeof test.styleFloat != 'undefined' ) ? 'styleFloat'
 				: 'float';
-			
+
 			return function( cssName )
 			{
 				if ( cssName == 'float' )
@@ -264,6 +273,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			this.htmlEncode = fix3;
 
 			return this.htmlEncode( text );
+		},
+
+		/**
+		 * Replace characters can't be represented through CSS Selectors string
+		 * by CSS Escape Notation where the character escape sequence consists
+		 * of a backslash character (\) followed by the orginal characters.
+		 * Ref: http://www.w3.org/TR/css3-selectors/#grammar
+		 * @param cssSelectText
+		 * @return the escaped selector text. 
+		 */
+		escapeCssSelector : function( cssSelectText )
+		{
+			return cssSelectText.replace( /[\s#:.,$*^\[\]()~=+>]/g, '\\$&' );
 		},
 
 		/**

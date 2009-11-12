@@ -160,7 +160,18 @@ CKEDITOR.dialog.add( 'select', function( editor )
 			this.commitContent( element );
 
 			if ( isInsertMode )
-				editor.insertElement( element );
+			{
+				editor.insertElement(element);
+				if( CKEDITOR.env.ie )
+				{
+					var sel = editor.getSelection(),
+						bms = sel.createBookmarks();
+					setTimeout(function ()
+					{
+						sel.selectBookmarks( bms );
+					}, 0 );
+				}
+			}
 		},
 		contents : [
 			{
@@ -247,6 +258,8 @@ CKEDITOR.dialog.add( 'select', function( editor )
 								{
 									if ( name == 'select' )
 										this.setValue( element.getAttribute( 'size' ) || '' );
+									if ( CKEDITOR.env.webkit )
+										this.getInputElement().setStyle( 'width', '86px' );
 								},
 								commit : function( element )
 								{
@@ -523,6 +536,8 @@ CKEDITOR.dialog.add( 'select', function( editor )
 								{
 									if ( name == 'select' )
 										this.setValue( element.getAttribute( 'multiple' ) );
+									if ( CKEDITOR.env.webkit )
+										this.getElement().getParent().setStyle( 'vertical-align', 'middle' );
 								},
 								commit : function( element )
 								{

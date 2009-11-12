@@ -80,9 +80,7 @@ CKEDITOR.plugins.add( 'sourcearea',
 								// inside of it (non IE).
 								textarea.on( 'mousedown', function( evt )
 									{
-										evt = evt.data.$;
-										if ( evt.stopPropagation )
-											evt.stopPropagation();
+										evt.data.stopPropagation();
 									} );
 							}
 
@@ -123,6 +121,7 @@ CKEDITOR.plugins.add( 'sourcearea',
 						loadData : function( data )
 						{
 							textarea.setValue( data );
+							editor.fire( 'dataReady' );
 						},
 
 						getData : function()

@@ -85,7 +85,7 @@ CKEDITOR.skins.add( 'kama', (function()
 			if ( CKEDITOR.env.webkit )
 			{
 				uiColorMenuCss = uiColorMenuCss.split( '}' ).slice( 0, -1 );
-				for ( var i = 0 ; i < uiColorMenuCss.length ; i++ ) 
+				for ( var i = 0 ; i < uiColorMenuCss.length ; i++ )
 					uiColorMenuCss[ i ] = uiColorMenuCss[ i ].split( '{' );
 			}
 
@@ -94,10 +94,10 @@ CKEDITOR.skins.add( 'kama', (function()
 				var node = document.getHead().append( 'style' );
 				node.setAttribute( "id", "cke_ui_color" );
 				node.setAttribute( "type", "text/css" );
-				
+
 				return node;
 			}
-			
+
 			function updateStylesheets( styleNodes, styleContent, replace )
 			{
 				var r, i, content;
@@ -145,8 +145,9 @@ CKEDITOR.skins.add( 'kama', (function()
 
 				setUiColor : function( color )
 				{
-					var uiStyle = addStylesheet( CKEDITOR.document ),
-						cssId = '#cke_' + editor.name.replace('.', '\\.');
+					var cssContent,
+						uiStyle = addStylesheet( CKEDITOR.document ),
+						cssId = '#cke_' + CKEDITOR.tools.escapeCssSelector( editor.name );
 
 					var cssSelectors =
 						[
@@ -158,9 +159,9 @@ CKEDITOR.skins.add( 'kama', (function()
 					var cssProperties = "background-color: $color !important;";
 
 					if ( CKEDITOR.env.webkit )
-						var cssContent = [ [ cssSelectors, cssProperties ] ];
+						cssContent = [ [ cssSelectors, cssProperties ] ];
 					else
-						var cssContent = cssSelectors + '{' + cssProperties + '}';
+						cssContent = cssSelectors + '{' + cssProperties + '}';
 
 					return ( this.setUiColor =
 						function( color )

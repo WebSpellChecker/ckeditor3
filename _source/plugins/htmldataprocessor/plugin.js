@@ -11,6 +11,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	var protectedSourceMarker = '{cke_protected}';
 
+
+	// Return the last non-space child node of the block (#4344).
+	function lastNoneSpaceChild( block )
+	{
+		var lastIndex = block.children.length,
+			last = block.children[ lastIndex - 1 ];
+		while(  last && last.type == CKEDITOR.NODE_TEXT && !CKEDITOR.tools.trim( last.value ) )
+			last = block.children[ --lastIndex ];
+		return last;
+	}
+
 	function trimFillers( block, fromSource )
 	{
 		// If the current node is a block, and if we're converting from source or
@@ -18,8 +29,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		//
 		// Also, any &nbsp; at the end of blocks are fillers, remove them as well.
 		// (#2886)
-		var children = block.children;
-		var lastChild = children[ children.length - 1 ];
+		var children = block.children, lastChild = lastNoneSpaceChild( block );
 		if ( lastChild )
 		{
 			if ( ( fromSource || !CKEDITOR.env.ie ) && lastChild.type == CKEDITOR.NODE_ELEMENT && lastChild.name == 'br' )
@@ -31,11 +41,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	function blockNeedsExtension( block )
 	{
-		if ( block.children.length < 1 )
-			return true;
-
-		var lastChild = block.children[ block.children.length - 1 ];
-		return lastChild.type == CKEDITOR.NODE_ELEMENT && lastChild.name == 'br';
+		var lastChild = lastNoneSpaceChild( block );
+		return !lastChild || lastChild.type == CKEDITOR.NODE_ELEMENT && lastChild.name == 'br';
 	}
 
 	function extendBlockForDisplay( block )
@@ -192,7 +199,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		};
 	}
 
-	var protectAttributeRegex = /<(?:a|area|img|input).*?\s((?:href|src|name)\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|(?:[^ "'>]+)))/gi;
+	var protectAttributeRegex = /<(?:a|area|img|input)[\s\S]*?\s((?:href|src|name)\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|(?:[^ "'>]+)))/gi;
 
 	function protectAttributes( html )
 	{
@@ -201,8 +208,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	var protectStyleTagsRegex = /<(style)(?=[ >])[^>]*>[^<]*<\/\1>/gi;
 	var encodedTagsRegex = /<cke:encoded>([^<]*)<\/cke:encoded>/gi;
-	var protectElementNamesRegex = /(<\/?)((?:object|embed|param).*?>)/gi;
-	var protectSelfClosingRegex = /<cke:param(.*?)\/>/gi;
+	var protectElementNamesRegex = /(<\/?)((?:object|embed|param)[\s\S]*?>)/gi;
+	var protectSelfClosingRegex = /<cke:(param|embed)([\s\S]*?)\/?>/gi;
 
 	function protectStyleTagsMatch( match )
 	{
@@ -219,7 +226,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	}
 	function protectSelfClosingElements( html )
 	{
-		return html.replace( protectSelfClosingRegex, '<cke:param$1></cke:param>' );
+		return html.replace( protectSelfClosingRegex, '<cke:$1$2></cke:$1>' );
 	}
 
 	function unprotectEncodedTagsMatch( match, encoded )

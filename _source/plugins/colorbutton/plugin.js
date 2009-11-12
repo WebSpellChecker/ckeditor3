@@ -31,7 +31,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 
 					panel :
 					{
-						css : editor.skin.editor.css
+						css : [ CKEDITOR.getUrl( editor.skinPath + 'editor.css' ) ]
 					},
 
 					onBlock : function( panel, blockName )

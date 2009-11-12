@@ -86,8 +86,7 @@ CKEDITOR.resourceManager.prototype =
 		if ( this.registered[ name ] )
 			throw '[CKEDITOR.resourceManager.add] The resource name "' + name + '" is already registered.';
 
-		CKEDITOR.fire( name + CKEDITOR.tools.capitalize( this.fileName ) + 'Ready',
-				this.registered[ name ] = definition || {} );
+		this.registered[ name ] = definition || {};
 	},
 
 	/**

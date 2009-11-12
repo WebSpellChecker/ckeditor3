@@ -98,15 +98,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		},
 
 		/**
-		 * Turn the first letter of string to upper-case.
-		 * @param {String} str
-		 */
-		capitalize: function( str )
-		{
-			return str.charAt( 0 ).toUpperCase() + str.substring( 1 ).toLowerCase();
-		},
-
-		/**
 		 * Copy the properties from one object to another. By default, properties
 		 * already present in the target object <strong>are not</strong> overwritten.
 		 * @param {Object} target The object to be extended.
@@ -236,27 +227,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 			};
 		} )(),
-
-		/**
-		 * Build the HTML snippet of a set of <style>/<link>.
-		 * @param css {String|Array} Each of which are url (absolute) of a CSS file or
-		 * a trunk of style text.
-		 */
-		buildStyleHtml : function ( css )
-		{
-			css = [].concat( css );
-			var item, retval = [];
-			for ( var i = 0; i < css.length; i++ )
-			{
-				item = css[ i ];
-				// Is CSS style text ?
-				if ( /@import|[{}]/.test(item) )
-					retval.push('<style>' + item + '</style>');
-				else
-					retval.push('<link type="text/css" rel=stylesheet href="' + item + '">');
-			}
-			return retval.join( '' );
-		},
 
 		/**
 		 * Replace special HTML characters in a string with their relative HTML

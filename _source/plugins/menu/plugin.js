@@ -132,7 +132,7 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 				{
 					panel = this._.panel = new CKEDITOR.ui.floatPanel( this.editor, CKEDITOR.document.getBody(),
 						{
-							css : editor.skin.editor.css,
+							css : [ CKEDITOR.getUrl( editor.skinPath + 'editor.css' ) ],
 							level : this._.level - 1,
 							className : editor.skinClass + ' cke_contextmenu'
 						},

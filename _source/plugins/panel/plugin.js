@@ -160,7 +160,7 @@ CKEDITOR.ui.panel.prototype =
 						// It looks strange, but for FF2, the styles must go
 						// after <body>, so it (body) becames immediatelly
 						// available. (#3031)
-						CKEDITOR.tools.buildStyleHtml( this.css ) +
+						'<link type="text/css" rel=stylesheet href="' + this.css.join( '"><link type="text/css" rel="stylesheet" href="' ) + '">' +
 					'<\/html>' );
 				doc.$.close();
 

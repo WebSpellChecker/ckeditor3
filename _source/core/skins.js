@@ -43,7 +43,7 @@ CKEDITOR.skins = (function()
 				CKEDITOR.imageCacher.load( preload, function()
 					{
 						preloaded[ skinName ] = 1;
-						loadedPart( skinName, part, callback );
+						loadPart( skinName, part, callback );
 					} );
 				return;
 			}
@@ -96,7 +96,7 @@ CKEDITOR.skins = (function()
 			// Load the "css" pieces.
 			if ( !cssIsLoaded )
 			{
-				appendSkinPath( part.css );
+				var cssPart = part.css;
 
 				for ( var c = 0 ; c < part.css.length ; c++ )
 					CKEDITOR.document.appendStyleSheet( part.css[ c ] );

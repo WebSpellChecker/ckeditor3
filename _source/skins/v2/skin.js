@@ -69,5 +69,5 @@ if ( CKEDITOR.dialog )
 					el.setStyle( 'height', ( body.$.offsetHeight - 31 - 14 ) + 'px' );
 				},
 				100 );
-		});
-}
+		} );
+} );

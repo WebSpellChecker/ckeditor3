@@ -23,7 +23,7 @@ CKEDITOR.skins.add( 'v2', (function()
 	};
 })() );
 
-CKEDITOR.on( 'dialogPluginReady', function()
+if ( CKEDITOR.dialog )
 {
 	CKEDITOR.dialog.on( 'resize', function( evt )
 		{
@@ -69,5 +69,5 @@ CKEDITOR.on( 'dialogPluginReady', function()
 					el.setStyle( 'height', ( body.$.offsetHeight - 31 - 14 ) + 'px' );
 				},
 				100 );
-		} );
-} );
+		});
+}

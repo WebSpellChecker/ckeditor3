@@ -563,7 +563,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									editor.config.docType +
 									'<html dir="' + editor.config.contentsLangDirection + '">' +
 									'<head>' +
-										CKEDITOR.tools.buildStyleHtml( editor.config.contentsCss ) +
+										'<link type="text/css" rel="stylesheet" href="' +
+										[].concat( editor.config.contentsCss ).join( '"><link type="text/css" rel="stylesheet" href="' ) +
+										'">' +
 										'<style type="text/css" _fcktemp="true">' +
 											editor._.styles.join( '\n' ) +
 										'</style>'+

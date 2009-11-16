@@ -203,7 +203,7 @@ CKEDITOR.skins.add( 'kama', (function()
 	};
 })() );
 
-CKEDITOR.on( 'dialogPluginReady', function()
+if ( CKEDITOR.dialog )
 {
 	CKEDITOR.dialog.on( 'resize', function( evt )
 		{
@@ -258,8 +258,8 @@ CKEDITOR.on( 'dialogPluginReady', function()
 					el.setStyle( 'height', ( body.$.offsetHeight - 31 - 14 ) + 'px' );
 				},
 				100 );
-		} );
-} );
+		});
+}
 
 /**
  * The base user interface color to be used by the editor. Not all skins are

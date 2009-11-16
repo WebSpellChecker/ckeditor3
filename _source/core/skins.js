@@ -20,7 +20,7 @@ CKEDITOR.skins = (function()
 	var preloaded = {};
 	var paths = {};
 
-	var loadPart = function( skinName, part, callback )
+	var loadedPart = function( skinName, part, callback )
 	{
 		// Get the skin definition.
 		var skinDefinition = loaded[ skinName ];
@@ -33,18 +33,6 @@ CKEDITOR.skins = (function()
 			}
 		};
 
-		function fixCSSTextRelativePath( cssStyleText, baseUrl )
-		{
-			return cssStyleText.replace( /url\s*\(([\s'"]*)(.*?)([\s"']*)\)/g,
-					function( match, opener, path, closer )
-					{
-						if ( /^\/|^\w?:/.test( path ) )
-							return match;
-						else
-							return 'url(' + baseUrl + opener +  path + closer + ')';
-					} );
-		}
-		
 		// Check if we need to preload images from it.
 		if ( !preloaded[ skinName ] )
 		{
@@ -55,7 +43,7 @@ CKEDITOR.skins = (function()
 				CKEDITOR.imageCacher.load( preload, function()
 					{
 						preloaded[ skinName ] = 1;
-						loadPart( skinName, part, callback );
+						loadedPart( skinName, part, callback );
 					} );
 				return;
 			}
@@ -108,24 +96,11 @@ CKEDITOR.skins = (function()
 			// Load the "css" pieces.
 			if ( !cssIsLoaded )
 			{
-				var cssPart = part.css;
+				appendSkinPath( part.css );
 
-				if ( CKEDITOR.tools.isArray( cssPart ) )
-				{
-					appendSkinPath( cssPart );
-					for ( var c = 0 ; c < cssPart.length ; c++ )
-						CKEDITOR.document.appendStyleSheet( cssPart[ c ] );
-				}
-				else
-				{
-					cssPart = fixCSSTextRelativePath(
-								cssPart, CKEDITOR.getUrl( paths[ skinName ] ) );
-					// Processing Inline CSS part.
-					CKEDITOR.document.appendStyleText( cssPart );
-				}
+				for ( var c = 0 ; c < part.css.length ; c++ )
+					CKEDITOR.document.appendStyleSheet( part.css[ c ] );
 
-				part.css = cssPart;
-				
 				cssIsLoaded = 1;
 			}
 
@@ -181,20 +156,29 @@ CKEDITOR.skins = (function()
 				skinPath = editor.skinPath;
 
 			if ( loaded[ skinName ] )
-				loadPart( skinName, skinPart, callback );
+			{
+				loadedPart( skinName, skinPart, callback );
+
+				// Get the skin definition.
+				var skinDefinition = loaded[ skinName ];
+
+				// Trigger init function if any.
+				if ( skinDefinition.init )
+					skinDefinition.init( editor );
+			}
 			else
 			{
 				paths[ skinName ] = skinPath;
 				CKEDITOR.scriptLoader.load( skinPath + 'skin.js', function()
 						{
+							loadedPart( skinName, skinPart, callback );
+
 							// Get the skin definition.
-							var skinDefinition = editor.skin = loaded[ skinName ];
+							var skinDefinition = loaded[ skinName ];
 
 							// Trigger init function if any.
 							if ( skinDefinition.init )
 								skinDefinition.init( editor );
-
-							 loadPart( skinName, skinPart, callback );
 						});
 			}
 		}

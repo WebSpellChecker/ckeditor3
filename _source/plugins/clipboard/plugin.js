@@ -172,69 +172,62 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// IE6/7 require the bin to at least contain one piece of text otherwise the
 		// paste is treated as unauthorized.
 		if( mode != 'text' && CKEDITOR.env.ie )
-			pastebin.append( new CKEDITOR.dom.text( '&nbsp;', doc ) );
+			pastebin.append( new CKEDITOR.dom.text( '\u00A0', doc ) );
 
 		doc.getBody().append( pastebin );
 
-		// Position the bin exactly at the position of the selected element
-		// to avoid any subsequent document scroll.
-		var position = sel.getStartElement().getDocumentPosition();
-		pastebin.setStyles( {
-			position : 'absolute',
-			left : '-1000px',
-			top : position.y + 'px',
-			width : '1px',
-			height : '1px',
-			overflow : 'hidden'
-		} );
 
-		if ( CKEDITOR.env.ie )
+		// It's definitely a better user experience if we make the paste-bin pretty unnoticed
+		// by pulling it off the screen, while this hack will make the paste-bin a control type element
+		// and that become a selection plain later. 
+		if( !CKEDITOR.env.ie )
 		{
-			// Select the container
-			var ieRange = doc.getBody().$.createTextRange();
-			ieRange.moveToElementText( pastebin.$ );
-			// Re-direct the paste target, will fire another 'paste' event.
-			ieRange.execCommand( 'Paste' );
-			pastebin.remove();
-			evt.data.preventDefault();
-			callback( pastebin[ 'get' + ( mode == 'text' ? 'Value' : 'Html' ) ]() );
+			pastebin.setStyles( {
+				position : 'absolute',
+				left : '-1000px',
+				// Position the bin exactly at the position of the selected element
+				// to avoid any subsequent document scroll.
+				top : sel.getStartElement().getDocumentPosition().y + 'px',
+				width : '1px',
+				height : '1px',
+				overflow : 'hidden'
+			} );
+		}
+
+		var bms = sel.createBookmarks();
+
+		// Turn off design mode temporarily before give focus to the paste bin.
+		if ( mode == 'text' )
+		{
+			doc.$.designMode = 'off';
+			pastebin.$.focus();
 		}
 		else
 		{
-			var bms = sel.createBookmarks();
-			// Turn off design mode temporarily,
-			// give focus to the paste bin.
-			if ( mode == 'text' )
-			{
-				doc.$.designMode = 'off';
-				pastebin.$.focus();
-			}
-			else
-			{
-				range.setStartAt( pastebin, CKEDITOR.POSITION_AFTER_START );
-				range.select();
-			}
-			// Wait a while and grab the pasted contents
-			window.setTimeout( function() {
-
-				doc.$.designMode = 'on';
-				pastebin.remove();
-
-				// Grab the HTML contents
-				// We need to look for a apple style wrapper on webkit it also adds a div wrapper if you copy/paste the body of the editor.
-				// Remove hidden div and restore selection
-				var bogusSpan;
-				pastebin = ( CKEDITOR.env.webkit
-						 && ( bogusSpan = pastebin.getFirst() )
-						 && ( bogusSpan.is && bogusSpan.hasClass( 'Apple-style-span' ) ) ?
-						  bogusSpan : pastebin );
-
-				// Restore the old selection
-				sel.selectBookmarks( bms );
-				callback( pastebin[ 'get' + ( mode == 'text' ? 'Value' : 'Html' ) ]() );
-
-			}, 0 );
+			range.setStartAt( pastebin, CKEDITOR.POSITION_AFTER_START );
+			range.setEndAt( pastebin, CKEDITOR.POSITION_BEFORE_END );
+			range.select( true );
 		}
+
+		// Wait a while and grab the pasted contents
+		window.setTimeout( function() {
+
+			mode == 'text' && ( doc.$.designMode = 'on' );
+			pastebin.remove();
+
+			// Grab the HTML contents
+			// We need to look for a apple style wrapper on webkit it also adds a div wrapper if you copy/paste the body of the editor.
+			// Remove hidden div and restore selection
+			var bogusSpan;
+			pastebin = ( CKEDITOR.env.webkit
+					 && ( bogusSpan = pastebin.getFirst() )
+					 && ( bogusSpan.is && bogusSpan.hasClass( 'Apple-style-span' ) ) ?
+					  bogusSpan : pastebin );
+
+			sel.selectBookmarks( bms );
+			callback( pastebin[ 'get' + ( mode == 'text' ? 'Value' : 'Html' ) ]() );
+
+		}, 0 );
 	};
 
 
@@ -332,7 +325,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						var body = editor.document.getBody();
 						body.on( ( mode == 'text' && !CKEDITOR.env.ie ) ?
-						          'beforepaste' : 'paste',
+						          'beforepaste' : 'beforepaste',
 								function( evt )
 								{
 									getClipboardData.call( editor, evt, mode, function ( data )

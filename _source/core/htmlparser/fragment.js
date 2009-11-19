@@ -264,7 +264,7 @@ CKEDITOR.htmlParser.fragment = function()
 
 		parser.onTagClose = function( tagName )
 		{
-			var index = 0,
+			var index = pendingInline.length - 1,
 				pendingAdd = [],
 				candidate = currentNode;
 
@@ -273,13 +273,7 @@ CKEDITOR.htmlParser.fragment = function()
 				// If this is an inline element, add it to the pending list, so
 				// it will continue after the closing tag.
 				if ( !candidate._.isBlockLike )
-				{
-					pendingInline.unshift( candidate );
-
-					// Increase the index, so it will not get checked again in
-					// the pending list check that follows.
-					index++;
-				}
+					pendingInline.push( candidate );
 
 				// This node should be added to it's parent at this point. But,
 				// it should happen only if the closing tag is really closing
@@ -313,21 +307,16 @@ CKEDITOR.htmlParser.fragment = function()
 			// The tag is not actually closing anything, thus we need invalidate
 			// the pending elements.(#3862)
 			else
-			{
-				pendingInline.splice( 0, index );
-				index = 0;
-			}
+				pendingInline.length = index + 1;
 
-			// Check if there is any pending tag to be closed.
-			for ( ; index < pendingInline.length ; index++ )
+			// Check if there is one pending tag to be closed.
+			for ( ; index >= 0 ; index-- )
 			{
 				// If found, just remove it from the list.
 				if ( tagName == pendingInline[ index ].name )
 				{
 					pendingInline.splice( index, 1 );
-
-					// Decrease the index so we continue from the next one.
-					index--;
+					break;
 				}
 			}
 		};
@@ -450,7 +439,8 @@ CKEDITOR.htmlParser.fragment = function()
 			{
 				var writer = new CKEDITOR.htmlParser.basicWriter();
 				this.writeChildrenHtml.call( this, writer, filter, true );
-				this.children = new CKEDITOR.htmlParser.fragment.fromHtml( writer.getHtml() ).children;
+				var html = writer.getHtml();
+				this.children = new CKEDITOR.htmlParser.fragment.fromHtml( html ).children;
 				isChildrenFiltered = 1;
 			};
 

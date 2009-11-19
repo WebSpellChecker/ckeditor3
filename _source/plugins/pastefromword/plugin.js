@@ -90,11 +90,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	elementPrototype.removeAnyChildWithName = function( tagName )
 	{
 		var children = this.children,
-			count = children && children.length,
 			childs = [],
 			child;
 
-		for ( var i = 0; i < count; i++ )
+		for ( var i = 0; i < children.length; i++ )
 		{
 			child = children[ i ];
 			if( !child.name )
@@ -103,7 +102,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if( child.name == tagName )
 			{
 				childs.push( child );
-				children.splice( ( count--, i-- ), 1 );
+				children.splice( i--, 1 );
 			}
 			childs = childs.concat( child.removeAnyChildWithName( tagName ) );
 		}

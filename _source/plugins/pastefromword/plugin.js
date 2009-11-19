@@ -202,10 +202,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					if ( !isNaN( bulletStyle[ 1 ] ) )
 						bulletStyle = 'decimal';
-					else if ( /[a-z]/.test( bulletStyle[ 1 ] ) )
+					// No way to distinguish between Roman numerals and Alphas,
+					// detect them as a whole.
+					else if ( /^[a-z]+$/.test( bulletStyle[ 1 ] ) )
 						bulletStyle = 'lower-alpha';
-					else if ( /[A-Z]/.test( bulletStyle[ 1 ] ) )
+					else if ( /^[A-Z]+$/.test( bulletStyle[ 1 ] ) )
 						bulletStyle = 'upper-alpha';
+					// Simply use decimal for the rest forms of unrepresentable
+					// numerals, e.g. Chinese...
 					else
 						bulletStyle = 'decimal';
 
@@ -772,7 +776,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						// For IE/Safari: List item bullet type is supposed to be indicated by
 						// the text of a span with style 'mso-list : Ignore'.
 						if ( !CKEDITOR.env.gecko && isListBulletIndicator( element ) )
-							return createListBulletMarker( element.firstTextChild().value.match( /([^\s])([.)]?)/ ) );
+							return createListBulletMarker( element.firstTextChild().value.match( /([^\s]+?)([.)]?)/ ) );
 						
 						// Update the src attribute of image element with href.
 						var children = element.children,
@@ -903,7 +907,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					if ( listInfo )
 					{
 						var listSymbol = listInfo[ 1 ],
-							listType = listSymbol.match( />([^\s])([.)]?)</ );
+							listType = listSymbol.match( />([^\s]+?)([.)]?)</ );
 						return createListBulletMarker( listType );
 					}
 					return false;

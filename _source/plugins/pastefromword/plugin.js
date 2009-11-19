@@ -126,6 +126,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			child = this.children[ i ];
 			if( child.value )
 				return child;
+			else if( child.name )
+			{
+				child = child.firstTextChild();
+				if( child )
+					return child;
+				else
+					continue;
+			}
 		}
 	};
 
@@ -158,12 +166,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		styleText = this.attributes.style || '';
 
-		if( !/;$/.test( styleText ) )
-			styleText += ';';
+		styleText = ( isPrepend ?
+		              [ addingStyleText, styleText ]
+					  : [ styleText, addingStyleText ] ).join( ';' );
 
-		this.attributes.style = isPrepend? 
-			addingStyleText += styleText : styleText += addingStyleText;
-	}
+		this.attributes.style = styleText.replace( /^;|;(?=;)/, '' );
+	};
 
 	/**
 	 * Return the DTD-valid parent tag names of the specified one.
@@ -414,10 +422,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						// Build an stylish element first.
 						var styleElement = new CKEDITOR.htmlParser.element( null, {} ),
-							varialbes = {};
+							variables = {};
 
-						varialbes[ variableName ] = value;
-						elementMigrateFilter( styleDefinition, varialbes )( styleElement );
+						variables[ variableName ] = value;
+						elementMigrateFilter( styleDefinition, variables )( styleElement );
 						// Place the new element inside the existing span.
 						styleElement.children = element.children;
 						element.children = [ styleElement ];
@@ -659,6 +667,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										style = rules[ name ];
 										if( typeof style == 'object' )
 											style = style[ className ];
+										// Maintain style rules priorities.   
 										style && element.addStyle( style, true );
 									}
 								};

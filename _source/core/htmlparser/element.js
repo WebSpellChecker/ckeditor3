@@ -133,6 +133,8 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 					if ( !( element = filter.onElement( element ) ) )
 						return;
 
+					element.parent = this.parent;
+
 					if ( element.name == writeName )
 						break;
 

@@ -109,10 +109,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		return childs;
 	};
 
-	elementPrototype.getAncestor = function( tagName )
+	elementPrototype.getAncestor = function( tagNameRegex )
 	{
 		var parent = this.parent;
-		while( parent && parent.name != tagName )
+		while( parent && !( parent.name && parent.name.match( tagNameRegex ) ) )
 			parent = parent.parent;
 		return parent;
 	};
@@ -197,7 +197,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		utils :
 		{
 			// Create a <cke:listbullet> which indicate an list item type.
-			createListBulletMarker : function ( bulletStyle )
+			createListBulletMarker : function ( bulletStyle, bulletText )
 			{
 				var marker = new CKEDITOR.htmlParser.element( 'cke:listbullet' ),
 					listType;
@@ -243,9 +243,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				marker.attributes =
 				{
 					'cke:listtype' : listType,
-					'style' : 'list-style-type:' + bulletStyle + ';' 
+					'style' : 'list-style-type:' + bulletStyle + ';'
 				};
-
+				marker.add( new CKEDITOR.htmlParser.text( bulletText ) );
 				return marker;
 			},
 
@@ -787,8 +787,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						// For IE/Safari: List item bullet type is supposed to be indicated by
 						// the text of a span with style 'mso-list : Ignore'.
 						if ( !CKEDITOR.env.gecko && isListBulletIndicator( element ) )
-							return createListBulletMarker( element.firstTextChild().value.match( /([^\s]+?)([.)]?)/ ) );
-						
+						{
+							var listSymbol = element.firstTextChild().value,
+								listType = listSymbol.match( /([^\s]+?)([.)]?)/ );
+							return createListBulletMarker( listType, listSymbol );
+						}
+
 						// Update the src attribute of image element with href.
 						var children = element.children,
 							attrs = element.attributes,
@@ -831,6 +835,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						var attrs = element.attributes;
 						if( attrs && !attrs.href && attrs.name )
+							delete element.name;
+					},
+					'cke:listbullet' : function( element )
+					{
+						if ( element.getAncestor( /h\d/ ) && !config.pasteFromWordNumberedHeadingToList )
 							delete element.name;
 					}
 				},
@@ -902,7 +911,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				// Fore none-IE, some useful data might be buried under these IE-conditional
 				// comments where RegExp were the right approach to dig them out where usual approach
 				// is transform it into a fake element node which hold the desired data.
-				comment : !CKEDITOR.env.ie ? function( value )
+				comment : !CKEDITOR.env.ie ? function( value, node )
 				{
 					var imageInfo = value.match( /<img.*?>/ ),
 						imageSource = value.match( /<v:imagedata[^>]*o:href=['"](.*?)['"]/ ),
@@ -919,7 +928,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						var listSymbol = listInfo[ 1 ],
 							listType = listSymbol.match( />([^\s]+?)([.)]?)</ );
-						return createListBulletMarker( listType );
+						return createListBulletMarker( listType, listSymbol );
 					}
 					return false;
 				} : falsyFilter
@@ -937,6 +946,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * config.pasteFromWordIgnoreFontFace = false;
  */
 CKEDITOR.config.pasteFromWordIgnoreFontFace = false;
+
+/**
+ * Whether transform MS-Word Outline Numbered Heading into html list.
+ * @type Boolean
+ * @default false
+ * @example
+ * config.pasteFromWordNumberedHeadingToList = true;
+ */
+CKEDITOR.config.pasteFromWordNumberedHeadingToList = false;
 
 /**
  * Whether prompt the user about the clean-up of content from MS-Word.

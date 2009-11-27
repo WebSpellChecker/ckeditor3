@@ -354,8 +354,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							 function( match, name, value )
 							 {
 								 name = name.toLowerCase();
-								 if ( name == 'font-family' )
-									value = value.replace( /"/g, '' );
+								 name == 'font-family' && ( value = value.replace( /["']/g, '' ) );
 
 								 var namePattern,
 									 valuePattern,
@@ -874,7 +873,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						[ 'page-break-before' ],
 						[ 'tab-stops' ],
 						[ 'display', 'none' ],
-						[ 'text-align', 'left' ],
 						ignoreFontFace ? [ /font-?/ ] : null,
 					] ),
 					// Prefer width styles over 'width' attributes.
@@ -890,6 +888,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							return false;
 					},
 
+					// Only Firefox carry style sheet from MS-Word, which
+					// will be applied by us manually. For other browsers
+					// the css className is useless.
 					'class' : falsyFilter,
 
 					// MS-Word always generate both 'text-align' along with

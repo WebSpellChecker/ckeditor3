@@ -901,11 +901,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// Deprecate 'valign' attribute in favor of 'vertical-align'.
 					'valign' : function( value, element )
 					{
-						if ( value != 'top' )
-							element.addStyle( 'vertical-align', value );
+						element.addStyle( 'vertical-align', value );
 						return false;
 					}
-
 				},
 
 				// Fore none-IE, some useful data might be buried under these IE-conditional

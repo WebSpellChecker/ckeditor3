@@ -88,11 +88,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							return null;
 
 						if ( ret && ret != element )
-							return this.onElement( ret );
+							return this.onNode( ret );
 					}
 				}
 
 				return element;
+			},
+
+			onNode : function( node )
+			{
+				var type = node.type;
+				
+				return type == CKEDITOR.NODE_ELEMENT ? this.onElement( node ) :
+					type == CKEDITOR.NODE_TEXT ? new CKEDITOR.htmlParser.text( this.onText( node.value ) ) :
+					type == CKEDITOR.NODE_COMMENT ? new CKEDITOR.htmlParser.comment( this.onComment( node.value ) ):
+					null;
 			},
 
 			onAttribute : function( element, name, value )

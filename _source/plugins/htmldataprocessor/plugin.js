@@ -11,7 +11,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	var protectedSourceMarker = '{cke_protected}';
 
-
 	// Return the last non-space child node of the block (#4344).
 	function lastNoneSpaceChild( block )
 	{
@@ -177,8 +176,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			comment : function( contents )
 			{
+				// If this is a comment for protected source.
 				if ( contents.substr( 0, protectedSourceMarker.length ) == protectedSourceMarker )
-					return new CKEDITOR.htmlParser.cdata( decodeURIComponent( contents.substr( protectedSourceMarker.length ) ) );
+				{
+					// Remove the extra marker for real comments from it.
+					if ( contents.substr( protectedSourceMarker.length, 3 ) == '{C}' )
+						contents = contents.substr( protectedSourceMarker.length + 3 );
+					else
+						contents = contents.substr( protectedSourceMarker.length );
+
+					return new CKEDITOR.htmlParser.cdata( decodeURIComponent( contents ) );
+				}
 
 				return contents;
 			}
@@ -239,16 +247,32 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		return html.replace( encodedTagsRegex, unprotectEncodedTagsMatch );
 	}
 
+	function unprotectRealComments( html )
+	{
+		return html.replace( /<!--{cke_protected}{C}([\s\S]+?)-->/g, function( match, data )
+			{
+				return decodeURIComponent( data );
+			});
+	}
+
+	function protectRealComments( html )
+	{
+		return html.replace( /<!--(?!{cke_protected})[\s\S]+?-->/g, function( match )
+			{
+				return '<!--' + protectedSourceMarker +
+						'{C}' +
+						encodeURIComponent( match ).replace( /--/g, '%2D%2D' ) +
+						'-->';
+			});
+	}
+
 	function protectSource( data, protectRegexes )
 	{
 		var protectedHtml = [],
-			tempRegex = /<\!--\{cke_temp\}(\d*?)-->/g;
+			tempRegex = /<\!--\{cke_temp(comment)?\}(\d*?)-->/g;
+
 		var regexes =
 			[
-				// First of any other protection, we must protect all comments
-				// to avoid loosing them (of course, IE related).
-				(/<!--[\s\S]*?-->/g),
-
 				// Script tags will also be forced to be protected, otherwise
 				// IE will execute them.
 				/<script[\s\S]*?<\/script>/gi,
@@ -258,12 +282,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			]
 			.concat( protectRegexes );
 
+		// First of any other protection, we must protect all comments
+		// to avoid loosing them (of course, IE related).
+		// Note that we use a different tag for comments, as we need to
+		// transform them when applying filters.
+		data = data.replace( (/<!--[\s\S]*?-->/g), function( match )
+			{
+				return  '<!--{cke_tempcomment}' + ( protectedHtml.push( match ) - 1 ) + '-->';
+			});
+
 		for ( var i = 0 ; i < regexes.length ; i++ )
 		{
 			data = data.replace( regexes[i], function( match )
 				{
 					match = match.replace( tempRegex, 		// There could be protected source inside another one. (#3869).
-						function( $, id )
+						function( $, isComment, id )
 						{
 							return protectedHtml[ id ];
 						}
@@ -271,9 +304,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					return  '<!--{cke_temp}' + ( protectedHtml.push( match ) - 1 ) + '-->';
 				});
 		}
-		data = data.replace( tempRegex,	function( $, id )
+		data = data.replace( tempRegex,	function( $, isComment, id )
 			{
 				return '<!--' + protectedSourceMarker +
+						( isComment ? '{C}' : '' ) +
 						encodeURIComponent( protectedHtml[ id ] ).replace( /--/g, '%2D%2D' ) +
 						'-->';
 			}
@@ -343,14 +377,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if ( CKEDITOR.env.ie )
 				data = unprotectEncodedTags( data );
 
+			// Restore the comments that have been protected, in this way they
+			// can be properly filtered.
+			data = unprotectRealComments( data );
+
 			// Now use our parser to make further fixes to the structure, as
 			// well as apply the filter.
 			var fragment = CKEDITOR.htmlParser.fragment.fromHtml( data, fixForBody ),
 				writer = new CKEDITOR.htmlParser.basicWriter();
 
 			fragment.writeHtml( writer, this.dataFilter );
+			data = writer.getHtml( true );
 
-			return writer.getHtml( true );
+			// Protect the real comments again.
+			data = protectRealComments( data );
+
+			return data;
 		},
 
 		toDataFormat : function( html, fixForBody )

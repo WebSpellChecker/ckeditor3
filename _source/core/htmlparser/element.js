@@ -34,8 +34,10 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 	 */
 	this.children = [];
 
+	var tagName = attributes._cke_real_element_type || name;
+
 	var dtd			= CKEDITOR.dtd,
-		isBlockLike	= !!( dtd.$block[ name ] || dtd.$listItem[ name ] || dtd.$tableContent[ name ] || dtd.$nonEditable[ name ] || name == 'br' ),
+		isBlockLike	= !!( dtd.$block[ tagName ] || dtd.$listItem[ tagName ] || dtd.$tableContent[ tagName ] || dtd.$nonEditable[ tagName ] || tagName == 'br' ),
 		isEmpty		= !!dtd.$empty[ name ];
 
 	this.isEmpty	= isEmpty;
@@ -126,6 +128,14 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 
 					if ( element.name == writeName )
 						break;
+
+					// If the element has been replaced with something of a
+					// different type, then make the replacement write itself.
+					if ( element.type != CKEDITOR.NODE_ELEMENT )
+					{
+						element.writeHtml( writer, filter );
+						return;
+					}
 
 					writeName = element.name;
 					if ( !writeName )	// Send children.

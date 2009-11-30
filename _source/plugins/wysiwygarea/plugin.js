@@ -329,16 +329,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							mainElement.append( iframe );
 					};
 
-					// The script that is appended to the data being loaded. It
-					// enables editing, and makes some
+					// The script that launches the bootstrap logic on 'domReady', so the document
+					// is fully editable even before the editing iframe is fully loaded (#4455).
 					var activationScript =
 						'<script id="cke_actscrpt" type="text/javascript">' +
-							'window.onload = function()' +
-							'{' +
-								// Call the temporary function for the editing
-								// boostrap.
-								'window.parent.CKEDITOR._["contentDomReady' + editor.name + '"]( window );' +
-							'}' +
+							'window.parent.CKEDITOR._["contentDomReady' + editor.name + '"]( window );' +
 						'</script>';
 
 					// Editing area bootstrap code.
@@ -479,7 +474,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						// Adds the document body as a context menu target.
 						if ( editor.contextMenu )
-							editor.contextMenu.addTarget( domDocument );
+							editor.contextMenu.addTarget( domDocument, editor.config.browserContextMenuOnCtrl !== false );
 
 						setTimeout( function()
 							{
@@ -640,6 +635,42 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				});
 		}
 	});
+
+	// Fixing Firefox 'Back-Forward Cache' break design mode. (#4514)
+	if( CKEDITOR.env.gecko )
+	{
+		var topWin = window.top;
+
+		( function ()
+		{
+			var topBody = topWin.document.body;
+
+			if( !topBody )
+				topWin.addEventListener( 'load', arguments.callee, false );
+			else
+			{
+				topBody.setAttribute( 'onpageshow', topBody.getAttribute( 'onpageshow' )
+						+ ';event.persisted && CKEDITOR.tools.callFunction(' +
+						CKEDITOR.tools.addFunction( function()
+						{
+							var allInstances = CKEDITOR.instances,
+								editor,
+								doc;
+							for( var i in allInstances )
+							{
+								editor = allInstances[ i ];
+								doc = editor.document;
+								if( doc )
+								{
+									doc.$.designMode = 'off';
+									doc.$.designMode = 'on';
+								}
+							}
+						} ) + ')' );
+			}
+		} )();
+
+	}
 })();
 
 /**

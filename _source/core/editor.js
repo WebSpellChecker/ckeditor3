@@ -27,7 +27,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	var loadConfigLoaded = {};
 	var loadConfig = function( editor )
 	{
-		var customConfig = editor.config.customConfig;
+		var customConfig = CKEDITOR.getUrl( editor.config.customConfig );
 
 		// Check if there is a custom config to load.
 		if ( !customConfig )
@@ -44,7 +44,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			// If there is no other customConfig in the chain, fire the
 			// "configLoaded" event.
-			if ( editor.config.customConfig == customConfig || !loadConfig( editor ) )
+			if ( CKEDITOR.getUrl( editor.config.customConfig ) == customConfig || !loadConfig( editor ) )
 				editor.fireOnce( 'customConfigLoaded' );
 		}
 		else

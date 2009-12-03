@@ -40,7 +40,7 @@ CKEDITOR.config =
 	 * // Do not load any custom configuration file.
 	 * CKEDITOR.replace( 'myfiled', { customConfig : '' } );
 	 */
-	customConfig : CKEDITOR.getUrl( 'config.js' ),
+	customConfig : 'config.js',
 
 	/**
 	 * Whether the replaced element (usually a textarea) is to be updated

@@ -282,7 +282,16 @@ CKEDITOR.config =
 	 * @example
 	 * config.baseFloatZIndex = 2000
 	 */
-	baseFloatZIndex : 10000
+	baseFloatZIndex : 10000,
+
+	/**
+	 * Whether escape HTML when editor update original input element.
+	 * @type {Boolean}
+	 * @default false
+	 * @example
+	 * config.htmlEncodeOutput = true;
+	 */
+	htmlEncodeOutput : false
 
 };
 

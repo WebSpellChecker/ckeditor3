@@ -650,10 +650,15 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 			var element = this.element;
 			if ( element && this.elementMode == CKEDITOR.ELEMENT_MODE_REPLACE )
 			{
+				var data = this.getData();
+
+				if( this.config.htmlEncodeOutput )
+					data = CKEDITOR.tools.htmlEncode( data );
+
 				if ( element.is( 'textarea' ) )
-					element.setValue( this.getData() );
+					element.setValue( data );
 				else
-					element.setHtml( this.getData() );
+					element.setHtml( data );
 			}
 		}
 	});

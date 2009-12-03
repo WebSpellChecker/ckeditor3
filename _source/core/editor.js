@@ -675,3 +675,13 @@ CKEDITOR.on( 'loaded', function()
 				pending[ i ]._init();
 		}
 	});
+
+/**
+ * Whether escape HTML when editor update original input element.
+ * @name CKEDITOR.config.htmlEncodeOutput
+ * @type {Boolean}
+ * @default false
+ * @example
+ * config.htmlEncodeOutput = true;
+ */
+

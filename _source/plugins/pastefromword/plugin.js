@@ -29,16 +29,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				exec : function ()
 				{
 					forceFromWord = 1;
-					if( !editor.execCommand( 'paste' ) )
+					editor.fire( 'pasteDialog' );
+					editor.on( 'dialogHide', function ( evt )
 					{
-						editor.on( 'dialogHide', function ( evt )
-						{
-							evt.removeListener();
-							resetFromWord();
-						} );
-					}
-					else
+						evt.removeListener();
 						resetFromWord();
+					} );
 				}
 			} );
 
@@ -856,8 +852,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							if( CKEDITOR.env.gecko )
 								return value.replace( /-moz-use-text-color/g, 'transparent' );
 						} ],
-						// Remove default border style.
-						[ /^border$/, /^(:?medium\s*)?none\s*$/ ],
 						// Remove empty margin values, e.g. 0.00001pt 0em 0pt
 						[ /^margin$/, /^(?:\b0[^\s]*\s*){1,4}$/ ],
 						[ 'text-indent', '0cm' ],

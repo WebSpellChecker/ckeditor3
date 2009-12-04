@@ -668,7 +668,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										style = rules[ name ];
 										if( typeof style == 'object' )
 											style = style[ className ];
-										// Maintain style rules priorities.   
+										// Maintain style rules priorities.
 										style && element.addStyle( style, true );
 									}
 								};
@@ -683,17 +683,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						var attrs = element.attributes,
 							parent = element.parent,
 							children = element.children;
-
-						// Drop the single wrapper paragraph within table cell
-						// with all attributes preserved to cell.
-						if( /td|th/.test( parent.name )
-							&& parent.onlyChild() )
-						{
-							CKEDITOR.tools.extend( parent.attributes, attrs );
-							attrs && parent.addStyle( attrs.style  );
-							delete element.name;
-							return;
-						}
 
 						// Is the paragraph actually a list item?
 						if( resolveListItem( element ) )
@@ -731,24 +720,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						element.filterChildren();
 
 						var attrs = element.attributes,
+							styleText = attrs.style,
 							parent = element.parent;
 						
 						if( 'font' == parent.name )     // Merge nested <font> tags.
 						{
 							CKEDITOR.tools.extend( parent.attributes,
 									element.attributes );
-							attrs && parent.addStyle( attrs.style );
+							styleText && parent.addStyle( styleText );
 							delete element.name;
 							return;
 						}
 						// Convert the merged into a span with all attributes preserved.
 						else
 						{
-							var styleText = attrs.style || '';
+							styleText = styleText || '';
 							// IE's having those deprecated attributes, normalize them.
 							if ( attrs.color )
 							{
-								styleText += 'color:' + attrs.color + ';';
+								attrs.color != '#000000' && ( styleText += 'color:' + attrs.color + ';' );
 								delete attrs.color;
 							}
 							if ( attrs.face )
@@ -868,7 +858,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						} ],
 						// Remove default border style.
 						[ /^border$/, /^(:?medium\s*)?none\s*$/ ],
-						[ /^margin$/, /0(?:cm|in) 0(?:cm|in) 0pt/ ],
+						// Remove empty margin values, e.g. 0.00001pt 0em 0pt
+						[ /^margin$/, /^(?:\b0[^\s]*\s*){1,4}$/ ],
 						[ 'text-indent', '0cm' ],
 						[ 'page-break-before' ],
 						[ 'tab-stops' ],

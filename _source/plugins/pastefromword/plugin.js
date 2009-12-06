@@ -323,6 +323,58 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		filters :
 		{
+				// Transform a normal list into flat list items only presentation.
+				// E.g. <ul><li>level1<ol><li>level2</li></ol></li> =>
+				// <cke:li cke:listtype="ul" cke:indent="1">level1</cke:li>
+				// <cke:li cke:listtype="ol" cke:indent="2">level2</cke:li>
+				flattenList : function( element )
+				{
+					var	parent = element.parent;
+
+					// Resolve how many level nested.
+					var indentLevel = 1;
+					while( parent )
+					{
+						parent.attributes && parent.attributes[ 'cke:list'] && indentLevel++;
+						parent = parent.parent;
+					}
+
+					var children = element.children,
+						child;
+
+					for ( var i = 0; i < children.length; i++ )
+					{
+						child = children[ i ];
+						var attributes = child.attributes;
+
+						if( child.name in CKEDITOR.dtd.$listItem )
+						{
+							var listItemChildren = child.children,
+								count = listItemChildren.length,
+								last = listItemChildren[ count - 1 ];
+
+							// Move out nested list.
+							if( last.name in CKEDITOR.dtd.$list )
+							{
+								listItemChildren.length--;
+								children.splice( i + 1, 0, last );
+								last.parent = element;
+							}
+
+							child.name = 'cke:li';
+							attributes[ 'cke:indent' ] = indentLevel;
+							// Assume only items in default list style type are
+							// represented.
+							attributes[ 'cke:listtype' ] = element.name;
+						}
+					}
+
+
+					delete element.name;
+					// We're loosing tag name here, signalize this element as a list.
+					attributes[ 'cke:list' ] = 1;
+				},
+
 				/**
 				 * A simple filter which always rejecting.
 				 */
@@ -461,6 +513,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				styleMigrateFilter = CKEDITOR.tools.bind( this.filters.styleMigrateFilter, this.filters ),
 				bogusAttrFilter = filters.bogusAttrFilter,
 				createListBulletMarker = this.utils.createListBulletMarker,
+				flattenList = filters.flattenList,
 				isListBulletIndicator = this.utils.isListBulletIndicator,
 				containsNothingButSpaces = this.utils.isContainingOnlySpaces,
 				resolveListItem = this.utils.resolveList,
@@ -703,7 +756,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							element.name = 'th';
 					},
 
-					// Deprecates <font> in favor of stylish <span>.
+					// MS-Word sometimes present list as a mixing of normal list
+					// and pseudo-list, normalize the previous ones into pseudo form.   
+					'ol' : flattenList,
+					'ul' : flattenList,
+					'dl' : flattenList,
+
 					'font' : function( element )
 					{
 						// IE/Safari: drop the font tag if it comes from list bullet text.

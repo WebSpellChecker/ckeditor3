@@ -1578,16 +1578,16 @@ CKEDITOR.dom.range = function( document )
 
 			return walker.checkForward();
 		},
-
 		/**
-		 * Moves the range boundaries to the first editing point inside an
+		 * Moves the range boundaries to the first/end editing point inside an
 		 * element. For example, in an element tree like
 		 * "&lt;p&gt;&lt;b&gt;&lt;i&gt;&lt;/i&gt;&lt;/b&gt; Text&lt;/p&gt;", the start editing point is
 		 * "&lt;p&gt;&lt;b&gt;&lt;i&gt;^&lt;/i&gt;&lt;/b&gt; Text&lt;/p&gt;" (inside &lt;i&gt;).
 		 * @param {CKEDITOR.dom.element} targetElement The element into which
-		 *		look for the editing spot.
+		 *		look for the editing spot, it should be guaranteed to contains at least one editable position.
+			@param {Boolean} isMoveToEnd Whether move to the end editable position.
 		 */
-		moveToElementEditStart : function( targetElement )
+		moveToElementEditablePosition: function( targetElement, isMoveToEnd )
 		{
 			var editableElement;
 
@@ -1598,12 +1598,17 @@ CKEDITOR.dom.range = function( document )
 				else if ( editableElement )
 					break ;		// If we already found an editable element, stop the loop.
 
-				targetElement = targetElement.getFirst();
+				targetElement = targetElement[ isMoveToEnd? 'getLast' : 'getFirst' ].call( targetElement );
 			}
 
 			if ( editableElement )
 			{
-				this.moveToPosition(editableElement, CKEDITOR.POSITION_AFTER_START);
+				// Make sure carot anchor before filler when moving to editable end.
+				var filler = editableElement.isBlockBoundary() && editableElement.getBogus();
+				this.moveToPosition( isMoveToEnd && filler ? filler : editableElement,
+						isMoveToEnd && filler ? CKEDITOR.POSITION_BEFORE_START :
+							isMoveToEnd ? CKEDITOR.POSITION_BEFORE_END :
+							CKEDITOR.POSITION_AFTER_START );
 				return true;
 			}
 			else
@@ -1611,22 +1616,19 @@ CKEDITOR.dom.range = function( document )
 		},
 
 		/**
-		 * Get the single node enclosed within the range if there's one.
+		 *@see {CKEDITOR.dom.range.moveToElementEditablePosition}
 		 */
-		getEnclosedNode : function()
+		moveToElementEditStart : function( target )
 		{
-			var walkerRange = this.clone(),
-				walker = new CKEDITOR.dom.walker( walkerRange ),
-				isNotBookmarks = CKEDITOR.dom.walker.bookmark( true ),
-				isNotWhitespaces = CKEDITOR.dom.walker.whitespaces( true ),
-				evaluator = function( node )
-				{
-					return isNotWhitespaces( node ) && isNotBookmarks( node );
-				};
-			walkerRange.evaluator = evaluator;
-			var node = walker.next();
-			walker.reset();
-			return node && node.equals( walker.previous() ) ? node : null;
+			return this.moveToElementEditablePosition( target );
+		},
+
+		/**
+		 *@see {CKEDITOR.dom.range.moveToElementEditablePosition}
+		 */
+		moveToElementEditEnd : function( target )
+		{
+			return this.moveToElementEditablePosition( target, true );
 		},
 
 		getTouchedStartNode : function()

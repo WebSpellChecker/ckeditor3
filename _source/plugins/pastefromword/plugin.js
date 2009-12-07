@@ -372,7 +372,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					delete element.name;
 					// We're loosing tag name here, signalize this element as a list.
-					attributes[ 'cke:list' ] = 1;
+					element.attributes[ 'cke:list' ] = 1;
 				},
 
 				/**

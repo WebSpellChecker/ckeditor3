@@ -329,14 +329,26 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				// <cke:li cke:listtype="ol" cke:indent="2">level2</cke:li>
 				flattenList : function( element )
 				{
-					var	parent = element.parent;
+					var	attrs = element.attributes,
+						parent = element.parent;
+
+					var listStyleType,
+						indentLevel = 1;
 
 					// Resolve how many level nested.
-					var indentLevel = 1;
 					while( parent )
 					{
 						parent.attributes && parent.attributes[ 'cke:list'] && indentLevel++;
 						parent = parent.parent;
+					}
+
+					// All list items are of the same type.
+					switch( attrs.type )
+					{
+						case 'a' :
+							listStyleType = 'lower-alpha';
+							break;
+						// TODO: Support more list style type from MS-Word.
 					}
 
 					var children = element.children,
@@ -363,16 +375,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 							child.name = 'cke:li';
 							attributes[ 'cke:indent' ] = indentLevel;
-							// Assume only items in default list style type are
-							// represented.
 							attributes[ 'cke:listtype' ] = element.name;
+							listStyleType && child.addStyle( 'list-style-type', listStyleType, true );
 						}
 					}
 
 
 					delete element.name;
 					// We're loosing tag name here, signalize this element as a list.
-					element.attributes[ 'cke:list' ] = 1;
+					attrs[ 'cke:list' ] = 1;
 				},
 
 				/**
@@ -551,15 +562,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							attrs.style = stylesFilter(
 										[ [ /^width|height$/, null, convertToPx ] ] )( attrs.style ) || '';
 
-						// IE leave empty spaces at the beginning of body. 
-						if ( !tagName )
-						{
-							var textNode = element.firstTextChild();
-							if ( textNode && textNode.value.match( /^(:?\s|&nbsp;)+$/ ) )
-								element.children.splice( 0, 1 );
-						}
 						// Processing headings.
-						else if ( tagName.match( /h\d/ ) )
+						if ( tagName.match( /h\d/ ) )
 						{
 							element.filterChildren();
 							// Is the heading actually a list item?
@@ -832,7 +836,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if ( !CKEDITOR.env.gecko && isListBulletIndicator( element ) )
 						{
 							var listSymbol = element.firstTextChild().value,
-								listType = listSymbol.match( /([^\s]+?)([.)]?)/ );
+								listType = listSymbol.match( /^([^\s]+?)([.)]?)$/ );
 							return createListBulletMarker( listType, listSymbol );
 						}
 

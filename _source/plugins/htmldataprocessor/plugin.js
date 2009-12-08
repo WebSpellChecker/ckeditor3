@@ -109,18 +109,24 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				[ ( /^_cke_(saved|pa)_/ ), '' ],
 
 				// All "_cke" attributes are to be ignored.
-				[ ( /^_cke.*/ ), '' ]
+				[ ( /^_cke.*/ ), '' ],
+
+				[ 'hidefocus', '' ]
 			],
 
 			elements :
 			{
 				$ : function( element )
 				{
-					// Remove duplicated attributes - #3789.
 					var attribs = element.attributes;
 
 					if ( attribs )
 					{
+						// Elements marked as temporary are to be ignored.
+						if ( attribs.cke_temp )
+							return false;
+
+						// Remove duplicated attributes - #3789.
 						var attributeNames = [ 'name', 'href', 'src' ],
 							savedAttributeName;
 						for ( var i = 0 ; i < attributeNames.length ; i++ )
@@ -129,6 +135,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							savedAttributeName in attribs && ( delete attribs[ attributeNames[ i ] ] );
 						}
 					}
+
+					return element;
 				},
 
 				embed : function( element )
@@ -162,6 +170,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						return false;
 					}
+				},
+
+				body : function( element )
+				{
+					delete element.attributes.spellcheck;
+					delete element.attributes.contenteditable;
+				},
+
+				style : function( element )
+				{
+					var child = element.children[ 0 ];
+					child && child.value && ( child.value = CKEDITOR.tools.trim( child.value ));
+
+					if ( !element.attributes.type )
+						element.attributes.type = 'text/css';
 				}
 			},
 
@@ -209,50 +232,48 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	var protectAttributeRegex = /<(?:a|area|img|input)[\s\S]*?\s((?:href|src|name)\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|(?:[^ "'>]+)))/gi;
 
+	var protectElementsRegex = /(?:<style(?=[ >])[^>]*>[\s\S]*<\/style>)|(?:<(:?link|meta|base)[^>]*>)/gi,
+		encodedElementsRegex = /<cke:encoded>([^<]*)<\/cke:encoded>/gi;
+
+	var protectElementNamesRegex = /(<\/?)((?:object|embed|param|html|body|head|title)[^>]*>)/gi,
+		unprotectElementNamesRegex = /(<\/?)cke:((?:html|body|head|title)[^>]*>)/gi;
+
+	var protectSelfClosingRegex = /<cke:(param|embed)([\s\S]*?)\/?>/gi;
+
 	function protectAttributes( html )
 	{
 		return html.replace( protectAttributeRegex, '$& _cke_saved_$1' );
 	}
 
-	var protectStyleTagsRegex = /<(style)(?=[ >])[^>]*>[^<]*<\/\1>/gi;
-	var encodedTagsRegex = /<cke:encoded>([^<]*)<\/cke:encoded>/gi;
-	var protectElementNamesRegex = /(<\/?)((?:object|embed|param)[\s\S]*?>)/gi;
-	var protectSelfClosingRegex = /<cke:(param|embed)([\s\S]*?)\/?>/gi;
-
-	function protectStyleTagsMatch( match )
+	function protectElements( html )
 	{
-		return '<cke:encoded>' + encodeURIComponent( match ) + '</cke:encoded>';
+		return html.replace( protectElementsRegex, function( match )
+			{
+				return '<cke:encoded>' + encodeURIComponent( match ) + '</cke:encoded>';
+			});
 	}
 
-	function protectStyleTags( html )
+	function unprotectElements( html )
 	{
-		return html.replace( protectStyleTagsRegex, protectStyleTagsMatch );
+		return html.replace( encodedElementsRegex, function( match, encoded )
+			{
+				return decodeURIComponent( encoded );
+			});
 	}
+
 	function protectElementsNames( html )
 	{
 		return html.replace( protectElementNamesRegex, '$1cke:$2');
 	}
+
+	function unprotectElementNames( html )
+	{
+		return html.replace( unprotectElementNamesRegex, '$1$2' );
+	}
+
 	function protectSelfClosingElements( html )
 	{
 		return html.replace( protectSelfClosingRegex, '<cke:$1$2></cke:$1>' );
-	}
-
-	function unprotectEncodedTagsMatch( match, encoded )
-	{
-		return decodeURIComponent( encoded );
-	}
-
-	function unprotectEncodedTags( html )
-	{
-		return html.replace( encodedTagsRegex, unprotectEncodedTagsMatch );
-	}
-
-	function unprotectRealComments( html )
-	{
-		return html.replace( /<!--{cke_protected}{C}([\s\S]+?)-->/g, function( match, data )
-			{
-				return decodeURIComponent( data );
-			});
 	}
 
 	function protectRealComments( html )
@@ -263,6 +284,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						'{C}' +
 						encodeURIComponent( match ).replace( /--/g, '%2D%2D' ) +
 						'-->';
+			});
+	}
+
+	function unprotectRealComments( html )
+	{
+		return html.replace( /<!--{cke_protected}{C}([\s\S]+?)-->/g, function( match, data )
+			{
+				return decodeURIComponent( data );
 			});
 	}
 
@@ -355,27 +384,29 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// the code.
 			data = protectAttributes( data );
 
-			// IE remvoes style tags from innerHTML. (#3710).
-			if ( CKEDITOR.env.ie )
-				data = protectStyleTags( data );
+			// Protect elements than can't be set inside a DIV. E.g. IE removes
+			// style tags from innerHTML. (#3710)
+			data = protectElements( data );
 
 			// Certain elements has problem to go through DOM operation, protect
-			// them by prefixing 'cke' namespace.(#3591)
+			// them by prefixing 'cke' namespace. (#3591)
 			data = protectElementsNames( data );
 
 			// All none-IE browsers ignore self-closed custom elements,
-			// protecting them into open-close.(#3591)
+			// protecting them into open-close. (#3591)
 			data = protectSelfClosingElements( data );
 
 			// Call the browser to help us fixing a possibly invalid HTML
 			// structure.
-			var div = document.createElement( 'div' );
+			var div = new CKEDITOR.dom.element( 'div' );
 			// Add fake character to workaround IE comments bug. (#3801)
-			div.innerHTML = 'a' + data;
-			data = div.innerHTML.substr( 1 );
+			div.setHtml( 'a' + data );
+			data = div.getHtml().substr( 1 );
 
-			if ( CKEDITOR.env.ie )
-				data = unprotectEncodedTags( data );
+			// Unprotect "some" of the protected elements at this point.
+			data = unprotectElementNames( data );
+
+			data = unprotectElements( data );
 
 			// Restore the comments that have been protected, in this way they
 			// can be properly filtered.

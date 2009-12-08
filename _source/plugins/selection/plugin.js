@@ -957,7 +957,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				startNode = ranges[ 0 ].startContainer,
 				endNode = ranges[ ranges.length - 1 ].endContainer;
 			return startNode.getCommonAncestor( endNode );
-		 }
+		},
+
+		// Moving scroll bar to the current selection's start position.
+		scrollIntoView : function()
+		{
+			// If we have split the block, adds a temporary span at the
+			// range position and scroll relatively to it.
+			var start = this.getStartElement();
+			start.scrollIntoView();
+		}
 	};
 })();
 ( function()

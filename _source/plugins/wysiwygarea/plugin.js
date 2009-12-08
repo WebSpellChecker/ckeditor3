@@ -183,7 +183,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if ( CKEDITOR.env.ie )
 			{
 				var first = fixedBlock.getFirst( isNotEmpty );
-				isNbsp( first ) && first.remove();
+				first && isNbsp( first ) && first.remove();
 			}
 
 			selection.selectBookmarks( bms );
@@ -469,16 +469,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if ( keystrokeHandler )
 							keystrokeHandler.attach( domDocument );
 
-						// Cancel default action for backspace in IE on control types. (#4047)
 						if ( CKEDITOR.env.ie )
 						{
-							editor.on( 'key', function( event )
+							// Cancel default action for backspace in IE on control types. (#4047)
+							domDocument.on( 'keydown', function( evt )
 							{
-								if( editor.mode != 'wysiwyg' )
-									return;
-
 								// Backspace.
-								var control = event.data.keyCode == 8
+								var control = evt.data.getKeystroke() == 8
 											  && editor.getSelection().getSelectedElement();
 								if ( control )
 								{
@@ -487,9 +484,26 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									// Remove manually.
 									control.remove();
 									editor.fire( 'saveSnapshot' );
-									event.cancel();
+									evt.cancel();
 								}
 							} );
+
+							// PageUp/PageDown scrolling is broken in document
+							// with standard doctype, manually fix it. (#4736)
+							if( domDocument.$.compatMode == 'CSS1Compat' )
+							{
+								var pageUpDownKeys = { 33 : 1, 34 : 1 };
+								domDocument.on( 'keydown', function( evt )
+								{
+									if( evt.data.getKeystroke() in pageUpDownKeys )
+									{
+										setTimeout( function ()
+										{
+											editor.getSelection().scrollIntoView();
+										}, 0 );
+									}
+								} );
+							}
 						}
 
 						// Adds the document body as a context menu target.

@@ -114,7 +114,9 @@ CKEDITOR.htmlParser.fragment = function()
 					elementName = realElementName;
 				else
 					elementName =  element.name;
-				if ( !( elementName in CKEDITOR.dtd.$body ) )
+				if ( elementName
+						&& !( elementName in CKEDITOR.dtd.$body )
+						&& !( elementName in CKEDITOR.dtd.$nonBodyContent )  )
 				{
 					var savedCurrent = currentNode;
 
@@ -179,16 +181,16 @@ CKEDITOR.htmlParser.fragment = function()
 				return;
 			}
 
-			var currentName = currentNode.name,
-				currentDtd = ( currentName && CKEDITOR.dtd[ currentName ] ) || ( currentNode._.isBlockLike ? CKEDITOR.dtd.div : CKEDITOR.dtd.span );
+			var currentName = currentNode.name;
+
+			var currentDtd = currentName
+				&& ( CKEDITOR.dtd[ currentName ]
+					|| ( currentNode._.isBlockLike ? CKEDITOR.dtd.div : CKEDITOR.dtd.span ) );
 
 			// If the element cannot be child of the current element.
-			if ( !element.isUnknown && !currentNode.isUnknown && !currentDtd[ tagName ] )
+			if ( currentDtd   // Fragment could receive any elements.
+				 && !element.isUnknown && !currentNode.isUnknown && !currentDtd[ tagName ] )
 			{
-				// If this is the fragment node, just ignore this tag and add
-				// its children.
-				if ( !currentName )
-					return;
 
 				var reApply = false,
 					addPoint;   // New position to start adding nodes.
@@ -264,8 +266,18 @@ CKEDITOR.htmlParser.fragment = function()
 
 		parser.onTagClose = function( tagName )
 		{
-			var index = 0,
-				pendingAdd = [],
+			// Check if there is any pending tag to be closed.
+			for ( var i = pendingInline.length - 1 ; i >= 0 ; i-- )
+			{
+				// If found, just remove it from the list.
+				if ( tagName == pendingInline[ i ].name )
+				{
+					pendingInline.splice( i, 1 );
+					return;
+				}
+			}
+
+			var pendingAdd = [],
 				candidate = currentNode;
 
 			while ( candidate.type && candidate.name != tagName )
@@ -273,13 +285,7 @@ CKEDITOR.htmlParser.fragment = function()
 				// If this is an inline element, add it to the pending list, so
 				// it will continue after the closing tag.
 				if ( !candidate._.isBlockLike )
-				{
 					pendingInline.unshift( candidate );
-
-					// Increase the index, so it will not get checked again in
-					// the pending list check that follows.
-					index++;
-				}
 
 				// This node should be added to it's parent at this point. But,
 				// it should happen only if the closing tag is really closing
@@ -310,26 +316,9 @@ CKEDITOR.htmlParser.fragment = function()
 				if ( candidate == currentNode )
 					currentNode = currentNode.parent;
 			}
-			// The tag is not actually closing anything, thus we need invalidate
-			// the pending elements.(#3862)
-			else
-			{
-				pendingInline.splice( 0, index );
-				index = 0;
-			}
 
-			// Check if there is any pending tag to be closed.
-			for ( ; index < pendingInline.length ; index++ )
-			{
-				// If found, just remove it from the list.
-				if ( tagName == pendingInline[ index ].name )
-				{
-					pendingInline.splice( index, 1 );
-
-					// Decrease the index so we continue from the next one.
-					index--;
-				}
-			}
+			if( tagName == 'body' )
+				fixForBody = false;
 		};
 
 		parser.onText = function( text )
@@ -345,8 +334,12 @@ CKEDITOR.htmlParser.fragment = function()
 
 			checkPending();
 
-			if ( fixForBody && !currentNode.type )
+			if ( fixForBody
+				 && ( !currentNode.type || currentNode.name == 'body' )
+				 && CKEDITOR.tools.trim( text ) )
+			{
 				this.onTagOpen( fixForBody, {} );
+			}
 
 			// Shrinking consequential spaces into one single for all elements
 			// text contents.
@@ -375,7 +368,9 @@ CKEDITOR.htmlParser.fragment = function()
 			var parent = currentNode.parent,
 				node = currentNode;
 
-			if ( fixForBody && !parent.type && !CKEDITOR.dtd.$body[ node.name ] )
+			if ( fixForBody
+				 && ( !parent.type || parent.name == 'body' )
+				 && !CKEDITOR.dtd.$body[ node.name ] )
 			{
 				currentNode = parent;
 				parser.onTagOpen( fixForBody, {} );

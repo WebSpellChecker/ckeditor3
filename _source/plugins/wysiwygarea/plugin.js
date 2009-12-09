@@ -10,12 +10,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 (function()
 {
-	/**
-	 * List of elements in which has no way to move editing focus outside.
-	 */
+	// List of elements in which has no way to move editing focus outside.
 	var nonExitableElementNames = { table:1,pre:1 };
+
 	// Matching an empty paragraph at the end of document.
-	var emptyParagraphRegexp = /\s*<(p|div|address|h\d|center)[^>]*>\s*(?:<br[^>]*>|&nbsp;|\u00A0|&#160;)\s*(:?<\/\1>)?\s*$/gi;
+	var emptyParagraphRegexp = /\s*<(p|div|address|h\d|center)[^>]*>\s*(?:<br[^>]*>|&nbsp;|\u00A0|&#160;)\s*(:?<\/\1>)?\s*(?=$|<\/body>)/gi;
 
 	function onInsertHtml( evt )
 	{
@@ -582,28 +581,81 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							{
 								isLoadingData = true;
 
-								// Get the HTML version of the data.
-								if ( editor.dataProcessor )
+								var config = editor.config,
+									fullPage = config.fullPage,
+									docType = config.docType;
+
+								// Build the additional stuff to be included into <head>.
+								var headExtra =
+									'<style type="text/css" cke_temp="1">' +
+										editor._.styles.join( '\n' ) +
+									'</style>';
+
+								!fullPage && ( headExtra =
+									CKEDITOR.tools.buildStyleHtml( editor.config.contentsCss ) +
+									headExtra );
+
+								var baseTag = config.baseHref ? '<base href="' + config.baseHref + '" cke_temp="1" />' : '';
+
+								if ( fullPage )
 								{
-									data = editor.dataProcessor.toHtml( data, fixForBody );
+									// Search and sweep out the doctype declaration.
+									data = data.replace( /<!DOCTYPE[^>]*>/i, function( match )
+										{
+											editor.docType = docType = match;
+											return '';
+										});
 								}
 
-								data =
-									editor.config.docType +
-									'<html dir="' + editor.config.contentsLangDirection + '">' +
-									'<head>' +
-										'<link type="text/css" rel="stylesheet" href="' +
-										[].concat( editor.config.contentsCss ).join( '"><link type="text/css" rel="stylesheet" href="' ) +
-										'">' +
-										'<style type="text/css" _fcktemp="true">' +
-											editor._.styles.join( '\n' ) +
-										'</style>'+
-									'</head>' +
-									'<body>' +
-										data +
-									'</body>' +
-									'</html>' +
-									activationScript;
+								// Get the HTML version of the data.
+								if ( editor.dataProcessor )
+									data = editor.dataProcessor.toHtml( data, fixForBody );
+
+								if ( fullPage )
+								{
+									// Check if the <body> tag is available.
+									if ( !(/<body[\s|>]/).test( data ) )
+										data = '<body>' + data;
+
+									// Check if the <html> tag is available.
+									if ( !(/<html[\s|>]/).test( data ) )
+										data = '<html>' + data + '</html>';
+
+									// Check if the <head> tag is available.
+									if ( !(/<head[\s|>]/).test( data ) )
+										data = data.replace( /<html[^>]*>/, '$&<head><title></title></head>' ) ;
+
+									// The base must be the first tag in the HEAD, e.g. to get relative
+									// links on styles.
+									baseTag && ( data = data.replace( /<head>/, '$&' + baseTag ) );
+
+									// Inject the extra stuff into <head>.
+									// Attention: do not change it before testing it well. (V2)
+									// This is tricky... if the head ends with <meta ... content type>,
+									// Firefox will break. But, it works if we place our extra stuff as
+									// the last elements in the HEAD.
+									data = data.replace( /<\/head\s*>/, headExtra + '$&' );
+
+									// Add the DOCTYPE back to it.
+									data = docType + data;
+								}
+								else
+								{
+									data =
+										config.docType +
+										'<html dir="' + config.contentsLangDirection + '">' +
+										'<head>' +
+											baseTag +
+											headExtra +
+										'</head>' +
+										'<body' + ( config.bodyId ? ' id="' + config.bodyId + '"' : '' ) +
+												  ( config.bodyClass ? ' class="' + config.bodyClass + '"' : '' ) +
+												  '>' +
+											data +
+										'</html>';
+								}
+								
+								data += activationScript;
 
 								CKEDITOR._[ 'contentDomReady' + editor.name ] = contentDomReady;
 								createIFrame( data );
@@ -611,14 +663,24 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 							getData : function()
 							{
-								var data = iframe.getFrameDocument().getBody().getHtml();
+								var config = editor.config,
+									fullPage = config.fullPage,
+									docType = fullPage && editor.docType,
+									doc = iframe.getFrameDocument();
+								
+								var data = fullPage
+									? doc.getDocumentElement().getOuterHtml()
+									: doc.getBody().getHtml();
 
 								if ( editor.dataProcessor )
 									data = editor.dataProcessor.toDataFormat( data, fixForBody );
 
 								// Strip the last blank paragraph within document.
-								if ( editor.config.ignoreEmptyParagraph )
+								if ( config.ignoreEmptyParagraph )
 									data = data.replace( emptyParagraphRegexp, '' );
+
+								if ( docType )
+									data = docType + '\n' + data;
 
 								return data;
 							},

@@ -167,6 +167,20 @@ CKEDITOR.config =
 	docType : '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
 
 	/**
+	 * Sets the 'id' attribute to be used on body if it doesn't have one.
+	 * @type String
+	 * @default ''
+	 */
+	bodyId : '',
+
+	/**
+	 * Sets the 'class' attribute to be used on body if it doesn't have one.  
+	 * @type String
+	 * @default ''
+	 */
+	bodyClass : '',
+
+	/**
 	 * Indicates whether the contents to be edited are being inputted as a full
 	 * HTML page. A full page includes the &lt;html&gt;, &lt;head&gt; and
 	 * &lt;body&gt; tags. The final output will also reflect this setting,

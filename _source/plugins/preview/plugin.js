@@ -16,14 +16,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		exec : function( editor )
 		{
 			var sHTML,
+				config = editor.config,
+				baseTag = config.baseHref ? '<base href="' + config.baseHref + '"/>' : '',
 				isCustomDomain = CKEDITOR.env.isCustomDomain();
-			if ( editor.config.fullPage )
-				sHTML = editor.getData();
+
+			if ( config.fullPage )
+				sHTML = editor.getData().replace( /<head>/, '$&' + baseTag );
 			else
 			{
 				var bodyHtml = '<body ',
-					body = CKEDITOR.document.getBody(),
-					baseTag = ( editor.config.baseHref.length > 0 ) ? '<base href="' + editor.config.baseHref + '" _cktemp="true"></base>' : '';
+						body = CKEDITOR.document.getBody();
 
 				if ( body.getAttribute( 'id' ) )
 					bodyHtml += 'id="' + body.getAttribute( 'id' ) + '" ';

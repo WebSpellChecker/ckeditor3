@@ -581,20 +581,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							{
 								isLoadingData = true;
 
-								var fullPage = editor.config.fullPage,
-									docType = editor.config.docType;
+								var config = editor.config,
+									fullPage = config.fullPage,
+									docType = config.docType;
 
 								// Build the additional stuff to be included into <head>.
 								var headExtra = 
 									'<style type="text/css" cke_temp="1">' +
 										editor._.styles.join( '\n' ) +
-									'</style>';
-
-								!fullPage && ( headExtra =
+									'</style>' +
 									'<link type="text/css" rel="stylesheet" href="' +
 									[].concat( editor.config.contentsCss ).join( '"><link type="text/css" rel="stylesheet" href="' ) +
-									'">' +
-									headExtra );
+									'">';
+
+								var baseTag = config.baseHref ? '<base href="' + config.baseHref + '" cke_temp="1" />' : '';
 
 								if ( fullPage )
 								{
@@ -624,6 +624,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									if ( !(/<head[\s|>]/).test( data ) )
 										data = data.replace( /<html[^>]*>/, '$&<head><title></title></head>' ) ;
 
+									// The base must be the first tag in the HEAD, e.g. to get relative
+									// links on styles.
+									baseTag && ( data = data.replace( /<head>/, '$&' + baseTag ) );
+
 									// Inject the extra stuff into <head>.
 									// Attention: do not change it before testing it well. (V2)
 									// This is tricky... if the head ends with <meta ... content type>,
@@ -640,6 +644,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										editor.config.docType +
 										'<html dir="' + editor.config.contentsLangDirection + '">' +
 										'<head>' +
+											baseTag +
 											headExtra +
 										'</head>' +
 										'<body>' +

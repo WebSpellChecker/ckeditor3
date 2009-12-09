@@ -586,7 +586,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									docType = config.docType;
 
 								// Build the additional stuff to be included into <head>.
-								var headExtra = 
+								var headExtra =
 									'<style type="text/css" cke_temp="1">' +
 										editor._.styles.join( '\n' ) +
 									'</style>' +
@@ -652,6 +652,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										'</html>';
 								}
 								
+								// Append body attributes which could get overwrite
+								// by existing ones.
+								data = data.replace( /<body\b[^>]*/, '$&'
+										+ ( config.bodyId ? ' id="'+ config.bodyId + '"' : '' )
+										+ ( config.bodyClass ? ' class="'+ config.bodyClass + '"' : '' ) );
+
 								data += activationScript;
 
 								CKEDITOR._[ 'contentDomReady' + editor.name ] = contentDomReady;

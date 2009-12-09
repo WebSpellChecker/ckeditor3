@@ -23,7 +23,7 @@ CKEDITOR.skins.add( 'office2003', (function()
 	};
 })() );
 
-if ( CKEDITOR.dialog )
+CKEDITOR.on( 'dialogPluginReady', function()
 {
 	CKEDITOR.dialog.on( 'resize', function( evt )
 		{
@@ -73,5 +73,5 @@ if ( CKEDITOR.dialog )
 			// Ensure size is correct for RTL mode. (#4003)
 			if ( evt.editor.lang.dir == 'rtl' )
 				setTimeout( fixSize, 1000 );
-		});
-}
+		} );
+} );

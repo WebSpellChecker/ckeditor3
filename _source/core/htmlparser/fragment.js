@@ -114,7 +114,9 @@ CKEDITOR.htmlParser.fragment = function()
 					elementName = realElementName;
 				else
 					elementName =  element.name;
-				if ( !( elementName in CKEDITOR.dtd.$body ) )
+				if ( elementName
+						&& !( elementName in CKEDITOR.dtd.$body )
+						&& !( elementName in CKEDITOR.dtd.$nonBodyContent )  )
 				{
 					var savedCurrent = currentNode;
 
@@ -179,16 +181,16 @@ CKEDITOR.htmlParser.fragment = function()
 				return;
 			}
 
-			var currentName = currentNode.name,
-				currentDtd = ( currentName && CKEDITOR.dtd[ currentName ] ) || ( currentNode._.isBlockLike ? CKEDITOR.dtd.div : CKEDITOR.dtd.span );
+			var currentName = currentNode.name;
+
+			var currentDtd = currentName
+				&& ( CKEDITOR.dtd[ currentName ]
+					|| ( currentNode._.isBlockLike ? CKEDITOR.dtd.div : CKEDITOR.dtd.span ) );
 
 			// If the element cannot be child of the current element.
-			if ( !element.isUnknown && !currentNode.isUnknown && !currentDtd[ tagName ] )
+			if ( currentDtd   // Fragment could receive any elements.
+				 && !element.isUnknown && !currentNode.isUnknown && !currentDtd[ tagName ] )
 			{
-				// If this is the fragment node, just ignore this tag and add
-				// its children.
-				if ( !currentName )
-					return;
 
 				var reApply = false,
 					addPoint;   // New position to start adding nodes.
@@ -314,6 +316,9 @@ CKEDITOR.htmlParser.fragment = function()
 				if ( candidate == currentNode )
 					currentNode = currentNode.parent;
 			}
+
+			if( tagName == 'body' )
+				fixForBody = false;
 		};
 
 		parser.onText = function( text )
@@ -329,8 +334,12 @@ CKEDITOR.htmlParser.fragment = function()
 
 			checkPending();
 
-			if ( fixForBody && !currentNode.type )
+			if ( fixForBody
+				 && ( !currentNode.type || currentNode.name == 'body' )
+				 && CKEDITOR.tools.trim( text ) )
+			{
 				this.onTagOpen( fixForBody, {} );
+			}
 
 			// Shrinking consequential spaces into one single for all elements
 			// text contents.
@@ -359,7 +368,9 @@ CKEDITOR.htmlParser.fragment = function()
 			var parent = currentNode.parent,
 				node = currentNode;
 
-			if ( fixForBody && !parent.type && !CKEDITOR.dtd.$body[ node.name ] )
+			if ( fixForBody
+				 && ( !parent.type || parent.name == 'body' )
+				 && !CKEDITOR.dtd.$body[ node.name ] )
 			{
 				currentNode = parent;
 				parser.onTagOpen( fixForBody, {} );

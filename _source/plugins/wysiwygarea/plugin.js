@@ -587,12 +587,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 								// Build the additional stuff to be included into <head>.
 								var headExtra =
+									CKEDITOR.tools.buildStyleHtml( editor.config.contentsCss ) + 
 									'<style type="text/css" cke_temp="1">' +
 										editor._.styles.join( '\n' ) +
-									'</style>' +
-									'<link type="text/css" rel="stylesheet" href="' +
-									[].concat( editor.config.contentsCss ).join( '"><link type="text/css" rel="stylesheet" href="' ) +
-									'">';
+									'</style>';
 
 								var baseTag = config.baseHref ? '<base href="' + config.baseHref + '" cke_temp="1" />' : '';
 

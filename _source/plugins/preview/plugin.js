@@ -43,9 +43,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					'<head>' +
 					baseTag +
 					'<title>' + editor.lang.preview + '</title>' +
-					'<link type="text/css" rel="stylesheet" href="' +
-					[].concat( editor.config.contentsCss ).join( '"><link type="text/css" rel="stylesheet" href="' ) +
-					'">' +
+					CKEDITOR.tools.buildStyleHtml( editor.config.contentsCss ) +
 					'</head>' + bodyHtml +
 					editor.getData() +
 					'</body></html>';

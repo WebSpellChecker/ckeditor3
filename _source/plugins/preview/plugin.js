@@ -29,7 +29,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			else
 			{
 				var bodyHtml = '<body ',
-						body = CKEDITOR.document.getBody();
+						body = editor.document.getBody();
 
 				if ( body.getAttribute( 'id' ) )
 					bodyHtml += 'id="' + body.getAttribute( 'id' ) + '" ';

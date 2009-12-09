@@ -587,10 +587,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 								// Build the additional stuff to be included into <head>.
 								var headExtra =
-									CKEDITOR.tools.buildStyleHtml( editor.config.contentsCss ) + 
 									'<style type="text/css" cke_temp="1">' +
 										editor._.styles.join( '\n' ) +
 									'</style>';
+
+								!fullPage && ( headExtra =
+									CKEDITOR.tools.buildStyleHtml( editor.config.contentsCss ) +
+									headExtra );
 
 								var baseTag = config.baseHref ? '<base href="' + config.baseHref + '" cke_temp="1" />' : '';
 
@@ -639,23 +642,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								else
 								{
 									data =
-										editor.config.docType +
-										'<html dir="' + editor.config.contentsLangDirection + '">' +
+										config.docType +
+										'<html dir="' + config.contentsLangDirection + '">' +
 										'<head>' +
 											baseTag +
 											headExtra +
 										'</head>' +
-										'<body>' +
-											data
+										'<body' + ( config.bodyId ? ' id="'+ config.bodyId + '"' : '' ) +
+												  ( config.bodyClass ? ' class="'+ config.bodyClass + '"' : '' ) +
+												  '>' +
+											data +
 										'</html>';
 								}
 								
-								// Append body attributes which could get overwrite
-								// by existing ones.
-								data = data.replace( /<body\b[^>]*/, '$&'
-										+ ( config.bodyId ? ' id="'+ config.bodyId + '"' : '' )
-										+ ( config.bodyClass ? ' class="'+ config.bodyClass + '"' : '' ) );
-
 								data += activationScript;
 
 								CKEDITOR._[ 'contentDomReady' + editor.name ] = contentDomReady;

@@ -300,9 +300,28 @@ CKEDITOR.editor.prototype.getResizable = function()
 	return this.container.getChild( [ 0, 0 ] );
 };
 
-
-CKEDITOR.config.sharedSpaces =
-{
-	top : '',
-	bottom : ''
-};
+/**
+ * Makes it possible to place some of the editor UI blocks, like the toolbar
+ * and the elements path, into any element in the page.
+ * The elements used to hold the UI blocks can be shared among several editor
+ * instances. In that case, only the blocks of the active editor instance will
+ * display.
+ * @name CKEDITOR.config.sharedSpaces
+ * @type Object
+ * @default undefined
+ * @example
+ * // Place the toolbar inside the element with ID "someElementId" and the
+ * // elements path into the element with ID "anotherId".
+ * config.sharedSpaces =
+ * {
+ *     top : 'someElementId',
+ *     bottom : 'anotherId'
+ * };
+ * @example
+ * // Place the toolbar inside the element with ID "someElementId". The
+ * // elements path will remain attached to the editor UI.
+ * config.sharedSpaces =
+ * {
+ *     top : 'someElementId'
+ * };
+ */

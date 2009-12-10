@@ -399,3 +399,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 {
 	margin-bottom: 0;
 }
+
+.cke_skin_kama .cke_browser_gecko .cke_toolbox
+{
+	/* Define the padding-bottom otherwise the collapser button will not be clicable in FF */
+	padding-bottom: 1px;
+}

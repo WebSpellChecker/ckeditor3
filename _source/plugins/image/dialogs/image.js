@@ -145,6 +145,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	var imageDialog = function( editor, dialogType )
 	{
+		var previewPreloader;
+
 		var onImgLoadEvent = function()
 		{
 			// Image is ready.
@@ -259,6 +261,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					switchLockRatio ( this, true );
 				}
 
+				previewPreloader = new CKEDITOR.dom.element( 'img', editor.document );
 				// Dont show preview if no URL given.
 				if ( !CKEDITOR.tools.trim( this.getValueOf( 'info', 'txtUrl' ) ) )
 				{
@@ -422,8 +425,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 													original.on( 'error', onImgLoadErrorEvent, dialog );
 													original.on( 'abort', onImgLoadErrorEvent, dialog );
 													original.setAttribute( 'src', newUrl );
-													dialog.preview.setAttribute( 'src', newUrl );
 
+													// Query the preloader to figure out the url impacted by based href.
+													previewPreloader.setAttribute( 'src', newUrl );
+													dialog.preview.setAttribute( 'src', previewPreloader.$.src );
 													updatePreview( dialog );
 												}
 												// Dont show preview if no URL given.

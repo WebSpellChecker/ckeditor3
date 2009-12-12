@@ -118,6 +118,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	// Listens for some clipboard related keystrokes, so they get customized.
 	var onKey = function( event )
 	{
+		if( this.mode != 'wysiwyg' )
+			return;
+
 		switch ( event.data.keyCode )
 		{
 			// Paste

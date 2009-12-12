@@ -202,8 +202,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Turn off design mode temporarily before give focus to the paste bin.
 		if ( mode == 'text' )
 		{
-			doc.$.designMode = 'off';
-			pastebin.$.focus();
+			if( CKEDITOR.env.ie )
+			{
+				var ieRange = doc.getBody().$.createTextRange();
+				ieRange.moveToElementText( pastebin.$ );
+				ieRange.execCommand( 'Paste' );
+				evt.data.preventDefault();
+			}
+			else
+			{
+				doc.$.designMode = 'off';
+				pastebin.$.focus();
+			}
 		}
 		else
 		{
@@ -215,7 +225,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Wait a while and grab the pasted contents
 		window.setTimeout( function() {
 
-			mode == 'text' && ( doc.$.designMode = 'on' );
+			mode == 'text' && !CKEDITOR.env.ie && ( doc.$.designMode = 'on' );
 			pastebin.remove();
 
 			// Grab the HTML contents
@@ -327,8 +337,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					editor.on( 'contentDom', function()
 					{
 						var body = editor.document.getBody();
-						body.on( ( mode == 'text' && !CKEDITOR.env.ie ) ?
-						          'beforepaste' : 'beforepaste',
+						body.on( ( mode == 'text' && CKEDITOR.env.ie ) ?
+						          'paste' : 'beforepaste',
 								function( evt )
 								{
 									getClipboardData.call( editor, evt, mode, function ( data )
@@ -337,6 +347,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										// paste has really happened.
 										if ( !data )
 											return;
+
 
 										var dataTransfer = {};
 										dataTransfer[ mode ] = data;

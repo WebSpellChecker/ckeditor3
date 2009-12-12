@@ -52,6 +52,27 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	};
 
+	var enterKeyPlugin = CKEDITOR.plugins.enterkey;
+
+	function doInsertText( doc, text )
+	{
+		// Native text insertion.
+		if( CKEDITOR.env.ie )
+		{
+			var selection = doc.selection;
+			if ( selection.type == 'Control' )
+				selection.clear();
+			selection.createRange().pasteHTML( text );
+		}
+		else
+			doc.execCommand( 'inserthtml', false, text );
+	}
+
+	function doEnter( editor, mode )
+	{
+		enterKeyPlugin[ mode == CKEDITOR.ENTER_BR ? 'enterBr' : 'enterBlock' ]( editor, mode );
+	}
+
 	// Register the plugin.
 	CKEDITOR.plugins.add( 'pastetext',
 	{
@@ -83,17 +104,53 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		},
 		requires : [ 'clipboard' ]
 	});
+
+	var enterKeyPlugin = CKEDITOR.plugins.enterkey;
+
+	function doInsertText( doc, text )
+	{
+		// Native text insertion.
+		if( CKEDITOR.env.ie )
+		{
+			var selection = doc.selection;
+			if ( selection.type == 'Control' )
+				selection.clear();
+			selection.createRange().pasteHTML( text );
+		}
+		else
+			doc.execCommand( 'inserthtml', false, text );
+	}
+
+	function doEnter( editor, mode )
+	{
+		enterKeyPlugin[ mode == CKEDITOR.ENTER_BR ? 'enterBr' : 'enterBlock' ]( editor, mode );
+	}
+
+	CKEDITOR.editor.prototype.insertText = function( text )
+	{
+		var mode = this.getSelection().getStartElement().hasAscendant( 'pre', true ) ? CKEDITOR.ENTER_BR : this.config.enterMode,
+			doc = this.document.$,
+			self = this,
+			line;
+
+		text = CKEDITOR.tools.htmlEncode( text );
+
+		var startIndex = 0;
+		text.replace( /(?:\r\n)|\n|\r/g, function( match, lastIndex )
+		{
+			line = text.substring( startIndex, lastIndex );
+			startIndex = lastIndex + match.length;
+			line.length && doInsertText( doc, line );
+			// Line-break as an editor enter key result.
+			doEnter( self, mode );
+		} );
+
+		line = text.substring( startIndex, text.length );
+		line.length && doInsertText( doc, line );
+	};
+
 })();
 
-CKEDITOR.editor.prototype.insertText = function( text )
-{
-	text = CKEDITOR.tools.htmlEncode( text );
-
-	// TODO: Replace the following with fill line break processing (see V2).
-	text = text.replace( /(?:\r\n)|\n|\r/g, '<br>' );
-
-	this.insertHtml( text );
-};
 
 /**
  * Whether to force all pasting operations to insert on plain text into the

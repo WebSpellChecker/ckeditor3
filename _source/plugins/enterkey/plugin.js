@@ -17,44 +17,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	});
 
-	var forceMode,
-		headerTagRegex = /^h[1-6]$/;
-
-	function shiftEnter( editor )
+	CKEDITOR.plugins.enterkey =
 	{
-		// On SHIFT+ENTER we want to enforce the mode to be respected, instead
-		// of cloning the current block. (#77)
-		forceMode = 1;
-
-		return enter( editor, editor.config.shiftEnterMode );
-	}
-
-	function enter( editor, mode )
-	{
-		// Only effective within document.
-		if ( editor.mode != 'wysiwyg' )
-			return false;
-
-		if ( !mode )
-			mode = editor.config.enterMode;
-
-		// Use setTimout so the keys get cancelled immediatelly.
-		setTimeout( function()
-			{
-				editor.fire( 'saveSnapshot' );	// Save undo step.
-				if ( mode == CKEDITOR.ENTER_BR || editor.getSelection().getStartElement().hasAscendant( 'pre', true ) )
-					enterBr( editor, mode );
-				else
-					enterBlock( editor, mode );
-
-				forceMode = 0;
-			}, 0 );
-
-		return true;
-	}
-
-	function enterBlock( editor, mode, range )
-	{
+		enterBlock : function( editor, mode, range )
+		{
 		// Get the range for the current selection.
 		range = range || getRange( editor );
 
@@ -207,106 +173,146 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 
 		range.select();
-	}
-
-	function enterBr( editor, mode )
-	{
-		// Get the range for the current selection.
-		var range = getRange( editor ),
-			doc = range.document;
-
-		// Determine the block element to be used.
-		var blockTag = ( mode == CKEDITOR.ENTER_DIV ? 'div' : 'p' );
-
-		var isEndOfBlock = range.checkEndOfBlock();
-
-		var elementPath = new CKEDITOR.dom.elementPath( editor.getSelection().getStartElement() );
-
-		var startBlock = elementPath.block,
-			startBlockTag = startBlock && elementPath.block.getName();
-
-		var isPre = false;
-
-		if ( !forceMode && startBlockTag == 'li' )
+	},
+		enterBr : function( editor, mode )
 		{
-			enterBlock( editor, mode, range );
-			return;
-		}
+			// Get the range for the current selection.
+			var range = getRange( editor ),
+				doc = range.document;
 
-		// If we are at the end of a header block.
-		if ( !forceMode && isEndOfBlock && headerTagRegex.test( startBlockTag ) )
-		{
-			// Insert a <br> after the current paragraph.
-			doc.createElement( 'br' ).insertAfter( startBlock );
+			// Determine the block element to be used.
+			var blockTag = ( mode == CKEDITOR.ENTER_DIV ? 'div' : 'p' );
 
-			// A text node is required by Gecko only to make the cursor blink.
-			if ( CKEDITOR.env.gecko )
-				doc.createText( '' ).insertAfter( startBlock );
+			var isEndOfBlock = range.checkEndOfBlock();
 
-			// IE has different behaviors regarding position.
-			range.setStartAt( startBlock.getNext(), CKEDITOR.env.ie ? CKEDITOR.POSITION_BEFORE_START : CKEDITOR.POSITION_AFTER_START );
-		}
-		else
-		{
-			var lineBreak;
+			var elementPath = new CKEDITOR.dom.elementPath( editor.getSelection().getStartElement() );
 
-			isPre = ( startBlockTag == 'pre' );
+			var startBlock = elementPath.block,
+				startBlockTag = startBlock && elementPath.block.getName();
 
-			if ( isPre )
-				lineBreak = doc.createText( CKEDITOR.env.ie ? '\r' : '\n' );
-			else
-				lineBreak = doc.createElement( 'br' );
+			var isPre = false;
 
-			range.deleteContents();
-			range.insertNode( lineBreak );
-
-			// A text node is required by Gecko only to make the cursor blink.
-			// We need some text inside of it, so the bogus <br> is properly
-			// created.
-			if ( !CKEDITOR.env.ie )
-				doc.createText( '\ufeff' ).insertAfter( lineBreak );
-
-			// If we are at the end of a block, we must be sure the bogus node is available in that block.
-			if ( isEndOfBlock && !CKEDITOR.env.ie )
-				lineBreak.getParent().appendBogus();
-
-			// Now we can remove the text node contents, so the caret doesn't
-			// stop on it.
-			if ( !CKEDITOR.env.ie )
-				lineBreak.getNext().$.nodeValue = '';
-			// IE has different behavior regarding position.
-			if ( CKEDITOR.env.ie )
-				range.setStartAt( lineBreak, CKEDITOR.POSITION_AFTER_END );
-			else
-				range.setStartAt( lineBreak.getNext(), CKEDITOR.POSITION_AFTER_START );
-
-			// Scroll into view, for non IE.
-			if ( !CKEDITOR.env.ie )
+			if ( !forceMode && startBlockTag == 'li' )
 			{
-				var dummy = null;
-
-				// BR is not positioned in Opera and Webkit.
-				if ( !CKEDITOR.env.gecko )
-				{
-					dummy = doc.createElement( 'span' );
-					// We need have some contents for Webkit to position it
-					// under parent node. ( #3681)
-					dummy.setHtml('&nbsp;');
-				}
-				else
-					dummy = doc.createElement( 'br' );
-
-				dummy.insertBefore( lineBreak.getNext() );
-				dummy.scrollIntoView();
-				dummy.remove();
+				enterBlock( editor, mode, range );
+				return;
 			}
+
+			// If we are at the end of a header block.
+			if ( !forceMode && isEndOfBlock && headerTagRegex.test( startBlockTag ) )
+			{
+				// Insert a <br> after the current paragraph.
+				doc.createElement( 'br' ).insertAfter( startBlock );
+
+				// A text node is required by Gecko only to make the cursor blink.
+				if ( CKEDITOR.env.gecko )
+					doc.createText( '' ).insertAfter( startBlock );
+
+				// IE has different behaviors regarding position.
+				range.setStartAt( startBlock.getNext(), CKEDITOR.env.ie ? CKEDITOR.POSITION_BEFORE_START : CKEDITOR.POSITION_AFTER_START );
+			}
+			else
+			{
+				var lineBreak;
+
+				isPre = ( startBlockTag == 'pre' );
+
+				if ( isPre )
+					lineBreak = doc.createText( CKEDITOR.env.ie ? '\r' : '\n' );
+				else
+					lineBreak = doc.createElement( 'br' );
+
+				range.deleteContents();
+				range.insertNode( lineBreak );
+
+				// A text node is required by Gecko only to make the cursor blink.
+				// We need some text inside of it, so the bogus <br> is properly
+				// created.
+				if ( !CKEDITOR.env.ie )
+					doc.createText( '\ufeff' ).insertAfter( lineBreak );
+
+				// If we are at the end of a block, we must be sure the bogus node is available in that block.
+				if ( isEndOfBlock && !CKEDITOR.env.ie )
+					lineBreak.getParent().appendBogus();
+
+				// Now we can remove the text node contents, so the caret doesn't
+				// stop on it.
+				if ( !CKEDITOR.env.ie )
+					lineBreak.getNext().$.nodeValue = '';
+				// IE has different behavior regarding position.
+				if ( CKEDITOR.env.ie )
+					range.setStartAt( lineBreak, CKEDITOR.POSITION_AFTER_END );
+				else
+					range.setStartAt( lineBreak.getNext(), CKEDITOR.POSITION_AFTER_START );
+
+				// Scroll into view, for non IE.
+				if ( !CKEDITOR.env.ie )
+				{
+					var dummy = null;
+
+					// BR is not positioned in Opera and Webkit.
+					if ( !CKEDITOR.env.gecko )
+					{
+						dummy = doc.createElement( 'span' );
+						// We need have some contents for Webkit to position it
+						// under parent node. ( #3681)
+						dummy.setHtml('&nbsp;');
+					}
+					else
+						dummy = doc.createElement( 'br' );
+
+					dummy.insertBefore( lineBreak.getNext() );
+					dummy.scrollIntoView();
+					dummy.remove();
+				}
+			}
+
+			// This collapse guarantees the cursor will be blinking.
+			range.collapse( true );
+
+			range.select( isPre );
 		}
+	};
 
-		// This collapse guarantees the cursor will be blinking.
-		range.collapse( true );
+	var plugin = CKEDITOR.plugins.enterkey,
+		enterBr = plugin.enterBr,
+		enterBlock = plugin.enterBlock,
+		forceMode,
+		headerTagRegex = /^h[1-6]$/;
 
-		range.select( isPre );
+	function shiftEnter( editor )
+	{
+		// On SHIFT+ENTER we want to enforce the mode to be respected, instead
+		// of cloning the current block. (#77)
+		forceMode = 1;
+
+		return enter( editor, editor.config.shiftEnterMode );
 	}
+
+	function enter( editor, mode )
+	{
+		// Only effective within document.
+		if ( editor.mode != 'wysiwyg' )
+			return false;
+
+		if ( !mode )
+			mode = editor.config.enterMode;
+
+		// Use setTimout so the keys get cancelled immediatelly.
+		setTimeout( function()
+			{
+				editor.fire( 'saveSnapshot' );	// Save undo step.
+				if ( mode == CKEDITOR.ENTER_BR || editor.getSelection().getStartElement().hasAscendant( 'pre', true ) )
+					enterBr( editor, mode );
+				else
+					enterBlock( editor, mode );
+
+				forceMode = 0;
+			}, 0 );
+
+		return true;
+	}
+
 
 	function getRange( editor )
 	{

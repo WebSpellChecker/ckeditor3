@@ -2,53 +2,110 @@
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
-
-CKEDITOR.plugins.add( 'pastefromword',
+( function()
 {
-	init : function( editor )
+	CKEDITOR.plugins.add( 'pastefromword',
 	{
-		// Register the command.
-		editor.addCommand( 'pastefromword', new CKEDITOR.dialogCommand( 'pastefromword' ) );
+		init : function( editor )
+		{
 
-		// Register the toolbar button.
-		editor.ui.addButton( 'PasteFromWord',
+			// Flag indicate this command is actually been asked instead of a generic
+			// pasting.
+			var forceFromWord = 0,
+				resetFromWord = function()
+				{
+					setTimeout( function()
+					{
+						forceFromWord = 0;
+					}, 0 );
+				};
+
+			// Features bring by this command beside the normal process:
+			// 1. No more bothering of user about the clean-up.
+			// 2. Perform the clean-up even if content is not from MS-Word.
+			// (e.g. from a MS-Word similar application.)
+			editor.addCommand( 'pastefromword',
 			{
-				label : editor.lang.pastefromword.toolbar,
-				command : 'pastefromword'
+				exec : function ()
+				{
+					forceFromWord = 1;
+					editor.fire( 'pasteDialog' );
+					editor.on( 'dialogHide', function ( evt )
+					{
+						evt.removeListener();
+						resetFromWord();
+					} );
+				}
 			} );
 
-		// Register the dialog.
-		CKEDITOR.dialog.add( 'pastefromword', this.path + 'dialogs/pastefromword.js' );
-	}
-} );
+			// Register the toolbar button.
+			editor.ui.addButton( 'PasteFromWord',
+				{
+					label : editor.lang.pastefromword.toolbar,
+					command : 'pastefromword'
+				} );
+
+			editor.on( 'paste', function( evt )
+			{
+				var data = evt.data,
+					isLazyLoad,
+					mswordHtml;
+				// MS-WORD format sniffing.
+				if ( ( mswordHtml = data[ 'html' ] )
+					 && ( forceFromWord || /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml ) )
+					 && ( !editor.config.pasteFromWordPromptCleanup
+						  || ( forceFromWord || confirm( editor.lang.pastefromword.confirmCleanup )  ) ) )
+				{
+					if( isLazyLoad = this.loadFilterRules( function()
+					{
+						// Re-continue the event with the original data.
+						if( isLazyLoad )
+							editor.fire( 'paste', data );
+						else
+						{
+							// Firefox will be confused by those downlevel-revealed IE conditional
+							// comments, fixing them first( convert it to upperlevel-revealed one ).
+							// e.g. <![if !vml]>...<![endif]>
+							if( CKEDITOR.env.gecko )
+							{
+								data[ 'html' ] =
+									mswordHtml.replace( /(<!--\[if[^<]*?\])-->([\S\s]*?)<!--(\[endif\]-->)/gi, '$1$2$3' );
+							}
+
+							var filter = data.processor.dataFilter;
+							// These rules will have higher priorities than default ones.
+							filter.addRules( CKEDITOR.plugins.pastefromword.getRules( editor ), 5 );
+						}
+					} ) )
+					{
+						// The filtering rules are to be loaded, it's safe to just cancel
+						// this event.  
+						evt.cancel();
+					}
+				}
+			}, this );
+		},
+
+		loadFilterRules : function( callback )
+		{
+			var isLoaded = typeof CKEDITOR.plugins.pastefromword != 'undefined';
+
+			isLoaded ?
+				callback() :
+				// Load with busy indicator.
+				CKEDITOR.scriptLoader.load( this.path + 'rules.js',
+						callback, null, false, true );
+
+			return !isLoaded;
+		}
+	} );
+} )();
 
 /**
- * Whether the "Ignore font face definitions" checkbox is enabled by default in
- * the Paste from Word dialog.
+ * Whether prompt the user about the clean-up of content from MS-Word.
+ * @name CKEDITOR.config.pasteFromWordPromptCleanup
  * @type Boolean
  * @default true
  * @example
- * config.pasteFromWordIgnoreFontFace = false;
+ * config.pasteFromWordPromptCleanup = true;
  */
-CKEDITOR.config.pasteFromWordIgnoreFontFace = true;
-
-/**
- * Whether the "Remove styles definitions" checkbox is enabled by default in
- * the Paste from Word dialog.
- * @type Boolean
- * @default false
- * @example
- * config.pasteFromWordRemoveStyle = true;
- */
-CKEDITOR.config.pasteFromWordRemoveStyle = false;
-
-/**
- * Whether to keep structure markup (&lt;h1&gt;, &lt;h2&gt;, etc.) or replace
- * it with elements that create more similar pasting results when pasting
- * content from Microsoft Word into the Paste from Word dialog.
- * @type Boolean
- * @default false
- * @example
- * config.pasteFromWordKeepsStructure = true;
- */
-CKEDITOR.config.pasteFromWordKeepsStructure = false;

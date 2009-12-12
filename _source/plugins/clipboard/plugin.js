@@ -85,10 +85,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// Prevent IE from pasting at the begining of the document.
 					editor.focus();
 
-					if ( !editor.fire( 'beforePaste' )
-						&& !execIECommand( editor, 'paste' ) )
+					if ( !execIECommand( editor, 'paste' ) )
 					{
-							editor.openDialog( 'paste' );
+						editor.fire( 'pasteDialog' );
+						return false;
 					}
 				}
 			}
@@ -98,7 +98,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					try
 					{
-						if ( !editor.fire( 'beforePaste' )
+						if ( !editor.document.getBody().fire( 'beforepaste' )
 							&& !editor.document.$.execCommand( 'Paste', false, null ) )
 						{
 							throw 0;
@@ -106,8 +106,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					}
 					catch ( e )
 					{
-						// Open the paste dialog.
-						editor.openDialog( 'paste' );
+						setTimeout( function()
+						{
+							editor.fire( 'pasteDialog' );
+						}, 0 );
+						return false;
 					}
 				}
 			};
@@ -121,16 +124,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			case CKEDITOR.CTRL + 86 :		// CTRL+V
 			case CKEDITOR.SHIFT + 45 :		// SHIFT+INS
 
-				var editor = this;
+				var editor = this,
+					body = editor.document.getBody();
+
 				editor.fire( 'saveSnapshot' );		// Save before paste
 
-				if ( editor.fire( 'beforePaste' ) )
+				// Simulate 'beforepaste' event for all none-IEs.
+				if ( !CKEDITOR.env.ie && body.fire( 'beforepaste' ) )
 					event.cancel();
-
-				setTimeout( function()
-					{
-						editor.fire( 'saveSnapshot' );		// Save after paste
-					}, 0 );
+				// Simulate 'paste' event for Opera/Firefox2.
+				else if( CKEDITOR.env.opera
+						 || CKEDITOR.env.gecko && CKEDITOR.env.version < 10900 )
+					body.fire( 'paste' );
 				return;
 
 			// Cut
@@ -147,11 +152,140 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	};
 
+	// Allow to peek clipboard content by redirecting the
+	// pasting content into a temporary bin and grab the content of it.
+	function getClipboardData( evt, mode, callback ) {
+
+		var doc = this.document;
+
+		// Avoid recursions on 'paste' event for IE.
+		if( CKEDITOR.env.ie && doc.getById( 'cke_pastebin' ) )
+			return;
+
+		var sel = this.getSelection(),
+			range = new CKEDITOR.dom.range( doc );
+
+		// Create container to paste into
+		var pastebin = new CKEDITOR.dom.element( mode == 'text' ? 'textarea' : 'div', doc );
+		pastebin.setAttribute( 'id', 'cke_pastebin' );
+
+		// IE6/7 require the bin to at least contain one piece of text otherwise the
+		// paste is treated as unauthorized.
+		if( mode != 'text' && CKEDITOR.env.ie )
+			pastebin.append( new CKEDITOR.dom.text( '\u00A0', doc ) );
+
+		doc.getBody().append( pastebin );
+
+
+		// It's definitely a better user experience if we make the paste-bin pretty unnoticed
+		// by pulling it off the screen, while this hack will make the paste-bin a control type element
+		// and that become a selection plain later. 
+		if( !CKEDITOR.env.ie )
+		{
+			pastebin.setStyles( {
+				position : 'absolute',
+				left : '-1000px',
+				// Position the bin exactly at the position of the selected element
+				// to avoid any subsequent document scroll.
+				top : sel.getStartElement().getDocumentPosition().y + 'px',
+				width : '1px',
+				height : '1px',
+				overflow : 'hidden'
+			} );
+		}
+
+		var bms = sel.createBookmarks();
+
+		// Turn off design mode temporarily before give focus to the paste bin.
+		if ( mode == 'text' )
+		{
+			doc.$.designMode = 'off';
+			pastebin.$.focus();
+		}
+		else
+		{
+			range.setStartAt( pastebin, CKEDITOR.POSITION_AFTER_START );
+			range.setEndAt( pastebin, CKEDITOR.POSITION_BEFORE_END );
+			range.select( true );
+		}
+
+		// Wait a while and grab the pasted contents
+		window.setTimeout( function() {
+
+			mode == 'text' && ( doc.$.designMode = 'on' );
+			pastebin.remove();
+
+			// Grab the HTML contents
+			// We need to look for a apple style wrapper on webkit it also adds a div wrapper if you copy/paste the body of the editor.
+			// Remove hidden div and restore selection
+			var bogusSpan;
+			pastebin = ( CKEDITOR.env.webkit
+					 && ( bogusSpan = pastebin.getFirst() )
+					 && ( bogusSpan.is && bogusSpan.hasClass( 'Apple-style-span' ) ) ?
+					  bogusSpan : pastebin );
+
+			sel.selectBookmarks( bms );
+			callback( pastebin[ 'get' + ( mode == 'text' ? 'Value' : 'Html' ) ]() );
+
+		}, 0 );
+	};
+
+
 	// Register the plugin.
 	CKEDITOR.plugins.add( 'clipboard',
 		{
+			requires : [ 'htmldataprocessor' ],
 			init : function( editor )
 			{
+				// The paste processor here is just a reduced copy of html data processor.
+				CKEDITOR.pasteProcessor = function( editor )
+				{
+					this.editor = editor;
+					this.dataFilter = new CKEDITOR.htmlParser.filter();
+				};
+				CKEDITOR.pasteProcessor.prototype =
+				{
+					toHtml : function( data )
+					{
+						var fragment = CKEDITOR.htmlParser.fragment.fromHtml( data, false ),
+							writer = new CKEDITOR.htmlParser.basicWriter();
+
+						fragment.writeHtml( writer, this.dataFilter );
+						return writer.getHtml( true );
+					}
+				};
+
+				// The very first handler which initialize the processor.
+				editor.on( 'paste', function( evt )
+				{
+					// The processor is a transient instance life cycled to the
+					// 'paste' event since the processing rules will be added
+					// on demand accordingly to clipboard data flavor.
+					evt.data.processor = new CKEDITOR.pasteProcessor( editor );
+					
+				}, null, null, 1 );
+
+				// The very last handler which insert final data into the editor at the end of the chain.
+				editor.on( 'paste', function( evt )
+				{
+					var data = evt.data,
+						processor = data.processor;
+
+					if ( data[ 'html' ] )
+						editor.insertHtml( processor.toHtml( data[ 'html' ], false ) );
+					else if ( data[ 'text' ] )
+						editor.insertText( data[ 'text' ] );
+
+					editor.fire( 'saveSnapshot' ); // Save after inserted.
+
+				}, null, null, 1000 );
+
+				editor.on( 'pasteDialog', function( evt )
+				{
+					// Open default paste dialog. 
+					editor.openDialog( 'paste' );
+				} );
+
 				function addButtonCommand( buttonName, commandName, command, ctxMenuOrder )
 				{
 					var lang = editor.lang[ commandName ];
@@ -184,6 +318,32 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				editor.on( 'key', onKey, editor );
 
+				if( editor.config.autoDetectPaste )
+				{
+					var mode = editor.config.forcePasteAsPlainText ? 'text' : 'html';
+					editor.on( 'contentDom', function()
+					{
+						var body = editor.document.getBody();
+						body.on( ( mode == 'text' && !CKEDITOR.env.ie ) ?
+						          'beforepaste' : 'beforepaste',
+								function( evt )
+								{
+									getClipboardData.call( editor, evt, mode, function ( data )
+									{
+										// The very last guard to make sure the
+										// paste has really happened.
+										if ( !data )
+											return;
+
+										var dataTransfer = {};
+										dataTransfer[ mode ] = data;
+										editor.fire( 'paste', dataTransfer );
+									} );
+								} );
+
+					} );
+				}
+
 				// If the "contextmenu" plugin is loaded, register the listeners.
 				if ( editor.contextMenu )
 				{
@@ -205,4 +365,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 			}
 		});
+
+
 })();
+
+/**
+ * Whether to automatically choose the right format when pasting based on the
+ * detection of content text OR just leave it to the browser's default paste behavior.
+ * @type Boolean
+ * @default true
+ * @example
+ * config.autoDetectPaste = false;
+ */
+CKEDITOR.config.autoDetectPaste = true;

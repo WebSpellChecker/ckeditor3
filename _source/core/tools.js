@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -63,24 +63,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var clone;
 
-			// Array.
-			if ( obj && ( obj instanceof Array ) )
-			{
-				clone = [];
-
-				for ( var i = 0 ; i < obj.length ; i++ )
-					clone[ i ] = this.clone( obj[ i ] );
-
-				return clone;
-			}
-
 			// "Static" types.
 			if ( obj === null
 				|| ( typeof( obj ) != 'object' )
 				|| ( obj instanceof String )
 				|| ( obj instanceof Number )
 				|| ( obj instanceof Boolean )
-				|| ( obj instanceof Date ) )
+				|| ( obj instanceof Date )
+				|| ( obj instanceof RegExp) )
 			{
 				return obj;
 			}
@@ -585,7 +575,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		repeat : function( str, times )
 		{
 			return new Array( times + 1 ).join( str );
-		}
+		},
+
+		tryThese : function()
+		{
+		    var returnValue;
+		    for ( var i = 0, length = arguments.length; i < length; i++ )
+		    {
+		      var lambda = arguments[i];
+		      try
+		      {
+		        returnValue = lambda();
+		        break;
+		      } catch (e) { }
+		    }
+		    return returnValue;
+		 }
 	};
 })();
 

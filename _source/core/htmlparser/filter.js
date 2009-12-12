@@ -1,3 +1,5 @@
+
+
 /*
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
@@ -74,10 +76,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				// We must apply filters set to the specific element name as
 				// well as those set to the generic $ name. So, add both to an
 				// array and process them in a small loop.
-				var filters = [ this._.elements[ element.name ], this._.elements.$ ],
+				var filters = [ this._.elements[ '^' ], this._.elements[ element.name ], this._.elements.$ ],
 					filter, ret;
 
-				for ( var i = 0 ; i < 2 ; i++ )
+				for ( var i = 0 ; i < 3 ; i++ )
 				{
 					filter = filters[ i ];
 					if ( filter )
@@ -89,6 +91,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						if ( ret && ret != element )
 							return this.onNode( ret );
+
+						// The none-root element has been dismissed by one of the filters.
+						if( element.parent && !element.name )
+							break;
 					}
 				}
 
@@ -121,6 +127,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 
 				return value;
+			},
+
+			clone : function()
+			{
+				var clone = new CKEDITOR.htmlParser.filter();
+				// Shallow copy all the rules.
+				clone._ = CKEDITOR.tools.clone( this._ );
+				return clone;
 			}
 		}
 	});
@@ -154,8 +168,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			for ( j = itemsLength - 1 ; j >= 0 ; j-- )
 			{
 				var item = items[ j ];
-				item.pri = priority;
-				list.splice( i, 0, item );
+				if( item )
+				{
+					item.pri = priority;
+					list.splice( i, 0, item );
+				}
 			}
 		}
 	}

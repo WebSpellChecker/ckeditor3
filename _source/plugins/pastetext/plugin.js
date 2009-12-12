@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -14,15 +14,41 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		exec : function( editor )
 		{
-			// We use getClipboardData just to test if the clipboard access has
-			// been granted by the user.
-			if ( CKEDITOR.getClipboardData() === false || !window.clipboardData )
+			var clipboardText = CKEDITOR.tools.tryThese(
+				function()
+				{
+					var clipboardText = window.clipboardData.getData( 'Text' );
+					if ( !clipboardText )
+						throw 0;
+					return clipboardText;
+				},
+				function()
+				{
+					netscape.security.PrivilegeManager.enablePrivilege( "UniversalXPConnect" );
+
+					var clip = Components.classes[ "@mozilla.org/widget/clipboard;1" ]
+							.getService( Components.interfaces.nsIClipboard );
+					var trans = Components.classes[ "@mozilla.org/widget/transferable;1" ]
+							.createInstance( Components.interfaces.nsITransferable );
+					trans.addDataFlavor( "text/unicode" );
+					clip.getData( trans, clip.kGlobalClipboard );
+
+					var str = {}, strLength = {}, clipboardText;
+					trans.getTransferData( "text/unicode", str, strLength );
+					str = str.value.QueryInterface( Components.interfaces.nsISupportsString );
+					clipboardText = str.data.substring( 0, strLength.value / 2 );
+					return clipboardText;
+				}
+				// Any other approach that's working... 
+				);
+			
+			if ( !clipboardText )   // Clipboard access privilege is not granted.
 			{
 				editor.openDialog( 'pastetext' );
-				return;
+				return false;
 			}
-
-			editor.insertText( window.clipboardData.getData( 'Text' ) );
+			else
+				editor.fire( 'paste', { 'text' : clipboardText } );
 		}
 	};
 
@@ -38,86 +64,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					label : editor.lang.pasteText.button,
 					command : commandName
-				});
+				} );
 
 			CKEDITOR.dialog.add( commandName, CKEDITOR.getUrl( this.path + 'dialogs/pastetext.js' ) );
 
-			if ( editor.config.forcePasteAsPlainText )
+			if( editor.config.forcePasteAsPlainText )
 			{
-				editor.on( 'beforePaste', function( event )
+				// Intercept the default pasting process.
+				editor.on( 'beforeCommandExec', function ( evt )
+				{
+					if ( evt.data.name == 'paste' )
 					{
-						if ( editor.mode == "wysiwyg" )
-						{
-							setTimeout( function() { command.exec(); }, 0 );
-							event.cancel();
-						}
-					},
-					null, null, 20 );
+						editor.execCommand( 'pastetext' );
+						evt.cancel();
+					}
+				}, null, null, 0 );
 			}
 		},
 		requires : [ 'clipboard' ]
 	});
-
-	var clipboardDiv;
-
-	CKEDITOR.getClipboardData = function()
-	{
-		if ( !CKEDITOR.env.ie )
-			return false;
-
-		var doc = CKEDITOR.document,
-			body = doc.getBody();
-
-		if ( !clipboardDiv )
-		{
-			clipboardDiv = doc.createElement( 'div',
-				{
-					attributes :
-						{
-							id: 'cke_hiddenDiv'
-						},
-					styles :
-						{
-							position : 'absolute',
-							visibility : 'hidden',
-							overflow : 'hidden',
-							width : '1px',
-							height : '1px'
-						}
-				});
-
-			clipboardDiv.setHtml( '' );
-
-			clipboardDiv.appendTo( body );
-		}
-
-		// The "enabled" flag is used to check whether the paste operation has
-		// been completed (the onpaste event has been fired).
-		var	enabled = false;
-		var setEnabled = function()
-		{
-			enabled = true;
-		};
-
-		body.on( 'paste', setEnabled );
-
-		// Create a text range and move it inside the div.
-		var textRange = body.$.createTextRange();
-		textRange.moveToElementText( clipboardDiv.$ );
-
-		// The execCommand in will fire the "onpaste", only if the
-		// security settings are enabled.
-		textRange.execCommand( 'Paste' );
-
-		// Get the DIV html and reset it.
-		var html = clipboardDiv.getHtml();
-		clipboardDiv.setHtml( '' );
-
-		body.removeListener( 'paste', setEnabled );
-
-		// Return the HTML or false if not enabled.
-		return enabled && html;
-	};
 })();
 
 CKEDITOR.editor.prototype.insertText = function( text )

@@ -29,12 +29,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				exec : function ()
 				{
 					forceFromWord = 1;
-					editor.fire( 'pasteDialog' );
-					editor.on( 'dialogHide', function ( evt )
+					if( editor.execCommand( 'paste' ) === false )
 					{
-						evt.removeListener();
-						resetFromWord();
-					} );
+						editor.on( 'dialogHide', function ( evt )
+						{
+							evt.removeListener();
+							resetFromWord();
+						} );
+					}
 				}
 			} );
 

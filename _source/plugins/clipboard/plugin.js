@@ -84,8 +84,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					// Prevent IE from pasting at the begining of the document.
 					editor.focus();
-
-					if ( !execIECommand( editor, 'paste' ) )
+					
+					if ( !editor.document.getBody().fire( 'beforepaste' )
+						 && !execIECommand( editor, 'paste' ) )
 					{
 						editor.fire( 'pasteDialog' );
 						return false;
@@ -171,12 +172,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Create container to paste into
 		var pastebin = new CKEDITOR.dom.element( mode == 'text' ? 'textarea' : 'div', doc );
 		pastebin.setAttribute( 'id', 'cke_pastebin' );
-
-		// IE6/7 require the bin to at least contain one piece of text otherwise the
-		// paste is treated as unauthorized.
-		if( mode != 'text' && CKEDITOR.env.ie )
-			pastebin.append( new CKEDITOR.dom.text( '\u00A0', doc ) );
-
 		doc.getBody().append( pastebin );
 
 
@@ -331,32 +326,28 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				editor.on( 'key', onKey, editor );
 
-				if( editor.config.autoDetectPaste )
+				var mode = editor.config.forcePasteAsPlainText ? 'text' : 'html';
+				editor.on( 'contentDom', function()
 				{
-					var mode = editor.config.forcePasteAsPlainText ? 'text' : 'html';
-					editor.on( 'contentDom', function()
-					{
-						var body = editor.document.getBody();
-						body.on( ( mode == 'text' && CKEDITOR.env.ie ) ?
-						          'paste' : 'beforepaste',
-								function( evt )
+					var body = editor.document.getBody();
+					body.on( ( mode == 'text' && CKEDITOR.env.ie ) ?
+					          'paste' : 'beforepaste',
+							function( evt )
+							{
+								getClipboardData.call( editor, evt, mode, function ( data )
 								{
-									getClipboardData.call( editor, evt, mode, function ( data )
-									{
-										// The very last guard to make sure the
-										// paste has really happened.
-										if ( !data )
-											return;
+									// The very last guard to make sure the
+									// paste has successfully happened.
+									if ( !data )
+										return;
 
-
-										var dataTransfer = {};
-										dataTransfer[ mode ] = data;
-										editor.fire( 'paste', dataTransfer );
-									} );
+									var dataTransfer = {};
+									dataTransfer[ mode ] = data;
+									editor.fire( 'paste', dataTransfer );
 								} );
+							} );
 
-					} );
-				}
+				} );
 
 				// If the "contextmenu" plugin is loaded, register the listeners.
 				if ( editor.contextMenu )
@@ -379,16 +370,4 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 			}
 		});
-
-
 })();
-
-/**
- * Whether to automatically choose the right format when pasting based on the
- * detection of content text OR just leave it to the browser's default paste behavior.
- * @type Boolean
- * @default true
- * @example
- * config.autoDetectPaste = false;
- */
-CKEDITOR.config.autoDetectPaste = true;

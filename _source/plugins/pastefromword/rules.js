@@ -409,7 +409,7 @@
 					return function( value, element )
 					{
 						// Build an stylish element first.
-						var styleElement = new CKEDITOR.htmlParser.element( null, {} ),
+						var styleElement = new CKEDITOR.htmlParser.element( null ),
 							variables = {};
 
 						variables[ variableName ] = value;

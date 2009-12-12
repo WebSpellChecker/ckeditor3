@@ -25,7 +25,7 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 	 * @type Object
 	 * @example
 	 */
-	this.attributes = attributes;
+	this.attributes = attributes || ( attributes = {} );
 
 	/**
 	 * The nodes that are direct children of this element.

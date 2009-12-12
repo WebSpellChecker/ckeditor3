@@ -513,11 +513,9 @@ CKEDITOR.lang['hu'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Beillesztés Word-ből',
-		title : 'Beillesztés Word-ből',
-		advice : 'Másolja be az alábbi mezőbe a <STRONG>Ctrl+V</STRONG> billentyűk lenyomásával, majd nyomjon <STRONG>Rendben</STRONG>-t.',
-		ignoreFontFace : 'Betű formázások megszüntetése',
-		removeStyle : 'Stílusok eltávolítása'
+		title : 'Beillesztés Word-ből'
 	},
 
 	pasteText :

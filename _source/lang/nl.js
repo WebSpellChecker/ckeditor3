@@ -513,11 +513,9 @@ CKEDITOR.lang['nl'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'De tekst die u plakte lijkt gekopieerd te zijn vanuit Word. Wilt u de tekst opschonen voordat deze geplakt wordt?',
 		toolbar : 'Plakken als Word-gegevens',
-		title : 'Plakken als Word-gegevens',
-		advice : 'Plak de tekst in het volgende vak gebruik makend van uw toetsenbord (<strong>Ctrl+V</strong>) en klik op <strong>OK</strong>.',
-		ignoreFontFace : 'Negeer "Font Face"-definities',
-		removeStyle : 'Verwijder "Style"-definities'
+		title : 'Plakken als Word-gegevens'
 	},
 
 	pasteText :

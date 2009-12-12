@@ -513,11 +513,9 @@ CKEDITOR.lang['et'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Kleebi Wordist',
-		title : 'Kleebi Wordist',
-		advice : 'Palun kleebi järgnevasse kasti kasutades klaviatuuri klahvikombinatsiooni (<STRONG>Ctrl+V</STRONG>) ja vajuta seejärel <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignoreeri kirja definitsioone',
-		removeStyle : 'Eemalda stiilide definitsioonid'
+		title : 'Kleebi Wordist'
 	},
 
 	pasteText :

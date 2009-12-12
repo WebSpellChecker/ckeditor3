@@ -513,11 +513,9 @@ CKEDITOR.lang['sr-latn'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Zalepi iz Worda',
-		title : 'Zalepi iz Worda',
-		advice : 'Molimo Vas da zalepite unutar donje povrine koristeći tastaturnu prečicu (<STRONG>Ctrl+V</STRONG>) i da pritisnete <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignoriši definicije fontova',
-		removeStyle : 'Ukloni definicije stilova'
+		title : 'Zalepi iz Worda'
 	},
 
 	pasteText :

@@ -513,11 +513,9 @@ CKEDITOR.lang['ms'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Tampal dari Word',
-		title : 'Tampal dari Word',
-		advice : 'Please paste inside the following box using the keyboard (<strong>Ctrl+V</strong>) and hit <strong>OK</strong>.', // MISSING
-		ignoreFontFace : 'Ignore Font Face definitions', // MISSING
-		removeStyle : 'Remove Styles definitions' // MISSING
+		title : 'Tampal dari Word'
 	},
 
 	pasteText :

@@ -513,7 +513,7 @@ CKEDITOR.lang['en'] =
 
 	pastefromword :
 	{
-		confirmCleanup : 'Your pasted content including formattings from MS-Word application, do you want to adapt it to the editor\'s format?',
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?',
 		toolbar : 'Paste from Word',
 		title : 'Paste from Word'
 	},

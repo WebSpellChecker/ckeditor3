@@ -513,11 +513,9 @@ CKEDITOR.lang['es'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'El texto que desea parece provenir de Word. Desea depurarlo antes de pegarlo?',
 		toolbar : 'Pegar desde Word',
-		title : 'Pegar desde Word',
-		advice : 'Por favor pegue dentro del cuadro utilizando el teclado (<STRONG>Ctrl+V</STRONG>); luego presione <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignorar definiciones de fuentes',
-		removeStyle : 'Remover definiciones de estilo'
+		title : 'Pegar desde Word'
 	},
 
 	pasteText :

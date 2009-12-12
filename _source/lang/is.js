@@ -513,11 +513,9 @@ CKEDITOR.lang['is'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Líma úr Word',
-		title : 'Líma úr Word',
-		advice : 'Límdu í svæðið hér að neðan og (<STRONG>Ctrl+V</STRONG>) og smelltu á <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Hunsa leturskilgreiningar',
-		removeStyle : 'Hunsa letureigindi'
+		title : 'Líma úr Word'
 	},
 
 	pasteText :

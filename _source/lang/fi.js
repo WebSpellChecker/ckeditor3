@@ -513,11 +513,9 @@ CKEDITOR.lang['fi'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Liitä Wordista',
-		title : 'Liitä Wordista',
-		advice : 'Liitä painamalla (<STRONG>Ctrl+V</STRONG>) ja painamalla <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Jätä huomioimatta fonttimääritykset',
-		removeStyle : 'Poista tyylimääritykset'
+		title : 'Liitä Wordista'
 	},
 
 	pasteText :

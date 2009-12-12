@@ -513,11 +513,9 @@ CKEDITOR.lang['ro'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Adaugă din Word',
-		title : 'Adaugă din Word',
-		advice : 'Vă rugăm adăugaţi în căsuţa următoare folosind tastatura (<STRONG>Ctrl+V</STRONG>) şi apăsaţi <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignoră definiţiile Font Face',
-		removeStyle : 'Şterge definiţiile stilurilor'
+		title : 'Adaugă din Word'
 	},
 
 	pasteText :

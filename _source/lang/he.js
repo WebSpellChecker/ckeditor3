@@ -513,11 +513,9 @@ CKEDITOR.lang['he'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'נראה הטקסט שבכוונתך להדביק מקורו בקובץ וורד. האם ברצונך לנקות אותו טרם ההדבקה?',
 		toolbar : 'הדבקה מ-וורד',
-		title : 'הדבקה מ-וורד',
-		advice : 'אנא הדבק בתוך הקופסה באמצעות  (<STRONG>Ctrl+V</STRONG>) ולחץ על  <STRONG>אישור</STRONG>.',
-		ignoreFontFace : 'התעלם מהגדרות סוג פונט',
-		removeStyle : 'הסר הגדרות סגנון'
+		title : 'הדבקה מ-וורד'
 	},
 
 	pasteText :

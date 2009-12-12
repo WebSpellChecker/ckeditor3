@@ -513,11 +513,9 @@ CKEDITOR.lang['eu'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Itsatsi nahi duzun testua Wordetik hartua dela dirudi. Itsatsi baino lehen garbitu nahi duzu?',
 		toolbar : 'Itsatsi Word-etik',
-		title : 'Itsatsi Word-etik',
-		advice : 'Mesedez teklatua erabilita (<STRONG>Ctrl+V</STRONG>) ondorego eremuan testua itsatsi eta <STRONG>OK</STRONG> sakatu.',
-		ignoreFontFace : 'Letra Motaren definizioa ezikusi',
-		removeStyle : 'Estilo definizioak kendu'
+		title : 'Itsatsi Word-etik'
 	},
 
 	pasteText :

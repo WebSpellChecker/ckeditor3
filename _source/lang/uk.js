@@ -513,11 +513,9 @@ CKEDITOR.lang['uk'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Текст, що ви хочете вставити, схожий на копійований з Word. Ви хочете очистити його перед вставкою?',
 		toolbar : 'Вставити з Word',
-		title : 'Вставити з Word',
-		advice : 'Будь-ласка, вставте з буфера обміну в цю область, користуючись комбінацією клавіш (<STRONG>Ctrl+V</STRONG>) та натисніть <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ігнорувати налаштування шрифтів',
-		removeStyle : 'Видалити налаштування стилів'
+		title : 'Вставити з Word'
 	},
 
 	pasteText :

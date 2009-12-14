@@ -1,3 +1,4 @@
+
 ( function()
 {
 	var fragmentPrototype = CKEDITOR.htmlParser.fragment.prototype,
@@ -908,6 +909,39 @@
 				} : falsyFilter
 			};
 		}
+	};
+
+	// The paste processor here is just a reduced copy of html data processor.
+	CKEDITOR.pasteProcessor = function()
+	{
+		this.dataFilter = new CKEDITOR.htmlParser.filter();
+	};
+	CKEDITOR.pasteProcessor.prototype =
+	{
+		toHtml : function( data )
+		{
+			var fragment = CKEDITOR.htmlParser.fragment.fromHtml( data, false ),
+				writer = new CKEDITOR.htmlParser.basicWriter();
+
+			fragment.writeHtml( writer, this.dataFilter );
+			return writer.getHtml( true );
+		}
+	};
+
+	CKEDITOR.cleanWord = function( data, editor )
+	{
+		// Firefox will be confused by those downlevel-revealed IE conditional
+		// comments, fixing them first( convert it to upperlevel-revealed one ).
+		// e.g. <![if !vml]>...<![endif]>
+		if( CKEDITOR.env.gecko )
+			data = data.replace( /(<!--\[if[^<]*?\])-->([\S\s]*?)<!--(\[endif\]-->)/gi, '$1$2$3' );
+
+		var pasteProcessor = new CKEDITOR.pasteProcessor(),
+			dataFilter = pasteProcessor.dataFilter;
+		// These rules will have higher priorities than default ones.
+		dataFilter.addRules( CKEDITOR.plugins.pastefromword.getRules( this ) );
+		editor.fire( 'beforeCleanWord', { filter : dataFilter } );
+		return pasteProcessor.toHtml( data, false );
 	};
 
 } )( );

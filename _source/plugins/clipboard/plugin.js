@@ -77,14 +77,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	};
 
 	// Paste command.
-	var pasteCmd =
-		CKEDITOR.env.ie ?
+	var pasteCmd = CKEDITOR.tools.extend( { canUndo: false },
+			CKEDITOR.env.ie ?
 			{
 				exec : function( editor, data )
 				{
 					// Prevent IE from pasting at the begining of the document.
 					editor.focus();
-					
+
 					if ( !editor.document.getBody().fire( 'beforepaste' )
 						 && !execIECommand( editor, 'paste' ) )
 					{
@@ -114,7 +114,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						return false;
 					}
 				}
-			};
+			} );
 
 	// Listens for some clipboard related keystrokes, so they get customized.
 	var onKey = function( event )
@@ -128,10 +128,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			case CKEDITOR.CTRL + 86 :		// CTRL+V
 			case CKEDITOR.SHIFT + 45 :		// SHIFT+INS
 
-				var editor = this,
-					body = editor.document.getBody();
-
-				editor.fire( 'saveSnapshot' );		// Save before paste
+				var body = this.document.getBody();
 
 				// Simulate 'beforepaste' event for all none-IEs.
 				if ( !CKEDITOR.env.ie && body.fire( 'beforepaste' ) )
@@ -147,8 +144,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			case CKEDITOR.SHIFT + 46 :		// SHIFT+DEL
 
 				// Save Undo snapshot.
-				editor = this;
-				editor.fire( 'saveSnapshot' );		// Save before paste
+				var editor = this;
+				this.fire( 'saveSnapshot' );		// Save before paste
 				setTimeout( function()
 					{
 						editor.fire( 'saveSnapshot' );		// Save after paste
@@ -245,42 +242,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			requires : [ 'htmldataprocessor' ],
 			init : function( editor )
 			{
-				// The paste processor here is just a reduced copy of html data processor.
-				CKEDITOR.pasteProcessor = function( editor )
-				{
-					this.editor = editor;
-					this.dataFilter = new CKEDITOR.htmlParser.filter();
-				};
-				CKEDITOR.pasteProcessor.prototype =
-				{
-					toHtml : function( data )
-					{
-						var fragment = CKEDITOR.htmlParser.fragment.fromHtml( data, false ),
-							writer = new CKEDITOR.htmlParser.basicWriter();
 
-						fragment.writeHtml( writer, this.dataFilter );
-						return writer.getHtml( true );
-					}
-				};
-
-				// The very first handler which initialize the processor.
+				// Inserts processed data into the editor at the end of the
+				// events chain.
 				editor.on( 'paste', function( evt )
 				{
-					// The processor is a transient instance life cycled to the
-					// 'paste' event since the processing rules will be added
-					// on demand accordingly to clipboard data flavor.
-					evt.data.processor = new CKEDITOR.pasteProcessor( editor );
-					
-				}, null, null, 1 );
-
-				// The very last handler which insert final data into the editor at the end of the chain.
-				editor.on( 'paste', function( evt )
-				{
-					var data = evt.data,
-						processor = data.processor;
-
+					var data = evt.data;
 					if ( data[ 'html' ] )
-						editor.insertHtml( processor.toHtml( data[ 'html' ], false ) );
+						editor.insertHtml( data[ 'html' ] );
 					else if ( data[ 'text' ] )
 						editor.insertText( data[ 'text' ] );
 
@@ -327,6 +296,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				editor.on( 'key', onKey, editor );
 
 				var mode = editor.config.forcePasteAsPlainText ? 'text' : 'html';
+
+				// We'll be catching all pasted content in one line, regardless of whether the
+				// it's introduced by a document command execution (e.g. toolbar buttons) or
+				// user paste behaviors. (e.g. Ctrl-V)
 				editor.on( 'contentDom', function()
 				{
 					var body = editor.document.getBody();

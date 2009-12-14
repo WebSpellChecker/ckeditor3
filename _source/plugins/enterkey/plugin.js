@@ -19,166 +19,168 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	CKEDITOR.plugins.enterkey =
 	{
-		enterBlock : function( editor, mode, range )
+		enterBlock : function( editor, mode, range, forceMode )
 		{
-		// Get the range for the current selection.
-		range = range || getRange( editor );
+			// Get the range for the current selection.
+			range = range || getRange( editor );
 
-		var doc = range.document;
+			var doc = range.document;
 
-		// Determine the block element to be used.
-		var blockTag = ( mode == CKEDITOR.ENTER_DIV ? 'div' : 'p' );
+			// Determine the block element to be used.
+			var blockTag = ( mode == CKEDITOR.ENTER_DIV ? 'div' : 'p' );
 
-		// Split the range.
-		var splitInfo = range.splitBlock( blockTag );
+			// Split the range.
+			var splitInfo = range.splitBlock( blockTag );
 
-		if ( !splitInfo )
-			return;
-
-		// Get the current blocks.
-		var previousBlock	= splitInfo.previousBlock,
-			nextBlock		= splitInfo.nextBlock;
-
-		var isStartOfBlock	= splitInfo.wasStartOfBlock,
-			isEndOfBlock	= splitInfo.wasEndOfBlock;
-
-		var node;
-
-		// If this is a block under a list item, split it as well. (#1647)
-		if ( nextBlock )
-		{
-			node = nextBlock.getParent();
-			if ( node.is( 'li' ) )
-			{
-				nextBlock.breakParent( node );
-				nextBlock.move( nextBlock.getNext(), true );
-			}
-		}
-		else if ( previousBlock && ( node = previousBlock.getParent() ) && node.is( 'li' ) )
-		{
-			previousBlock.breakParent( node );
-			range.moveToElementEditStart( previousBlock.getNext() );
-			previousBlock.move( previousBlock.getPrevious() );
-		}
-
-		// If we have both the previous and next blocks, it means that the
-		// boundaries were on separated blocks, or none of them where on the
-		// block limits (start/end).
-		if ( !isStartOfBlock && !isEndOfBlock )
-		{
-			// If the next block is an <li> with another list tree as the first
-			// child, we'll need to append a filler (<br>/NBSP) or the list item
-			// wouldn't be editable. (#1420)
-			if ( nextBlock.is( 'li' )
-				 && ( node = nextBlock.getFirst( CKEDITOR.dom.walker.invisible( true ) ) )
-				 && node.is && node.is( 'ul', 'ol' ) )
-				( CKEDITOR.env.ie ? doc.createText( '\xa0' ) : doc.createElement( 'br' ) ).insertBefore( node );
-
-			// Move the selection to the end block.
-			if ( nextBlock )
-				range.moveToElementEditStart( nextBlock );
-		}
-		else
-		{
-
-			if ( isStartOfBlock && isEndOfBlock && previousBlock.is( 'li' ) )
-			{
-				editor.execCommand( 'outdent' );
+			if ( !splitInfo )
 				return;
-			}
 
-			var newBlock;
+			// Get the current blocks.
+			var previousBlock	= splitInfo.previousBlock,
+				nextBlock		= splitInfo.nextBlock;
 
-			if ( previousBlock )
-			{
-				// Do not enter this block if it's a header tag, or we are in
-				// a Shift+Enter (#77). Create a new block element instead
-				// (later in the code).
-				if ( !forceMode && !headerTagRegex.test( previousBlock.getName() ) )
-				{
-					// Otherwise, duplicate the previous block.
-					newBlock = previousBlock.clone();
-				}
-			}
-			else if ( nextBlock )
-				newBlock = nextBlock.clone();
+			var isStartOfBlock	= splitInfo.wasStartOfBlock,
+				isEndOfBlock	= splitInfo.wasEndOfBlock;
 
-			if ( !newBlock )
-				newBlock = doc.createElement( blockTag );
+			var node;
 
-			// Recreate the inline elements tree, which was available
-			// before hitting enter, so the same styles will be available in
-			// the new block.
-			var elementPath = splitInfo.elementPath;
-			if ( elementPath )
-			{
-				for ( var i = 0, len = elementPath.elements.length ; i < len ; i++ )
-				{
-					var element = elementPath.elements[ i ];
-
-					if ( element.equals( elementPath.block ) || element.equals( elementPath.blockLimit ) )
-						break;
-
-					if ( CKEDITOR.dtd.$removeEmpty[ element.getName() ] )
-					{
-						element = element.clone();
-						newBlock.moveChildren( element );
-						newBlock.append( element );
-					}
-				}
-			}
-
-			if ( !CKEDITOR.env.ie )
-				newBlock.appendBogus();
-
-			range.insertNode( newBlock );
-
-			// This is tricky, but to make the new block visible correctly
-			// we must select it.
-			// The previousBlock check has been included because it may be
-			// empty if we have fixed a block-less space (like ENTER into an
-			// empty table cell).
-			if ( CKEDITOR.env.ie && isStartOfBlock && ( !isEndOfBlock || !previousBlock.getChildCount() ) )
-			{
-				// Move the selection to the new block.
-				range.moveToElementEditStart( isEndOfBlock ? previousBlock : newBlock );
-				range.select();
-			}
-
-			// Move the selection to the new block.
-			range.moveToElementEditStart( isStartOfBlock && !isEndOfBlock ? nextBlock : newBlock );
-		}
-
-		if ( !CKEDITOR.env.ie )
-		{
+			// If this is a block under a list item, split it as well. (#1647)
 			if ( nextBlock )
 			{
-				// If we have split the block, adds a temporary span at the
-				// range position and scroll relatively to it.
-				var tmpNode = doc.createElement( 'span' );
+				node = nextBlock.getParent();
+				if ( node.is( 'li' ) )
+				{
+					nextBlock.breakParent( node );
+					nextBlock.move( nextBlock.getNext(), true );
+				}
+			}
+			else if ( previousBlock && ( node = previousBlock.getParent() ) && node.is( 'li' ) )
+			{
+				previousBlock.breakParent( node );
+				range.moveToElementEditStart( previousBlock.getNext() );
+				previousBlock.move( previousBlock.getPrevious() );
+			}
 
-				// We need some content for Safari.
-				tmpNode.setHtml( '&nbsp;' );
+			// If we have both the previous and next blocks, it means that the
+			// boundaries were on separated blocks, or none of them where on the
+			// block limits (start/end).
+			if ( !isStartOfBlock && !isEndOfBlock )
+			{
+				// If the next block is an <li> with another list tree as the first
+				// child, we'll need to append a filler (<br>/NBSP) or the list item
+				// wouldn't be editable. (#1420)
+				if ( nextBlock.is( 'li' )
+					 && ( node = nextBlock.getFirst( CKEDITOR.dom.walker.invisible( true ) ) )
+					 && node.is && node.is( 'ul', 'ol' ) )
+					( CKEDITOR.env.ie ? doc.createText( '\xa0' ) : doc.createElement( 'br' ) ).insertBefore( node );
 
-				range.insertNode( tmpNode );
-				tmpNode.scrollIntoView();
-				range.deleteContents();
+				// Move the selection to the end block.
+				if ( nextBlock )
+					range.moveToElementEditStart( nextBlock );
 			}
 			else
 			{
-				// We may use the above scroll logic for the new block case
-				// too, but it gives some weird result with Opera.
-				newBlock.scrollIntoView();
-			}
+
+				if ( isStartOfBlock && isEndOfBlock && previousBlock.is( 'li' ) )
+				{
+					editor.execCommand( 'outdent' );
+					return;
+				}
+
+				var newBlock;
+
+				if ( previousBlock )
+				{
+					// Do not enter this block if it's a header tag, or we are in
+					// a Shift+Enter (#77). Create a new block element instead
+					// (later in the code).
+					if ( !forceMode && !headerTagRegex.test( previousBlock.getName() ) )
+					{
+						// Otherwise, duplicate the previous block.
+						newBlock = previousBlock.clone();
+					}
+				}
+				else if ( nextBlock )
+					newBlock = nextBlock.clone();
+
+				if ( !newBlock )
+					newBlock = doc.createElement( blockTag );
+
+				// Recreate the inline elements tree, which was available
+				// before hitting enter, so the same styles will be available in
+				// the new block.
+				var elementPath = splitInfo.elementPath;
+				if ( elementPath )
+				{
+					for ( var i = 0, len = elementPath.elements.length ; i < len ; i++ )
+					{
+						var element = elementPath.elements[ i ];
+
+						if ( element.equals( elementPath.block ) || element.equals( elementPath.blockLimit ) )
+							break;
+
+						if ( CKEDITOR.dtd.$removeEmpty[ element.getName() ] )
+						{
+							element = element.clone();
+							newBlock.moveChildren( element );
+							newBlock.append( element );
+						}
+					}
+				}
+
+				if ( !CKEDITOR.env.ie )
+					newBlock.appendBogus();
+
+				range.insertNode( newBlock );
+
+				// This is tricky, but to make the new block visible correctly
+				// we must select it.
+				// The previousBlock check has been included because it may be
+				// empty if we have fixed a block-less space (like ENTER into an
+				// empty table cell).
+				if ( CKEDITOR.env.ie && isStartOfBlock && ( !isEndOfBlock || !previousBlock.getChildCount() ) )
+				{
+					// Move the selection to the new block.
+					range.moveToElementEditStart( isEndOfBlock ? previousBlock : newBlock );
+					range.select();
+				}
+
+				// Move the selection to the new block.
+				range.moveToElementEditStart( isStartOfBlock && !isEndOfBlock ? nextBlock : newBlock );
 		}
 
-		range.select();
-	},
-		enterBr : function( editor, mode )
+			if ( !CKEDITOR.env.ie )
+			{
+				if ( nextBlock )
+				{
+					// If we have split the block, adds a temporary span at the
+					// range position and scroll relatively to it.
+					var tmpNode = doc.createElement( 'span' );
+
+					// We need some content for Safari.
+					tmpNode.setHtml( '&nbsp;' );
+
+					range.insertNode( tmpNode );
+					tmpNode.scrollIntoView();
+					range.deleteContents();
+				}
+				else
+				{
+					// We may use the above scroll logic for the new block case
+					// too, but it gives some weird result with Opera.
+					newBlock.scrollIntoView();
+				}
+			}
+
+			range.select();
+		},
+
+		enterBr : function( editor, mode, range, forceMode )
 		{
 			// Get the range for the current selection.
-			var range = getRange( editor ),
-				doc = range.document;
+			range = range || getRange( editor );
+
+			var doc = range.document;
 
 			// Determine the block element to be used.
 			var blockTag = ( mode == CKEDITOR.ENTER_DIV ? 'div' : 'p' );
@@ -194,7 +196,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			if ( !forceMode && startBlockTag == 'li' )
 			{
-				enterBlock( editor, mode, range );
+				enterBlock( editor, mode, range, forceMode );
 				return;
 			}
 
@@ -277,19 +279,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	var plugin = CKEDITOR.plugins.enterkey,
 		enterBr = plugin.enterBr,
 		enterBlock = plugin.enterBlock,
-		forceMode,
 		headerTagRegex = /^h[1-6]$/;
 
 	function shiftEnter( editor )
 	{
 		// On SHIFT+ENTER we want to enforce the mode to be respected, instead
 		// of cloning the current block. (#77)
-		forceMode = 1;
-
-		return enter( editor, editor.config.shiftEnterMode );
+		return enter( editor, editor.config.shiftEnterMode, true );
 	}
 
-	function enter( editor, mode )
+	function enter( editor, mode, forceMode )
 	{
 		// Only effective within document.
 		if ( editor.mode != 'wysiwyg' )
@@ -303,11 +302,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				editor.fire( 'saveSnapshot' );	// Save undo step.
 				if ( mode == CKEDITOR.ENTER_BR || editor.getSelection().getStartElement().hasAscendant( 'pre', true ) )
-					enterBr( editor, mode );
+					enterBr( editor, mode, null, forceMode );
 				else
-					enterBlock( editor, mode );
+					enterBlock( editor, mode, null, forceMode );
 
-				forceMode = 0;
 			}, 0 );
 
 		return true;

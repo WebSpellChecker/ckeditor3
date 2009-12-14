@@ -26,6 +26,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// (e.g. from a MS-Word similar application.)
 			editor.addCommand( 'pastefromword',
 			{
+				canUndo : false,
 				exec : function ()
 				{
 					forceFromWord = 1;
@@ -50,53 +51,42 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			editor.on( 'paste', function( evt )
 			{
 				var data = evt.data,
-					isLazyLoad,
 					mswordHtml;
+				
 				// MS-WORD format sniffing.
 				if ( ( mswordHtml = data[ 'html' ] )
 					 && ( forceFromWord || /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml ) )
 					 && ( !editor.config.pasteFromWordPromptCleanup
 						  || ( forceFromWord || confirm( editor.lang.pastefromword.confirmCleanup )  ) ) )
 				{
-					if( isLazyLoad = this.loadFilterRules( function()
+					var isLazyLoad = this.loadFilterRules( function()
 					{
-						// Re-continue the event with the original data.
-						if( isLazyLoad )
+						// Event continuation with the original data.
+						if ( isLazyLoad )
 							editor.fire( 'paste', data );
 						else
-						{
-							// Firefox will be confused by those downlevel-revealed IE conditional
-							// comments, fixing them first( convert it to upperlevel-revealed one ).
-							// e.g. <![if !vml]>...<![endif]>
-							if( CKEDITOR.env.gecko )
-							{
-								data[ 'html' ] =
-									mswordHtml.replace( /(<!--\[if[^<]*?\])-->([\S\s]*?)<!--(\[endif\]-->)/gi, '$1$2$3' );
-							}
+							data[ 'html' ] = CKEDITOR.cleanWord( mswordHtml, editor );
+					} );
 
-							var filter = data.processor.dataFilter;
-							// These rules will have higher priorities than default ones.
-							filter.addRules( CKEDITOR.plugins.pastefromword.getRules( editor ), 5 );
-						}
-					} ) )
-					{
-						// The filtering rules are to be loaded, it's safe to just cancel
-						// this event.  
-						evt.cancel();
-					}
+					// The cleanup rules are to be loaded, we should just cancel
+					// this event.
+					isLazyLoad && evt.cancel();
 				}
 			}, this );
 		},
 
 		loadFilterRules : function( callback )
 		{
-			var isLoaded = typeof CKEDITOR.plugins.pastefromword != 'undefined';
+			var isLoaded = CKEDITOR.cleanWord,
+				filterFilePath = CKEDITOR.getUrl( this.path
+						+ 'filter/'
+						+ ( CKEDITOR.config.pasteFromWordCleanUpFile || 'default' )
+						+ '.js' );
 
 			isLoaded ?
 				callback() :
 				// Load with busy indicator.
-				CKEDITOR.scriptLoader.load( this.path + 'rules.js',
-						callback, null, false, true );
+				CKEDITOR.scriptLoader.load( filterFilePath, callback, null, false, true );
 
 			return !isLoaded;
 		}
@@ -110,4 +100,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @default true
  * @example
  * config.pasteFromWordPromptCleanup = true;
+ */
+
+/**
+ * The file that provides the MS-Word Filtering rules.
+ * Note: It's a global configuration which are shared by all editor instances.
+ * @name CKEDITOR.config.pasteFromWordCleanUpFile
+ * @type String
+ * @default 'default'
+ * @example
+ * // Load from 'pastefromword' plugin 'filter' sub folder (custom.js file).
+ * CKEDITOR.config.pasteFromWordCleanUpFile = 'custom';
  */

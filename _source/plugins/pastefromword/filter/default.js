@@ -217,7 +217,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								// Be able to deal with component/short-hand form style.
 								var values = value.split( ' ' );
 								value = values[ 3 ] || values[ 1 ] || values [ 0 ];
-								attrs[ 'cke:indent' ] = parseInt( value );
+								attrs[ 'cke:indent' ] =
+									// Indent margin unit by 36pt.
+									Math.floor( parseInt( value ) / 36 );
 							} ]
 						] )( attrs.style, element ) || '' ;
 					}
@@ -301,9 +303,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// Move out nested list.
 							if( last.name in CKEDITOR.dtd.$list )
 							{
-								listItemChildren.length--;
 								children.splice( i + 1, 0, last );
 								last.parent = element;
+
+								// Remove the parent list item if it's just a holder.
+								if ( !--listItemChildren.length )
+									children.splice( i, 1 );
 							}
 
 							child.name = 'cke:li';
@@ -558,10 +563,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									// The indent attribute might not present.
 									listItemIndent = parseInt( listItemAttrs[ 'cke:indent' ] ) || 0;
 
+									console.log( listItemIndent );
+
 									// Ignore the 'list-style-type' attribute if it's matched with
 									// the list root element's default style type.
-									listItemAttrs.style = stylesFilter(
-										[ [ 'list-style-type', listType == 'ol'? 'decimal' : 'disc' ] ] )( listItemAttrs.style ) || '' ;
+									listItemAttrs.style && ( listItemAttrs.style = stylesFilter(
+										[ [ 'list-style-type', listType == 'ol'? 'decimal' : 'disc' ] ] )( listItemAttrs.style )
+										|| '' );
 
 									if ( !list )
 									{

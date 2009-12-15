@@ -195,18 +195,18 @@ CKEDITOR.htmlParser.fragment = function()
 				var reApply = false,
 					addPoint;   // New position to start adding nodes.
 
-				// Fixing malformed nested lists(#3828).
+				// Fixing malformed nested lists by moving it into a previous list item. (#3828)
 				if( tagName in listBlocks
 					&& currentName in listBlocks )
 				{
 					var children = currentNode.children,
 						lastChild = children[ children.length - 1 ];
-					// Move inner list into to previous list item if any.
-					if( lastChild && lastChild.name in listItems )
-						returnPoint = currentNode, addPoint = lastChild;
-					// Move inner list outside in the worst case.
-					else
-						addElement( currentNode, currentNode.parent );
+
+					// Establish the list item if it's not existed.
+					if ( !( lastChild && lastChild.name in listItems ) )
+						addElement( ( lastChild = new CKEDITOR.htmlParser.element( 'li' ) ), currentNode );
+
+					returnPoint = currentNode, addPoint = lastChild;
 				}
 				// If the element name is the same as the current element name,
 				// then just close the current one and append the new one to the

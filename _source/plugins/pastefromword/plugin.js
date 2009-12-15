@@ -75,16 +75,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		loadFilterRules : function( callback )
 		{
-			var isLoaded = CKEDITOR.cleanWord;
-			var filterFilePath = CKEDITOR.getUrl( this.path
-						+ 'filter/'
-						+ ( CKEDITOR.config.pasteFromWordCleanUpFile || 'default' )
-						+ '.js' );
 
-			isLoaded ?
-				callback() :
+			var isLoaded = CKEDITOR.cleanWord;
+
+			if ( isLoaded )
+				callback();
+			else
+			{
+				var filterFilePath = CKEDITOR.getUrl( 
+						CKEDITOR.config.pasteFromWordCleanupFile 
+						|| ( this.path + 'filter/default.js' ) );
+
 				// Load with busy indicator.
 				CKEDITOR.scriptLoader.load( filterFilePath, callback, null, false, true );
+			}
 
 			return !isLoaded;
 		}
@@ -95,7 +99,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * Whether prompt the user about the clean-up of content from MS-Word.
  * @name CKEDITOR.config.pasteFromWordPromptCleanup
  * @type Boolean
- * @default true
+ * @default undefined
  * @example
  * config.pasteFromWordPromptCleanup = true;
  */
@@ -103,10 +107,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 /**
  * The file that provides the MS-Word Filtering rules.
  * Note: It's a global configuration which are shared by all editor instances.
- * @name CKEDITOR.config.pasteFromWordCleanUpFile
+ * @name CKEDITOR.config.pasteFromWordCleanupFile
  * @type String
  * @default 'default'
  * @example
  * // Load from 'pastefromword' plugin 'filter' sub folder (custom.js file).
- * CKEDITOR.config.pasteFromWordCleanUpFile = 'custom';
+ * CKEDITOR.config.pasteFromWordCleanupFile = 'custom';
  */

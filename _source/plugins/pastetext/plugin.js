@@ -52,8 +52,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	};
 
-	var enterKeyPlugin = CKEDITOR.plugins.enterkey;
-
 	function doInsertText( doc, text )
 	{
 		// Native text insertion.
@@ -100,8 +98,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		requires : [ 'clipboard' ]
 	});
 
-	var enterKeyPlugin = CKEDITOR.plugins.enterkey;
-
 	function doInsertText( doc, text )
 	{
 		// Native text insertion.
@@ -120,7 +116,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		while ( times-- )
 		{
-			enterKeyPlugin[ mode == CKEDITOR.ENTER_BR ? 'enterBr' : 'enterBlock' ]
+			CKEDITOR.plugins.enterkey[ mode == CKEDITOR.ENTER_BR ? 'enterBr' : 'enterBlock' ]
 					( editor, mode, null, forceMode );
 		}
 	}

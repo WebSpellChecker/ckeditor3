@@ -563,8 +563,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									// The indent attribute might not present.
 									listItemIndent = parseInt( listItemAttrs[ 'cke:indent' ] ) || 0;
 
-									console.log( listItemIndent );
-
 									// Ignore the 'list-style-type' attribute if it's matched with
 									// the list root element's default style type.
 									listItemAttrs.style && ( listItemAttrs.style = stylesFilter(

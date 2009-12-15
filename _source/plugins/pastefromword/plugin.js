@@ -55,16 +55,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				
 				// MS-WORD format sniffing.
 				if ( ( mswordHtml = data[ 'html' ] )
-					 && ( forceFromWord || /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml ) )
-					 && ( !editor.config.pasteFromWordPromptCleanup
-						  || ( forceFromWord || confirm( editor.lang.pastefromword.confirmCleanup )  ) ) )
+					 && ( forceFromWord || /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml ) ) )
 				{
 					var isLazyLoad = this.loadFilterRules( function()
 					{
 						// Event continuation with the original data.
 						if ( isLazyLoad )
 							editor.fire( 'paste', data );
-						else
+						else if( !editor.config.pasteFromWordPromptCleanup
+						  || ( forceFromWord || confirm( editor.lang.pastefromword.confirmCleanup ) ) )
 							data[ 'html' ] = CKEDITOR.cleanWord( mswordHtml, editor );
 					} );
 

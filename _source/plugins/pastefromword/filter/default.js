@@ -829,7 +829,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						if ( element.getAncestor( /h\d/ ) && !config.pasteFromWordNumberedHeadingToList )
 							delete element.name;
-					}
+						}
 				},
 
 				attributeNames :
@@ -951,7 +951,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		var pasteProcessor = new CKEDITOR.pasteProcessor(),
 			dataFilter = pasteProcessor.dataFilter;
 		// These rules will have higher priorities than default ones.
-		dataFilter.addRules( CKEDITOR.plugins.pastefromword.getRules( this ) );
+		dataFilter.addRules( CKEDITOR.plugins.pastefromword.getRules( editor ) );
 		editor.fire( 'beforeCleanWord', { filter : dataFilter } );
 		return pasteProcessor.toHtml( data, false );
 	};

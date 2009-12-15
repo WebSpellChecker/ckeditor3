@@ -82,7 +82,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			CKEDITOR.dialog.add( commandName, CKEDITOR.getUrl( this.path + 'dialogs/pastetext.js' ) );
 
-			if( editor.config.forcePasteAsPlainText )
+			if ( editor.config.forcePasteAsPlainText )
 			{
 				// Intercept the default pasting process.
 				editor.on( 'beforeCommandExec', function ( evt )
@@ -161,9 +161,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * Whether to force all pasting operations to insert on plain text into the
  * editor, loosing any formatting information possibly available in the source
  * text.
+ * @name CKEDITOR.config.forcePasteAsPlainText
  * @type Boolean
  * @default false
  * @example
  * config.forcePasteAsPlainText = true;
  */
-CKEDITOR.config.forcePasteAsPlainText = false;

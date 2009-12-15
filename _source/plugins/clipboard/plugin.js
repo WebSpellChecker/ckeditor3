@@ -175,7 +175,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// It's definitely a better user experience if we make the paste-bin pretty unnoticed
 		// by pulling it off the screen, while this hack will make the paste-bin a control type element
 		// and that become a selection plain later. 
-		if( !CKEDITOR.env.ie )
+		if( !( CKEDITOR.env.ie && mode == 'html' ) )
 		{
 			pastebin.setStyles( {
 				position : 'absolute',

@@ -78,7 +78,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					label : editor.lang.pasteText.button,
 					command : commandName
-				} );
+				});
 
 			CKEDITOR.dialog.add( commandName, CKEDITOR.getUrl( this.path + 'dialogs/pastetext.js' ) );
 
@@ -95,6 +95,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}, null, null, 0 );
 			}
 		},
+
 		requires : [ 'clipboard' ]
 	});
 
@@ -133,7 +134,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		var startIndex = 0;
 		text.replace( /\n+/g, function( match, lastIndex )
-		{
+		 {
 			line = text.substring( startIndex, lastIndex );
 			startIndex = lastIndex + match.length;
 			line.length && doInsertText( doc, line );
@@ -147,13 +148,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// Line-breaks are converted to editor enter key strokes.
 			doEnter( self, mode, enterBlockTimes );
 			doEnter( self, CKEDITOR.ENTER_BR, enterBrTimes, isEnterBrMode ? false : true );
-		} );
+		 });
 
 		// Insert the last text line of text.
 		line = text.substring( startIndex, text.length );
 		line.length && doInsertText( doc, line );
 	};
-
 })();
 
 

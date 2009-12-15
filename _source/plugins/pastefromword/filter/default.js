@@ -3,7 +3,7 @@ Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
-( function()
+(function()
 {
 	var fragmentPrototype = CKEDITOR.htmlParser.fragment.prototype,
 		elementPrototype = CKEDITOR.htmlParser.element.prototype;
@@ -28,7 +28,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if( !child.name )
 				continue;
 
-			if( child.name == tagName )
+			if ( child.name == tagName )
 			{
 				childs.push( child );
 				children.splice( i--, 1 );
@@ -41,7 +41,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	elementPrototype.getAncestor = function( tagNameRegex )
 	{
 		var parent = this.parent;
-		while( parent && !( parent.name && parent.name.match( tagNameRegex ) ) )
+		while ( parent && !( parent.name && parent.name.match( tagNameRegex ) ) )
 			parent = parent.parent;
 		return parent;
 	};
@@ -49,12 +49,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	fragmentPrototype.firstTextChild = elementPrototype.firstTextChild = function()
 	{
 		var child;
-		for( var i = 0 ; i < this.children.length ; i++ )
+		for ( var i = 0 ; i < this.children.length ; i++ )
 		{
 			child = this.children[ i ];
-			if( child.value )
+			if ( child.value )
 				return child;
-			else if( child.name )
+			else if ( child.name )
 			{
 				child = child.firstTextChild();
 				if( child )
@@ -75,7 +75,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		else
 		{
 			// style literal.
-			if( typeof name == 'object' )
+			if ( typeof name == 'object' )
 			{
 				for( var style in name )
 				{
@@ -89,6 +89,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// raw style text form.
 			else
 				addingStyleText += name;
+
 			isPrepend = value;
 		}
 
@@ -111,9 +112,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	CKEDITOR.dtd.parentOf = function( tagName )
 	{
 		var result = {};
-		for( var tag in this )
+		for ( var tag in this )
 		{
-			if( tag.indexOf( '$' ) == -1 && this[ tag ][ tagName ] )
+			if ( tag.indexOf( '$' ) == -1 && this[ tag ][ tagName ] )
 				result[ tag ] = 1;
 		}
 		return result;
@@ -132,7 +133,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					listType;
 
 				// TODO: Support more list style type from MS-Word.
-				if( !bulletStyle )
+				if ( !bulletStyle )
 				{
 					bulletStyle = 'decimal';
 					listType = 'ol';
@@ -198,30 +199,31 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				var children = element.children,
 					attrs = element.attributes,
 					listMarker;
-				if( ( listMarker = element.removeAnyChildWithName( 'cke:listbullet' ) )
+
+				if ( ( listMarker = element.removeAnyChildWithName( 'cke:listbullet' ) )
 					  && listMarker.length
 					  && ( listMarker = listMarker[ 0 ] ) )
 				{
 					element.name = 'cke:li';
 
-					if( attrs.style )
+					if ( attrs.style )
 					{
 						attrs.style = CKEDITOR.plugins.pastefromword.filters.stylesFilter(
-						[
-							// Text-indent is not representing list item level any more.
-							[ 'text-indent' ],
-							[ 'line-height' ],
-							// Resolve indent level from 'margin-left' value.
-							[ /^margin(:?-left)?$/, null, function( value )
-							{
-								// Be able to deal with component/short-hand form style.
-								var values = value.split( ' ' );
-								value = values[ 3 ] || values[ 1 ] || values [ 0 ];
-								attrs[ 'cke:indent' ] =
-									// Indent margin unit by 36pt.
-									Math.floor( parseInt( value ) / 36 );
-							} ]
-						] )( attrs.style, element ) || '' ;
+							[
+								// Text-indent is not representing list item level any more.
+								[ 'text-indent' ],
+								[ 'line-height' ],
+								// Resolve indent level from 'margin-left' value.
+								[ /^margin(:?-left)?$/, null, function( value )
+								{
+									// Be able to deal with component/short-hand form style.
+									var values = value.split( ' ' );
+									value = values[ 3 ] || values[ 1 ] || values [ 0 ];
+									attrs[ 'cke:indent' ] =
+										// Indent margin unit by 36pt.
+										Math.floor( parseInt( value ) / 36 );
+								} ]
+							] )( attrs.style, element ) || '' ;
 					}
 
 					// Inherit list-type-style from bullet.
@@ -271,14 +273,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						indentLevel = 1;
 
 					// Resolve how many level nested.
-					while( parent )
+					while ( parent )
 					{
 						parent.attributes && parent.attributes[ 'cke:list'] && indentLevel++;
 						parent = parent.parent;
 					}
 
 					// All list items are of the same type.
-					switch( attrs.type )
+					switch ( attrs.type )
 					{
 						case 'a' :
 							listStyleType = 'lower-alpha';
@@ -318,8 +320,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 					}
 
-
 					delete element.name;
+
 					// We're loosing tag name here, signalize this element as a list.
 					attrs[ 'cke:list' ] = 1;
 				},
@@ -327,7 +329,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				/**
 				 * A simple filter which always rejecting.
 				 */
-				falsyFilter  : function( value )
+				falsyFilter : function( value )
 				{
 					return false;
 				},
@@ -346,41 +348,42 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						// html-encoded quote might be introduced by 'font-family'
 						// from MS-Word which confused the following regexp. e.g.
 						//'font-family: &quot;Lucida, Console&quot;'
-						 styleText.replace( /&quot;/g, '"' )
-								  .replace( /\s*([^ :;]+)\s*:\s*([^;]+)\s*(?=;|$)/g,
-							 function( match, name, value )
-							 {
-								 name = name.toLowerCase();
-								 name == 'font-family' && ( value = value.replace( /["']/g, '' ) );
-
-								 var namePattern,
-									 valuePattern,
-									 newValue,
-									 newName;
-								 for( var i = 0 ; i < styles.length; i++ )
+						 styleText
+							.replace( /&quot;/g, '"' )
+							.replace( /\s*([^ :;]+)\s*:\s*([^;]+)\s*(?=;|$)/g,
+								 function( match, name, value )
 								 {
-									if( styles[ i ] )
-									{
-										namePattern = styles[ i ][ 0 ];
-										valuePattern = styles[ i ][ 1 ];
-										newValue = styles[ i ][ 2 ];
-										newName = styles[ i ][ 3 ];
+									 name = name.toLowerCase();
+									 name == 'font-family' && ( value = value.replace( /["']/g, '' ) );
 
-										if ( name.match( namePattern )
-											 && ( !valuePattern || value.match( valuePattern ) ) )
+									 var namePattern,
+										 valuePattern,
+										 newValue,
+										 newName;
+									 for( var i = 0 ; i < styles.length; i++ )
+									 {
+										if( styles[ i ] )
 										{
-											name = newName || name;
-											if( typeof newValue == 'function' )
-												newValue = newValue( value, element );
-											if( typeof newValue == 'string' )
-												rules.push( [ name, newValue ] );
-											return;
-										}
-									}
-								 }
-								 rules.push( [ name, value ] );
+											namePattern = styles[ i ][ 0 ];
+											valuePattern = styles[ i ][ 1 ];
+											newValue = styles[ i ][ 2 ];
+											newName = styles[ i ][ 3 ];
 
-							 } );
+											if ( name.match( namePattern )
+												 && ( !valuePattern || value.match( valuePattern ) ) )
+											{
+												name = newName || name;
+												if( typeof newValue == 'function' )
+													newValue = newValue( value, element );
+												if( typeof newValue == 'string' )
+													rules.push( [ name, newValue ] );
+												return;
+											}
+										}
+									 }
+									 rules.push( [ name, value ] );
+
+								 });
 
 						for ( var i = 0 ; i < rules.length ; i++ )
 							 rules[ i ] = rules[ i ].join( ':' );
@@ -495,10 +498,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						// Convert length unit of width/height on blocks to
 						// a more editor-friendly way (px).
-						if( tagName in blockLike
+						if ( tagName in blockLike
 							&& attrs.style )
+						{
 							attrs.style = stylesFilter(
 										[ [ /^width|height$/, null, convertToPx ] ] )( attrs.style ) || '';
+						}
 
 						// Processing headings.
 						if ( tagName.match( /h\d/ ) )
@@ -512,20 +517,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							elementMigrateFilter( config[ 'format_' + tagName ] )( element );
 						}
 						// Remove inline elements which contain only empty spaces.
-						else if( tagName in dtd.$nonEmptyInline )
+						else if ( tagName in dtd.$nonEmptyInline )
 						{
 							element.filterChildren();
 							if ( containsNothingButSpaces(element) )
 								delete element.name;
 						}
 						// Remove ms-office namespaced element, with it's content preserved.
-						else if( tagName.indexOf( ':' ) != -1
+						else if ( tagName.indexOf( ':' ) != -1
 								 && tagName.indexOf( 'cke' ) == -1 )
 						{
 							element.filterChildren();
 
 							// Restore image real link from vml.
-							if( tagName == 'v:imagedata' )
+							if ( tagName == 'v:imagedata' )
 							{
 								var href = element.attributes[ 'o:href' ];
 								if ( href )
@@ -537,7 +542,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 
 						// Assembling list items into a whole list.
-						if( !tagName || tagName in listDtdParents )
+						if ( !tagName || tagName in listDtdParents )
 						{
 							element.filterChildren();
 
@@ -550,7 +555,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								list, parentList, // Current staging list and it's parent list if any.
 								indent;
 
-							for( var i = 0 ; i < children.length; i++ )
+							for ( var i = 0 ; i < children.length; i++ )
 							{
 								child = children[ i ];
 
@@ -577,14 +582,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									}
 									else
 									{
-										if( listItemIndent > indent )
+										if ( listItemIndent > indent )
 										{
 											parentList = list;
 											list = new CKEDITOR.htmlParser.element( listType  );
 											list.add( listItem );
 											lastListItem.add( list );
 										}
-										else if( listItemIndent < indent )
+										else if ( listItemIndent < indent )
 										{
 											list = parentList;
 											parentList = list.parent ? list.parent.parent : list;
@@ -609,46 +614,48 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// required to be changed into inline ones.
 					'style' : function( element )
 					{
-						if( CKEDITOR.env.gecko )
+						if ( CKEDITOR.env.gecko )
 						{
 							// Grab only the style definition section.
 							var styleDefSection = element.onlyChild().value.match( /\/\* Style Definitions \*\/([\s\S]*?)\/\*/ ),
 								styleDefText = styleDefSection && styleDefSection[ 1 ],
 								rules = {}; // Storing the parsed result.
 
-							if( styleDefText )
+							if ( styleDefText )
 							{
-								styleDefText.replace(/[\n\r]/g,'') // remove line-breaks.
-											// Extract selectors and style properties.
-											.replace( /(.+?)\{(.+?)\}/g,
-								function( rule, selectors, styleBlock )
-								{
-									selectors = selectors.split( ',' );
-									var length = selectors.length, selector;
-									for ( var i = 0; i < length; i++ )
-									{
-										// Assume MS-Word mostly generate only simple
-										// selector( [Type selector][Class selector]).
-										CKEDITOR.tools.trim( selectors[ i ] )
-													  .replace( /^(\w+)(\.[\w-]+)?$/g,
-										function( match, tagName, className )
+								styleDefText
+									// Remove line-breaks.
+									.replace(/[\n\r]/g,'')
+									// Extract selectors and style properties.
+									.replace( /(.+?)\{(.+?)\}/g,
+										function( rule, selectors, styleBlock )
 										{
-											tagName = tagName || '*';
-											className = className.substring( 1, className.length );
+											selectors = selectors.split( ',' );
+											var length = selectors.length, selector;
+											for ( var i = 0; i < length; i++ )
+											{
+												// Assume MS-Word mostly generate only simple
+												// selector( [Type selector][Class selector]).
+												CKEDITOR.tools.trim( selectors[ i ] )
+															  .replace( /^(\w+)(\.[\w-]+)?$/g,
+												function( match, tagName, className )
+												{
+													tagName = tagName || '*';
+													className = className.substring( 1, className.length );
 
-											// Reject MS-Word Normal styles.
-											if( className.match( /MsoNormal/ ) )
-												return;
+													// Reject MS-Word Normal styles.
+													if( className.match( /MsoNormal/ ) )
+														return;
 
-											if( !rules[ tagName ] )
-												rules[ tagName ] = {};
-											if( className )
-												rules[ tagName ][ className ] = styleBlock;
-											else
-												rules[ tagName ] = styleBlock;
-										} );
-									}
-								} );
+													if( !rules[ tagName ] )
+														rules[ tagName ] = {};
+													if( className )
+														rules[ tagName ][ className ] = styleBlock;
+													else
+														rules[ tagName ] = styleBlock;
+												} );
+											}
+										});
 
 								filters.applyStyleFilter = function( element )
 								{
@@ -677,12 +684,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							children = element.children;
 
 						// Is the paragraph actually a list item?
-						if( resolveListItem( element ) )
+						if ( resolveListItem( element ) )
 							return;
 
 						// Adapt paragraph formatting to editor's convention
 						// according to enter-mode.
-						if( config.enterMode == CKEDITOR.ENTER_BR )
+						if ( config.enterMode == CKEDITOR.ENTER_BR )
 						{
 							// We suffer from attribute/style lost in this situation.
 							delete element.name;
@@ -720,7 +727,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							styleText = attrs.style,
 							parent = element.parent;
 
-						if( 'font' == parent.name )     // Merge nested <font> tags.
+						if ( 'font' == parent.name )     // Merge nested <font> tags.
 						{
 							CKEDITOR.tools.extend( parent.attributes,
 									element.attributes );
@@ -764,7 +771,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							return false;
 
 						element.filterChildren();
-						if( containsNothingButSpaces( element ) )
+						if ( containsNothingButSpaces( element ) )
 						{
 							delete element.name;
 							return;
@@ -785,7 +792,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							styleText = attrs && attrs.style,
 							firstChild = children && children[ 0 ];
 
-						if( firstChild && firstChild.name == 'cke:imagesource' )
+						if ( firstChild && firstChild.name == 'cke:imagesource' )
 						{
 							var secondChild = children[ 1 ];
 							if ( 'img' == secondChild.name )
@@ -796,7 +803,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						// Assume MS-Word mostly carry font related styles on <span>,
 						// adapting them to editor's convention.
-						if( styleText )
+						if ( styleText )
+						{
 							attrs.style = stylesFilter(
 									[
 										// Drop 'inline-height' style which make lines overlapping.
@@ -806,6 +814,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										[ /^color$/, null, styleMigrateFilter( config[ 'colorButton_foreStyle' ], 'color' ) ],
 										[ /^background-color$/, null, styleMigrateFilter( config[ 'colorButton_backStyle' ], 'color' ) ]
 									] )( styleText, element ) || '';
+						}
 					},
 
 					// Migrate basic style formats to editor configured ones.
@@ -896,27 +905,30 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				// Fore none-IE, some useful data might be buried under these IE-conditional
 				// comments where RegExp were the right approach to dig them out where usual approach
 				// is transform it into a fake element node which hold the desired data.
-				comment : !CKEDITOR.env.ie ? function( value, node )
-				{
-					var imageInfo = value.match( /<img.*?>/ ),
-						imageSource = value.match( /<v:imagedata[^>]*o:href=['"](.*?)['"]/ ),
-						listInfo = value.match( /^\[if !supportLists\]([\s\S]*?)\[endif\]$/ );
+				comment : 
+					!CKEDITOR.env.ie ? 
+						function( value, node )
+						{
+							var imageInfo = value.match( /<img.*?>/ ),
+								imageSource = value.match( /<v:imagedata[^>]*o:href=['"](.*?)['"]/ ),
+								listInfo = value.match( /^\[if !supportLists\]([\s\S]*?)\[endif\]$/ );
 
-					// Reveal the <img> element in conditional comments for Firefox.
-					if( CKEDITOR.env.gecko && imageInfo )
-						return CKEDITOR.htmlParser.fragment.fromHtml( imageInfo[ 0 ] ).children[ 0 ];
-					// Try to dig the real image link from vml markup.
-					if( imageSource )
-						return new CKEDITOR.htmlParser.element( 'cke:imagesource', { src : imageSource[ 1 ] } );
-					// Seek for list bullet style indicator.
-					if ( listInfo )
-					{
-						var listSymbol = listInfo[ 1 ],
-							listType = listSymbol.match( />([^\s]+?)([.)]?)</ );
-						return createListBulletMarker( listType, listSymbol );
-					}
-					return false;
-				} : falsyFilter
+							// Reveal the <img> element in conditional comments for Firefox.
+							if( CKEDITOR.env.gecko && imageInfo )
+								return CKEDITOR.htmlParser.fragment.fromHtml( imageInfo[ 0 ] ).children[ 0 ];
+							// Try to dig the real image link from vml markup.
+							if( imageSource )
+								return new CKEDITOR.htmlParser.element( 'cke:imagesource', { src : imageSource[ 1 ] } );
+							// Seek for list bullet style indicator.
+							if ( listInfo )
+							{
+								var listSymbol = listInfo[ 1 ],
+									listType = listSymbol.match( />([^\s]+?)([.)]?)</ );
+								return createListBulletMarker( listType, listSymbol );
+							}
+							return false;
+						} 
+					: falsyFilter
 			};
 		}
 	};
@@ -926,6 +938,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		this.dataFilter = new CKEDITOR.htmlParser.filter();
 	};
+
 	CKEDITOR.pasteProcessor.prototype =
 	{
 		toHtml : function( data )
@@ -948,13 +961,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		var pasteProcessor = new CKEDITOR.pasteProcessor(),
 			dataFilter = pasteProcessor.dataFilter;
+
 		// These rules will have higher priorities than default ones.
 		dataFilter.addRules( CKEDITOR.plugins.pastefromword.getRules( editor ) );
 		editor.fire( 'beforeCleanWord', { filter : dataFilter } );
 		return pasteProcessor.toHtml( data, false );
 	};
-
-} )( );
+})();
 
 /**
  * Whether the ignore all font-related format from MS-Word.

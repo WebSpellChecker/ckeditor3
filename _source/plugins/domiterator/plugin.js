@@ -212,11 +212,12 @@ CKEDITOR.plugins.add( 'domiterator' );
 				// loop.
 				if ( ( closeRange || isLast ) && range )
 				{
-					var boundaryNodes = range.getBoundaryNodes();
+					var boundaryNodes = range.getBoundaryNodes(),
+						startPath = new CKEDITOR.dom.elementPath( range.startContainer );
 
 					// Drop the range if it only contains bookmark nodes, and is
 					// not because of the original collapsed range. (#4087,#4450)
-					if ( !this.range.collapsed
+					if ( boundaryNodes.startNode.getParent().equals( startPath.blockLimit )
 						 && isBookmark( boundaryNodes.startNode ) && isBookmark( boundaryNodes.endNode ) )
 					{
 						range = null;
@@ -242,7 +243,7 @@ CKEDITOR.plugins.add( 'domiterator' );
 					return null;
 				}
 
-				var startPath = new CKEDITOR.dom.elementPath( range.startContainer );
+				startPath = new CKEDITOR.dom.elementPath( range.startContainer );
 				var startBlockLimit = startPath.blockLimit,
 					checkLimits = { div : 1, th : 1, td : 1 };
 				block = startPath.block;

@@ -507,8 +507,8 @@ CKEDITOR.lang['he'] =
 	pastefromword :
 	{
 		confirmCleanup : 'נראה הטקסט שבכוונתך להדביק מקורו בקובץ וורד. האם ברצונך לנקות אותו טרם ההדבקה?',
-		toolbar : 'הדבקה מ-וורד',
-		title : 'הדבקה מ-וורד'
+		toolbar : 'הדבקה מ-Word',
+		title : 'הדבקה מ-Word'
 	},
 
 	pasteText :

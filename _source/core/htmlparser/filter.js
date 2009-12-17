@@ -90,7 +90,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if ( ret && ret != element )
 							return this.onNode( ret );
 
-						// The none-root element has been dismissed by one of the filters.
+						// The non-root element has been dismissed by one of the filters.
 						if ( element.parent && !element.name )
 							break;
 					}
@@ -125,14 +125,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 
 				return value;
-			},
-
-			clone : function()
-			{
-				var clone = new CKEDITOR.htmlParser.filter();
-				// Shallow copy all the rules.
-				clone._ = CKEDITOR.tools.clone( this._ );
-				return clone;
 			}
 		}
 	});

@@ -56,7 +56,7 @@ CKEDITOR.plugins.add( 'pagebreak',
 						div : function( element )
 						{
 							var attributes = element.attributes
-								style = attributes && element.attributes.style,
+								style = attributes && attributes.style,
 								child = style && element.children.length == 1 && element.children[ 0 ],
 								childStyle = child && ( child.name == 'span' ) && child.attributes.style;
 

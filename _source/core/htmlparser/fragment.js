@@ -356,7 +356,6 @@ CKEDITOR.htmlParser.fragment = function()
 
 		parser.onComment = function( comment )
 		{
-			checkPending();
 			currentNode.add( new CKEDITOR.htmlParser.comment( comment ) );
 		};
 
@@ -438,7 +437,7 @@ CKEDITOR.htmlParser.fragment = function()
 		 * fragment.writeHtml( writer )
 		 * alert( writer.getHtml() );  "&lt;p&gt;&lt;b&gt;Example&lt;/b&gt;&lt;/p&gt;"
 		 */
-		writeHtml : function( writer, filter, skipSelf )
+		writeHtml : function( writer, filter )
 		{
 			var isChildrenFiltered;
 			this.filterChildren = function()
@@ -461,6 +460,5 @@ CKEDITOR.htmlParser.fragment = function()
 			for ( var i = 0 ; i < this.children.length ; i++ )
 				this.children[i].writeHtml( writer, filter );
 		}
-
 	};
 })();

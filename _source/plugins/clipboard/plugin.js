@@ -77,10 +77,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	};
 
 	// Paste command.
-	var pasteCmd = CKEDITOR.tools.extend( { canUndo: false },
+	var pasteCmd =
+	{ 
+		canUndo : false,
+
+		exec : 
 			CKEDITOR.env.ie ?
-			{
-				exec : function( editor, data )
+				function( editor )
 				{
 					// Prevent IE from pasting at the begining of the document.
 					editor.focus();
@@ -92,15 +95,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						return false;
 					}
 				}
-			}
-		:
-			{
-				exec : function( editor )
+			:
+				function( editor )
 				{
 					try
 					{
 						if ( !editor.document.getBody().fire( 'beforepaste' )
-							&& !editor.document.$.execCommand( 'Paste', false, null ) )
+							 && !editor.document.$.execCommand( 'Paste', false, null ) )
 						{
 							throw 0;
 						}
@@ -108,13 +109,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					catch ( e )
 					{
 						setTimeout( function()
-						{
-							editor.fire( 'pasteDialog' );
-						}, 0 );
+							{
+								editor.fire( 'pasteDialog' );
+							}, 0 );
 						return false;
 					}
 				}
-			} );
+	};
 
 	// Listens for some clipboard related keystrokes, so they get customized.
 	var onKey = function( event )

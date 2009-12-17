@@ -1,5 +1,3 @@
-
-
 /*
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
@@ -93,7 +91,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							return this.onNode( ret );
 
 						// The none-root element has been dismissed by one of the filters.
-						if( element.parent && !element.name )
+						if ( element.parent && !element.name )
 							break;
 					}
 				}
@@ -168,7 +166,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			for ( j = itemsLength - 1 ; j >= 0 ; j-- )
 			{
 				var item = items[ j ];
-				if( item )
+				if ( item )
 				{
 					item.pri = priority;
 					list.splice( i, 0, item );

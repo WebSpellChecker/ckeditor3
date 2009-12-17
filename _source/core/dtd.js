@@ -75,13 +75,12 @@ CKEDITOR.dtd = (function()
 		 */
 		$block : block,
 
-
-	    /**
-	     * List of non-empty inline elements, like "b" or "a".
-	     * @type Object
-	     * @example
-	     */
-	    $nonEmptyInline : nonEmptyInline,
+		/**
+		 * List of non-empty inline elements, like "b" or "a".
+		 * @type Object
+		 * @example
+		 */
+		$nonEmptyInline : nonEmptyInline,
 
 		/**
 		 * List of block limit elements.
@@ -91,7 +90,7 @@ CKEDITOR.dtd = (function()
 		$blockLimit : { body:1,div:1,td:1,th:1,caption:1,form:1 },
 
 		$inline : L,	// Just like span.
-		
+
 		$body : X({script:1,style:1}, block),
 
 		$cdata : {script:1,style:1},

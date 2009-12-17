@@ -645,18 +645,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		tryThese : function()
 		{
-		    var returnValue;
-		    for ( var i = 0, length = arguments.length; i < length; i++ )
-		    {
-		      var lambda = arguments[i];
-		      try
-		      {
-		        returnValue = lambda();
-		        break;
-		      } catch (e) { }
-		    }
-		    return returnValue;
-		 }
+			var returnValue;
+			for ( var i = 0, length = arguments.length; i < length; i++ )
+			{
+				var lambda = arguments[i];
+				try
+				{
+					returnValue = lambda();
+					break;
+				}
+				catch (e) {}
+			}
+			return returnValue;
+		}
 	};
 })();
 

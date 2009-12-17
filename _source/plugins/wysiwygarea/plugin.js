@@ -47,9 +47,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			else
 				this.document.$.execCommand( 'inserthtml', false, data );
 
-			CKEDITOR.tools.setTimeout( function(){
-				this.fire( 'saveSnapshot' );
-			}, 0, this );
+			CKEDITOR.tools.setTimeout( function()
+				{
+					this.fire( 'saveSnapshot' );
+				}, 0, this );
 		}
 	}
 

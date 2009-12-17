@@ -385,14 +385,7 @@ CKEDITOR.lang['de'] =
 		vSpace	: 'Vertikal-Abstand',
 		align		: 'Ausrichtung',
 		alignLeft	: 'Links',
-		alignAbsBottom: 'Abs Unten',
-		alignAbsMiddle: 'Abs Mitte',
-		alignBaseline	: 'Baseline',
-		alignBottom	: 'Unten',
-		alignMiddle	: 'Mitte',
 		alignRight	: 'Rechts',
-		alignTextTop	: 'Text Oben',
-		alignTop	: 'Oben',
 		preview	: 'Vorschau',
 		alertUrl	: 'Bitte geben Sie die Bild-URL an',
 		linkTab	: 'Link',
@@ -696,5 +689,8 @@ CKEDITOR.lang['de'] =
 		highlight : 'Highlight', // MISSING
 		selected : 'Selected', // MISSING
 		clear : 'Clear' // MISSING
-	}
+	},
+
+	toolbarCollapse : 'Collapse Toolbar', // MISSING
+	toolbarExpand : 'Expand Toolbar' // MISSING
 };

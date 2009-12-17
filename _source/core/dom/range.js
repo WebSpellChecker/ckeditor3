@@ -308,6 +308,15 @@ CKEDITOR.dom.range = function( document )
 			    || node.getParent().hasAttribute( '_fck_bookmark' );
 	}
 
+	var whitespaceEval = new CKEDITOR.dom.walker.whitespaces(),
+		bookmarkEval = new CKEDITOR.dom.walker.bookmark();
+
+	function nonWhitespaceOrBookmarkEval( node )
+	{
+		// Whitespaces and bookmark nodes are to be ignored.
+		return !whitespaceEval( node ) && !bookmarkEval( node );
+	}
+
 	CKEDITOR.dom.range.prototype =
 	{
 		clone : function()
@@ -1458,18 +1467,7 @@ CKEDITOR.dom.range = function( document )
 				}
 				else
 				{
-					// Extract the contents of the block from the selection point to the end
-					// of its contents.
-					this.setEndAt( startBlock, CKEDITOR.POSITION_BEFORE_END );
-					var documentFragment = this.extractContents();
-
-					// Duplicate the block element after it.
-					endBlock = startBlock.clone( false );
-
-					// Place the extracted contents into the duplicated block.
-					documentFragment.appendTo( endBlock );
-					endBlock.insertAfter( startBlock );
-					this.moveToPosition( startBlock, CKEDITOR.POSITION_AFTER_END );
+					endBlock = this.splitElement( startBlock );
 
 					// In Gecko, the last child node must be a bogus <br>.
 					// Note: bogus <br> added under <ul> or <ol> would cause
@@ -1486,6 +1484,33 @@ CKEDITOR.dom.range = function( document )
 				wasEndOfBlock : isEndOfBlock,
 				elementPath : elementPath
 			};
+		},
+
+		/**
+		 * Branch the specified element from the collapsed range position and
+		 * place the caret between the two result branches.
+		 * Note: The range must be collapsed and been enclosed by this element.
+		 * @param {CKEDITOR.dom.element} element
+		 * @return {CKEDITOR.dom.element} Root element of the new branch after the split.
+		 */
+		splitElement : function( toSplit )
+		{
+			if ( !this.collapsed )
+				return null;
+
+			// Extract the contents of the block from the selection point to the end
+			// of its contents.
+			this.setEndAt( toSplit, CKEDITOR.POSITION_BEFORE_END );
+			var documentFragment = this.extractContents();
+
+			// Duplicate the element after it.
+			var clone = toSplit.clone( false );
+
+			// Place the extracted contents into the duplicated element.
+			documentFragment.appendTo( clone );
+			clone.insertAfter( toSplit );
+			this.moveToPosition( toSplit, CKEDITOR.POSITION_AFTER_END );
+			return clone;
 		},
 
 		/**
@@ -1584,36 +1609,49 @@ CKEDITOR.dom.range = function( document )
 		 * element. For example, in an element tree like
 		 * "&lt;p&gt;&lt;b&gt;&lt;i&gt;&lt;/i&gt;&lt;/b&gt; Text&lt;/p&gt;", the start editing point is
 		 * "&lt;p&gt;&lt;b&gt;&lt;i&gt;^&lt;/i&gt;&lt;/b&gt; Text&lt;/p&gt;" (inside &lt;i&gt;).
-		 * @param {CKEDITOR.dom.element} targetElement The element into which
-		 *		look for the editing spot, it should be guaranteed to contains at least one editable position.
-			@param {Boolean} isMoveToEnd Whether move to the end editable position.
+		 * @param {CKEDITOR.dom.element} el The element into which look for the
+		 *		editing spot.
+		 * @param {Boolean} isMoveToEnd Whether move to the end editable position.
 		 */
-		moveToElementEditablePosition: function( targetElement, isMoveToEnd )
+		moveToElementEditablePosition : function( el, isMoveToEnd )
 		{
-			var editableElement;
+			var isEditable;
 
-			while ( targetElement && targetElement.type == CKEDITOR.NODE_ELEMENT )
+			while ( el && el.type == CKEDITOR.NODE_ELEMENT )
 			{
-				if ( targetElement.isEditable() )
-					editableElement = targetElement;
-				else if ( editableElement )
-					break ;		// If we already found an editable element, stop the loop.
+				isEditable = el.isEditable();
 
-				targetElement = targetElement[ isMoveToEnd? 'getLast' : 'getFirst' ].call( targetElement );
+				// If an editable element is found, move inside it.
+				if ( isEditable )
+					this.moveToPosition( el, isMoveToEnd ?
+					                         CKEDITOR.POSITION_BEFORE_END :
+					                         CKEDITOR.POSITION_AFTER_START );
+				// Stop immediately if we've found a non editable inline element (e.g <img>).
+				else if ( CKEDITOR.dtd.$inline[ el.getName() ] )
+				{
+					this.moveToPosition( el, isMoveToEnd ?
+					                         CKEDITOR.POSITION_AFTER_END :
+					                         CKEDITOR.POSITION_BEFORE_START );
+					return true;
+				}
+
+				// Non-editable non-inline elements are to be bypassed, getting the next one.
+				if ( CKEDITOR.dtd.$empty[ el.getName() ] )
+					el = el[ isMoveToEnd ? 'getPrevious' : 'getNext' ]( nonWhitespaceOrBookmarkEval );
+				else
+					el = el[ isMoveToEnd ? 'getLast' : 'getFirst' ]( nonWhitespaceOrBookmarkEval );
+
+				// Stop immediately if we've found a text node.
+				if ( el && el.type == CKEDITOR.NODE_TEXT )
+				{
+					this.moveToPosition( el, isMoveToEnd ?
+					                         CKEDITOR.POSITION_AFTER_END :
+					                         CKEDITOR.POSITION_BEFORE_START );
+					return true;
+				}
 			}
 
-			if ( editableElement )
-			{
-				// Make sure carot anchor before filler when moving to editable end.
-				var filler = editableElement.isBlockBoundary() && editableElement.getBogus();
-				this.moveToPosition( isMoveToEnd && filler ? filler : editableElement,
-						isMoveToEnd && filler ? CKEDITOR.POSITION_BEFORE_START :
-							isMoveToEnd ? CKEDITOR.POSITION_BEFORE_END :
-							CKEDITOR.POSITION_AFTER_START );
-				return true;
-			}
-			else
-				return false;
+			return isEditable;
 		},
 
 		/**

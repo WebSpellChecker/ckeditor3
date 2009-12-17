@@ -88,7 +88,10 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 					menu.onHide = null;
 
 					if ( CKEDITOR.env.ie )
-						editor.getSelection().unlock();
+					{
+						var selection = editor.getSelection();
+						selection && selection.unlock();
+					}
 
 					this.onHide && this.onHide();
 				},
@@ -181,7 +184,10 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 				element.on( 'mousedown', function( event )
 				{
 					if ( event.data.$.button == 2 )
-						this.editor.getSelection().lock();
+					{
+						var selection = this.editor.getSelection();
+						selection && selection.lock();
+					}
 				}, this );
 			}
 
@@ -231,5 +237,3 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
  * @example
  *  config.browserContextMenuOnCtrl = false;
  */
-
-

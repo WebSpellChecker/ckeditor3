@@ -1,4 +1,4 @@
-﻿/*
+﻿﻿/*
 Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -90,6 +90,8 @@ CKEDITOR.dtd = (function()
 		 */
 		$blockLimit : { body:1,div:1,td:1,th:1,caption:1,form:1 },
 
+		$inline : L,	// Just like span.
+		
 		$body : X({script:1,style:1}, block),
 
 		$cdata : {script:1,style:1},

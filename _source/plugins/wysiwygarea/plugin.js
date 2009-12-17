@@ -14,7 +14,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	var nonExitableElementNames = { table:1,pre:1 };
 
 	// Matching an empty paragraph at the end of document.
-	var emptyParagraphRegexp = /\s*<(p|div|address|h\d|center)[^>]*>\s*(?:<br[^>]*>|&nbsp;|\u00A0|&#160;)\s*(:?<\/\1>)?\s*(?=$|<\/body>)/gi;
+	var emptyParagraphRegexp = /\s*<(p|div|address|h\d|center)[^>]*>\s*(?:<br[^>]*>|&nbsp;|\u00A0|&#160;)?\s*(:?<\/\1>)?\s*(?=$|<\/body>)/gi;
 
 	function onInsertHtml( evt )
 	{
@@ -92,9 +92,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							&& ( dtd = CKEDITOR.dtd[ current.getName() ] )
 							&& !( dtd && dtd [ elementName ] ) )
 					{
+						// Split up inline elements.
+						if ( current.getName() in CKEDITOR.dtd.span )
+							range.splitElement( current );
 						// If we're in an empty block which indicate a new paragraph,
 						// simply replace it with the inserting block.(#3664)
-						if ( range.checkStartOfBlock()
+						else if ( range.checkStartOfBlock()
 							 && range.checkEndOfBlock() )
 						{
 							range.setStartBefore( current );
@@ -149,7 +152,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	function isNotEmpty( node )
 	{
 		return isNotWhitespace( node ) && isNotBookmark( node );
-	};
+	}
 
 	function isNbsp( node )
 	{
@@ -179,8 +182,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			 && !path.block )
 		{
 			restoreDirty( editor );
-			var bms = selection.createBookmarks(),
-				fixedBlock = range.fixBlock( true,
+			var fixedBlock = range.fixBlock( true,
 					editor.config.enterMode == CKEDITOR.ENTER_DIV ? 'div' : 'p'  );
 
 			// For IE, we should remove any filler node which was introduced before.
@@ -190,37 +192,34 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				first && isNbsp( first ) && first.remove();
 			}
 
-			selection.selectBookmarks( bms );
-
-			// If the fixed block is blank and is already followed by a exitable
-			// block, we should drop it and move to the exist block(#3684).
-			var children = fixedBlock.getChildren(),
-				count = children.count(),
-				firstChild,
-				previousElement = fixedBlock.getPrevious( isNotWhitespace ),
-				nextElement = fixedBlock.getNext( isNotWhitespace ),
-				enterBlock;
-			if ( previousElement && previousElement.getName
-				 && !( previousElement.getName() in nonExitableElementNames ) )
-				enterBlock = previousElement;
-			else if ( nextElement && nextElement.getName
-					  && !( nextElement.getName() in nonExitableElementNames ) )
-				enterBlock = nextElement;
-
-			// Not all blocks are editable, e.g. <hr />, further checking it.(#3994)
-			if( ( !count
-				  || ( firstChild = children.getItem( 0 ) ) && firstChild.is && firstChild.is( 'br' ) )
-				&& enterBlock
-				&& range.moveToElementEditStart( enterBlock ) )
+			// If the fixed block is blank and already followed by a exitable
+			// block, we should revert the fix. (#3684)
+			if( fixedBlock.getOuterHtml().match( emptyParagraphRegexp ) )
 			{
-				fixedBlock.remove();
-				range.select();
+				var previousElement = fixedBlock.getPrevious( isNotWhitespace ),
+					nextElement = fixedBlock.getNext( isNotWhitespace );
+
+
+				if ( previousElement && previousElement.getName
+					 && !( previousElement.getName() in nonExitableElementNames )
+					 && range.moveToElementEditStart( previousElement )
+					 || nextElement && nextElement.getName
+					   && !( nextElement.getName() in nonExitableElementNames )
+					   && range.moveToElementEditStart( nextElement ) )
+				{
+					fixedBlock.remove();
+				}
 			}
+
+			range.select();
+			// Notify non-IE that selection has changed.
+			if( !CKEDITOR.env.ie )
+				editor.selectionChange();
 		}
 
 		// All browsers are incapable to moving cursor out of certain non-exitable
 		// blocks (e.g. table, list, pre) at the end of document, make this happen by
-		// place a bogus node there, which would be later removed by dataprocessor.  
+		// place a bogus node there, which would be later removed by dataprocessor.
 		var lastNode = body.getLast( CKEDITOR.dom.walker.whitespaces( true ) );
 		if ( lastNode && lastNode.getName && ( lastNode.getName() in nonExitableElementNames ) )
 		{
@@ -424,7 +423,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							{
 								// Setting focus directly on editor doesn't work, we
 								// have to use here a temporary element to 'redirect'
-								// the focus. 
+								// the focus.
 								if ( evt.data.getTarget().equals( htmlElement ) )
 									ieFocusGrabber.focus();
 							} );

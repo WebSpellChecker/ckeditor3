@@ -237,5 +237,3 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
  * @example
  *  config.browserContextMenuOnCtrl = false;
  */
-
-

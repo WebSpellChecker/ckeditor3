@@ -343,6 +343,8 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		this.on( 'hide', function()
 			{
 				CKEDITOR.document.removeListener( 'keydown', focusKeydownHandler );
+				if ( CKEDITOR.env.opera || ( CKEDITOR.env.gecko && CKEDITOR.env.mac ) )
+					CKEDITOR.document.removeListener( 'keypress', focusKeyPressHandler );
 			} );
 		this.on( 'iframeAdded', function( evt )
 			{
@@ -447,12 +449,13 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 	};
 
 	// Focusable interface. Use it via dialog.addFocusable.
-	function Focusable( dialog, element, index ) {
+	function Focusable( dialog, element, index )
+	{
 		this.element = element;
 		this.focusIndex = index;
 		this.isFocusable = function()
 		{
-			return !( element.getAttribute( 'disabled' ) || !element.isVisible() )
+			return !element.getAttribute( 'disabled' ) && element.isVisible();
 		};
 		this.focus = function()
 		{
@@ -630,7 +633,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				addCover( this._.editor );
 
 				element.on( 'keydown', accessKeyDownHandler );
-				element.on( 'keyup', accessKeyUpHandler );
+				element.on( CKEDITOR.env.opera ? 'keypress' : 'keyup', accessKeyUpHandler );
 
 				// Prevent some keys from bubbling up. (#4269)
 				for ( var event in { keyup :1, keydown :1, keypress :1 } )
@@ -760,8 +763,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 				// Remove access key handlers.
 				element.removeListener( 'keydown', accessKeyDownHandler );
-				element.removeListener( 'keyup', accessKeyUpHandler );
-				element.removeListener( 'keypress', accessKeyUpHandler );
+				element.removeListener( CKEDITOR.env.opera ? 'keypress' : 'keyup', accessKeyUpHandler );
 
 				// Remove bubbling-prevention handler. (#4269)
 				for ( var event in { keyup :1, keydown :1, keypress :1 } )
@@ -801,7 +803,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 							children : contents.elements,
 							expand : !!contents.expand,
 							padding : contents.padding,
-							style : contents.style || 'width: 100%; height: 100%;'
+							style : contents.style || 'width: 100%;'
 						}, pageHtml );
 
 			// Create the HTML for the tab and the content block.
@@ -1821,8 +1823,11 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			return;
 
 		keyProcessor = keyProcessor[keyProcessor.length - 1];
-		keyProcessor.keyup && keyProcessor.keyup.call( keyProcessor.uiElement, keyProcessor.dialog, keyProcessor.key );
-		evt.data.preventDefault();
+		if ( keyProcessor.keyup )
+		{
+			keyProcessor.keyup.call( keyProcessor.uiElement, keyProcessor.dialog, keyProcessor.key );
+			evt.data.preventDefault();
+		}
 	};
 
 	var registerAccessKey = function( uiElement, dialog, key, downFunc, upFunc )

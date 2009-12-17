@@ -431,9 +431,12 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 							var attr = this.$.attributes.getNamedItem( name ),
 								attrValue = attr.specified ? attr.nodeValue     // For value given by parser.
 															 : this.$.checked;  // For value created via DOM interface.
-							
+
 							return attrValue ? 'checked' : null;
 						}
+
+						case 'hspace':
+							return this.$.hspace;
 
 						case 'style':
 							// IE does not return inline styles via getAttribute(). See #2947.
@@ -1000,10 +1003,9 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		 */
 		removeStyle : function( name )
 		{
+			this.setStyle( name, '' );
 			if ( this.$.style.removeAttribute )
 				this.$.style.removeAttribute( CKEDITOR.tools.cssStyleToDomStyle( name ) );
-			else
-				this.setStyle( name, '' );
 
 			if ( !this.$.style.cssText )
 				this.removeAttribute( 'style' );

@@ -385,14 +385,7 @@ CKEDITOR.lang['ar'] =
 		vSpace	: 'تباعد عمودي',
 		align		: 'محاذاة',
 		alignLeft	: 'يسار',
-		alignAbsBottom: 'أسفل النص',
-		alignAbsMiddle: 'وسط السطر',
-		alignBaseline	: 'على السطر',
-		alignBottom	: 'أسفل',
-		alignMiddle	: 'وسط',
 		alignRight	: 'يمين',
-		alignTextTop	: 'أعلى النص',
-		alignTop	: 'أعلى',
 		preview	: 'معاينة',
 		alertUrl	: 'فضلاً أكتب الموقع الذي توجد عليه هذه الصورة.',
 		linkTab	: 'الرابط',
@@ -698,5 +691,8 @@ CKEDITOR.lang['ar'] =
 		highlight : 'إلقاء الضوء',
 		selected : 'مُختار',
 		clear : 'مسح'
-	}
+	},
+
+	toolbarCollapse : 'Collapse Toolbar', // MISSING
+	toolbarExpand : 'Expand Toolbar' // MISSING
 };

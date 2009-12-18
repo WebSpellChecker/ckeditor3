@@ -66,10 +66,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				return textFilter ? textFilter.filter( text ) : text;
 			},
 
-			onComment : function( commentText )
+			onComment : function( commentText, comment )
 			{
 				var textFilter = this._.comment;
-				return textFilter ? textFilter.filter( commentText ) : commentText;
+				return textFilter ? textFilter.filter( commentText, comment ) : commentText;
 			},
 
 			onFragment : function( element )

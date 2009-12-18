@@ -820,15 +820,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							styleText = attrs && attrs.style,
 							firstChild = children && children[ 0 ];
 
-						if ( firstChild && firstChild.name == 'cke:imagesource' )
-						{
-							var secondChild = children[ 1 ];
-							if ( 'img' == secondChild.name )
-								secondChild.attributes.src = firstChild.attributes.src;
-							children.splice( 0, 1 );
-							delete element.name;
-						}
-
 						// Assume MS-Word mostly carry font related styles on <span>,
 						// adapting them to editor's convention.
 						if ( styleText )
@@ -872,6 +863,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				[
 					// Remove onmouseover and onmouseout events (from MS Word comments effect)
 					[ /^onmouse(:?out|over)/, '' ],
+					// Onload on image element.
+					[ /^onload$/, '' ],
 					// Remove office and vml attribute from elements.
 					[ /(?:v|o):\w+/, '' ],
 					// Remove lang/language attributes.
@@ -959,15 +952,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						function( value, node )
 						{
 							var imageInfo = value.match( /<img.*?>/ ),
-								imageSource = value.match( /<v:imagedata[^>]*o:href=['"](.*?)['"]/ ),
 								listInfo = value.match( /^\[if !supportLists\]([\s\S]*?)\[endif\]$/ );
 
 							// Reveal the <img> element in conditional comments for Firefox.
 							if( CKEDITOR.env.gecko && imageInfo )
-								return CKEDITOR.htmlParser.fragment.fromHtml( imageInfo[ 0 ] ).children[ 0 ];
-							// Try to dig the real image link from vml markup.
-							if( imageSource )
-								return new CKEDITOR.htmlParser.element( 'cke:imagesource', { src : imageSource[ 1 ] } );
+							{
+								var img = CKEDITOR.htmlParser.fragment.fromHtml( imageInfo[ 0 ] ).children[ 0 ],
+									previousComment = node.previous,
+									// Try to dig the real image link from vml markup from previous comment text.
+									imgSrcInfo = previousComment.value.match( /<v:imagedata[^>]*o:href=['"](.*?)['"]/ ),
+									imgSrc = imgSrcInfo && imgSrcInfo[ 1 ];
+
+								imgSrc && ( img.attributes.src = imgSrc );
+								return img;
+							}
+
 							// Seek for list bullet style indicator.
 							if ( listInfo )
 							{
@@ -975,6 +974,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									listType = listSymbol.match( />([^\s]+?)([.)]?)</ );
 								return createListBulletMarker( listType, listSymbol );
 							}
+
 							return false;
 						} 
 					: falsyFilter

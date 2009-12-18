@@ -252,8 +252,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						else if ( data[ 'text' ] )
 							editor.insertText( data[ 'text' ] );
 
-						editor.fire( 'saveSnapshot' ); // Save after inserted.
-
 					}, null, null, 1000 );
 
 				editor.on( 'pasteDialog', function( evt )

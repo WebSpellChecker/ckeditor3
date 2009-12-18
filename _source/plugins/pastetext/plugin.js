@@ -124,6 +124,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	CKEDITOR.editor.prototype.insertText = function( text )
 	{
+		this.fire( 'saveSnapshot' );
+
 		var mode = this.getSelection().getStartElement().hasAscendant( 'pre', true ) ? CKEDITOR.ENTER_BR : this.config.enterMode,
 			isEnterBrMode = mode == CKEDITOR.ENTER_BR,
 			doc = this.document.$,
@@ -153,6 +155,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Insert the last text line of text.
 		line = text.substring( startIndex, text.length );
 		line.length && doInsertText( doc, line );
+
+		this.fire( 'saveSnapshot' );
 	};
 })();
 

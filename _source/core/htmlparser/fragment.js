@@ -449,8 +449,8 @@ CKEDITOR.htmlParser.fragment = function()
 				isChildrenFiltered = 1;
 			};
 
-			if ( !filter.onElement( this ) )
-				return;
+			// Filtering the root fragment before anything else.
+			!this.name && filter && filter.onFragment( this );
 
 			this.writeChildrenHtml( writer, isChildrenFiltered ? null : filter );
 		},

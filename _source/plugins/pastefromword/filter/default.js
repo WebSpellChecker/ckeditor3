@@ -327,6 +327,79 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				},
 
 				/**
+				 *  Try to collect all list items among the children and establish one
+				 *  or more HTML list structures for them.
+				 * @param element
+				 */
+				assembleList : function( element )
+				{
+					var children = element.children, child,
+							listItem,   // The current processing cke:li element.
+							listItemAttrs,
+							listType,   // Determine the root type of the list.
+							listItemIndent, // Indent level of current list item.
+							lastListItem, // The previous one just been added to the list.
+							list, parentList, // Current staging list and it's parent list if any.
+							indent;
+
+					for ( var i = 0; i < children.length; i++ )
+					{
+						child = children[ i ];
+
+						if ( 'cke:li' == child.name )
+						{
+							child.name = 'li';
+							listItem = child;
+							listItemAttrs = listItem.attributes;
+							listType = listItem.attributes[ 'cke:listtype' ];
+							// The indent attribute might not present.
+							listItemIndent = parseInt( listItemAttrs[ 'cke:indent' ] ) || 0;
+
+							// Ignore the 'list-style-type' attribute if it's matched with
+							// the list root element's default style type.
+							listItemAttrs.style && ( listItemAttrs.style =
+							        CKEDITOR.plugins.pastefromword.filters.stylesFilter(
+									[
+										[ 'list-style-type', listType == 'ol' ? 'decimal' : 'disc' ]
+									] )( listItemAttrs.style )
+									|| '' );
+
+							if ( !list )
+							{
+								parentList = list = new CKEDITOR.htmlParser.element( listType );
+								list.add( listItem );
+								children[ i ] = list;
+							}
+							else
+							{
+								if ( listItemIndent > indent )
+								{
+									parentList = list;
+									list = new CKEDITOR.htmlParser.element( listType );
+									list.add( listItem );
+									lastListItem.add( list );
+								}
+								else if ( listItemIndent < indent )
+								{
+									list = parentList;
+									parentList = list.parent ? list.parent.parent : list;
+									list.add( listItem );
+								}
+								else
+									list.add( listItem );
+
+								children.splice( i--, 1 );
+							}
+
+							lastListItem = listItem;
+							indent = listItemIndent;
+						}
+						else
+							list = null;
+					}
+				},
+			
+				/**
 				 * A simple filter which always rejecting.
 				 */
 				falsyFilter : function( value )
@@ -339,8 +412,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				 * @param styles {Array} in form of [ styleNameRegexp, styleValueRegexp,
 				 *  newStyleValue/newStyleGenerator, newStyleName ] where only the first
 				 *  parameter is mandatory.
+				 * @param whitelist {Boolean} Whether the {@param styles} will be considered as a white-list.
 				 */
-				stylesFilter : function( styles )
+				stylesFilter : function( styles, whitelist )
 				{
 					return function( styleText, element )
 					{
@@ -373,6 +447,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 												 && ( !valuePattern || value.match( valuePattern ) ) )
 											{
 												name = newName || name;
+												whitelist && ( newValue = newValue || value );
+
 												if( typeof newValue == 'function' )
 													newValue = newValue( value, element );
 												if( typeof newValue == 'string' )
@@ -381,7 +457,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											}
 										}
 									 }
-									 rules.push( [ name, value ] );
+									 
+									 !whitelist && rules.push( [ name, value ] );
 
 								 });
 
@@ -466,12 +543,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				bogusAttrFilter = filters.bogusAttrFilter,
 				createListBulletMarker = this.utils.createListBulletMarker,
 				flattenList = filters.flattenList,
+				assembleList = filters.assembleList,
 				isListBulletIndicator = this.utils.isListBulletIndicator,
 				containsNothingButSpaces = this.utils.isContainingOnlySpaces,
 				resolveListItem = this.utils.resolveList,
 				convertToPx = this.utils.convertToPx,
 				listDtdParents = this.utils.listDtdParents,
-				ignoreFontFace = config.pasteFromWordIgnoreFontFace;
+				removeFontStyles = config.pasteFromWordRemoveFontStyles !== false,
+				removeStyles = config.pasteFromWordRemoveStyles !== false;
 
 			return {
 
@@ -481,6 +560,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					[ /meta|link|script/, '' ]
 				],
 
+				root : function( element )
+				{
+					element.filterChildren();
+					assembleList( element );
+				},
+				
 				elements :
 				{
 					'^' : function( element )
@@ -517,13 +602,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							elementMigrateFilter( config[ 'format_' + tagName ] )( element );
 						}
 						// Remove inline elements which contain only empty spaces.
-						else if ( tagName in dtd.$nonEmptyInline )
+						else if ( tagName in dtd.$inline )
 						{
 							element.filterChildren();
-							if ( containsNothingButSpaces(element) )
+							if ( containsNothingButSpaces( element ) )
 								delete element.name;
 						}
-						// Remove ms-office namespaced element, with it's content preserved.
+						// Remove element with ms-office namespace,
+						// with it's content preserved, e.g. 'o:p'. 
 						else if ( tagName.indexOf( ':' ) != -1
 								 && tagName.indexOf( 'cke' ) == -1 )
 						{
@@ -542,73 +628,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 
 						// Assembling list items into a whole list.
-						if ( !tagName || tagName in listDtdParents )
+						if ( tagName in listDtdParents )
 						{
 							element.filterChildren();
-
-							var children = element.children, child,
-								listItem,   // The current processing cke:li element.
-								listItemAttrs,
-								listType,   // Determine the root type of the list.
-								listItemIndent, // Indent level of current list item.
-								lastListItem, // The previous one just been added to the list.
-								list, parentList, // Current staging list and it's parent list if any.
-								indent;
-
-							for ( var i = 0 ; i < children.length; i++ )
-							{
-								child = children[ i ];
-
-								if ( 'cke:li' == child.name )
-								{
-									child.name = 'li';
-									listItem = child;
-									listItemAttrs = listItem.attributes;
-									listType = listItem.attributes[ 'cke:listtype' ];
-									// The indent attribute might not present.
-									listItemIndent = parseInt( listItemAttrs[ 'cke:indent' ] ) || 0;
-
-									// Ignore the 'list-style-type' attribute if it's matched with
-									// the list root element's default style type.
-									listItemAttrs.style && ( listItemAttrs.style = stylesFilter(
-										[ [ 'list-style-type', listType == 'ol'? 'decimal' : 'disc' ] ] )( listItemAttrs.style )
-										|| '' );
-
-									if ( !list )
-									{
-										parentList = list = new CKEDITOR.htmlParser.element( listType );
-										list.add( listItem );
-										children[ i ] = list;
-									}
-									else
-									{
-										if ( listItemIndent > indent )
-										{
-											parentList = list;
-											list = new CKEDITOR.htmlParser.element( listType  );
-											list.add( listItem );
-											lastListItem.add( list );
-										}
-										else if ( listItemIndent < indent )
-										{
-											list = parentList;
-											parentList = list.parent ? list.parent.parent : list;
-											list.add( listItem );
-										}
-										else
-											list.add( listItem );
-
-										children.splice( i-- , 1 );
-									}
-
-									lastListItem = listItem;
-									indent = listItemIndent;
-								}
-								else
-									list = null;
-							}
+							assembleList( element );
 						}
 					},
+
 					// We'll drop any style sheet, but Firefox conclude
 					// certain styles in a single style element, which are
 					// required to be changed into inline ones.
@@ -675,6 +701,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 						return false;
 					},
+
 					'p' : function( element )
 					{
 						element.filterChildren();
@@ -759,6 +786,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										             : ( attrs.size < 3 ? 'small' : 'medium' ) ) + ';';
 								delete attrs.size;
 							}
+
 							element.name = 'span';
 							element.addStyle( styleText );
 						}
@@ -809,12 +837,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									[
 										// Drop 'inline-height' style which make lines overlapping.
 										[ 'line-height' ],
-										!ignoreFontFace ? [ /^font-family$/, null, styleMigrateFilter( config[ 'font_style' ], 'family' ) ] : null,
-										!ignoreFontFace ? [ /^font-size$/, null, styleMigrateFilter( config[ 'fontSize_style' ], 'size' ) ] : null,
-										[ /^color$/, null, styleMigrateFilter( config[ 'colorButton_foreStyle' ], 'color' ) ],
-										[ /^background-color$/, null, styleMigrateFilter( config[ 'colorButton_backStyle' ], 'color' ) ]
+										[ /^font-family$/, null, !removeFontStyles ? styleMigrateFilter( config[ 'font_style' ], 'family' ) : null ] ,
+										[ /^font-size$/, null, !removeFontStyles ? styleMigrateFilter( config[ 'fontSize_style' ], 'size' ) : null ] ,
+										[ /^color$/, null, !removeFontStyles ? styleMigrateFilter( config[ 'colorButton_foreStyle' ], 'color' ) : null ] ,
+										[ /^background-color$/, null, !removeFontStyles ? styleMigrateFilter( config[ 'colorButton_backStyle' ], 'color' ) : null ]
 									] )( styleText, element ) || '';
 						}
+
 					},
 
 					// Migrate basic style formats to editor configured ones.
@@ -852,6 +881,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				attributes :
 				{
 					'style' : stylesFilter(
+					removeStyles ?
+					// Provide a white-list of styles that we preserve, those should
+					// be the ones that could later be altered with editor tools.
+					[
+						[ /^border.*|margin.*|vertical-align|float$/ , null,
+							function( value, element )
+							{
+								if( element.name == 'img' )
+									return value;
+							} ],
+
+						[ /^width|height$/, null,
+							function( value, element )
+							{
+								if( element.name in { table : 1, td : 1, th : 1, img : 1 } )
+									return value;
+							} ]
+					] :
+					// Otherwise provide a black-list of styles that we remove.
 					[
 						[ /^mso-/ ],
 						// Fixing color values.
@@ -868,8 +916,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						[ 'page-break-before' ],
 						[ 'tab-stops' ],
 						[ 'display', 'none' ],
-						ignoreFontFace ? [ /font-?/ ] : null,
-					] ),
+						removeFontStyles ? [ /font-?/ ] : null,
+					], removeStyles ),
+
 					// Prefer width styles over 'width' attributes.
 					'width' : function( value, element )
 					{
@@ -895,7 +944,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					'bgcolor' : falsyFilter,
 
 					// Deprecate 'valign' attribute in favor of 'vertical-align'.
-					'valign' : function( value, element )
+					'valign' : removeStyles ? falsyFilter : function( value, element )
 					{
 						element.addStyle( 'vertical-align', value );
 						return false;
@@ -934,12 +983,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	};
 
 	// The paste processor here is just a reduced copy of html data processor.
-	CKEDITOR.pasteProcessor = function()
+	var pasteProcessor = function()
 	{
 		this.dataFilter = new CKEDITOR.htmlParser.filter();
 	};
 
-	CKEDITOR.pasteProcessor.prototype =
+	pasteProcessor.prototype =
 	{
 		toHtml : function( data )
 		{
@@ -959,23 +1008,42 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		if( CKEDITOR.env.gecko )
 			data = data.replace( /(<!--\[if[^<]*?\])-->([\S\s]*?)<!--(\[endif\]-->)/gi, '$1$2$3' );
 
-		var pasteProcessor = new CKEDITOR.pasteProcessor(),
-			dataFilter = pasteProcessor.dataFilter;
+		var dataProcessor = new pasteProcessor(),
+			dataFilter = dataProcessor.dataFilter;
 
 		// These rules will have higher priorities than default ones.
 		dataFilter.addRules( CKEDITOR.plugins.pastefromword.getRules( editor ) );
+
+		// Allow extending data filter rules. 
 		editor.fire( 'beforeCleanWord', { filter : dataFilter } );
-		return pasteProcessor.toHtml( data, false );
+
+		data = dataProcessor.toHtml( data, false );
+
+		/* Below post processing those things that are unable to delivered by filter rules. */
+
+		// Remove 'cke' namespaced attribute used in filter rules as marker.
+		data = data.replace( /cke:.*?".*?"/g, '' );
+
+		// Remove empty style attribute.
+		data = data.replace( /style=""/g, '' );
+
+		// Remove the dummy spans ( having no inline style ).
+		data = data.replace( /<span>/g, '' );
+
+		return data;
 	};
 })();
 
 /**
- * Whether the ignore all font-related format from MS-Word.
- * @name CKEDITOR.config.pasteFromWordIgnoreFontFace
+ * Whether the ignore all font-related format styles, including:
+ * - font size;
+ * - font family;
+ * - font fore/background color;
+ * @name CKEDITOR.config.pasteFromWordRemoveFontStyles
  * @type Boolean
  * @default true
  * @example
- * config.pasteFromWordIgnoreFontFace = false;
+ * config.pasteFromWordRemoveFontStyles = false;
  */
 
 /**
@@ -985,4 +1053,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @default false
  * @example
  * config.pasteFromWordNumberedHeadingToList = true;
+ */
+
+/**
+ * Whether remove element styles that can't be managed with editor, note that this
+ * this doesn't handle the font-specific styles, which depends on
+ * how {@link CKEDITOR.config.pasteFromWordRemoveFontStyles} is configured. 
+ * @name CKEDITOR.config.pasteFromWordRemoveStyles
+ * @type Boolean
+ * @default true
+ * @example
+ * config.pasteFromWordRemoveStyles = false;
  */

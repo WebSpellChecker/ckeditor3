@@ -45,6 +45,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				// Add the comment.
 				this._.comment = transformNamedItem( this._.comment, rules.comment, priority ) || this._.comment;
+
+				// Add root fragment.
+				this._.root = transformNamedItem( this._.root, rules.root, priority ) || this._.root;
 			},
 
 			onElementName : function( name )
@@ -67,6 +70,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				var textFilter = this._.comment;
 				return textFilter ? textFilter.filter( commentText ) : commentText;
+			},
+
+			onFragment : function( element )
+			{
+				var rootFilter = this._.root;
+				return rootFilter ? rootFilter.filter( element ) : element;
 			},
 
 			onElement : function( element )

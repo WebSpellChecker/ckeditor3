@@ -83,34 +83,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		[
 			// Event attributes (onXYZ) must not be directly set. They can become
 			// active in the editing area (IE|WebKit).
-			[ ( /^on/ ), '_cke_pa_on' ],
-			// Remove bogus attributes.
-			[ ( /^cke:.*/ ), '' ]
-		],
-		attributes :
-		{
-			// Remove empty style attribute.
-			'style' : function( value )
-			{
-				if( !value )
-					return false;
-			}
-		},
-		elements :
-		{
-			'span' : function( element )
-			{
-				var attrs = element.attributes;
-				for( var attr in attrs )
-				{
-					if( attrs.hasOwnProperty( attr ) )
-					{
-						return;
-					}
-				}
-				delete element.name;
-			}
-		}
+			[ ( /^on/ ), '_cke_pa_on' ]
+		]
 	};
 
 	var defaultDataBlockFilterRules = { elements : {} };

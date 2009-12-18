@@ -278,14 +278,16 @@ CKEDITOR.htmlParser.fragment = function()
 			}
 
 			var pendingAdd = [],
+				newPendingInline = [],
 				candidate = currentNode;
 
 			while ( candidate.type && candidate.name != tagName )
 			{
-				// If this is an inline element, add it to the pending list, so
-				// it will continue after the closing tag.
+				// If this is an inline element, add it to the pending list, if we're
+				// really closing one of the parents element later, they will continue
+				// after it.
 				if ( !candidate._.isBlockLike )
-					pendingInline.unshift( candidate );
+					newPendingInline.unshift( candidate );
 
 				// This node should be added to it's parent at this point. But,
 				// it should happen only if the closing tag is really closing
@@ -315,6 +317,8 @@ CKEDITOR.htmlParser.fragment = function()
 				// addElement changed the currentNode.
 				if ( candidate == currentNode )
 					currentNode = currentNode.parent;
+
+				pendingInline = pendingInline.concat( newPendingInline );
 			}
 
 			if( tagName == 'body' )

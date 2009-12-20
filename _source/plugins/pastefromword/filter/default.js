@@ -121,6 +121,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	};
 
 	var cssLengthRelativeUnit = /^(\d[.\d]*)+(em|ex|px|gd|rem|vw|vh|vm|ch|mm|cm|in|pt|pc|deg|rad|ms|s|hz|khz){1}?/i;
+	var emptyMarginRegex = /^(?:\b0[^\s]*\s*){1,4}$/;
 
 	CKEDITOR.plugins.pastefromword =
 	{
@@ -878,6 +879,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// Provide a white-list of styles that we preserve, those should
 					// be the ones that could later be altered with editor tools.
 					[
+						[ /^margin$|margin-(?!bottom|top)/, null, function( value, element )
+							{
+								if( element.name in { p : 1, div : 1 }
+									&& !emptyMarginRegex.test( value ) )
+									return value;
+							} ],
+
 						[ /^border.*|margin.*|vertical-align|float$/ , null,
 							function( value, element )
 							{
@@ -904,7 +912,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								return value.replace( /-moz-use-text-color/g, 'transparent' );
 						} ],
 						// Remove empty margin values, e.g. 0.00001pt 0em 0pt
-						[ /^margin$/, /^(?:\b0[^\s]*\s*){1,4}$/ ],
+						[ /^margin$/, emptyMarginRegex ],
 						[ 'text-indent', '0cm' ],
 						[ 'page-break-before' ],
 						[ 'tab-stops' ],

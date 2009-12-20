@@ -237,24 +237,26 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 			},
 
-			convertToPx : function( cssLength )
+			// Convert various length units to 'px' in ignorance of DPI.
+			convertToPx : ( function ()
 			{
-				// Convert to 'px' in ignorance of DPI.
-				if( cssLengthRelativeUnit.test( cssLength ) )
+				var calculator = CKEDITOR.dom.element.createFromHtml(
+								'<div style="position:absolute;left:-9999px;' +
+								'top:-9999px;margin:0px;padding:0px;border:0px;"' +
+								'></div>', CKEDITOR.document );
+				CKEDITOR.document.getBody().append( calculator );
+
+				return function( cssLength )
 				{
-					var val,
-						calculator = CKEDITOR.dom.element.createFromHtml(
-										'<div style="position:absolute;left:-9999px;' +
-										'top:-9999px;margin:0px;padding:0px;border:0px;' +
-										'width:' + cssLength + '" ' +
-										'></div>' );
-					CKEDITOR.document.getBody().append( calculator );
-					val = calculator.$.clientWidth;
-					calculator.remove();
-					return val + 'px';
-				}
-				return cssLength;
-			},
+					if( cssLength.indexOf( '%' ) == -1 )
+					{
+						calculator.setStyle( 'width', cssLength );
+						return calculator.$.clientWidth + 'px';
+					}
+					
+					return cssLength;
+				};
+			} )(),
 
 			listDtdParents : CKEDITOR.dtd.parentOf( 'ol' )
 		},
@@ -1025,7 +1027,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Allow extending data filter rules. 
 		editor.fire( 'beforeCleanWord', { filter : dataFilter } );
 
+		console.time( 'word clean' );
 		data = dataProcessor.toHtml( data, false );
+		console.timeEnd( 'word clean' );
 
 		/* Below post processing those things that are unable to delivered by filter rules. */
 

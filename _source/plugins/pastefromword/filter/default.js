@@ -1027,9 +1027,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Allow extending data filter rules. 
 		editor.fire( 'beforeCleanWord', { filter : dataFilter } );
 
-		console.time( 'word clean' );
 		data = dataProcessor.toHtml( data, false );
-		console.timeEnd( 'word clean' );
 
 		/* Below post processing those things that are unable to delivered by filter rules. */
 

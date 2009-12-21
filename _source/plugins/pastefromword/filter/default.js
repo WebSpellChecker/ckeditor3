@@ -46,17 +46,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		return parent;
 	};
 
-	fragmentPrototype.firstTextChild = elementPrototype.firstTextChild = function()
+	fragmentPrototype.firstChild = elementPrototype.firstChild = function( evaluator )
 	{
 		var child;
 		for ( var i = 0 ; i < this.children.length ; i++ )
 		{
 			child = this.children[ i ];
-			if ( child.value )
+			if ( evaluator( child ) )
 				return child;
 			else if ( child.name )
 			{
-				child = child.firstTextChild();
+				child = child.firstChild( evaluator );
 				if( child )
 					return child;
 				else
@@ -809,10 +809,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 
 						// For IE/Safari: List item bullet type is supposed to be indicated by
-						// the text of a span with style 'mso-list : Ignore'.
+						// the text of a span with style 'mso-list : Ignore' or an image.
 						if ( !CKEDITOR.env.gecko && isListBulletIndicator( element ) )
 						{
-							var listSymbol = element.firstTextChild().value,
+							var listSymbolNode = element.firstChild( function( node )
+							{
+								return node.value || node.name == 'img';
+							});
+
+							var listSymbol =  listSymbolNode && ( listSymbolNode.value || 'l.' ),
 								listType = listSymbol.match( /^([^\s]+?)([.)]?)$/ );
 							return createListBulletMarker( listType, listSymbol );
 						}
@@ -962,25 +967,27 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							var imageInfo = value.match( /<img.*?>/ ),
 								listInfo = value.match( /^\[if !supportLists\]([\s\S]*?)\[endif\]$/ );
 
+							// Seek for list bullet indicator.
+							if ( listInfo )
+							{
+								// Bullet symbol could be either text or an image.
+								var listSymbol = listInfo[ 1 ] || ( imageInfo && 'l.' ),
+									listType = listSymbol && listSymbol.match( />([^\s]+?)([.)]?)</ );
+								return createListBulletMarker( listType, listSymbol );
+							}
+
 							// Reveal the <img> element in conditional comments for Firefox.
 							if( CKEDITOR.env.gecko && imageInfo )
 							{
 								var img = CKEDITOR.htmlParser.fragment.fromHtml( imageInfo[ 0 ] ).children[ 0 ],
 									previousComment = node.previous,
 									// Try to dig the real image link from vml markup from previous comment text.
-									imgSrcInfo = previousComment.value.match( /<v:imagedata[^>]*o:href=['"](.*?)['"]/ ),
+									imgSrcInfo = previousComment && previousComment.value.match( /<v:imagedata[^>]*o:href=['"](.*?)['"]/ ),
 									imgSrc = imgSrcInfo && imgSrcInfo[ 1 ];
 
+								// Is there a real 'src' url to be used? 
 								imgSrc && ( img.attributes.src = imgSrc );
 								return img;
-							}
-
-							// Seek for list bullet style indicator.
-							if ( listInfo )
-							{
-								var listSymbol = listInfo[ 1 ],
-									listType = listSymbol.match( />([^\s]+?)([.)]?)</ );
-								return createListBulletMarker( listType, listSymbol );
 							}
 
 							return false;
@@ -1025,7 +1032,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Allow extending data filter rules. 
 		editor.fire( 'beforeCleanWord', { filter : dataFilter } );
 
-		data = dataProcessor.toHtml( data, false );
+		try
+		{
+			data = dataProcessor.toHtml( data, false );
+
+		}catch( er )
+		{
+
+		}
 
 		/* Below post processing those things that are unable to delivered by filter rules. */
 

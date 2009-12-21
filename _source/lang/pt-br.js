@@ -508,7 +508,8 @@ CKEDITOR.lang['pt-br'] =
 	{
 		confirmCleanup : 'O texto que você deseja colar parece ter sido copiado do Word. Você gostaria de remover a formatação antes de colar?',
 		toolbar : 'Colar do Word',
-		title : 'Colar do Word'
+		title : 'Colar do Word',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

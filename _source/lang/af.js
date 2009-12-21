@@ -508,7 +508,8 @@ CKEDITOR.lang['af'] =
 	{
 		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Van Word af byvoeg',
-		title : 'Van Word af byvoeg'
+		title : 'Van Word af byvoeg',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

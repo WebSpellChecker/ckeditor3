@@ -508,7 +508,8 @@ CKEDITOR.lang['lv'] =
 	{
 		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Ievietot no Worda',
-		title : 'Ievietot no Worda'
+		title : 'Ievietot no Worda',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

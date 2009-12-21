@@ -508,7 +508,8 @@ CKEDITOR.lang['eu'] =
 	{
 		confirmCleanup : 'Itsatsi nahi duzun testua Wordetik hartua dela dirudi. Itsatsi baino lehen garbitu nahi duzu?',
 		toolbar : 'Itsatsi Word-etik',
-		title : 'Itsatsi Word-etik'
+		title : 'Itsatsi Word-etik',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

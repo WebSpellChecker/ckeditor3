@@ -508,7 +508,8 @@ CKEDITOR.lang['eo'] =
 	{
 		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Interglui el Word',
-		title : 'Interglui el Word'
+		title : 'Interglui el Word',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

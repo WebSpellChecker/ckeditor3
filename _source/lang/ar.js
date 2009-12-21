@@ -508,7 +508,8 @@ CKEDITOR.lang['ar'] =
 	{
 		confirmCleanup : 'يبدو أن النص المراد لصقه منسوخ من برنامج وورد. هل تود تنظيفه قبل الشروع في عملية اللصق؟',
 		toolbar : 'لصق من وورد',
-		title : 'لصق من وورد'
+		title : 'لصق من وورد',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

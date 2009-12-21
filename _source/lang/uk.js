@@ -508,7 +508,8 @@ CKEDITOR.lang['uk'] =
 	{
 		confirmCleanup : 'Текст, що ви хочете вставити, схожий на копійований з Word. Ви хочете очистити його перед вставкою?',
 		toolbar : 'Вставити з Word',
-		title : 'Вставити з Word'
+		title : 'Вставити з Word',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

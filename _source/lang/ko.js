@@ -508,7 +508,8 @@ CKEDITOR.lang['ko'] =
 	{
 		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'MS Word 형식에서 붙여넣기',
-		title : 'MS Word 형식에서 붙여넣기'
+		title : 'MS Word 형식에서 붙여넣기',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

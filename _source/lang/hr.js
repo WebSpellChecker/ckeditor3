@@ -508,7 +508,8 @@ CKEDITOR.lang['hr'] =
 	{
 		confirmCleanup : 'Tekst koji želite zalijepiti čini se da je kopiran iz Worda. Želite li prije očistiti tekst?',
 		toolbar : 'Zalijepi iz Worda',
-		title : 'Zalijepi iz Worda'
+		title : 'Zalijepi iz Worda',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

@@ -508,7 +508,8 @@ CKEDITOR.lang['it'] =
 	{
 		confirmCleanup : 'Il testo da incollare sembra provenire da Word. Desideri pulirlo prima di incollare?',
 		toolbar : 'Incolla da Word',
-		title : 'Incolla da Word'
+		title : 'Incolla da Word',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

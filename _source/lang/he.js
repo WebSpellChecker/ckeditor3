@@ -508,7 +508,8 @@ CKEDITOR.lang['he'] =
 	{
 		confirmCleanup : 'נראה הטקסט שבכוונתך להדביק מקורו בקובץ וורד. האם ברצונך לנקות אותו טרם ההדבקה?',
 		toolbar : 'הדבקה מ-Word',
-		title : 'הדבקה מ-Word'
+		title : 'הדבקה מ-Word',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

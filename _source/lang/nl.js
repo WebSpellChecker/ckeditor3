@@ -508,7 +508,8 @@ CKEDITOR.lang['nl'] =
 	{
 		confirmCleanup : 'De tekst die u plakte lijkt gekopieerd te zijn vanuit Word. Wilt u de tekst opschonen voordat deze geplakt wordt?',
 		toolbar : 'Plakken als Word-gegevens',
-		title : 'Plakken als Word-gegevens'
+		title : 'Plakken als Word-gegevens',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

@@ -508,7 +508,8 @@ CKEDITOR.lang['vi'] =
 	{
 		confirmCleanup : 'Văn bản bạn muốn dán có kèm định dạng của Word. Bạn có muốn loại bỏ định dạng Word trước khi dán?',
 		toolbar : 'Dán với định dạng Word',
-		title : 'Dán với định dạng Word'
+		title : 'Dán với định dạng Word',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

@@ -1035,10 +1035,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		try
 		{
 			data = dataProcessor.toHtml( data, false );
-
-		}catch( er )
+		}
+		catch ( e )
 		{
-
+			alert( editor.lang.pastefromword.error );
 		}
 
 		/* Below post processing those things that are unable to delivered by filter rules. */

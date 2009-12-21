@@ -508,7 +508,8 @@ CKEDITOR.lang['ca'] =
 	{
 		confirmCleanup : 'El text que voleu enganxar sembla provenir de Word. Voleu netejar aquest text abans que sigui enganxat?',
 		toolbar : 'Enganxa des del Word',
-		title : 'Enganxa des del Word'
+		title : 'Enganxa des del Word',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

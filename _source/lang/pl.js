@@ -508,7 +508,8 @@ CKEDITOR.lang['pl'] =
 	{
 		confirmCleanup : 'Tekst, który chcesz wkleić, prawdopodobnie pochodzi z programu Word. Czy chcesz go wyczyścic przed wklejeniem?',
 		toolbar : 'Wklej z Worda',
-		title : 'Wklej z Worda'
+		title : 'Wklej z Worda',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

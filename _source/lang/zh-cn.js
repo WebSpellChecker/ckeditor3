@@ -508,7 +508,8 @@ CKEDITOR.lang['zh-cn'] =
 	{
 		confirmCleanup : '您要粘贴的内容好像是来自 MS Word，是否要清除 MS Word 格式后再粘贴？',
 		toolbar : '从 MS Word 粘贴',
-		title : '从 MS Word 粘贴'
+		title : '从 MS Word 粘贴',
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

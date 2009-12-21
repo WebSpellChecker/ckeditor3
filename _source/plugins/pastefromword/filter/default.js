@@ -881,7 +881,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// Provide a white-list of styles that we preserve, those should
 					// be the ones that could later be altered with editor tools.
 					[
-						[ /^margin$|margin-(?!bottom|top)/, null, function( value, element )
+						[ /^margin$|^margin-(?!bottom|top)/, null, function( value, element )
 							{
 								if( element.name in { p : 1, div : 1 }
 									&& !emptyMarginRegex.test( value ) )
@@ -940,10 +940,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// the css className is useless.
 					'class' : falsyFilter,
 
-					// MS-Word always generate both 'text-align' along with
-					// 'align' attribute( 'background-color' along with 'bgcolor'),
+					// MS-Word always generate 'background-color' along with 'bgcolor',
 					// simply drop the deprecated attributes.
-					'align' : falsyFilter,
 					'bgcolor' : falsyFilter,
 
 					// Deprecate 'valign' attribute in favor of 'vertical-align'.

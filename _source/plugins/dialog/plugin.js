@@ -671,6 +671,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 					// Execute onLoad for the first show.
 					this.fireOnce( 'load', {} );
 					this.fire( 'show', {} );
+					this._.editor.fire( 'dialogShow', this );
 
 					// Save the initial values of the dialog.
 					this.foreach( function( contentObj ) { contentObj.setInitValue && contentObj.setInitValue(); } );
@@ -734,6 +735,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		hide : function()
 		{
 			this.fire( 'hide', {} );
+			this._.editor.fire( 'dialogHide', this );
 
 			// Remove the dialog's element from the root document.
 			var element = this._.element;

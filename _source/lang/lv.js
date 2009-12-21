@@ -506,11 +506,10 @@ CKEDITOR.lang['lv'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Ievietot no Worda',
 		title : 'Ievietot no Worda',
-		advice : 'Lūdzu, ievietojiet tekstu šajā laukumā, izmantojot klaviatūru (<STRONG>Ctrl+V</STRONG>) un apstipriniet ar <STRONG>Darīts!</STRONG>.',
-		ignoreFontFace : 'Ignorēt iepriekš norādītos fontus',
-		removeStyle : 'Noņemt norādītos stilus'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

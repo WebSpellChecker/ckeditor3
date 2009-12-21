@@ -506,11 +506,10 @@ CKEDITOR.lang['fo'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Innrita frá Word',
 		title : 'Innrita frá Word',
-		advice : 'Vinarliga koyr tekstin í hendan rútin við knappaborðinum (<strong>CTRL+V</strong>) og klikk á <strong>Góðtak</strong>.',
-		ignoreFontFace : 'Forfjóna Font definitiónirnar',
-		removeStyle : 'Strika typografi definitiónir'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

@@ -506,11 +506,10 @@ CKEDITOR.lang['lt'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Įdėti iš Word',
 		title : 'Įdėti iš Word',
-		advice : 'Žemiau esančiame įvedimo lauke įdėkite tekstą, naudodami klaviatūrą (<STRONG>Ctrl+V</STRONG>) ir paspauskite mygtuką <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignoruoti šriftų nustatymus',
-		removeStyle : 'Pašalinti stilių nustatymus'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

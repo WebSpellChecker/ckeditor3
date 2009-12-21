@@ -506,11 +506,10 @@ CKEDITOR.lang['de'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Der Text, den Sie einfügen möchten, scheint aus MS-Word kopiert zu sein. Möchten Sie ihn zuvor bereinigen lassen?',
 		toolbar : 'aus MS-Word einfügen',
 		title : 'aus MS-Word einfügen',
-		advice : 'Bitte fügen Sie den Text in der folgenden Box über die Tastatur (mit <STRONG>Strg+V</STRONG>) ein und bestätigen Sie mit <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignoriere Schriftart-Definitionen',
-		removeStyle : 'Entferne Style-Definitionen'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

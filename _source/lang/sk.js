@@ -506,11 +506,10 @@ CKEDITOR.lang['sk'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Vložiť z Wordu',
 		title : 'Vložiť z Wordu',
-		advice : 'Prosím vložte nasledovný rámček použitím klávesnice (<STRONG>Ctrl+V</STRONG>) a stlačte <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignorovať nastavenia typu písma',
-		removeStyle : 'Odstrániť formátovanie'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

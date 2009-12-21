@@ -195,18 +195,18 @@ CKEDITOR.htmlParser.fragment = function()
 				var reApply = false,
 					addPoint;   // New position to start adding nodes.
 
-				// Fixing malformed nested lists(#3828).
+				// Fixing malformed nested lists by moving it into a previous list item. (#3828)
 				if( tagName in listBlocks
 					&& currentName in listBlocks )
 				{
 					var children = currentNode.children,
 						lastChild = children[ children.length - 1 ];
-					// Move inner list into to previous list item if any.
-					if( lastChild && lastChild.name in listItems )
-						returnPoint = currentNode, addPoint = lastChild;
-					// Move inner list outside in the worst case.
-					else
-						addElement( currentNode, currentNode.parent );
+
+					// Establish the list item if it's not existed.
+					if ( !( lastChild && lastChild.name in listItems ) )
+						addElement( ( lastChild = new CKEDITOR.htmlParser.element( 'li' ) ), currentNode );
+
+					returnPoint = currentNode, addPoint = lastChild;
 				}
 				// If the element name is the same as the current element name,
 				// then just close the current one and append the new one to the
@@ -278,14 +278,16 @@ CKEDITOR.htmlParser.fragment = function()
 			}
 
 			var pendingAdd = [],
+				newPendingInline = [],
 				candidate = currentNode;
 
 			while ( candidate.type && candidate.name != tagName )
 			{
-				// If this is an inline element, add it to the pending list, so
-				// it will continue after the closing tag.
+				// If this is an inline element, add it to the pending list, if we're
+				// really closing one of the parents element later, they will continue
+				// after it.
 				if ( !candidate._.isBlockLike )
-					pendingInline.unshift( candidate );
+					newPendingInline.unshift( candidate );
 
 				// This node should be added to it's parent at this point. But,
 				// it should happen only if the closing tag is really closing
@@ -315,6 +317,8 @@ CKEDITOR.htmlParser.fragment = function()
 				// addElement changed the currentNode.
 				if ( candidate == currentNode )
 					currentNode = currentNode.parent;
+
+				pendingInline = pendingInline.concat( newPendingInline );
 			}
 
 			if( tagName == 'body' )
@@ -439,7 +443,25 @@ CKEDITOR.htmlParser.fragment = function()
 		 */
 		writeHtml : function( writer, filter )
 		{
-			for ( var i = 0, len = this.children.length ; i < len ; i++ )
+			var isChildrenFiltered;
+			this.filterChildren = function()
+			{
+				var writer = new CKEDITOR.htmlParser.basicWriter();
+				this.writeChildrenHtml.call( this, writer, filter, true );
+				var html = writer.getHtml();
+				this.children = new CKEDITOR.htmlParser.fragment.fromHtml( html ).children;
+				isChildrenFiltered = 1;
+			};
+
+			// Filtering the root fragment before anything else.
+			!this.name && filter && filter.onFragment( this );
+
+			this.writeChildrenHtml( writer, isChildrenFiltered ? null : filter );
+		},
+
+		writeChildrenHtml : function( writer, filter )
+		{
+			for ( var i = 0 ; i < this.children.length ; i++ )
 				this.children[i].writeHtml( writer, filter );
 		}
 	};

@@ -506,11 +506,10 @@ CKEDITOR.lang['ja'] =
 
 	pastefromword :
 	{
+		confirmCleanup : '貼り付けを行うテキストは、ワード文章からコピーされようとしています。貼り付ける前にクリーニングを行いますか？',
 		toolbar : 'ワード文章から貼り付け',
 		title : 'ワード文章から貼り付け',
-		advice : 'キーボード(<STRONG>Ctrl+V</STRONG>)を使用して、次の入力エリア内で貼って、<STRONG>OK</STRONG>を押してください。',
-		ignoreFontFace : 'FontタグのFace属性を無視します。',
-		removeStyle : 'スタイル定義を削除します。'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

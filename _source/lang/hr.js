@@ -506,11 +506,10 @@ CKEDITOR.lang['hr'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Tekst koji želite zalijepiti čini se da je kopiran iz Worda. Želite li prije očistiti tekst?',
 		toolbar : 'Zalijepi iz Worda',
 		title : 'Zalijepi iz Worda',
-		advice : 'Molimo zaljepite unutar doljnjeg okvira koristeći tipkovnicu (<STRONG>Ctrl+V</STRONG>) i kliknite <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Zanemari definiciju vrste fonta',
-		removeStyle : 'Ukloni definicije stilova'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

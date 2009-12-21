@@ -506,11 +506,10 @@ CKEDITOR.lang['bg'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Вмъкни от MS Word',
 		title : 'Вмъкни от MS Word',
-		advice : 'Вмъкнете тук съдъжанието с клавиатуарата (<STRONG>Ctrl+V</STRONG>) и натиснете <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Игнорирай шрифтовите дефиниции',
-		removeStyle : 'Изтрий стиловите дефиниции'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

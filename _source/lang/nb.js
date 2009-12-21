@@ -506,11 +506,10 @@ CKEDITOR.lang['nb'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Lim inn fra Word',
 		title : 'Lim inn fra Word',
-		advice : 'Vennligst lim inn i den følgende boksen med tastaturet (<STRONG>Ctrl+V</STRONG>) og trykk <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Fjern skrifttyper',
-		removeStyle : 'Fjern stildefinisjoner'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

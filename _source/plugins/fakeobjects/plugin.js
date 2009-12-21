@@ -11,7 +11,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			$ : function( element )
 			{
-				var realHtml = element.attributes._cke_realelement,
+				var attributes = element.attributes,
+					realHtml = attributes && attributes._cke_realelement,
 					realFragment = realHtml && new CKEDITOR.htmlParser.fragment.fromHtml( decodeURIComponent( realHtml ) ),
 					realElement = realFragment && realFragment.children[ 0 ];
 

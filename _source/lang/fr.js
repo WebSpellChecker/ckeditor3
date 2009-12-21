@@ -506,11 +506,10 @@ CKEDITOR.lang['fr'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Le texte à coller semble provenir de Word. Désirez-vous le nettoyer avant de coller?',
 		toolbar : 'Coller depuis Word',
 		title : 'Coller depuis Word',
-		advice : 'Veuillez coller le texte dans la zone suivante, en utilisant le raccourci clavier (<strong>Ctrl+V</strong>) et cliquez sur OK.',
-		ignoreFontFace : 'Supprimer la définition des polices',
-		removeStyle : 'Supprimer la définition des styles'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

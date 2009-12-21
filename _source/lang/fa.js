@@ -506,11 +506,10 @@ CKEDITOR.lang['fa'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'چسباندن از Word',
 		title : 'چسباندن از Word',
-		advice : 'لطفا متن را با کلیدهای (<STRONG>Ctrl+V</STRONG>) در این جعبهٴ متنی بچسبانید و <STRONG>پذیرش</STRONG> را بزنید.',
-		ignoreFontFace : 'چشمپوشی از تعاریف نوع قلم',
-		removeStyle : 'چشمپوشی از تعاریف سبک (style)'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

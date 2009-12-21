@@ -506,11 +506,10 @@ CKEDITOR.lang['th'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'วางสำเนาจากตัวอักษรเวิร์ด',
 		title : 'วางสำเนาจากตัวอักษรเวิร์ด',
-		advice : 'กรุณาใช้คีย์บอร์ดเท่านั้น โดยกดปุ๋ม (<strong>Ctrl และ V</strong>)พร้อมๆกัน และกด <strong>OK</strong>.',
-		ignoreFontFace : 'ไม่สนใจ Font Face definitions',
-		removeStyle : 'ลบ Styles definitions'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

@@ -506,11 +506,10 @@ CKEDITOR.lang['km'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'ចំលងដាក់ពី Word',
 		title : 'ចំលងដាក់ពី Word',
-		advice : 'សូមចំលងអត្ថបទទៅដាក់ក្នុងប្រអប់ដូចខាងក្រោមដោយប្រើប្រាស់ ឃី \u200b(<STRONG>Ctrl+V</STRONG>) ហើយចុច <STRONG>OK</STRONG> ។',
-		ignoreFontFace : 'មិនគិតអំពីប្រភេទពុម្ភអក្សរ',
-		removeStyle : 'លប់ម៉ូត'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

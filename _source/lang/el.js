@@ -506,11 +506,10 @@ CKEDITOR.lang['el'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Επικόλληση από το Word',
 		title : 'Επικόλληση από το Word',
-		advice : 'Παρακαλώ επικολήστε στο ακόλουθο κουτί χρησιμοποιόντας το πληκτρολόγιο (<STRONG>Ctrl+V</STRONG>) και πατήστε <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Αγνόηση προδιαγραφών γραμματοσειράς',
-		removeStyle : 'Αφαίρεση προδιαγραφών στύλ'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

@@ -506,11 +506,10 @@ CKEDITOR.lang['bn'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'পেস্ট (শব্দ)',
 		title : 'পেস্ট (শব্দ)',
-		advice : 'অনুগ্রহ করে নীচের বাক্সে কিবোর্ড ব্যবহার করে (<STRONG>Ctrl+V</STRONG>) পেস্ট করুন এবং <STRONG>OK</STRONG> চাপ দিন',
-		ignoreFontFace : 'ফন্ট ফেস ডেফিনেশন ইগনোর করুন',
-		removeStyle : 'স্টাইল ডেফিনেশন সরিয়ে দিন'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

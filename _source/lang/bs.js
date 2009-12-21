@@ -506,11 +506,10 @@ CKEDITOR.lang['bs'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Zalijepi iz Word-a',
 		title : 'Zalijepi iz Word-a',
-		advice : 'Please paste inside the following box using the keyboard (<strong>Ctrl+V</strong>) and hit <strong>OK</strong>.', // MISSING
-		ignoreFontFace : 'Ignore Font Face definitions', // MISSING
-		removeStyle : 'Remove Styles definitions' // MISSING
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

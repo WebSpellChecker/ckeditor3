@@ -506,11 +506,10 @@ CKEDITOR.lang['da'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'Den tekst du forsøger at indsætte ser ud til at komme fra Word. Vil du rense teksten før den indsættes?',
 		toolbar : 'Indsæt fra Word',
 		title : 'Indsæt fra Word',
-		advice : 'Indsæt i feltet herunder (<STRONG>Ctrl+V</STRONG>) og klik på <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignorér skrifttypedefinitioner',
-		removeStyle : 'Ignorér typografi'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

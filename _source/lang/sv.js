@@ -506,11 +506,10 @@ CKEDITOR.lang['sv'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Klistra in från Word',
 		title : 'Klistra in från Word',
-		advice : 'Var god och klistra in Er text i rutan nedan genom att använda (<STRONG>Ctrl+V</STRONG>) klicka sen på <STRONG>OK</STRONG>.',
-		ignoreFontFace : 'Ignorera typsnittsdefinitioner',
-		removeStyle : 'Radera Stildefinitioner'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

@@ -506,11 +506,10 @@ CKEDITOR.lang['tr'] =
 
 	pastefromword :
 	{
+		confirmCleanup : 'The text you want to paste seems to be copied from Word. Do you want to clean it before pasting?', // MISSING
 		toolbar : 'Word\'den Yapıştır',
 		title : 'Word\'den Yapıştır',
-		advice : 'Lütfen aşağıdaki kutunun içine yapıştırın. (<STRONG>Ctrl+V</STRONG>) ve <STRONG>Tamam</STRONG> butonunu tıklayın.',
-		ignoreFontFace : 'Yazı Tipi tanımlarını yoksay',
-		removeStyle : 'Biçem Tanımlarını çıkar'
+		error : 'It was not possible to clean up the pasted data due to an internal error' // MISSING
 	},
 
 	pasteText :

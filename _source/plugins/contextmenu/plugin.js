@@ -195,8 +195,10 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 				{
 					var domEvent = event.data;
 
-					if ( nativeContextMenuOnCtrl
-						 && ( domEvent.$.ctrlKey || domEvent.$.metaKey ) )
+					if ( nativeContextMenuOnCtrl &&
+					     // Safari on Windows always show 'ctrlKey' as true in 'contextmenu' event,
+						// which make this property unreliable. (#4826)
+					     ( CKEDITOR.env.webkit ? holdCtrlKey : domEvent.$.ctrlKey || domEvent.$.metaKey ) )
 						return;
 
 					// Cancel the browser context menu.
@@ -213,6 +215,23 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 						0, this );
 				},
 				this );
+
+			if( CKEDITOR.env.webkit )
+			{
+				var holdCtrlKey,
+					onKeyDown = function( event )
+					{
+						holdCtrlKey = event.data.$.ctrlKey || event.data.$.metaKey;
+					},
+					resetOnKeyUp = function()
+					{
+						holdCtrlKey = 0;
+					};
+
+				element.on( 'keydown', onKeyDown );
+				element.on( 'keyup', resetOnKeyUp );
+				element.on( 'contextmenu', resetOnKeyUp );
+			}
 		},
 
 		addListener : function( listenerFn )
@@ -229,11 +248,12 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 });
 
 /**
- * Whether preserve browser native context menu when 'Ctrl' or 'Meta' key
- * is pressed while open context menu.
+ * Whether to show the browser native context menu when the CTRL or the
+ * META (Mac) key is pressed while opening the context menu.
  * @name CKEDITOR.config.browserContextMenuOnCtrl
+ * @since 3.0.2
  * @type Boolean
  * @default true
  * @example
- *  config.browserContextMenuOnCtrl = false;
+ * config.browserContextMenuOnCtrl = false;
  */

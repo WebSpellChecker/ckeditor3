@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -69,7 +69,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 
 							evt.name == 'ok' && applyColorStyle( this.getContentElement( 'picker', 'selectedColor' ).getValue(), type );
 						}
-						
+
 						editor.openDialog( 'colordialog', function()
 						{
 							this.on( 'ok', onColorDialogClose );

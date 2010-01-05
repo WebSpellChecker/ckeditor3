@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 (function()
@@ -49,10 +49,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				var data = evt.data,
 					mswordHtml;
-				
+
 				// MS-WORD format sniffing.
 				if ( ( mswordHtml = data[ 'html' ] )
-					 && ( forceFromWord || /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/.test( mswordHtml ) ) )
+					 && ( forceFromWord || ( /(class=\"?Mso|style=\"[^\"]*\bmso\-|w:WordDocument)/ ).test( mswordHtml ) ) )
 				{
 					var isLazyLoad = this.loadFilterRules( function()
 						{
@@ -82,8 +82,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				callback();
 			else
 			{
-				var filterFilePath = CKEDITOR.getUrl( 
-						CKEDITOR.config.pasteFromWordCleanupFile 
+				var filterFilePath = CKEDITOR.getUrl(
+						CKEDITOR.config.pasteFromWordCleanupFile
 						|| ( this.path + 'filter/default.js' ) );
 
 				// Load with busy indicator.

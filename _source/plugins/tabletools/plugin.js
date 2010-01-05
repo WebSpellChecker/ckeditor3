@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -357,7 +357,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			else if( r == cell )
 				return new CKEDITOR.dom.element( row[ colIndex ] );
 		}
-		
+
 		return ( typeof cell == 'undefined' )? oCol : cell.is ? -1 :  null;
 	}
 
@@ -367,11 +367,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		// Invalid merge request if:
 		// 1. In batch mode despite that less than two selected.
-		// 2. In solo mode while not exactly only one selected.    
+		// 2. In solo mode while not exactly only one selected.
 		// 3. Cells distributed in different table groups (e.g. from both thead and tbody).
-		if( ( mergeDirection ? cells.length != 1 : cells.length < 2 ) 
-			 || selection.getCommonAncestor().is( 'table' ) )
+		var commonAncestor;
+		if ( ( mergeDirection ? cells.length != 1 : cells.length < 2 )
+				|| ( commonAncestor = selection.getCommonAncestor() )
+				&& commonAncestor.type == CKEDITOR.NODE_ELEMENT
+				&& commonAncestor.is( 'table' ) )
+		{
 			return false;
+		}
 
 		var	cell,
 			firstCell = cells[ 0 ],
@@ -481,7 +486,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var trs = new CKEDITOR.dom.nodeList( table.$.rows ),
 				count = trs.count();
 
-			for ( var i = count - 1; i >= 0; i-- )
+			for ( i = count - 1; i >= 0; i-- )
 			{
 				var tailTr = trs.getItem( i );
 				if( !tailTr.$.cells.length )
@@ -507,7 +512,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			return false;
 		else if( isDetect )
 			return true;
-		
+
 		var cell = cells[ 0 ],
 			tr = cell.getParent(),
 			table = tr.getAscendant( 'table' ),
@@ -519,7 +524,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			newRowSpan,
 			newCellRowSpan,
 			newRowIndex;
-		
+
 		if( rowSpan > 1 )
 		{
 			newRowSpan = Math.ceil( rowSpan / 2 );
@@ -528,7 +533,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var newCellTr = new CKEDITOR.dom.element( table.$.rows[ newRowIndex ] ),
 				newCellRow = cellInRow( map, newRowIndex ),
 				candidateCell;
-			
+
 			newCell = cell.clone();
 
 			// Figure out where to insert the new cell by checking the vitual row.
@@ -553,9 +558,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		else
 		{
 			newCellRowSpan = newRowSpan = 1;
-			var newCellTr = tr.clone();
+
+			newCellTr = tr.clone();
 			newCellTr.insertAfter( tr );
 			newCellTr.append( newCell = cell.clone() );
+
 			var cellsInSameRow = cellInRow( map, rowIndex );
 			for ( var i = 0; i < cellsInSameRow.length; i++ )
 				cellsInSameRow[ i ].rowSpan++;
@@ -750,7 +757,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						placeCursorInCell( verticalSplitCell( editor.getSelection() ) );
 					}
 				} );
-			
+
 			editor.addCommand( 'cellHorizontalSplit',
 				{
 					exec : function( editor )
@@ -758,7 +765,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						placeCursorInCell( horizontalSplitCell( editor.getSelection() ) );
 					}
 				} );
-			
+
 			editor.addCommand( 'cellInsertBefore',
 				{
 					exec : function( editor )

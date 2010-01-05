@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -53,7 +53,7 @@ CKEDITOR.skins = (function()
 							return 'url(' + baseUrl + opener +  path + closer + ')';
 					} );
 		}
-		
+
 		// Check if we need to preload images from it.
 		if ( !preloaded[ skinName ] )
 		{
@@ -134,7 +134,7 @@ CKEDITOR.skins = (function()
 				}
 
 				part.css = cssPart;
-				
+
 				cssIsLoaded = 1;
 			}
 

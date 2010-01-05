@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -174,7 +174,7 @@ CKEDITOR.config =
 	bodyId : '',
 
 	/**
-	 * Sets the 'class' attribute to be used on body if it doesn't have one.  
+	 * Sets the 'class' attribute to be used on body if it doesn't have one.
 	 * @type String
 	 * @default ''
 	 */

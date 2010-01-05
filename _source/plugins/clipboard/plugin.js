@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -78,10 +78,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	// Paste command.
 	var pasteCmd =
-	{ 
+	{
 		canUndo : false,
 
-		exec : 
+		exec :
 			CKEDITOR.env.ie ?
 				function( editor )
 				{
@@ -170,11 +170,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Create container to paste into
 		var pastebin = new CKEDITOR.dom.element( mode == 'text' ? 'textarea' : 'div', doc );
 		pastebin.setAttribute( 'id', 'cke_pastebin' );
+		// Safari requires a filler node inside the div to have the content pasted into it. (#4882)
+		CKEDITOR.env.webkit && pastebin.append( doc.createText( '\xa0' ) );
 		doc.getBody().append( pastebin );
 
 		// It's definitely a better user experience if we make the paste-bin pretty unnoticed
 		// by pulling it off the screen, while this hack will make the paste-bin a control type element
-		// and that become a selection plain later. 
+		// and that become a selection plain later.
 		if ( !CKEDITOR.env.ie && mode != 'html' )
 		{
 			pastebin.setStyles(
@@ -234,7 +236,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			sel.selectBookmarks( bms );
 			callback( pastebin[ 'get' + ( mode == 'text' ? 'Value' : 'Html' ) ]() );
 		}, 0 );
-	};
+	}
 
 	// Register the plugin.
 	CKEDITOR.plugins.add( 'clipboard',
@@ -256,8 +258,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				editor.on( 'pasteDialog', function( evt )
 					{
-						// Open default paste dialog. 
-						editor.openDialog( 'paste' );
+						setTimeout( function()
+						{
+							// Open default paste dialog.
+							editor.openDialog( 'paste' );
+						}, 0 );
 					});
 
 				function addButtonCommand( buttonName, commandName, command, ctxMenuOrder )
@@ -303,6 +308,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					body.on( ( mode == 'text' && CKEDITOR.env.ie ) ? 'paste' : 'beforepaste',
 						function( evt )
 						{
+							if( depressBeforePasteEvent )
+								return;
+
 							getClipboardData.call( editor, evt, mode, function ( data )
 							{
 								// The very last guard to make sure the
@@ -321,9 +329,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				// If the "contextmenu" plugin is loaded, register the listeners.
 				if ( editor.contextMenu )
 				{
+					var depressBeforePasteEvent;
 					function stateFromNamedCommand( command )
 					{
-						return editor.document.$.queryCommandEnabled( command ) ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED;
+						// IE Bug: queryCommandEnabled('paste') fires also 'beforepaste',
+						// guard to distinguish from the ordinary sources( either
+						// keyboard paste or execCommand ) (#4874).
+						CKEDITOR.env.ie && command == 'Paste'&& ( depressBeforePasteEvent = 1 );
+
+						var retval = editor.document.$.queryCommandEnabled( command ) ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED;
+						depressBeforePasteEvent = 0;
+						return retval;
 					}
 
 					editor.contextMenu.addListener( function()

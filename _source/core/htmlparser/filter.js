@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -111,7 +111,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			onNode : function( node )
 			{
 				var type = node.type;
-				
+
 				return type == CKEDITOR.NODE_ELEMENT ? this.onElement( node ) :
 					type == CKEDITOR.NODE_TEXT ? new CKEDITOR.htmlParser.text( this.onText( node.value ) ) :
 					type == CKEDITOR.NODE_COMMENT ? new CKEDITOR.htmlParser.comment( this.onComment( node.value ) ):

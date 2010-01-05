@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -27,11 +27,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	var loadConfigLoaded = {};
 	var loadConfig = function( editor )
 	{
-		var customConfig = CKEDITOR.getUrl( editor.config.customConfig );
+		var customConfig = editor.config.customConfig;
 
 		// Check if there is a custom config to load.
 		if ( !customConfig )
 			return false;
+
+		customConfig = CKEDITOR.getUrl( customConfig );
 
 		var loadedConfig = loadConfigLoaded[ customConfig ] || ( loadConfigLoaded[ customConfig ] = {} );
 
@@ -573,7 +575,11 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 		},
 
 		/**
-		 * Sets the editor data. The data must be provided in raw format.
+		 * Sets the editor data. The data must be provided in raw format (HTML).
+		 * <b>Note:</b> This's an asynchronous method, the {@param callback}
+		 * function should be relied on if you want to interact with the editor
+		 * after data is fully loaded.
+		 *
 		 * @param {String} data HTML code to replace the curent content in the editor.
 		 * @param {Function} callback Function to be called after the setData is completed.
 		 * @example
@@ -684,4 +690,3 @@ CKEDITOR.on( 'loaded', function()
  * @example
  * config.htmlEncodeOutput = true;
  */
-

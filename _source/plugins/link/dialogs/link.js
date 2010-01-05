@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -89,8 +89,8 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			anchorMatch,
 			urlMatch,
 			retval = {};
-		
-		if ( anchorMatch = href.match( anchorRegex ) )
+
+		if ( ( anchorMatch = href.match( anchorRegex ) ) )
 		{
 			retval.type = 'anchor';
 			retval.anchor = {};
@@ -331,7 +331,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			retval.push( '\'',
 						 paramValue ?
 						 escapeSingleQuote( encodeURIComponent( email[ paramName ] ) )
-						 : '', 
+						 : '',
 						 '\'');
 		}
 		retval.push( ')' );
@@ -350,7 +350,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 		}
 		return 'String.fromCharCode(' + encodedChars.join( ',' ) + ')';
 	}
-	
+
 	return {
 		title : editor.lang.link.title,
 		minWidth : 350,
@@ -1238,7 +1238,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 					addFeature( 'top' );
 
 					onclickList.push( featureList.join( ',' ), '\'); return false;' );
-					attributes[ CKEDITOR.env.ie || CKEDITOR.env.webkit ? '_cke_pa_onclick' : 'onclick' ] = onclickList.join( '' );
+					attributes[ '_cke_pa_onclick' ] = onclickList.join( '' );
 				}
 				else
 				{
@@ -1356,7 +1356,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 
 		}
 	};
-} )
+});
 
 /**
  * The e-mail address anti-spam protection option.

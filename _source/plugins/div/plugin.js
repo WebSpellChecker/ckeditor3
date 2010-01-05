@@ -1,11 +1,11 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 /**
  * @fileOverview The "div" plugin. It wraps the selected block level elements with a 'div' element with specified styles and attributes.
- * 
+ *
  */
 
 (function()
@@ -57,13 +57,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							}
 						}
 
-						for ( var i = 0 ; i < toRemove.length ; i++ )
+						for ( i = 0 ; i < toRemove.length ; i++ )
 							toRemove[ i ].remove( true );
 
 						selection.selectBookmarks( bookmarks );
 					}
 				} );
-				
+
 			editor.ui.addButton( 'CreateDiv',
 			{
 				label : lang.toolbar,
@@ -106,14 +106,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								return {
 									editdiv : CKEDITOR.TRISTATE_OFF,
 									removediv : CKEDITOR.TRISTATE_OFF
-								}
+								};
 							}
 
 							return null;
 						} );
 				}
 			}
-			
+
 			CKEDITOR.dialog.add( 'creatediv', this.path + 'dialogs/div.js' );
 			CKEDITOR.dialog.add( 'editdiv', this.path + 'dialogs/div.js' );
 		}

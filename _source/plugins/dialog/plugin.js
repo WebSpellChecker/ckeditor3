@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -2695,7 +2695,7 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 		/**
 		 * Loads and opens a registered dialog.
 		 * @param {String} dialogName The registered name of the dialog.
-		 * @param {Function} callback The function to be invoked after dialog instance created.  
+		 * @param {Function} callback The function to be invoked after dialog instance created.
 		 * @see CKEDITOR.dialog.add
 		 * @example
 		 * CKEDITOR.instances.editor1.openDialog( 'smiley' );

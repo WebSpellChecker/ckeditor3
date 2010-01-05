@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -191,7 +191,7 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 							else if( newAttrName != a )
 							{
 								delete attributes[ a ];
-								a = newAttrName; 
+								a = newAttrName;
 								continue;
 							}
 							else
@@ -212,7 +212,8 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 				attribsArray.sort( sortAttribs );
 
 			// Send the attributes.
-			for ( i = 0, len = attribsArray.length ; i < len ; i++ )
+			var len = attribsArray.length;
+			for ( i = 0 ; i < len ; i++ )
 			{
 				var attrib = attribsArray[ i ];
 				writer.attribute( attrib[0], attrib[1] );

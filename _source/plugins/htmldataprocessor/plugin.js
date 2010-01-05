@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -238,7 +238,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	var protectElementNamesRegex = /(<\/?)((?:object|embed|param|html|body|head|title)[^>]*>)/gi,
 		unprotectElementNamesRegex = /(<\/?)cke:((?:html|body|head|title)[^>]*>)/gi;
 
-	var protectSelfClosingRegex = /<cke:(param|embed)([\s\S]*?)\/?>/gi;
+	var protectSelfClosingRegex = /<cke:(param|embed)([^>]*?)\/?>(?!\s*<\/cke:\1)/gi;
 
 	function protectAttributes( html )
 	{
@@ -289,7 +289,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	function unprotectRealComments( html )
 	{
-		return html.replace( /<!--{cke_protected}{C}([\s\S]+?)-->/g, function( match, data )
+		return html.replace( /<!--\{cke_protected\}\{C\}([\s\S]+?)-->/g, function( match, data )
 			{
 				return decodeURIComponent( data );
 			});
@@ -304,7 +304,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			[
 				// Script tags will also be forced to be protected, otherwise
 				// IE will execute them.
-				/<script[\s\S]*?<\/script>/gi,
+				( /<script[\s\S]*?<\/script>/gi ),
 
 				// <noscript> tags (get lost in IE and messed up in FF).
 				/<noscript[\s\S]*?<\/noscript>/gi

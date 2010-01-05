@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -299,7 +299,7 @@ CKEDITOR.htmlWriter = CKEDITOR.tools.createClass(
 		setRules : function( tagName, rules )
 		{
 			var currentRules = this._.rules[ tagName ];
-			
+
 			if ( currentRules )
 				CKEDITOR.tools.extend( currentRules, rules, true );
 			else

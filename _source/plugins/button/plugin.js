@@ -139,7 +139,8 @@ CKEDITOR.ui.button.prototype =
 				' tabindex="-1"' +
 				' hidefocus="true"' +
 			    ' role="button"' +
-				' aria-labelledby="' + id + '_label"' );
+				' aria-labelledby="' + id + '_label"' +
+				( this.hasArrow ?  ' aria-haspopup="true"' : '' ) );
 
 		// Some browsers don't cancel key events in the keydown but in the
 		// keypress.
@@ -203,6 +204,10 @@ CKEDITOR.ui.button.prototype =
 			state == CKEDITOR.TRISTATE_DISABLED ?
 				element.setAttribute( 'aria-disabled', true ) :
 				element.removeAttribute( 'aria-disabled' );
+
+			state == CKEDITOR.TRISTATE_ON ?
+				element.setAttribute( 'aria-pressed', true ) :
+				element.removeAttribute( 'aria-pressed' );
 		}
 
 		this._.state = state;

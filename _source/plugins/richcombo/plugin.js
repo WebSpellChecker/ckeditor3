@@ -165,7 +165,7 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 				'>' +
 					'<span id="' + id+ '_label" class=cke_label>', this.label, '</span>' +
 					'<a hidefocus=true title="', this.title, '" tabindex="-1" href="javascript:void(\'', this.label, '\')"' +
-						' role="button" aria-labelledby="', id , '_label" aria-describedby="', id, '_text"' );
+						' role="button" aria-labelledby="', id , '_label" aria-describedby="', id, '_text" aria-haspopup="true"' );
 
 			// Some browsers don't cancel key events in the keydown but in the
 			// keypress.

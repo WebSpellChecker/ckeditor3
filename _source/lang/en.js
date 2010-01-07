@@ -474,6 +474,7 @@ CKEDITOR.lang['en'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path', 
 		eleTitle : '%1 element'
 	},
 

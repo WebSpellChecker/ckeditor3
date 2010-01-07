@@ -165,7 +165,7 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 				'>' +
 					'<span id="' + id+ '_label" class=cke_label>', this.label, '</span>' +
 					'<a hidefocus=true title="', this.title, '" tabindex="-1" href="javascript:void(\'', this.label, '\')"' +
-						' role="button" aria-labelledby="', id ,'_label"' );
+						' role="button" aria-labelledby="', id , '_label" aria-describedby="', id, '_text"' );
 
 			// Some browsers don't cancel key events in the keydown but in the
 			// keypress.
@@ -281,9 +281,7 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 		{
 			this._.value = value;
 
-			var element = this.document.getById( 'cke_' + this.id )
-								.getElementsByTag( 'a' ).getItem( 0 ),
-				 textElement = this.document.getById( 'cke_' + this.id + '_text' );
+			var textElement = this.document.getById( 'cke_' + this.id + '_text' );
 
 			if ( !( value || text ) )
 			{
@@ -292,10 +290,8 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 			}
 			else
 				textElement.removeClass( 'cke_inline_label' );
-			textElement.setHtml( typeof text != 'undefined' ? text : value );
 
-			// Update link 'tilte' to represent the currectly selected combo value.
-			element.setAttribute( 'title', typeof text != 'undefined' ? text : value );
+			textElement.setHtml( typeof text != 'undefined' ? text : value );
 		},
 
 		getValue : function()

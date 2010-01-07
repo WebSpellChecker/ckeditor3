@@ -256,7 +256,7 @@ CKEDITOR.plugins.add( 'floatpanel',
 									}
 								}
 
-								iframe.$.contentWindow.focus();
+								block.element.focus();
 								// We need this get fired manually because of unfired focus() function.
 								this.allowBlur( true );
 

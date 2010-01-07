@@ -247,6 +247,7 @@ CKEDITOR.ui.panel.block = CKEDITOR.tools.createClass(
 				{
 					attributes :
 					{
+						'tabIndex' : -1,
 						'class' : 'cke_panel_block'
 					},
 					styles :

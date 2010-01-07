@@ -155,8 +155,8 @@ CKEDITOR.ui.panel.prototype =
 							'<style>.' + className + '_container{visibility:hidden}</style>' +
 						'</head>' +
 						'<body class="cke_' + dir + ' cke_panel_frame ' + CKEDITOR.env.cssClass + '" style="margin:0;padding:0"' +
-						' onload="( window.CKEDITOR || window.parent.CKEDITOR ).tools.callFunction(' + onLoad + ');">' +
-						'</body>' +
+						' onload="( window.CKEDITOR || window.parent.CKEDITOR ).tools.callFunction(' + onLoad + ');"' +
+						' role="application"></body>' +
 						// It looks strange, but for FF2, the styles must go
 						// after <body>, so it (body) becames immediatelly
 						// available. (#3031)

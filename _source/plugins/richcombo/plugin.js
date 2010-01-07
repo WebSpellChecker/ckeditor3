@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -163,8 +163,9 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 
 			output.push(
 				'>' +
-					'<span class=cke_label>', this.label, '</span>' +
-					'<a hidefocus=true title="', this.title, '" tabindex="-1" href="javascript:void(\'', this.label, '\')"' );
+					'<span id="' + id+ '_label" class=cke_label>', this.label, '</span>' +
+					'<a hidefocus=true title="', this.title, '" tabindex="-1" href="javascript:void(\'', this.label, '\')"' +
+						' role="button" aria-labelledby="', id ,'_label"' );
 
 			// Some browsers don't cancel key events in the keydown but in the
 			// keypress.
@@ -187,7 +188,6 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 					' onkeydown="CKEDITOR.tools.callFunction( ', keyDownFn, ', event, this );"' +
 					' onclick="CKEDITOR.tools.callFunction(', clickFn, ', this); return false;">' +
 						'<span>' +
-							'<span class="cke_accessibility">' + ( this.voiceLabel ? this.voiceLabel + ' ' : '' ) + '</span>' +
 							'<span id="' + id + '_text" class="cke_text cke_inline_label">' + this.label + '</span>' +
 						'</span>' +
 						'<span class=cke_openbutton></span>' +
@@ -281,7 +281,9 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 		{
 			this._.value = value;
 
-			var textElement = this.document.getById( 'cke_' + this.id + '_text' );
+			var element = this.document.getById( 'cke_' + this.id )
+								.getElementsByTag( 'a' ).getItem( 0 ),
+				 textElement = this.document.getById( 'cke_' + this.id + '_text' );
 
 			if ( !( value || text ) )
 			{
@@ -291,6 +293,9 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 			else
 				textElement.removeClass( 'cke_inline_label' );
 			textElement.setHtml( typeof text != 'undefined' ? text : value );
+
+			// Update link 'tilte' to represent the currectly selected combo value.
+			element.setAttribute( 'title', typeof text != 'undefined' ? text : value );
 		},
 
 		getValue : function()

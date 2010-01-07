@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -137,7 +137,9 @@ CKEDITOR.ui.button.prototype =
 				' class="', classes, '" href="javascript:void(\'', ( this.title || '' ).replace( "'", '' ), '\')"' +
 				' title="', this.title, '"' +
 				' tabindex="-1"' +
-				' hidefocus="true"' );
+				' hidefocus="true"' +
+			    ' role="button"' +
+				' aria-labelledby="' + id + '_label"' );
 
 		// Some browsers don't cancel key events in the keydown but in the
 		// keypress.
@@ -170,7 +172,7 @@ CKEDITOR.ui.button.prototype =
 
 		output.push(
 					'></span>' +
-					'<span class="cke_label">', this.label, '</span>' );
+					'<span id="', id, '_label" class="cke_label">', this.label, '</span>' );
 
 		if ( this.hasArrow )
 		{
@@ -198,15 +200,9 @@ CKEDITOR.ui.button.prototype =
 		if ( element )
 		{
 			element.setState( state );
-
-			var htmlTitle = this.title,
-				unavailable = this._.editor.lang.common.unavailable,
-				labelElement = element.getChild( 1 );
-
-			if ( state == CKEDITOR.TRISTATE_DISABLED )
-				htmlTitle = unavailable.replace( '%1', this.title );
-
-			labelElement.setHtml( htmlTitle );
+			state == CKEDITOR.TRISTATE_DISABLED ?
+				element.setAttribute( 'aria-disabled', true ) :
+				element.removeAttribute( 'aria-disabled' );
 		}
 
 		this._.state = state;

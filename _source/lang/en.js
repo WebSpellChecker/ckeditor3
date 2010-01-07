@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -92,10 +92,7 @@ CKEDITOR.lang['en'] =
 		advancedTab		: 'Advanced',
 		validateNumberFailed	: 'This value is not a number.',
 		confirmNewPage	: 'Any unsaved changes to this content will be lost. Are you sure you want to load new page?',
-		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?',
-
-		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>'
+		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?'
 	},
 
 	// Special char dialog.
@@ -532,7 +529,6 @@ CKEDITOR.lang['en'] =
 	stylesCombo :
 	{
 		label : 'Styles',
-		voiceLabel : 'Styles',
 		panelVoiceLabel : 'Select a style',
 		panelTitle1 : 'Block Styles',
 		panelTitle2 : 'Inline Styles',
@@ -542,7 +538,6 @@ CKEDITOR.lang['en'] =
 	format :
 	{
 		label : 'Format',
-		voiceLabel : 'Format',
 		panelTitle : 'Paragraph Format',
 		panelVoiceLabel : 'Select a paragraph format',
 

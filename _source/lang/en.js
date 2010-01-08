@@ -592,6 +592,8 @@ CKEDITOR.lang['en'] =
 	{
 		textColorTitle : 'Text Color',
 		bgColorTitle : 'Background Color',
+		panelTitle : 'Colors',
+		panelVoiceLabel : 'Select a color',
 		auto : 'Automatic',
 		more : 'More Colors...'
 	},

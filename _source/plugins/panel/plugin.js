@@ -198,7 +198,8 @@ CKEDITOR.ui.panel.prototype =
 
 	addBlock : function( name, block )
 	{
-		block = this._.blocks[ name ] = block || new CKEDITOR.ui.panel.block( this.getHolderElement() );
+		block = this._.blocks[ name ] = block instanceof CKEDITOR.ui.panel.block ?  block
+				: new CKEDITOR.ui.panel.block( this.getHolderElement(), block );
 
 		if ( !this._.currentBlock )
 			this.showBlock( name );

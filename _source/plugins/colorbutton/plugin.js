@@ -31,12 +31,12 @@ CKEDITOR.plugins.add( 'colorbutton',
 
 					panel :
 					{
-						css : editor.skin.editor.css
+						css : editor.skin.editor.css,
+						aria : { role : 'listbox', 'aria-label' : lang.panelTitle, 'aria-describedby' : lang.panelVoiceLabel }
 					},
 
-					onBlock : function( panel, blockName )
+					onBlock : function( panel, block )
 					{
-						var block = panel.addBlock( blockName );
 						block.autoSize = true;
 						block.element.addClass( 'cke_colorblock' );
 						block.element.setHtml( renderColors( panel, type ) );
@@ -55,7 +55,8 @@ CKEDITOR.plugins.add( 'colorbutton',
 		function renderColors( panel, type )
 		{
 			var output = [],
-				colors = config.colorButton_colors.split( ',' );
+				colors = config.colorButton_colors.split( ',' ),
+				total = colors.length + ( config.colorButton_enableMore ? 2 : 1 );
 
 			var clickFn = CKEDITOR.tools.addFunction( function( color, type )
 				{
@@ -98,7 +99,8 @@ CKEDITOR.plugins.add( 'colorbutton',
 				'<a class="cke_colorauto" _cke_focus=1 hidefocus=true' +
 					' title="', lang.auto, '"' +
 					' onclick="CKEDITOR.tools.callFunction(', clickFn, ',null,\'', type, '\');return false;"' +
-					' href="javascript:void(\'', lang.auto, '\')">' +
+					' href="javascript:void(\'', lang.auto, '\')"' +
+					' role="option" aria-posinset="1" aria-setsize="', total, '">' +
 					'<table cellspacing=0 cellpadding=0 width="100%">' +
 						'<tr>' +
 							'<td>' +
@@ -125,7 +127,8 @@ CKEDITOR.plugins.add( 'colorbutton',
 						'<a class="cke_colorbox" _cke_focus=1 hidefocus=true' +
 							' title="', colorLabel, '"' +
 							' onclick="CKEDITOR.tools.callFunction(', clickFn, ',\'#', colorCode, '\',\'', type, '\'); return false;"' +
-							' href="javascript:void(\'', colorLabel, '\')">' +
+							' href="javascript:void(\'', colorLabel, '\')"' +
+							' role="option" aria-posinset="', ( i + 2 ), '" aria-setsize="', total, '">' +
 							'<span class="cke_colorbox" style="background-color:#', colorCode, '"></span>' +
 						'</a>' +
 					'</td>' );
@@ -141,7 +144,8 @@ CKEDITOR.plugins.add( 'colorbutton',
 							'<a class="cke_colormore" _cke_focus=1 hidefocus=true' +
 								' title="', lang.more, '"' +
 								' onclick="CKEDITOR.tools.callFunction(', clickFn, ',\'?\',\'', type, '\');return false;"' +
-								' href="javascript:void(\'', lang.more, '\')">',
+								' href="javascript:void(\'', lang.more, '\')"',
+								' role="option" aria-posinset="', total, '" aria-setsize="', total, '">', 
 								lang.more,
 							'</a>' +
 						'</td>' );	// It is later in the code.

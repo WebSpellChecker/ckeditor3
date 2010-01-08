@@ -35,6 +35,19 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 				editor.execCommand( commandName );
 			},
 			this);
+
+		this._.definiton =
+		{
+			panel:
+			{
+				className : editor.skinClass + ' cke_contextmenu',
+				aria :
+				{
+					'aria-label' : editor.lang.contextMenu.panelTitle,
+					'aria-describedby' : editor.lang.contextMenu.panelVoiceLabel
+				}
+			}
+		};
 	},
 
 	_ :
@@ -51,7 +64,7 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 			}
 			else
 			{
-				menu = this._.menu = new CKEDITOR.menu( editor );
+				menu = this._.menu = new CKEDITOR.menu( editor, this._.definiton );
 				menu.onClick = CKEDITOR.tools.bind( function( item )
 				{
 					var noUnlock = true;

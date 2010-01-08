@@ -555,6 +555,12 @@ CKEDITOR.lang['en'] =
 		tag_div : 'Normal (DIV)'
 	},
 
+	contextMenu :
+	{
+		panelTitle : 'context menu options',
+		panelVoiceLabel: ''
+	},
+
 	div :
 	{
 		title				: 'Create Div Container',

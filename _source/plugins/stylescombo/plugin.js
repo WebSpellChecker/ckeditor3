@@ -20,14 +20,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					label : lang.label,
 					title : lang.panelTitle,
-					voiceLabel : lang.voiceLabel,
 					className : 'cke_styles',
-					multiSelect : true,
 
 					panel :
 					{
 						css : editor.skin.editor.css.concat( config.contentsCss ),
-						voiceLabel : lang.panelVoiceLabel
+						multiSelect : true,
+						aria : { 'aria-label' : lang.panelTitle, 'aria-describedby' : lang.panelVoiceLabel }
 					},
 
 					init : function()

@@ -44,6 +44,11 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 						|| CKEDITOR.document;
 
 		panelDefinition.className = ( panelDefinition.className || '' ) + ' cke_rcombopanel';
+		panelDefinition.block =
+		{
+			multiSelect : panelDefinition.multiSelect,
+			aria : panelDefinition.aria
+		};
 
 		this._ =
 		{
@@ -205,11 +210,12 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 		{
 			if ( this._.panel )
 				return;
-
+			
 			var panelDefinition = this._.panelDefinition,
+				panelBlockDefinition = this._.panelDefinition.block,
 				panelParentElement = panelDefinition.parent || CKEDITOR.document.getBody(),
 				panel = new CKEDITOR.ui.floatPanel( editor, panelParentElement, panelDefinition ),
-				list = panel.addListBlock( this.id, this.multiSelect ),
+				list = panel.addListBlock( this.id, panelBlockDefinition ),
 				me = this;
 
 			panel.onShow = function()

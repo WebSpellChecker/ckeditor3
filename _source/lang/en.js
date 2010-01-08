@@ -530,6 +530,7 @@ CKEDITOR.lang['en'] =
 	stylesCombo :
 	{
 		label : 'Styles',
+		panelTitle : 'Formatting Styles',
 		panelVoiceLabel : 'Select a style',
 		panelTitle1 : 'Block Styles',
 		panelTitle2 : 'Inline Styles',

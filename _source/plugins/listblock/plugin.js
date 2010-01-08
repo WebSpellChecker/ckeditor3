@@ -18,14 +18,18 @@ CKEDITOR.plugins.add( 'listblock',
 			{
 				base : CKEDITOR.ui.panel.block,
 
-				$ : function( blockHolder, multiSelect )
+				$ : function( blockHolder, blockDefinition )
 				{
+					blockDefinition = blockDefinition || {};
+
+					var aria = blockDefinition.aria || ( blockDefinition.aria = {} );
+					( this.multiSelect = !!blockDefinition.multiSelect ) &&
+						( aria[ 'aria-multiselectable' ] = true );
+					// Provide default role of 'listbox'.
+					!aria.role && ( aria.role = 'listbox' );
+					
 					// Call the base contructor.
-					this.base( blockHolder );
-
-					this.element.setAttribute( 'role', 'listbox' );
-
-					this.multiSelect = !!multiSelect;
+					this.base.apply( this, arguments );
 
 					var keys = this.keys;
 					keys[ 40 ]	= 'next';					// ARROW-DOWN

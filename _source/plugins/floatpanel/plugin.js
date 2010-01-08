@@ -237,30 +237,15 @@ CKEDITOR.plugins.add( 'floatpanel',
 									opacity : '1'
 								} );
 
+							// Set the panel frame focus, so the blur event gets fired.
+							block.element.focus();
+							// We need this get fired manually because of unfired focus() function.
+							this.allowBlur( true );
+
 						} , this );
 
 						panel.isLoaded ? panelLoad() : panel.onLoad = panelLoad;
 
-						// Set the panel frame focus, so the blur event gets fired.
-						CKEDITOR.tools.setTimeout( function()
-							{
-								if ( definition.voiceLabel )
-								{
-									if ( CKEDITOR.env.gecko )
-									{
-										var container = iframe.getParent();
-										container.setAttribute( 'role', 'region' );
-										container.setAttribute( 'title', definition.voiceLabel );
-										iframe.setAttribute( 'role', 'region' );
-										iframe.setAttribute( 'title', ' ' );
-									}
-								}
-
-								block.element.focus();
-								// We need this get fired manually because of unfired focus() function.
-								this.allowBlur( true );
-
-							}, 0, this);
 					}, 0, this);
 				this.visible = 1;
 

@@ -240,7 +240,7 @@ CKEDITOR.ui.panel.prototype =
 
 CKEDITOR.ui.panel.block = CKEDITOR.tools.createClass(
 {
-	$ : function( blockHolder )
+	$ : function( blockHolder, blockDefinition )
 	{
 		this.element = blockHolder.append(
 			blockHolder.getDocument().createElement( 'div',
@@ -255,6 +255,10 @@ CKEDITOR.ui.panel.block = CKEDITOR.tools.createClass(
 						display : 'none'
 					}
 				}) );
+
+		blockDefinition = blockDefinition || {};
+		var aria = blockDefinition.aria;
+		aria && this.element.setAttributes( aria );
 
 		this.keys = {};
 

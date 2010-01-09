@@ -171,7 +171,7 @@ CKEDITOR.themes.add( 'default', (function()
 						' role="application"' +
 						'>' +
 						'<table class="cke_dialog', ' ' + CKEDITOR.env.cssClass,
-							' cke_', editor.lang.dir, '" style="position:absolute">' +
+							' cke_', editor.lang.dir, '" style="position:absolute" role="dialog" aria-labelledby="%title#" a>' +
 							'<tr><td>' +
 							'<div class="%body">' +
 								'<div id="%title#" class="%title"></div>' +

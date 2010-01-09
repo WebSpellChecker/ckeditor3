@@ -1937,7 +1937,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 					html = [ '<', nodeName, ' ' ],
 					styles = ( stylesArg && stylesArg.call ? stylesArg( elementDefinition ) : stylesArg ) || {},
 					attributes = ( attributesArg && attributesArg.call ? attributesArg( elementDefinition ) : attributesArg ) || {},
-					innerHTML = ( contentsArg && contentsArg.call ? contentsArg( dialog, elementDefinition ) : contentsArg ) || '',
+					innerHTML = ( contentsArg && contentsArg.call ? contentsArg.call( this, dialog, elementDefinition ) : contentsArg ) || '',
 					domId = this.domId = attributes.id || CKEDITOR.tools.getNextNumber() + '_uiElement',
 					id = this.id = elementDefinition.id,
 					i;

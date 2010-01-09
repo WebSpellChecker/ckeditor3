@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -135,7 +135,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 								elementDefinition.label,
 								'</div>',
 								'<div class="cke_dialog_ui_labeled_content">',
-								contentHtml( dialog, elementDefinition ),
+								contentHtml.call( this, dialog, elementDefinition ),
 								'</div>' );
 					else
 					{
@@ -154,7 +154,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 								{
 									type : 'html',
 									html : '<span class="cke_dialog_ui_labeled_content">' +
-										contentHtml( dialog, elementDefinition ) +
+										contentHtml.call( this, dialog, elementDefinition ) +
 										'</span>'
 								}
 							]
@@ -242,6 +242,8 @@ CKEDITOR.plugins.add( 'dialogui' );
 						html.push( 'style="width:'+ elementDefinition.width +'" ' );
 
 					html.push( '><input ' );
+
+					attributes[ 'aria-labelledby' ] = this._.labelId;
 					for ( var i in attributes )
 						html.push( i + '="' + attributes[i] + '" ' );
 					html.push( ' /></div>' );
@@ -334,13 +336,15 @@ CKEDITOR.plugins.add( 'dialogui' );
 							{
 								id : elementDefinition.id ? elementDefinition.id + '_checkbox' : CKEDITOR.tools.getNextNumber() + '_checkbox'
 							}, true ),
-						html = [],
-						attributes = { 'class' : 'cke_dialog_ui_checkbox_input', type : 'checkbox' };
+						html = [];
+
+					var labelId = CKEDITOR.tools.getNextNumber() + '_label';
+					var attributes = { 'class' : 'cke_dialog_ui_checkbox_input', type : 'checkbox', 'aria-labelledby' : labelId };
 					cleanInnerDefinition( myDefinition );
 					if ( elementDefinition[ 'default' ] )
 						attributes.checked = 'checked';
 					_.checkbox = new CKEDITOR.ui.dialog.uiElement( dialog, myDefinition, html, 'input', null, attributes );
-					html.push( ' <label for="', attributes.id, '">',
+					html.push( ' <label id="', labelId, '" for="', attributes.id, '">',
 							CKEDITOR.tools.htmlEncode( elementDefinition.label ),
 							'</label>' );
 					return html.join( '' );
@@ -385,7 +389,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 				var innerHTML = function()
 				{
 					var inputHtmlList = [], html = [],
-						commonAttributes = { 'class' : 'cke_dialog_ui_radio_item' },
+						commonAttributes = { 'class' : 'cke_dialog_ui_radio_item', 'aria-labelledby' : this._.labelId },
 						commonName = elementDefinition.id ? elementDefinition.id + '_radio' : CKEDITOR.tools.getNextNumber() + '_radio';
 					for ( var i = 0 ; i < elementDefinition.items.length ; i++ )
 					{
@@ -481,6 +485,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 				var outerDefinition = CKEDITOR.tools.extend( {}, elementDefinition );
 				delete outerDefinition.style;
 
+				var labelId = CKEDITOR.tools.getNextNumber() + '_label';
 				CKEDITOR.ui.dialog.uiElement.call(
 					this,
 					dialog,
@@ -493,9 +498,11 @@ CKEDITOR.plugins.add( 'dialogui' );
 						href : 'javascript:void(0)',
 						title : elementDefinition.label,
 						hidefocus : 'true',
-						'class' : elementDefinition['class']
+						'class' : elementDefinition['class'],
+						role : 'button',
+						'aria-labelledby' : labelId
 					},
-					'<span class="cke_dialog_ui_button">' +
+					'<span id="' + labelId + '" class="cke_dialog_ui_button">' +
 						CKEDITOR.tools.htmlEncode( elementDefinition.label ) +
 					'</span>' );
 			},
@@ -543,7 +550,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 							}, true ),
 						html = [],
 						innerHTML = [],
-						attributes = { 'class' : 'cke_dialog_ui_input_select' };
+						attributes = { 'class' : 'cke_dialog_ui_input_select', 'aria-labelledby' : this._.labelId };
 
 					// Add multiple and size attributes from element definition.
 					if ( elementDefinition.size != undefined )

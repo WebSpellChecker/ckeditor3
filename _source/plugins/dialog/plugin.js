@@ -135,9 +135,23 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 		this.parts = themeBuilt.parts;
 
+		var dialogPart = this.parts.dialog,
+			 contentsPart = this.parts.contents,
+			 titleId = this.parts.title.$.id,
+			 descriptiveLabelId = titleId.replace( 'title', 'desc' ),
+			 descriptiveLabel = CKEDITOR.dom.element.createFromHtml( '<label id="' + descriptiveLabelId + '" style="display:none">' + editor.lang.dialogVoiceLabel+ '</label>' );
+
+		descriptiveLabel.insertAfter( contentsPart );
+		contentsPart.setAttributes(
+		{
+			'role' : 'dialog',
+			'aria-labelledby' : titleId,
+			'aria-describedby' : descriptiveLabelId
+		} );
+
 		// Set the startup styles for the dialog, avoiding it enlarging the
 		// page size on the dialog creation.
-		this.parts.dialog.setStyles(
+		dialogPart.setStyles(
 			{
 				position : CKEDITOR.env.ie6Compat ? 'absolute' : 'fixed',
 				top : 0,

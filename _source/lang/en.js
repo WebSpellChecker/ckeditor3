@@ -32,8 +32,9 @@ CKEDITOR.lang['en'] =
 	 * of reading non-English words. So be careful while translating it.
 	 */
 	editorTitle		: 'Rich text editor, %1',
-	editorWysiwygModeVoiceLabel : 'Wysiwyg mode, press ALT+F10 moves to toolbar, ALT+F11 moves to elementspath bar.SHIFT+F10 opens contextmenu.',
+	editorWysiwygModeVoiceLabel : 'Wysiwyg mode, press ALT+F10 moves to toolbar, ALT+F11 moves to elementspath bar, SHIFT+F10 opens contextmenu.',
 	editorSourceModeVoiceLabel : 'Source mode, press ALT+F10 moves to toolbar.',
+	dialogVoiceLabel : 'Press Esc to close dialog, enter to submit dialog, ALT+F10 moves to tab list.',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Source',

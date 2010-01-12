@@ -145,6 +145,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				visibility : 'hidden'
 			});
 
+		this.parts.tabs.setAttribute( 'role', 'tablist' );
 		// Call the CKEDITOR.event constructor to initialize this instance.
 		CKEDITOR.event.call( this );
 
@@ -810,17 +811,23 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 			// Create the HTML for the tab and the content block.
 			var page = CKEDITOR.dom.element.createFromHtml( pageHtml.join( '' ) );
-			var tab = CKEDITOR.dom.element.createFromHtml( [
+			page.setAttribute( 'role', 'tabpanel' );
+
+			var tabId = contents.id + '_' + CKEDITOR.tools.getNextNumber(),
+				 tab = CKEDITOR.dom.element.createFromHtml( [
 					'<a class="cke_dialog_tab"',
 						( this._.pageCount > 0 ? ' cke_last' : 'cke_first' ),
 						titleHtml,
 						( !!contents.hidden ? ' style="display:none"' : '' ),
-						' id="', contents.id + '_', CKEDITOR.tools.getNextNumber(), '"' +
+						' id="', tabId, '"' +
 						' href="javascript:void(0)"',
-						' hidefocus="true">',
+						' hidefocus="true"' +
+						' role="tab">',
 							contents.label,
 					'</a>'
 				].join( '' ) );
+			
+			page.setAttribute( 'aria-labelledby', tabId );
 
 			// If only a single page exist, a different style is used in the central pane.
 			if ( this._.pageCount === 0 )
@@ -880,6 +887,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 					tab.removeClass( 'cke_dialog_tab_selected' );
 					page.hide();
 				}
+				page.setAttribute( 'aria-hidden', i != id );
 			}
 
 			var selected = this._.tabs[id];

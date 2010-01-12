@@ -425,6 +425,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 										type : 'text',
 										id : 'url',
 										label : editor.lang.common.url,
+										required: true,
 										onLoad : function ()
 										{
 											this.allowOnChange = true;

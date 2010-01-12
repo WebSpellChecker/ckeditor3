@@ -313,6 +313,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											id : 'src',
 											type : 'text',
 											label : '',
+											required : true,
 											validate : CKEDITOR.dialog.validate.notEmpty( editor.lang.flash.validateSrc ),
 											setup : loadValue,
 											commit : commitValue,

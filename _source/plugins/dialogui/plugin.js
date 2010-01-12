@@ -13,6 +13,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 	{
 		this._ || ( this._ = {} );
 		this._['default'] = this._.initValue = elementDefinition['default'] || '';
+		this._.required = elementDefinition[ 'required' ] || false;
 		var args = [ this._ ];
 		for ( var i = 1 ; i < arguments.length ; i++ )
 			args.push( arguments[i] );
@@ -244,6 +245,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 					html.push( '><input ' );
 
 					attributes[ 'aria-labelledby' ] = this._.labelId;
+					this._.required && ( attributes[ 'aria-required' ] = this._.required );
 					for ( var i in attributes )
 						html.push( i + '="' + attributes[i] + '" ' );
 					html.push( ' /></div>' );
@@ -292,6 +294,8 @@ CKEDITOR.plugins.add( 'dialogui' );
 				/** @ignore */
 				var innerHTML = function()
 				{
+					attributes[ 'aria-labelledby' ] = this._.labelId;
+					this._.required && ( attributes[ 'aria-required' ] = this._.required );
 					var html = [ '<div class="cke_dialog_ui_input_textarea"><textarea class="cke_dialog_ui_input_textarea" id="', domId, '" ' ];
 					for ( var i in attributes )
 						html.push( i + '="' + CKEDITOR.tools.htmlEncode( attributes[i] ) + '" ' );
@@ -396,15 +400,16 @@ CKEDITOR.plugins.add( 'dialogui' );
 						var item = elementDefinition.items[i],
 							title = item[2] !== undefined ? item[2] : item[0],
 							value = item[1] !== undefined ? item[1] : item[0],
+							inputId = CKEDITOR.tools.getNextNumber() + '_radio_input',
+							labelId = inputId + '_label',
 							inputDefinition = CKEDITOR.tools.extend( {}, elementDefinition,
 									{
-										id : CKEDITOR.tools.getNextNumber() + '_radio_input',
+										id : inputId,
 										title : null,
 										type : null
 									}, true ),
 							labelDefinition = CKEDITOR.tools.extend( {}, inputDefinition,
 									{
-										id : null,
 										title : title
 									}, true ),
 							inputAttributes =
@@ -412,7 +417,8 @@ CKEDITOR.plugins.add( 'dialogui' );
 								type : 'radio',
 								'class' : 'cke_dialog_ui_radio_input',
 								name : commonName,
-								value : value
+								value : value,
+								'aria-labelledby' : labelId
 							},
 							inputHtml = [];
 						if ( me._['default'] == value )
@@ -421,7 +427,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 						cleanInnerDefinition( labelDefinition );
 						children.push( new CKEDITOR.ui.dialog.uiElement( dialog, inputDefinition, inputHtml, 'input', null, inputAttributes ) );
 						inputHtml.push( ' ' );
-						new CKEDITOR.ui.dialog.uiElement( dialog, labelDefinition, inputHtml, 'label', null, { 'for' : inputAttributes.id },
+						new CKEDITOR.ui.dialog.uiElement( dialog, labelDefinition, inputHtml, 'label', null, { id : labelId, 'for' : inputAttributes.id },
 							   item[0] );
 						inputHtmlList.push( inputHtml.join( '' ) );
 					}

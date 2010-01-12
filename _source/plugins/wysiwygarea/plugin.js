@@ -241,10 +241,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var fixForBody = ( editor.config.enterMode != CKEDITOR.ENTER_BR )
 				? editor.config.enterMode == CKEDITOR.ENTER_DIV ? 'div' : 'p' : false;
 
+			var frameLabel = editor.lang.editorTitle.replace( '%1', editor.name ),
+				 frameDescriptiveLabel = editor.lang.editorVoiceLabel;
+
 			editor.on( 'editingBlockReady', function()
 				{
 					var mainElement,
-						fieldset,
+						label,
 						iframe,
 						isLoadingData,
 						isPendingFocus,
@@ -259,10 +262,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						if ( iframe )
 							iframe.remove();
-						if ( fieldset )
-							fieldset.remove();
+						if ( label )
+							label.remove();
 
 						frameLoaded = 0;
+
+						// Accessibility label for iframe document.
+						var labelId = editor.name + '_editing_frame_label',
+							 descriptionId = editor.name + '_editing_frame_desc';
+
+						label = CKEDITOR.dom.element.createFromHtml(
+							'<div style="display:none">' +
+								'<span id="' + labelId + '">' +
+									CKEDITOR.tools.htmlEncode( frameLabel ) +
+								'</span>' +
+								'<span id="' + descriptionId + '">' +
+									CKEDITOR.tools.htmlEncode( frameDescriptiveLabel ) +
+								'</span>' +
+							'</div>'
+							, CKEDITOR.document );
 
 						iframe = CKEDITOR.dom.element.createFromHtml( '<iframe' +
   							' style="width:100%;height:100%"' +
@@ -276,6 +294,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								'})())"' : '' ) +
   							' tabIndex="-1"' +
   							' allowTransparency="true"' +
+							' role="textbox"'	 +
+							' aria-multiline="true"' 	+
+							' aria-labelledby="' + labelId + '"' +
+							' aria-describedby="' + descriptionId + '"' +
   							'></iframe>' );
 
 						// Register onLoad event for iframe element, which
@@ -294,47 +316,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						} );
 
-						var accTitle = editor.lang.editorTitle.replace( '%1', editor.name );
-
-						if ( CKEDITOR.env.gecko )
-						{
-							// Accessibility attributes for Firefox.
-							mainElement.setAttributes(
-								{
-									role : 'region',
-									title : accTitle
-								} );
-							iframe.setAttributes(
-								{
-									role : 'region',
-									title : ' '
-								} );
-						}
-						else if ( CKEDITOR.env.webkit )
-						{
-							iframe.setAttribute( 'title', accTitle );	// Safari 4
-							iframe.setAttribute( 'name', accTitle );	// Safari 3
-						}
-						else if ( CKEDITOR.env.ie )
-						{
-							// Accessibility label for IE.
-							fieldset = CKEDITOR.dom.element.createFromHtml(
-								'<fieldset style="height:100%' +
-								( CKEDITOR.env.ie && CKEDITOR.env.quirks ? ';position:relative' : '' ) +
-								'">' +
-									'<legend style="display:block;width:0;height:0;overflow:hidden;' +
-									( CKEDITOR.env.ie && CKEDITOR.env.quirks ? 'position:absolute' : '' ) +
-									'">' +
-										CKEDITOR.tools.htmlEncode( accTitle ) +
-									'</legend>' +
-								'</fieldset>'
-								, CKEDITOR.document );
-							iframe.appendTo( fieldset );
-							fieldset.appendTo( mainElement );
-						}
-
-						if ( !CKEDITOR.env.ie )
-							mainElement.append( iframe );
+						mainElement.append( iframe );
+						label.insertBefore( iframe );
 					};
 
 					// The script that launches the bootstrap logic on 'domReady', so the document

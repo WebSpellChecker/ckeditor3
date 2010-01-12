@@ -242,7 +242,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				? editor.config.enterMode == CKEDITOR.ENTER_DIV ? 'div' : 'p' : false;
 
 			var frameLabel = editor.lang.editorTitle.replace( '%1', editor.name ),
-				 frameDescriptiveLabel = editor.lang.editorVoiceLabel;
+				 frameDescriptiveLabel = editor.lang.editorWysiwygModeVoiceLabel;
 
 			editor.on( 'editingBlockReady', function()
 				{

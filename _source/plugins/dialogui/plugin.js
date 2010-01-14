@@ -130,11 +130,10 @@ CKEDITOR.plugins.add( 'dialogui' );
 				{
 					var html = [];
 					if ( elementDefinition.labelLayout != 'horizontal' )
-						html.push( '<div class="cke_dialog_ui_labeled_label" id="',
-								_.labelId,
-								'" >',
+						html.push( '<label class="cke_dialog_ui_labeled_label" id="',
+								_.labelId, '" for="' + _.inputId + '">',
 								elementDefinition.label,
-								'</div>',
+								'</label>',
 								'<div class="cke_dialog_ui_labeled_content">',
 								contentHtml.call( this, dialog, elementDefinition ),
 								'</div>' );
@@ -148,8 +147,10 @@ CKEDITOR.plugins.add( 'dialogui' );
 							[
 								{
 									type : 'html',
-									html : '<span class="cke_dialog_ui_labeled_label" ' +
-										'id="' + _.labelId + '">' +  CKEDITOR.tools.htmlEncode( elementDefinition.label ) +
+									html : '<label class="cke_dialog_ui_labeled_label"' +
+										' id="' + _.labelId + '"' +
+										' for="' + _.inputId + '">' +
+										   CKEDITOR.tools.htmlEncode( elementDefinition.label ) +
 										'</span>'
 								},
 								{
@@ -547,6 +548,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 				if ( elementDefinition.validate )
 					this.validate = elementDefinition.validate;
 
+				_.inputId = CKEDITOR.tools.getNextNumber() + '_select';
 				/** @ignore */
 				var innerHTML = function()
 				{
@@ -556,7 +558,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 							}, true ),
 						html = [],
 						innerHTML = [],
-						attributes = { 'class' : 'cke_dialog_ui_input_select', 'aria-labelledby' : this._.labelId };
+						attributes = { 'id' : _.inputId, 'class' : 'cke_dialog_ui_input_select', 'aria-labelledby' : this._.labelId };
 
 					// Add multiple and size attributes from element definition.
 					if ( elementDefinition.size != undefined )

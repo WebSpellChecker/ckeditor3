@@ -460,10 +460,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							children :
 							[
 								{
-									type : 'html',
-									html : '<span>' + CKEDITOR.tools.htmlEncode( editor.lang.image.url ) + '</span>'
-								},
-								{
 									type : 'hbox',
 									widths : [ '280px', '110px' ],
 									align : 'right',
@@ -472,7 +468,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										{
 											id : 'txtUrl',
 											type : 'text',
-											label : '',
+											label : editor.lang.image.url,
 											required: true,
 											onChange : function()
 											{
@@ -543,6 +539,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										{
 											type : 'button',
 											id : 'browse',
+											// v-align with the 'txtUrl' field.
+											style : 'display:inline-block;margin-top:10px;',
 											align : 'center',
 											label : editor.lang.common.browseServer,
 											hidden : true,
@@ -761,9 +759,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 													},
 													html : '<div>'+
 														'<a href="javascript:void(0)" tabindex="-1" title="' + editor.lang.image.lockRatio +
-														'" class="cke_btn_locked" id="btnLockSizes"></a>' +
+														'" class="cke_btn_locked" id="btnLockSizes" role="button"></a>' +
 														'<a href="javascript:void(0)" tabindex="-1" title="' + editor.lang.image.resetSize +
-														'" class="cke_btn_reset" id="btnResetSize"></a>'+
+														'" class="cke_btn_reset" id="btnResetSize" role="button"></a>'+
 														'</div>'
 												}
 											]

@@ -22,8 +22,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		return {
 			// Only Firefox3 support the "dialog" role.
 			'dialog' :	 env.gecko && CKEDITOR.env.version >= 10900,
-			// IE doesn't support editable iframe as text box.
-			'textbox' : env.gecko || ( env.ie && tagName != 'iframe' )
+			// IE doesn't support editing iframe as region.
+			'region' : env.gecko || ( env.ie && tagName != 'iframe' )
 		}[ role ];
 	}
 
@@ -40,7 +40,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		// Just leave the original element untouched if
 		// the role is already supported on it.
-		if( lookupARIASupport( role, element.getName() ) )
+		if( lookupARIASupport( role, element.getName() ) !== false )
 			return element;
 
 		var labelText = element.getAttribute( 'aria-label' ) || doc.getById( element.getAttribute( 'aria-labelledby' ) ).getText() || '',

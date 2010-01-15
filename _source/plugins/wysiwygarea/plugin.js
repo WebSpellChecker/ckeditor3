@@ -296,7 +296,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								'})())"' : '' ) +
   							' tabIndex="-1"' +
   							' allowTransparency="true"' +
-							' role="textbox"'	 +
+							' role="region"'	 +
 							' aria-multiline="true"' 	+
 							' aria-labelledby="' + labelId + '"' +
 							' aria-describedby="' + descriptionId + '"' +

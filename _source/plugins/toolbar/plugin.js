@@ -112,7 +112,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						editor.toolbox = new toolbox();
 
-						var output = [ '<div class="cke_toolbox"' ],
+						var output = [ '<div class="cke_toolbox" role="toolbar"' ],
 							expanded =  editor.config.toolbarStartupExpanded !== false,
 							groupStarted;
 
@@ -295,7 +295,7 @@ CKEDITOR.ui.separator =
 {
 	render : function( editor, output )
 	{
-		output.push( '<span class="cke_separator"></span>' );
+		output.push( '<span class="cke_separator" role="separator"></span>' );
 		return {};
 	}
 };

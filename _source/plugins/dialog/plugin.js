@@ -149,6 +149,11 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			'aria-describedby' : descriptiveLabelId
 		} );
 
+		CKEDITOR.tools.setTimeout( function()
+		{
+			editor.fire( 'ariaWidget', { element : this.parts.contents, replace : true } );
+		}, 0, this );
+		
 		// Set the startup styles for the dialog, avoiding it enlarging the
 		// page size on the dialog creation.
 		dialogPart.setStyles(

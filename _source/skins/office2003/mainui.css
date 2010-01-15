@@ -105,3 +105,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 {
 	position: absolute;
 }
+
+.cke_skin_office2003 fieldset.cke_voicelabel_invisible
+{
+	height: 100%;
+}
+
+.cke_skin_office2003 legend.cke_voicelabel_invisible
+{
+	display: none;
+}
+.cke_skin_office2003 .cke_browser_ie legend.cke_voicelabel_invisible
+{
+	position: absolute;
+	display: block;
+	width: 0;
+	height: 0;
+	overflow: hidden;
+}

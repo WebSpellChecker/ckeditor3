@@ -282,6 +282,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							'</div>'
 							, CKEDITOR.document );
 
+						mainElement.append( label );
+
 						iframe = CKEDITOR.dom.element.createFromHtml( '<iframe' +
   							' style="width:100%;height:100%"' +
   							' frameBorder="0"' +
@@ -316,8 +318,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						} );
 
-						mainElement.append( iframe );
-						label.insertBefore( iframe );
+						mainElement.append( editor.fire( 'ariaWidget', { element : iframe } ).element );
 					};
 
 					// The script that launches the bootstrap logic on 'domReady', so the document

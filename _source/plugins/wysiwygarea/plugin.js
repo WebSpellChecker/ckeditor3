@@ -241,18 +241,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var fixForBody = ( editor.config.enterMode != CKEDITOR.ENTER_BR )
 				? editor.config.enterMode == CKEDITOR.ENTER_DIV ? 'div' : 'p' : false;
 
-			var frameLabel = editor.lang.editorTitle.replace( '%1', editor.name ),
-				 frameDescriptiveLabel = editor.lang.editorWysiwygModeVoiceLabel;
-
 			editor.on( 'editingBlockReady', function()
 				{
 					var mainElement,
-						label,
 						iframe,
 						isLoadingData,
 						isPendingFocus,
 						frameLoaded,
 						fireMode;
+
+					var frameLabel = editor.lang.editorTitle.replace( '%1', editor.name );
 
 					// Support for custom document.domain in IE.
 					var isCustomDomain = CKEDITOR.env.isCustomDomain();
@@ -262,27 +260,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						if ( iframe )
 							iframe.remove();
-						if ( label )
-							label.remove();
 
 						frameLoaded = 0;
-
-						// Accessibility label for iframe document.
-						var labelId = editor.name + '_editing_frame_label',
-							 descriptionId = editor.name + '_editing_frame_desc';
-
-						label = CKEDITOR.dom.element.createFromHtml(
-							'<div style="display:none">' +
-								'<span id="' + labelId + '">' +
-									CKEDITOR.tools.htmlEncode( frameLabel ) +
-								'</span>' +
-								'<span id="' + descriptionId + '">' +
-									CKEDITOR.tools.htmlEncode( frameDescriptiveLabel ) +
-								'</span>' +
-							'</div>'
-							, CKEDITOR.document );
-
-						mainElement.append( label );
 
 						iframe = CKEDITOR.dom.element.createFromHtml( '<iframe' +
   							' style="width:100%;height:100%"' +
@@ -296,10 +275,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								'})())"' : '' ) +
   							' tabIndex="-1"' +
   							' allowTransparency="true"' +
-							' role="region"'	 +
-							' aria-multiline="true"' 	+
-							' aria-labelledby="' + labelId + '"' +
-							' aria-describedby="' + descriptionId + '"' +
+							' role="region"' +
+							' aria-multiline="true"' +
+							' aria-label="' + frameLabel + '"' +
   							'></iframe>' );
 
 						// Register onLoad event for iframe element, which

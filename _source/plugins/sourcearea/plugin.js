@@ -16,9 +16,6 @@ CKEDITOR.plugins.add( 'sourcearea',
 	{
 		var sourcearea = CKEDITOR.plugins.sourcearea;
 
-		var sourceareaLabel = editor.lang.editorTitle.replace( '%1', editor.name ),
-			 sourceareaDescriptiveLabel = editor.lang.editorSourceModeVoiceLabel;
-
 		editor.on( 'editingBlockReady', function()
 			{
 				var textarea,
@@ -31,10 +28,6 @@ CKEDITOR.plugins.add( 'sourcearea',
 							if ( CKEDITOR.env.ie && CKEDITOR.env.version < 8 )
 								holderElement.setStyle( 'position', 'relative' );
 
-							// Accessibility label for iframe document.
-							var labelId = editor.name + '_editing_textarea_label',
-								 descriptionId = editor.name + '_editing_textarea_desc';
-
 							// Create the source area <textarea>.
 							editor.textarea = textarea = new CKEDITOR.dom.element( 'textarea' );
 							textarea.setAttributes(
@@ -42,8 +35,7 @@ CKEDITOR.plugins.add( 'sourcearea',
 									dir : 'ltr',
 									tabIndex : -1,
 									'role' : 'textbox',
-									'aria-labelledby' : labelId,
-									'aria-describedby' : descriptionId
+									'aria-label' : editor.lang.editorTitle.replace( '%1', editor.name )
 								});
 							textarea.addClass( 'cke_source' );
 							textarea.addClass( 'cke_enable_context_menu' );
@@ -97,21 +89,8 @@ CKEDITOR.plugins.add( 'sourcearea',
 							// Reset the holder element and append the
 							// <textarea> to it.
 							holderElement.setHtml( '' );
-
-							var label = CKEDITOR.dom.element.createFromHtml(
-								'<div style="display:none">' +
-									'<span id="' + labelId + '">' +
-										CKEDITOR.tools.htmlEncode( sourceareaLabel ) +
-									'</span>' +
-									'<span id="' + descriptionId + '">' +
-										CKEDITOR.tools.htmlEncode( sourceareaDescriptiveLabel ) +
-									'</span>' +
-								'</div>'
-								, CKEDITOR.document );
-
 							holderElement.append( textarea );
 							textarea.setStyles( styles );
-							label.insertBefore( textarea );
 
 							textarea.on( 'blur', function()
 								{

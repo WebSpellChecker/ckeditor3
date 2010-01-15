@@ -31,9 +31,7 @@ CKEDITOR.lang['en'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle		: 'Rich text editor, %1, press Alt+0 for help',
-	editorWysiwygModeVoiceLabel : 'Wysiwyg mode',
-	editorSourceModeVoiceLabel : 'Source mode',
+	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.',
 	dialogVoiceLabel : '',
 
 	// Toolbar buttons without dialogs.

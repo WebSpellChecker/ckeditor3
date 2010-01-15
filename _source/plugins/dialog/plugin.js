@@ -332,6 +332,14 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				me._.tabs[ nextId ][ 0 ].focus();
 				processed = 1;
 			}
+			else if ( ( keystroke == 13 || keystroke == 32 ) && me._.tabBarMode )
+			{
+				this.selectPage( this._.currentTabId );
+				this._.tabBarMode = false;
+				this._.currentFocusIndex = -1;
+				changeFocus( true );
+				processed =1;
+			}
 
 			if ( processed )
 			{
@@ -345,14 +353,15 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			processed && evt.data.preventDefault();
 		}
 
+		var dialogElement = this._.element;
 		// Add the dialog keyboard handlers.
 		this.on( 'show', function()
 			{
-				CKEDITOR.document.on( 'keydown', focusKeydownHandler, this, null, 0 );
+				dialogElement.on( 'keydown', focusKeydownHandler, this, null, 0 );
 				// Some browsers instead, don't cancel key events in the keydown, but in the
 				// keypress. So we must do a longer trip in those cases. (#4531)
 				if ( CKEDITOR.env.opera || ( CKEDITOR.env.gecko && CKEDITOR.env.mac ) )
-					CKEDITOR.document.on( 'keypress', focusKeyPressHandler, this );
+					dialogElement.on( 'keypress', focusKeyPressHandler, this );
 
 				if ( CKEDITOR.env.ie6Compat )
 				{
@@ -362,9 +371,9 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			} );
 		this.on( 'hide', function()
 			{
-				CKEDITOR.document.removeListener( 'keydown', focusKeydownHandler );
+				dialogElement.removeListener( 'keydown', focusKeydownHandler );
 				if ( CKEDITOR.env.opera || ( CKEDITOR.env.gecko && CKEDITOR.env.mac ) )
-					CKEDITOR.document.removeListener( 'keypress', focusKeyPressHandler );
+					dialogElement.removeListener( 'keypress', focusKeyPressHandler );
 			} );
 		this.on( 'iframeAdded', function( evt )
 			{
@@ -426,30 +435,6 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		// Insert the tabs and contents.
 		for ( var i = 0 ; i < definition.contents.length ; i++ )
 			this.addPage( definition.contents[i] );
-
-		var tabRegex = /cke_dialog_tab(\s|$|_)/,
-			tabOuterRegex = /cke_dialog_tab(\s|$)/;
-		this.parts['tabs'].on( 'click', function( evt )
-				{
-					var target = evt.data.getTarget(), firstNode = target, id, page;
-
-					// If we aren't inside a tab, bail out.
-					if ( !( tabRegex.test( target.$.className ) || target.getName() == 'a' ) )
-						return;
-
-					// Find the outer <td> container of the tab.
-					id = target.$.id.substr( 0, target.$.id.lastIndexOf( '_' ) );
-					this.selectPage( id );
-
-					if ( this._.tabBarMode )
-					{
-						this._.tabBarMode = false;
-						this._.currentFocusIndex = -1;
-						changeFocus( true );
-					}
-
-					evt.data.preventDefault();
-				}, this );
 
 		// Insert buttons.
 		var buttonsHtml = [],

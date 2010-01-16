@@ -43,9 +43,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		if( lookupARIASupport( role, element.getName() ) !== false )
 			return element;
 
-		var labelText = element.getAttribute( 'aria-label' ) || doc.getById( element.getAttribute( 'aria-labelledby' ) ).getText() || '',
-				descriptionText = doc.getById( element.getAttribute( 'aria-describedby' ) ).getText() || '',
-				legend = [ labelText, role, descriptionText ].join( ' ' );
+		var attrValue,
+			 labelText = element.getAttribute( 'aria-label' ) || ( attrValue = element.getAttribute( 'aria-labelledby' ) ) && doc.getById( attrValue ).getText() || '',
+			 descriptionText = ( attrValue = element.getAttribute( 'aria-describedby' ) ) && doc.getById( attrValue ).getText() || '',
+			 legend = [ labelText, role, descriptionText ].join( ' ' );
 
 		// Remove all ARIA attributes on the widget that could
 		// bring down or conflict with the degradtion label.
@@ -90,4 +91,4 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	});
 
-} )( );
+} )();

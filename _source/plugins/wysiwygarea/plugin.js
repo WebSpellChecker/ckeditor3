@@ -274,6 +274,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									'document.close();' +
 								'})())"' : '' ) +
   							' tabIndex="-1"' +
+  							' title=" wysiwgy mode"' +
   							' allowTransparency="true"' +
 							' role="region"' +
 							' aria-multiline="true"' +
@@ -296,7 +297,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						} );
 
-						mainElement.append( editor.fire( 'ariaWidget', { element : iframe } ).element );
+						mainElement.append( iframe );
 					};
 
 					// The script that launches the bootstrap logic on 'domReady', so the document
@@ -311,8 +312,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						if ( frameLoaded )
 							return;
-
 						frameLoaded = 1;
+
+						editor.fire( 'ariaWidget', iframe );
 
 						var domDocument = domWindow.document,
 							body = domDocument.body;
@@ -611,10 +613,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									data =
 										config.docType +
 										'<html dir="' + config.contentsLangDirection + '">' +
+										'<title>' + frameLabel + '</title>' +
 										'<head>' +
 											baseTag +
 											headExtra +
-										'</head>' +
+										'</head>' +	
 										'<body' + ( config.bodyId ? ' id="' + config.bodyId + '"' : '' ) +
 												  ( config.bodyClass ? ' class="' + config.bodyClass + '"' : '' ) +
 												  '>' +

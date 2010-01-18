@@ -13,26 +13,24 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		 env = CKEDITOR.env;
 	// List of in-use ARIA roles and states. 
 	var roles = [ 'role' ],
+		 // List of roles that role type should not be announced.
+		 silentRoles = { 'region' : 1 },
 		 states = [ 'label', 'labelledby', 'describedby', 'multiline' ],
 		 length = Math.max( roles.length, states.length );
-
 
 	function lookupARIASupport( role, tagName )
 	{
 		return {
-			// Only Firefox3 support the "dialog" role.
 			'dialog' :	 env.gecko && CKEDITOR.env.version >= 10900,
-			// IE doesn't support editing iframe as region.
-			'region' : env.gecko || ( env.ie && tagName != 'iframe' )
+			'region' : env.gecko && CKEDITOR.env.version >= 10900
 		}[ role ];
 	}
 
 	/**
 	 *  Bring degradeable substitution to standard ARIA widgets.  
 	 * @param element
-	 * @param isOffline
 	 */
-	function degradeARIA( element, isOffline )
+	function degradeARIA( element, editor )
 	{
 		// Save the interested ARIA attributes first.
 		var doc = element.getDocument(),
@@ -46,7 +44,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		var attrValue,
 			 labelText = element.getAttribute( 'aria-label' ) || ( attrValue = element.getAttribute( 'aria-labelledby' ) ) && doc.getById( attrValue ).getText() || '',
 			 descriptionText = ( attrValue = element.getAttribute( 'aria-describedby' ) ) && doc.getById( attrValue ).getText() || '',
-			 legend = [ labelText, role, descriptionText ].join( ' ' );
+			 allInOne = [ labelText, role in silentRoles ? '' : role, descriptionText ].join( ' ' );
 
 		// Remove all ARIA attributes on the widget that could
 		// bring down or conflict with the degradtion label.
@@ -56,25 +54,32 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			states[ i ] && element.removeAttribute( 'aria-' + states[ i ] );
 		}
 
-		// Translate by wrapping with a form field legend that contains all ARIA
-		// attributes which leads to be announced by ATs.
-		var fieldset = CKEDITOR.dom.element.createFromHtml(
-				'<fieldset class="cke_voicelabel_invisible">' +
-					'<legend class="cke_voicelabel_invisible">' +
-						CKEDITOR.tools.htmlEncode( legend ) +
-					'</legend>' +
-				'</fieldset>', doc );
-
-		if( !isOffline )
+		// Translate 'dialog' role by wrapping all containing form fields with a legend that composed of all ARIA
+		// attributes of the dialog which leads to be announced by ATs.
+		if( role == 'dialog' )
 		{
+			var fieldset = CKEDITOR.dom.element.createFromHtml(
+					'<fieldset class="cke_voicelabel_invisible">' +
+						'<legend class="cke_voicelabel_invisible">' +
+							CKEDITOR.tools.htmlEncode( allInOne ) +
+						'</legend>' +
+					'</fieldset>', doc );
+
 			var parent;
 			while( ( parent = element.getParent() ) && !parent.getDtd()[ fieldset.getName() ] )
 				element = parent;
 			fieldset.insertBefore( element );
+			fieldset.append( element );
+			return fieldset;
 		}
-
-		fieldset.append( element );
-		return fieldset;
+		// The only reliable substitution of aria-label on an iframe
+		// is to use the content window title of that frame.
+		else if ( element.is( 'iframe' ) )
+		{
+			// We can only occupy the title when editor is not in full-page mode.
+			!editor.config.fullPage &&
+				( element.$.contentWindow.document.title = allInOne );
+		}
 	}
 
 	CKEDITOR.plugins.add( 'accessibility',
@@ -83,10 +88,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			editor.on( 'ariaWidget', function( evt )
 			{
-				var data = evt.data,
-					widget = data.element,
-					 widgetIsOffline = !data.replace;
-				data.element = degradeARIA( widget, widgetIsOffline );
+				degradeARIA( evt.data, editor );
 			} );
 		}
 	});

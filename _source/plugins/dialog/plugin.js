@@ -151,7 +151,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 		CKEDITOR.tools.setTimeout( function()
 		{
-			editor.fire( 'ariaWidget', { element : this.parts.contents, replace : true } );
+			editor.fire( 'ariaWidget', this.parts.contents );
 		}, 0, this );
 		
 		// Set the startup styles for the dialog, avoiding it enlarging the

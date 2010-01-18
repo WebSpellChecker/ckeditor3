@@ -42,7 +42,6 @@ html.cke_skin_office2003_container
 body.cke_panel_frame
 {
 	overflow: auto;
-	overflow-x: hidden;
 }
 
 ul.cke_panel_list

@@ -237,13 +237,18 @@ CKEDITOR.plugins.add( 'floatpanel',
 									opacity : '1'
 								} );
 
-							block.element.focus();
+							// Give focus to the panel block (to help speak out the widget).
+							setTimeout( function() { block.element.focus(); }, 0 );
 						} , this );
 
 						panel.isLoaded ? panelLoad() : panel.onLoad = panelLoad;
 
-						// We need this get fired manually because of unfired focus() function.
-						this.allowBlur( true );
+						// Set the panel frame focus, so the blur event gets fired.
+						CKEDITOR.tools.setTimeout( function()
+						{
+							// We need this get fired manually because of unfired focus() function.
+							this.allowBlur( true );
+						}, 0, this);
 					}, 0, this);
 				this.visible = 1;
 

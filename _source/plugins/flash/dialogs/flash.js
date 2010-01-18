@@ -300,10 +300,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							children :
 							[
 								{
-									type : 'html',
-									html : '<span>' + CKEDITOR.tools.htmlEncode( editor.lang.image.url ) + '</span>'
-								},
-								{
 									type : 'hbox',
 									widths : [ '280px', '110px' ],
 									align : 'right',
@@ -312,7 +308,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										{
 											id : 'src',
 											type : 'text',
-											label : '',
+											label : editor.lang.image.url,
 											required : true,
 											validate : CKEDITOR.dialog.validate.notEmpty( editor.lang.flash.validateSrc ),
 											setup : loadValue,
@@ -348,7 +344,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											id : 'browse',
 											filebrowser : 'info:src',
 											hidden : true,
-											align : 'center',
+											// v-align with the 'src' field.
+											style : 'display:inline-block;margin-top:10px;',
 											label : editor.lang.common.browseServer
 										}
 									]

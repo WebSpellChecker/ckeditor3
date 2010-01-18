@@ -823,8 +823,8 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 						( this._.pageCount > 0 ? ' cke_last' : 'cke_first' ),
 						titleHtml,
 						( !!contents.hidden ? ' style="display:none"' : '' ),
-						' id="', tabId, '"' +
-						' href="javascript:void(0)"',
+						' id="', tabId, '"',
+						' tabIndex="-1"',
 						' hidefocus="true"' +
 						' role="tab">',
 							contents.label,

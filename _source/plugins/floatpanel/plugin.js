@@ -237,15 +237,13 @@ CKEDITOR.plugins.add( 'floatpanel',
 									opacity : '1'
 								} );
 
-							// Set the panel frame focus, so the blur event gets fired.
 							block.element.focus();
-							// We need this get fired manually because of unfired focus() function.
-							this.allowBlur( true );
-
 						} , this );
 
 						panel.isLoaded ? panelLoad() : panel.onLoad = panelLoad;
 
+						// We need this get fired manually because of unfired focus() function.
+						this.allowBlur( true );
 					}, 0, this);
 				this.visible = 1;
 

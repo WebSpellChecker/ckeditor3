@@ -35,7 +35,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					css : editor.skin.editor.css.concat( config.contentsCss ),
 					multiSelect : false,
-					aria : { 'aria-label' : lang.panelTitle, 'aria-describedby' : lang.panelVoiceLabel }
+					aria : { 'aria-label' : lang.panelTitle }
 				},
 
 				init : function()

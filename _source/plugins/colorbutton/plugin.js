@@ -32,7 +32,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 					panel :
 					{
 						css : editor.skin.editor.css,
-						aria : { role : 'listbox', 'aria-label' : lang.panelTitle, 'aria-describedby' : lang.panelVoiceLabel }
+						aria : { role : 'listbox', 'aria-label' : lang.panelTitle }
 					},
 
 					onBlock : function( panel, block )
@@ -103,7 +103,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 					' onclick="CKEDITOR.tools.callFunction(', clickFn, ',null,\'', type, '\');return false;"' +
 					' href="javascript:void(\'', lang.auto, '\')"' +
 					' role="option" aria-posinset="1" aria-setsize="', total, '">' +
-					'<table cellspacing=0 cellpadding=0 width="100%">' +
+					'<table role="presentation" cellspacing=0 cellpadding=0 width="100%">' +
 						'<tr>' +
 							'<td>' +
 								'<span class="cke_colorbox" style="background-color:#000"></span>' +
@@ -114,7 +114,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 						'</tr>' +
 					'</table>' +
 				'</a>' +
-				'<table cellspacing=0 cellpadding=0 width="100%">' );
+				'<table role="presentation" cellspacing=0 cellpadding=0 width="100%">' );
 
 			// Render the color boxes.
 			for ( var i = 0 ; i < colors.length ; i++ )

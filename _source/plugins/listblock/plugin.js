@@ -85,7 +85,7 @@ CKEDITOR.plugins.add( 'listblock',
 
 						if ( !this._.started )
 						{
-							pendingHtml.push( '<ul class=cke_panel_list>' );
+							pendingHtml.push( '<ul role="presentation" class=cke_panel_list>' );
 							this._.started = 1;
 							this._.size = this._.size || 0;
 						}
@@ -113,7 +113,7 @@ CKEDITOR.plugins.add( 'listblock',
 
 						this._.groups[ title ] = id;
 
-						this._.pendingHtml.push( '<h1 id=', id, ' class=cke_panel_grouptitle>', title, '</h1>' );
+						this._.pendingHtml.push( '<h1 role="presentation" id=', id, ' class=cke_panel_grouptitle>', title, '</h1>' );
 					},
 
 					commit : function()

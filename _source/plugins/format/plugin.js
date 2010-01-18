@@ -32,7 +32,7 @@ CKEDITOR.plugins.add( 'format',
 				{
 					css : editor.skin.editor.css.concat( config.contentsCss ),
 					multiSelect : false,
-					aria : { 'aria-label' : lang.panelTitle, 'aria-describedby' : lang.panelVoiceLabel }
+					aria : { 'aria-label' : lang.panelTitle }
 				},
 
 				init : function()

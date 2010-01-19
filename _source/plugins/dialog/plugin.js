@@ -436,6 +436,24 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		for ( var i = 0 ; i < definition.contents.length ; i++ )
 			this.addPage( definition.contents[i] );
 
+		this.parts['tabs'].on( 'click', function( evt )
+				{
+					var target = evt.data.getTarget();
+					// If we aren't inside a tab, bail out.
+					if ( target.hasClass( 'cke_dialog_tab' ) )
+					{
+						var id = target.$.id;
+						this.selectPage( id.substr( 0, id.lastIndexOf( '_' ) ) );
+						if ( this._.tabBarMode )
+						{
+							this._.tabBarMode = false;
+							this._.currentFocusIndex = -1;
+							changeFocus( true );
+						}
+						evt.data.preventDefault();
+					}
+				}, this );
+
 		// Insert buttons.
 		var buttonsHtml = [],
 			buttons = CKEDITOR.dialog._.uiElementBuilders.hbox.build( this,

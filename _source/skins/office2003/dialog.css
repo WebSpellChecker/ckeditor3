@@ -257,6 +257,11 @@ body .cke_dialog
 {
 	background-color: #f7f8fd;
 }
+.cke_skin_office2003 .cke_hc a:hover.cke_dialog_tab
+{
+	padding: 2px 3px !important;
+	border-width: 3px;
+}
 
 .cke_skin_office2003 a.cke_dialog_tab_selected,
 .cke_skin_office2003 a:link.cke_dialog_tab_selected,
@@ -269,12 +274,29 @@ body .cke_dialog
 	font-weight: bold;
 	cursor: default;
 }
+.cke_skin_office2003 .cke_hc a.cke_dialog_tab_selected,
+.cke_skin_office2003 .cke_hc a:link.cke_dialog_tab_selected,
+.cke_skin_office2003 .cke_hc a:active.cke_dialog_tab_selected,
+.cke_skin_office2003 .cke_hc a:hover.cke_dialog_tab_selected,
+.cke_skin_office2003 .cke_hc a:visited.cke_dialog_tab_selected
+{
+	padding: 2px 3px !important;
+	border-width: 3px;
+}
 
 /* single_page */
 
 .cke_skin_office2003 .cke_single_page .cke_dialog_tabs
 {
 	display: none;
+}
+
+.cke_skin_office2003 .cke_hc .cke_dialog_tabs a,
+.cke_skin_office2003 .cke_hc .cke_dialog_footer a
+{
+	opacity: 1.0;
+	filter: alpha(opacity=100);
+	border: 1px solid white;
 }
 
 .cke_skin_office2003 .cke_single_page .cke_dialog_title
@@ -403,6 +425,11 @@ body .cke_dialog
 .cke_skin_office2003 a:active span.cke_dialog_ui_button
 {
 	background-color: #8db1ff;
+}
+.cke_skin_office2003 .cke_hc a:focus span.cke_dialog_ui_button,
+.cke_skin_office2003 .cke_hc a:active span.cke_dialog_ui_button
+{
+	border-width: 2px;
 }
 
 .cke_skin_office2003 .cke_dialog_footer_buttons

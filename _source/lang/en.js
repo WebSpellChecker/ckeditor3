@@ -493,7 +493,7 @@ CKEDITOR.lang['en'] =
 		block : 'Block Justify'
 	},
 
-	blockquote : 'Blockquote',
+	blockquote : 'Block Quote',
 
 	clipboard :
 	{

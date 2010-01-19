@@ -134,7 +134,7 @@ CKEDITOR.ui.button.prototype =
 		output.push(
 			'<span class="cke_button">',
 			'<a id="', id, '"' +
-				' class="', classes, CKEDITOR.env.ie ? '" href="javascript:void(\''+ ( this.title || '' ).replace( "'"+ '' )+ '\')"' : '',
+				' class="', classes, '" href="javascript:void(\''+ ( this.title || '' ).replace( "'"+ '' )+ '\')"',
 				' title="', this.title, '"' +
 				' tabindex="-1"' +
 				' hidefocus="true"' +

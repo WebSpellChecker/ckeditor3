@@ -824,6 +824,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 						titleHtml,
 						( !!contents.hidden ? ' style="display:none"' : '' ),
 						' id="', tabId, '"',
+						' href="javascript:void(0)"',
 						' tabIndex="-1"',
 						' hidefocus="true"' +
 						' role="tab">',

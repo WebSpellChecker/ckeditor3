@@ -377,6 +377,7 @@ CKEDITOR.lang['en'] =
 		width		: 'Width',
 		height	: 'Height',
 		lockRatio	: 'Lock Ratio',
+		unlockRatio	: 'Unlock Ratio',
 		resetSize	: 'Reset Size',
 		border	: 'Border',
 		hSpace	: 'HSpace',

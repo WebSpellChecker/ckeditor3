@@ -147,6 +147,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		else
 			ratioButton.addClass( 'cke_btn_unlocked' );
 
+		var lang = dialog._.editor.lang.image,
+			label =  lang[  dialog.lockRatio ? 'unlockRatio' : 'lockRatio' ];
+		ratioButton.setAttribute( 'title', label )
+		ratioButton.getFirst().setText( label );
+
 		return dialog.lockRatio;
 	};
 
@@ -758,10 +763,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 														}
 													},
 													html : '<div>'+
-														'<a href="javascript:void(0)" tabindex="-1" title="' + editor.lang.image.lockRatio +
-														'" class="cke_btn_locked" id="btnLockSizes" role="button"></a>' +
+														'<a href="javascript:void(0)" tabindex="-1" title="' + editor.lang.image.unlockRatio +
+														'" class="cke_btn_locked" id="btnLockSizes" role="button"><span class="cke_label">' + editor.lang.image.unlockRatio + '</span></a>' +
 														'<a href="javascript:void(0)" tabindex="-1" title="' + editor.lang.image.resetSize +
-														'" class="cke_btn_reset" id="btnResetSize" role="button"></a>'+
+														'" class="cke_btn_reset" id="btnResetSize" role="button"><span class="cke_label">' + editor.lang.image.resetSize + '</span></a>'+
 														'</div>'
 												}
 											]

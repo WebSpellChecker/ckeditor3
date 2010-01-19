@@ -761,11 +761,30 @@ body .cke_dialog
 	position: relative;
 	top: 3px;
 }
+
+.cke_skin_kama .cke_dialog_body .cke_label
+{
+	display: none;
+}
+.cke_skin_kama .cke_hc .cke_dialog_body .cke_label
+{
+	display: inline;
+}
+
 .cke_skin_kama .cke_hc a.cke_btn_locked,
 .cke_skin_kama .cke_hc a.cke_btn_unlocked,
 .cke_skin_kama .cke_hc a.cke_btn_reset
 {
 	border-style: solid;
+	float:left;
+	width:auto;
+	height:auto;
+}
+.cke_skin_kama .cke_rtl.cke_hc a.cke_btn_locked,
+.cke_skin_kama .cke_rtl.cke_hc a.cke_btn_unlocked,
+.cke_skin_kama .cke_rtl.cke_hc a.cke_btn_reset
+{
+	float:right;
 }
 
 .cke_skin_kama a.cke_smile img

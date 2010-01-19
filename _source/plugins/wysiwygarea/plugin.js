@@ -274,7 +274,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									'document.close();' +
 								'})())"' : '' ) +
   							' tabIndex="-1"' +
-  							' title=" wysiwgy mode"' +
   							' allowTransparency="true"' +
 							' role="region"' +
 							' aria-multiline="true"' +

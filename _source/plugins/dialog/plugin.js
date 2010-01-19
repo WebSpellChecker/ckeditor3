@@ -835,6 +835,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			var page = CKEDITOR.dom.element.createFromHtml( pageHtml.join( '' ) );
 			page.setAttribute( 'role', 'tabpanel' );
 
+			var env = CKEDITOR.env; 
 			var tabId = contents.id + '_' + CKEDITOR.tools.getNextNumber(),
 				 tab = CKEDITOR.dom.element.createFromHtml( [
 					'<a class="cke_dialog_tab"',
@@ -842,7 +843,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 						titleHtml,
 						( !!contents.hidden ? ' style="display:none"' : '' ),
 						' id="', tabId, '"',
-						' href="javascript:void(0)"',
+						env.gecko && env.version >= 10900 && !env.hc ? '' : ' href="javascript:void(0)"',
 						' tabIndex="-1"',
 						' hidefocus="true"' +
 						' role="tab">',

@@ -131,10 +131,12 @@ CKEDITOR.ui.button.prototype =
 		if ( this.className )
 			classes += ' ' + this.className;
 
+		var env = CKEDITOR.env;
 		output.push(
 			'<span class="cke_button">',
 			'<a id="', id, '"' +
-				' class="', classes, '" href="javascript:void(\''+ ( this.title || '' ).replace( "'"+ '' )+ '\')"',
+				' class="', classes,
+				env.gecko && env.version >= 10900 && !env.hc  ? '' : '" href="javascript:void(\''+ ( this.title || '' ).replace( "'"+ '' )+ '\')"',
 				' title="', this.title, '"' +
 				' tabindex="-1"' +
 				' hidefocus="true"' +

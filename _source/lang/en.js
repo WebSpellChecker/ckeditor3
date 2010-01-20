@@ -529,6 +529,7 @@ CKEDITOR.lang['en'] =
 		title : 'Content Templates',
 		insertOption: 'Replace actual contents',
 		selectPromptMsg: 'Please select the template to open in the editor',
+		optionsArea	 : 'Templates Options',
 		emptyListMsg : '(No templates defined)'
 	},
 

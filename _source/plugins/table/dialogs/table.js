@@ -386,7 +386,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 												{
 													id : 'cmbWidthType',
 													type : 'select',
-													label : '&nbsp;',
+													label : '<span style="visibility:hidden">' + editor.lang.table.widthUnit + '</span>',
 													'default' : 'pixels',
 													items :
 													[

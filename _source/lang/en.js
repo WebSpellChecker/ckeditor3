@@ -211,6 +211,7 @@ CKEDITOR.lang['en'] =
 		width		: 'Width',
 		widthPx		: 'pixels',
 		widthPc		: 'percent',
+		widthUnit	: 'width unit',
 		height		: 'Height',
 		cellSpace	: 'Cell spacing',
 		cellPad		: 'Cell padding',

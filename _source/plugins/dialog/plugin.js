@@ -285,6 +285,8 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			if ( focusList[ currentIndex ].type == 'text' )
 				focusList[ currentIndex ].select();
 		}
+		
+		this.changeFocus = changeFocus;
 
 		var processed;
 
@@ -835,7 +837,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			var page = CKEDITOR.dom.element.createFromHtml( pageHtml.join( '' ) );
 			page.setAttribute( 'role', 'tabpanel' );
 
-			var env = CKEDITOR.env; 
+			var env = CKEDITOR.env;
 			var tabId = contents.id + '_' + CKEDITOR.tools.getNextNumber(),
 				 tab = CKEDITOR.dom.element.createFromHtml( [
 					'<a class="cke_dialog_tab"',

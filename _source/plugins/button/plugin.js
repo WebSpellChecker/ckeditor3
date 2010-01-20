@@ -135,7 +135,7 @@ CKEDITOR.ui.button.prototype =
 		output.push(
 			'<span class="cke_button">',
 			'<a id="', id, '"' +
-				' class="', classes,
+				' class="', classes, '"', 
 				env.gecko && env.version >= 10900 && !env.hc  ? '' : '" href="javascript:void(\''+ ( this.title || '' ).replace( "'"+ '' )+ '\')"',
 				' title="', this.title, '"' +
 				' tabindex="-1"' +
@@ -210,6 +210,8 @@ CKEDITOR.ui.button.prototype =
 			state == CKEDITOR.TRISTATE_ON ?
 				element.setAttribute( 'aria-pressed', true ) :
 				element.removeAttribute( 'aria-pressed' );
+
+			return true;
 		}
 
 		this._.state = state;

@@ -90,6 +90,27 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				degradeARIA( evt.data, editor );
 			} );
+
+			if( !( env.gecko && env.version >= 10900 ) )
+			{
+				var uiButtonProto = CKEDITOR.ui.button.prototype;
+				uiButtonProto.setState = CKEDITOR.tools.override( uiButtonProto.setState, function( org )
+				{
+					return function( state )
+					{
+						if( org.apply( this, arguments ) )
+						{
+							var element = CKEDITOR.document.getById( this._.id ),
+								htmlTitle = this.title,
+								unavailableLabel = this._.editor.lang.common.unavailable,
+								labelElement = element.getChild( 1 );
+
+							state == CKEDITOR.TRISTATE_DISABLED && ( htmlTitle = unavailableLabel.replace( '%1', this.title ) );
+							labelElement.setHtml( htmlTitle );
+						}
+					}
+				} );
+			}
 		}
 	});
 

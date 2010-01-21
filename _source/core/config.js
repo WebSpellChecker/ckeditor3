@@ -212,7 +212,7 @@ CKEDITOR.config =
 	 * @type String
 	 * @example
 	 */
-	plugins : 'about,accessibility,basicstyles,blockquote,button,clipboard,colorbutton,colordialog,contextmenu,div,elementspath,enterkey,entities,filebrowser,find,flash,font,format,forms,horizontalrule,htmldataprocessor,image,indent,justify,keystrokes,link,list,maximize,newpage,pagebreak,pastefromword,pastetext,popup,preview,print,removeformat,resize,save,scayt,smiley,showblocks,showborders,sourcearea,stylescombo,table,tabletools,specialchar,tab,templates,toolbar,undo,wysiwygarea,wsc',
+	plugins : 'about,accessibility,a11yhelp,basicstyles,blockquote,button,clipboard,colorbutton,colordialog,contextmenu,div,elementspath,enterkey,entities,filebrowser,find,flash,font,format,forms,horizontalrule,htmldataprocessor,image,indent,justify,keystrokes,link,list,maximize,newpage,pagebreak,pastefromword,pastetext,popup,preview,print,removeformat,resize,save,scayt,smiley,showblocks,showborders,sourcearea,stylescombo,table,tabletools,specialchar,tab,templates,toolbar,undo,wysiwygarea,wsc',
 
 	/**
 	 * List of additional plugins to be loaded. This is a tool setting which
@@ -296,7 +296,79 @@ CKEDITOR.config =
 	 * @example
 	 * config.baseFloatZIndex = 2000
 	 */
-	baseFloatZIndex : 10000
+	baseFloatZIndex : 10000,
+
+	/**
+	 * A list of keystrokes to be blocked if not defined in the {@link CKEDITOR.config.keystrokes}
+	 * setting. In this way it is possible to block the default browser behavior
+	 * for those keystrokes.
+	 * @type Array
+	 * @default (see example)
+	 * @example
+	 * // This is actually the default value.
+	 * config.blockedKeystrokes =
+	 * [
+	 *     CKEDITOR.CTRL + 66 &#47;*B*&#47;,
+	 *     CKEDITOR.CTRL + 73 &#47;*I*&#47;,
+	 *     CKEDITOR.CTRL + 85 &#47;*U*&#47;
+	 * ];
+	 */
+	blockedKeystrokes :
+	[
+		CKEDITOR.CTRL + 66 /*B*/,
+		CKEDITOR.CTRL + 73 /*I*/,
+		CKEDITOR.CTRL + 85 /*U*/
+	],
+
+	/**
+	 * A list associating keystrokes to editor commands. Each element in the list
+	 * is an array where the first item is the keystroke, and the second is the
+	 * name of the command to be executed.
+	 * @type Array
+	 * @default (see example)
+	 * @example
+	 * // This is actually the default value.
+	 * config.keystrokes =
+	 * [
+	 *     [ CKEDITOR.ALT + 121 &#47;*F10*&#47;, 'toolbarFocus' ],
+	 *     [ CKEDITOR.ALT + 122 &#47;*F11*&#47;, 'elementsPathFocus' ],
+	 *
+	 *     [ CKEDITOR.SHIFT + 121 &#47;*F10*&#47;, 'contextMenu' ],
+	 *
+	 *     [ CKEDITOR.CTRL + 90 &#47;*Z*&#47;, 'undo' ],
+	 *     [ CKEDITOR.CTRL + 89 &#47;*Y*&#47;, 'redo' ],
+	 *     [ CKEDITOR.CTRL + CKEDITOR.SHIFT + 90 &#47;*Z*&#47;, 'redo' ],
+	 *
+	 *     [ CKEDITOR.CTRL + 76 &#47;*L*&#47;, 'link' ],
+	 *
+	 *     [ CKEDITOR.CTRL + 66 &#47;*B*&#47;, 'bold' ],
+	 *     [ CKEDITOR.CTRL + 73 &#47;*I*&#47;, 'italic' ],
+	 *     [ CKEDITOR.CTRL + 85 &#47;*U*&#47;, 'underline' ],
+	 *
+	 *     [ CKEDITOR.ALT + 109 &#47;*-*&#47;, 'toolbarCollapse' ]
+	 * ];
+	 */
+	keystrokes :
+	[
+		[ CKEDITOR.ALT + 121 /*F10*/, 'toolbarFocus' ],
+		[ CKEDITOR.ALT + 122 /*F11*/, 'elementsPathFocus' ],
+
+		[ CKEDITOR.SHIFT + 121 /*F10*/, 'contextMenu' ],
+		[ CKEDITOR.CTRL + CKEDITOR.SHIFT + 121 /*F10*/, 'contextMenu' ],
+
+		[ CKEDITOR.CTRL + 90 /*Z*/, 'undo' ],
+		[ CKEDITOR.CTRL + 89 /*Y*/, 'redo' ],
+		[ CKEDITOR.CTRL + CKEDITOR.SHIFT + 90 /*Z*/, 'redo' ],
+
+		[ CKEDITOR.CTRL + 76 /*L*/, 'link' ],
+
+		[ CKEDITOR.CTRL + 66 /*B*/, 'bold' ],
+		[ CKEDITOR.CTRL + 73 /*I*/, 'italic' ],
+		[ CKEDITOR.CTRL + 85 /*U*/, 'underline' ],
+
+		[ CKEDITOR.ALT + 109 /*-*/, 'toolbarCollapse' ],
+		[ CKEDITOR.ALT + 48 /*-*/, 'a11yHelp' ]
+	]
 };
 
 // PACKAGER_RENAME( CKEDITOR.config )

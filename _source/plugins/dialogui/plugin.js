@@ -484,6 +484,15 @@ CKEDITOR.plugins.add( 'dialogui' );
 									me.fire( 'click', { dialog : me.getDialog() } );
 									evt.data.preventDefault();
 								} );
+
+							element.on( 'keydown', function( evt )
+								{
+									if ( evt.data.getKeystroke() in { 32:1, 13:1 } )
+									{
+										me.click();
+										evt.data.preventDefault();
+									}
+								} );
 						})();
 
 						element.unselectable();

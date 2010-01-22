@@ -635,6 +635,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 								type : 'text',
 								id : 'emailAddress',
 								label : editor.lang.link.emailAddress,
+								required : true,
 								validate : function()
 								{
 									var dialog = this.getDialog();

@@ -514,105 +514,109 @@ CKEDITOR.dialog.add( 'link', function( editor )
 						children :
 						[
 							{
-								type : 'html',
+								type : 'fieldset',
 								id : 'selectAnchorText',
-								html : CKEDITOR.tools.htmlEncode( editor.lang.link.selectAnchor ),
+								label : editor.lang.link.selectAnchor,
 								setup : function( data )
 								{
 									if ( data.anchors.length > 0 )
 										this.getElement().show();
 									else
 										this.getElement().hide();
-								}
+								},
+								children :
+								[
+									{
+										type : 'hbox',
+										id : 'selectAnchor',
+										children :
+										[
+											{
+												type : 'select',
+												id : 'anchorName',
+												'default' : '',
+												label : editor.lang.link.anchorName,
+												style : 'width: 100%;',
+												items :
+												[
+													[ '' ]
+												],
+												setup : function( data )
+												{
+													this.clear();
+													this.add( '' );
+													for ( var i = 0 ; i < data.anchors.length ; i++ )
+													{
+														if ( data.anchors[i].name )
+															this.add( data.anchors[i].name );
+													}
+
+													if ( data.anchor )
+														this.setValue( data.anchor.name );
+
+													var linkType = this.getDialog().getContentElement( 'info', 'linkType' );
+													if ( linkType && linkType.getValue() == 'email' )
+														this.focus();
+												},
+												commit : function( data )
+												{
+													if ( !data.anchor )
+														data.anchor = {};
+
+													data.anchor.name = this.getValue();
+												}
+											},
+											{
+												type : 'select',
+												id : 'anchorId',
+												'default' : '',
+												label : editor.lang.link.anchorId,
+												style : 'width: 100%;',
+												items :
+												[
+													[ '' ]
+												],
+												setup : function( data )
+												{
+													this.clear();
+													this.add( '' );
+													for ( var i = 0 ; i < data.anchors.length ; i++ )
+													{
+														if ( data.anchors[i].id )
+															this.add( data.anchors[i].id );
+													}
+
+													if ( data.anchor )
+														this.setValue( data.anchor.id );
+												},
+												commit : function( data )
+												{
+													if ( !data.anchor )
+														data.anchor = {};
+
+													data.anchor.id = this.getValue();
+												}
+											}
+										],
+										setup : function( data )
+										{
+											if ( data.anchors.length > 0 )
+												this.getElement().show();
+											else
+												this.getElement().hide();
+										}
+									}
+								]
 							},
 							{
 								type : 'html',
 								id : 'noAnchors',
 								style : 'text-align: center;',
-								html : '<div>' + CKEDITOR.tools.htmlEncode( editor.lang.link.noAnchors ) + '</div>',
+								html : '<div tabIndex="-1">' + CKEDITOR.tools.htmlEncode( editor.lang.link.noAnchors ) + '</div>',
+								focus : function(){},
 								setup : function( data )
 								{
 									if ( data.anchors.length < 1 )
-										this.getElement().show();
-									else
-										this.getElement().hide();
-								}
-							},
-							{
-								type : 'hbox',
-								id : 'selectAnchor',
-								children :
-								[
-									{
-										type : 'select',
-										id : 'anchorName',
-										'default' : '',
-										label : editor.lang.link.anchorName,
-										style : 'width: 100%;',
-										items :
-										[
-											[ '' ]
-										],
-										setup : function( data )
-										{
-											this.clear();
-											this.add( '' );
-											for ( var i = 0 ; i < data.anchors.length ; i++ )
-											{
-												if ( data.anchors[i].name )
-													this.add( data.anchors[i].name );
-											}
-
-											if ( data.anchor )
-												this.setValue( data.anchor.name );
-
-											var linkType = this.getDialog().getContentElement( 'info', 'linkType' );
-											if ( linkType && linkType.getValue() == 'email' )
-												this.focus();
-										},
-										commit : function( data )
-										{
-											if ( !data.anchor )
-												data.anchor = {};
-
-											data.anchor.name = this.getValue();
-										}
-									},
-									{
-										type : 'select',
-										id : 'anchorId',
-										'default' : '',
-										label : editor.lang.link.anchorId,
-										style : 'width: 100%;',
-										items :
-										[
-											[ '' ]
-										],
-										setup : function( data )
-										{
-											this.clear();
-											this.add( '' );
-											for ( var i = 0 ; i < data.anchors.length ; i++ )
-											{
-												if ( data.anchors[i].id )
-													this.add( data.anchors[i].id );
-											}
-
-											if ( data.anchor )
-												this.setValue( data.anchor.id );
-										},
-										commit : function( data )
-										{
-											if ( !data.anchor )
-												data.anchor = {};
-
-											data.anchor.id = this.getValue();
-										}
-									}
-								],
-								setup : function( data )
-								{
-									if ( data.anchors.length > 0 )
 										this.getElement().show();
 									else
 										this.getElement().hide();

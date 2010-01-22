@@ -35,6 +35,23 @@ CKEDITOR.plugins.add( 'dialogui' );
 			return new CKEDITOR.ui.dialog[elementDefinition.type]( dialog, elementDefinition, output );
 		}
 	},
+	containerBuilder =
+	{
+		build : function( dialog, elementDefinition, output )
+		{
+			var children = elementDefinition.children,
+				child,
+				childHtmlList = [],
+				childObjList = [];
+			for ( var i = 0 ; ( i < children.length && ( child = children[i] ) ) ; i++ )
+			{
+				var childHtml = [];
+				childHtmlList.push( childHtml );
+				childObjList.push( CKEDITOR.dialog._.uiElementBuilders[ child.type ].build( dialog, child, childHtml ) );
+			}
+			return new CKEDITOR.ui.dialog[ elementDefinition.type ]( dialog, childObjList, childHtmlList, output, elementDefinition );
+		}
+	},
 	commonPrototype =
 	{
 		isChanged : function()
@@ -779,7 +796,44 @@ CKEDITOR.plugins.add( 'dialogui' );
 
 					htmlList.push( [ theirMatch[1], ' ', myMatch[1] || '', theirMatch[2] ].join( '' ) );
 				};
-			})()
+			})(),
+
+			/**
+			 * Form fieldset for grouping dialog UI elements.
+			 * @constructor
+			 * @extends CKEDITOR.ui.dialog.uiElement
+			 * @param {CKEDITOR.dialog} dialog Parent dialog object.
+			 * @param {Array} childObjList
+			 * Array of {@link CKEDITOR.ui.dialog.uiElement} objects inside this
+			 * container.
+			 * @param {Array} childHtmlList
+			 * Array of HTML code that correspond to the HTML output of all the
+			 * objects in childObjList.
+			 * @param {Array} htmlList
+			 * Array of HTML code that this element will output to.
+			 * @param {CKEDITOR.dialog.uiElementDefinition} elementDefinition
+			 * The element definition. Accepted fields:
+			 * <ul>
+			 * 	<li><strong>label</strong> (Optional) The legend of the this fieldset.</li>
+			 * 	<li><strong>children</strong> (Required) An array of dialog field definitions which will be grouped inside this fieldset. </li>
+			 * </ul>
+			 */
+			fieldset : function( dialog, childObjList, childHtmlList, htmlList, elementDefinition )
+			{
+				var legendLabel = elementDefinition.label;
+				/** @ignore */
+				var innerHTML = function()
+				{
+					var html = [];
+					legendLabel && html.push( '<legend>' + legendLabel + '</legend>' );
+					for ( var i = 0; i < childHtmlList.length; i++ )
+						html.push( childHtmlList[ i ] );
+					return html.join( '' );
+				};
+
+				this.fieldset = new CKEDITOR.ui.dialog.uiElement( dialog, elementDefinition, htmlList, 'fieldset', null, null, innerHTML );
+			}
+
 		}, true );
 
 	CKEDITOR.ui.dialog.html.prototype = new CKEDITOR.ui.dialog.uiElement;
@@ -1343,4 +1397,5 @@ CKEDITOR.plugins.add( 'dialogui' );
 	CKEDITOR.dialog.addUIElement( 'file', commonBuilder );
 	CKEDITOR.dialog.addUIElement( 'fileButton', commonBuilder );
 	CKEDITOR.dialog.addUIElement( 'html', commonBuilder );
+	CKEDITOR.dialog.addUIElement( 'fieldset', containerBuilder );
 })();

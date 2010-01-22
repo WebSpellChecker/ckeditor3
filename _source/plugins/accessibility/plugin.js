@@ -111,6 +111,26 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					}
 				} );
 			}
+
+			// IE 	doesn't support 'aria-label', use 'aria-labelledby' instead.
+			if( CKEDITOR.env.ie )
+			{
+				CKEDITOR.on( 'ariaWidget', function( evt )
+				{
+					var target = evt.data,
+						ariaLabel;
+					if( ariaLabel = target.getAttribute( 'aria-label' ) )
+					{
+						var labelId = 'cke_label_' + CKEDITOR.tools.getNextNumber();
+						ariaLabel = CKEDITOR.dom.element.createFromHtml(
+								'<span class="cke_label" id="' + labelId + '">' + ariaLabel+ '</span>',
+								target.getDocument() );
+						ariaLabel.insertBefore( target );
+						target.removeAttribute( 'aria-label' );
+						target.setAttribute( 'aria-labelledby', labelId );
+					}
+				} );
+			}
 		}
 	});
 

@@ -25,6 +25,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	height: 100%;
 }
 
+.cke_skin_v2 .cke_panel_frame .cke_label
+{
+	display: none;
+}
+
 /*
  * All the following styles are to be used inside the iframe that holds panel
  * contents. We don't use the cke_skin_default there to avoid the reset to be

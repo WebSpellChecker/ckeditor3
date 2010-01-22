@@ -49,6 +49,11 @@ body.cke_panel_frame
 	overflow: hidden;
 }
 
+.cke_panel_frame .cke_label
+{
+	display: none;
+}
+
 ul.cke_panel_list
 {
 	list-style-type: none;

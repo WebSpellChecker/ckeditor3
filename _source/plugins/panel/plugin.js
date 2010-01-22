@@ -260,6 +260,7 @@ CKEDITOR.ui.panel.block = CKEDITOR.tools.createClass(
 		var aria = blockDefinition.aria;
 		aria && this.element.setAttributes( aria );
 
+		CKEDITOR.fire( 'ariaWidget', this.element );
 		this.keys = {};
 
 		this._.focusIndex = -1;

@@ -170,7 +170,8 @@ CKEDITOR.ui.panel.prototype =
 
 				doc.on( 'keydown', function( evt )
 					{
-						var keystroke = evt.data.getKeystroke();
+						var keystroke = evt.data.getKeystroke(),
+							dir = this.document.getById( 'cke_' + this.id ).getAttribute( 'dir' );
 
 						// Delegate key processing to block.
 						if ( this._.onKeyDown && this._.onKeyDown( keystroke ) === false )
@@ -179,8 +180,10 @@ CKEDITOR.ui.panel.prototype =
 							return;
 						}
 
-						if ( keystroke == 27 )		// ESC
-							this.onEscape && this.onEscape();
+						// ESC/ARROW-LEFT(ltr) OR ARROW-RIGHT(rtl)
+						if ( keystroke == 27 || keystroke == ( dir == 'rtl' ? 39 : 37 ) )
+							if ( this.onEscape && this.onEscape( keystroke ) === false );
+								evt.data.preventDefault();
 					},
 					this );
 
@@ -269,7 +272,25 @@ CKEDITOR.ui.panel.block = CKEDITOR.tools.createClass(
 		this.element.disableContextMenu();
 	},
 
-	_ : {},
+	_ : {
+		
+		/**
+		 * Mark the item specified by the index as current activated. 
+		 */
+		markItem: function( index )
+		{
+			if ( index == -1 )
+				return;
+			var links = this.element.getElementsByTag( 'a' );
+			var item = links.getItem( this._.focusIndex = index );
+
+			// Safari need focus on the iframe window first(#3389), but we need
+			// lock the blur to avoid hiding the panel.
+			if ( CKEDITOR.env.webkit )
+				item.getDocument().getWindow().focus();
+			item.focus();
+		}
+	},
 
 	proto :
 	{

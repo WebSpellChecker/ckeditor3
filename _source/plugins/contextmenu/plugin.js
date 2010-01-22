@@ -81,12 +81,29 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 					noUnlock = false;
 				}, this );
 
-				menu.onEscape = function()
+				menu.onEscape = function( keystroke )
 				{
-					editor.focus();
-
-					if ( CKEDITOR.env.ie )
-						editor.getSelection().unlock( true );
+					var parent = this.parent;
+					// 1. If it's sub-menu, restore the last focused item
+					// of upper level menu.
+					// 2. In case of a top-menu, close it.
+					if( parent )
+					{
+						parent._.panel.hideChild();
+						// Restore parent block item focus.
+						var parentBlock = parent._.panel._.panel._.currentBlock,
+							parentFocusIndex =  parentBlock._.focusIndex;
+						parentBlock._.markItem( parentFocusIndex );
+					}
+					else if ( keystroke == 27 )
+					{
+						this.hide();
+						editor.focus();
+	
+						if ( CKEDITOR.env.ie )
+							editor.getSelection().unlock( true );
+					}
+					return false;
 				};
 			}
 
@@ -217,7 +234,7 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 
 					CKEDITOR.tools.setTimeout( function()
 						{
-							this._.onMenu( offsetParent, null, offsetX, offsetY );
+							this.show( offsetParent, null, offsetX, offsetY );
 						},
 						0, this );
 				},

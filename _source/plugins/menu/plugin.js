@@ -90,6 +90,10 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 					return;
 				}
 
+				// Record parent menu focused item first (#3389).
+				var block = this._.panel.getBlock( this.id );
+				block._.focusIndex = index;
+
 				// Create the submenu, if not available, or clean the existing
 				// one.
 				if ( menu )
@@ -100,6 +104,8 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 								   CKEDITOR.tools.extend( {}, this._.definition, { level : this._.level + 1 }, true ) );
 					menu.parent = this;
 					menu.onClick = CKEDITOR.tools.bind( this.onClick, this );
+					// Sub menu use their own scope for binding onEscape.
+					menu.onEscape = this.onEscape;
 				}
 
 				// Add all submenu items to the menu.
@@ -154,10 +160,10 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 						this._.panelDefinition,
 						this._.level );
 
-					panel.onEscape = CKEDITOR.tools.bind( function()
+					panel.onEscape = CKEDITOR.tools.bind( function( keystroke )
 					{
-						this.onEscape && this.onEscape();
-						this.hide();
+						if ( this.onEscape && this.onEscape( keystroke ) === false )
+							return false;
 					},
 					this );
 
@@ -177,7 +183,7 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 					keys[ 38 ]	= 'prev';					// ARROW-UP
 					keys[ CKEDITOR.SHIFT + 9 ]	= 'prev';	// SHIFT + TAB
 					keys[ 32 ]	= 'click';					// SPACE
-					keys[ 39 ]	= 'click';					// ARROW-RIGHT
+					keys[ ( editor.lang.dir == 'rtl' ? 37 : 39 ) ]	= 'click';  // ARROW-RIGHT/ARROW-LEFT(rtl)
 
 					element = this._.element = block.element;
 					element.addClass( editor.skinClass );

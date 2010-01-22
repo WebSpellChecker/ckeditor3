@@ -783,145 +783,148 @@ CKEDITOR.dialog.add( 'link', function( editor )
 						children :
 						[
 							{
-								type : 'html',
-								html : CKEDITOR.tools.htmlEncode( editor.lang.link.popupFeatures )
-							},
-							{
-								type : 'hbox',
+								type : 'fieldset',
+								label : editor.lang.link.popupFeatures,
 								children :
 								[
 									{
-										type : 'checkbox',
-										id : 'resizable',
-										label : editor.lang.link.popupResizable,
-										setup : setupPopupParams,
-										commit : commitPopupParams
+										type : 'hbox',
+										children :
+										[
+											{
+												type : 'checkbox',
+												id : 'resizable',
+												label : editor.lang.link.popupResizable,
+												setup : setupPopupParams,
+												commit : commitPopupParams
+											},
+											{
+												type : 'checkbox',
+												id : 'status',
+												label : editor.lang.link.popupStatusBar,
+												setup : setupPopupParams,
+												commit : commitPopupParams
+
+											}
+										]
 									},
 									{
-										type : 'checkbox',
-										id : 'status',
-										label : editor.lang.link.popupStatusBar,
-										setup : setupPopupParams,
-										commit : commitPopupParams
+										type : 'hbox',
+										children :
+										[
+											{
+												type : 'checkbox',
+												id : 'location',
+												label : editor.lang.link.popupLocationBar,
+												setup : setupPopupParams,
+												commit : commitPopupParams
 
-									}
-								]
-							},
-							{
-								type : 'hbox',
-								children :
-								[
-									{
-										type : 'checkbox',
-										id : 'location',
-										label : editor.lang.link.popupLocationBar,
-										setup : setupPopupParams,
-										commit : commitPopupParams
+											},
+											{
+												type : 'checkbox',
+												id : 'toolbar',
+												label : editor.lang.link.popupToolbar,
+												setup : setupPopupParams,
+												commit : commitPopupParams
 
+											}
+										]
 									},
 									{
-										type : 'checkbox',
-										id : 'toolbar',
-										label : editor.lang.link.popupToolbar,
-										setup : setupPopupParams,
-										commit : commitPopupParams
+										type : 'hbox',
+										children :
+										[
+											{
+												type : 'checkbox',
+												id : 'menubar',
+												label : editor.lang.link.popupMenuBar,
+												setup : setupPopupParams,
+												commit : commitPopupParams
 
-									}
-								]
-							},
-							{
-								type : 'hbox',
-								children :
-								[
-									{
-										type : 'checkbox',
-										id : 'menubar',
-										label : editor.lang.link.popupMenuBar,
-										setup : setupPopupParams,
-										commit : commitPopupParams
+											},
+											{
+												type : 'checkbox',
+												id : 'fullscreen',
+												label : editor.lang.link.popupFullScreen,
+												setup : setupPopupParams,
+												commit : commitPopupParams
 
+											}
+										]
 									},
 									{
-										type : 'checkbox',
-										id : 'fullscreen',
-										label : editor.lang.link.popupFullScreen,
-										setup : setupPopupParams,
-										commit : commitPopupParams
+										type : 'hbox',
+										children :
+										[
+											{
+												type : 'checkbox',
+												id : 'scrollbars',
+												label : editor.lang.link.popupScrollBars,
+												setup : setupPopupParams,
+												commit : commitPopupParams
 
-									}
-								]
-							},
-							{
-								type : 'hbox',
-								children :
-								[
-									{
-										type : 'checkbox',
-										id : 'scrollbars',
-										label : editor.lang.link.popupScrollBars,
-										setup : setupPopupParams,
-										commit : commitPopupParams
+											},
+											{
+												type : 'checkbox',
+												id : 'dependent',
+												label : editor.lang.link.popupDependent,
+												setup : setupPopupParams,
+												commit : commitPopupParams
 
+											}
+										]
 									},
 									{
-										type : 'checkbox',
-										id : 'dependent',
-										label : editor.lang.link.popupDependent,
-										setup : setupPopupParams,
-										commit : commitPopupParams
+										type : 'hbox',
+										children :
+										[
+											{
+												type :  'text',
+												widths : [ '30%', '70%' ],
+												labelLayout : 'horizontal',
+												label : editor.lang.link.popupWidth,
+												id : 'width',
+												setup : setupPopupParams,
+												commit : commitPopupParams
 
-									}
-								]
-							},
-							{
-								type : 'hbox',
-								children :
-								[
-									{
-										type :  'text',
-										widths : [ '30%', '70%' ],
-										labelLayout : 'horizontal',
-										label : editor.lang.link.popupWidth,
-										id : 'width',
-										setup : setupPopupParams,
-										commit : commitPopupParams
+											},
+											{
+												type :  'text',
+												labelLayout : 'horizontal',
+												widths : [ '55%', '45%' ],
+												label : editor.lang.link.popupLeft,
+												id : 'left',
+												setup : setupPopupParams,
+												commit : commitPopupParams
 
+											}
+										]
 									},
 									{
-										type :  'text',
-										labelLayout : 'horizontal',
-										widths : [ '55%', '45%' ],
-										label : editor.lang.link.popupLeft,
-										id : 'left',
-										setup : setupPopupParams,
-										commit : commitPopupParams
+										type : 'hbox',
+										children :
+										[
+											{
+												type :  'text',
+												labelLayout : 'horizontal',
+												widths : [ '30%', '70%' ],
+												label : editor.lang.link.popupHeight,
+												id : 'height',
+												setup : setupPopupParams,
+												commit : commitPopupParams
 
-									}
-								]
-							},
-							{
-								type : 'hbox',
-								children :
-								[
-									{
-										type :  'text',
-										labelLayout : 'horizontal',
-										widths : [ '30%', '70%' ],
-										label : editor.lang.link.popupHeight,
-										id : 'height',
-										setup : setupPopupParams,
-										commit : commitPopupParams
+											},
+											{
+												type :  'text',
+												labelLayout : 'horizontal',
+												label : editor.lang.link.popupTop,
+												widths : [ '55%', '45%' ],
+												id : 'top',
+												setup : setupPopupParams,
+												commit : commitPopupParams
 
-									},
-									{
-										type :  'text',
-										labelLayout : 'horizontal',
-										label : editor.lang.link.popupTop,
-										widths : [ '55%', '45%' ],
-										id : 'top',
-										setup : setupPopupParams,
-										commit : commitPopupParams
-
+											}
+										]
 									}
 								]
 							}

@@ -76,9 +76,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// is to use the content window title of that frame.
 		else if ( element.is( 'iframe' ) )
 		{
-			// We can only occupy the title when editor is not in full-page mode.
-			!editor.config.fullPage &&
-				( element.$.contentWindow.document.title = allInOne );
+			var doc = element.$.contentWindow.document,
+				title = doc.title;
+
+			// Backup the title and restore it before running into use.
+			title && editor.on( 'beforeModeUnload', function() { doc.title = title; } );
+			doc.title = allInOne;
 		}
 	}
 

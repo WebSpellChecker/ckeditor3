@@ -715,7 +715,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				editor.on( 'uiReady', function()
 				{
 					ieFocusGrabber = editor.container.append( CKEDITOR.dom.element.createFromHtml(
-					'<input tabindex="-1" style="position:absolute; left:-10000">' ) );
+					'<span tabindex="-1" style="position:absolute; left:-10000"></span>' ) );
 
 					ieFocusGrabber.on( 'focus', function()
 						{

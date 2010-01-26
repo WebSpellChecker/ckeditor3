@@ -103,6 +103,15 @@ li.cke_panel_listItem
 	background-color: #dff1ff;
 }
 
+.cke_hc .cke_panel_listItem.cke_selected a,
+.cke_hc .cke_panel_listItem a:hover,
+.cke_hc .cke_panel_listItem a:focus,
+.cke_hc .cke_panel_listItem a:active
+{
+	border-width: 3px;
+	padding: 0px;
+}
+
 .cke_panel_grouptitle
 {
     font-size: 11px;

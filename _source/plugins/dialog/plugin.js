@@ -141,8 +141,8 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			 descriptiveLabelId = titleId.replace( 'title', 'desc' ),
 			 descriptiveLabel = CKEDITOR.dom.element.createFromHtml( '<label id="' + descriptiveLabelId + '" style="display:none">' + editor.lang.dialogVoiceLabel+ '</label>' );
 
-		descriptiveLabel.insertAfter( contentsPart );
-		contentsPart.setAttributes(
+		descriptiveLabel.insertAfter( dialogPart );
+		dialogPart.setAttributes(
 		{
 			'role' : 'dialog',
 			'aria-labelledby' : titleId,

@@ -131,7 +131,7 @@ CKEDITOR.ui.button.prototype =
 		if ( this.className )
 			classes += ' ' + this.className;
 
-		var env = CKEDITOR.env;
+		env = CKEDITOR.env;
 		output.push(
 			'<span class="cke_button">',
 			'<a id="', id, '"' +
@@ -196,7 +196,9 @@ CKEDITOR.ui.button.prototype =
 	setState : function( state )
 	{
 		if ( this._.state == state )
-			return;
+			return false;
+
+		this._.state = state;
 
 		var element = CKEDITOR.document.getById( this._.id );
 
@@ -213,8 +215,8 @@ CKEDITOR.ui.button.prototype =
 
 			return true;
 		}
-
-		this._.state = state;
+		else
+			return false;
 	}
 };
 

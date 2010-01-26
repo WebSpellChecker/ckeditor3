@@ -108,7 +108,7 @@ CKEDITOR.dialog.add( 'paste', function( editor )
 			container.setHtml( '' );
 			container.append( iframe );
 
-			field.getInputElement = function(){ return iframe };
+			field.getInputElement = function(){ return iframe; };
 
 			// Force container to scale in IE.
 			if ( CKEDITOR.env.ie )

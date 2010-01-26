@@ -129,7 +129,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 					}
 				}
-			};
+			}
 
 			// Load skin at first.
 			CKEDITOR.skins.load( editor, 'templates' );

@@ -181,7 +181,7 @@ CKEDITOR.plugins.add( 'floatpanel',
 
 				panel.onEscape = CKEDITOR.tools.bind( function( keystroke )
 					{
-						if ( this.onEscape && this.onEscape( keystroke ) === false );
+						if ( this.onEscape && this.onEscape( keystroke ) === false )
 							return false;
 					},
 					this );

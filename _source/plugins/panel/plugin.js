@@ -182,8 +182,10 @@ CKEDITOR.ui.panel.prototype =
 
 						// ESC/ARROW-LEFT(ltr) OR ARROW-RIGHT(rtl)
 						if ( keystroke == 27 || keystroke == ( dir == 'rtl' ? 39 : 37 ) )
-							if ( this.onEscape && this.onEscape( keystroke ) === false );
-								evt.data.preventDefault();
+						{
+							if ( this.onEscape && this.onEscape( keystroke ) === false )
+								evt.data.preventDefault( );
+						}
 					},
 					this );
 

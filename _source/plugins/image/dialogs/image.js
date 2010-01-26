@@ -149,7 +149,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		var lang = dialog._.editor.lang.image,
 			label =  lang[  dialog.lockRatio ? 'unlockRatio' : 'lockRatio' ];
-		ratioButton.setAttribute( 'title', label )
+
+		ratioButton.setAttribute( 'title', label );
 		ratioButton.getFirst().setText( label );
 
 		return dialog.lockRatio;

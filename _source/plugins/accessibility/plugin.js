@@ -39,7 +39,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Just leave the original element untouched if
 		// the role is already supported on it.
 		if( lookupARIASupport( role, element.getName() ) !== false )
-			return element;
+			return;
 
 		var attrValue,
 			 labelText = element.getAttribute( 'aria-label' ) || ( attrValue = element.getAttribute( 'aria-labelledby' ) ) && doc.getById( attrValue ).getText() || '',
@@ -70,14 +70,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				element = parent;
 			fieldset.insertBefore( element );
 			fieldset.append( element );
-			return fieldset;
 		}
 		// The only reliable substitution of aria-label on an iframe
 		// is to use the content window title of that frame.
 		else if ( element.is( 'iframe' ) )
 		{
-			var doc = element.$.contentWindow.document,
-				title = doc.title;
+			doc = element.$.contentWindow.document;
+			var title = doc.title;
 
 			// Backup the title and restore it before running into use.
 			title && editor.on( 'beforeModeUnload', function() { doc.title = title; } );
@@ -111,7 +110,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							state == CKEDITOR.TRISTATE_DISABLED && ( htmlTitle = unavailableLabel.replace( '%1', this.title ) );
 							labelElement.setHtml( htmlTitle );
 						}
-					}
+					};
 				} );
 			}
 
@@ -122,7 +121,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					var target = evt.data,
 						ariaLabel;
-					if( ariaLabel = target.getAttribute( 'aria-label' ) )
+					if( ( ariaLabel = target.getAttribute( 'aria-label' ) ) )
 					{
 						var labelId = 'cke_label_' + CKEDITOR.tools.getNextNumber();
 						ariaLabel = CKEDITOR.dom.element.createFromHtml(

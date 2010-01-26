@@ -831,6 +831,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 					return html.join( '' );
 				};
 
+				this._ = { children : childObjList };
 				CKEDITOR.ui.dialog.uiElement.call( this, dialog, elementDefinition, htmlList, 'fieldset', null, null, innerHTML );
 			}
 
@@ -1387,7 +1388,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 
 	CKEDITOR.ui.dialog.fileButton.prototype = new CKEDITOR.ui.dialog.button;
 
-	CKEDITOR.ui.dialog.fieldset.prototype = CKEDITOR.ui.dialog.uiElement.prototype;
+	CKEDITOR.ui.dialog.fieldset.prototype = CKEDITOR.tools.extend( {}, CKEDITOR.ui.dialog.hbox.prototype );
 
 	CKEDITOR.dialog.addUIElement( 'text', textBuilder );
 	CKEDITOR.dialog.addUIElement( 'password', textBuilder );

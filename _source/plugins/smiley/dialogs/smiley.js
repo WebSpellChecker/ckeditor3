@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -6,6 +6,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.dialog.add( 'smiley', function( editor )
 {
 	var config = editor.config,
+		lang = editor.lang.smiley,
 		images = config.smiley_images,
 		columns = 8,
 		i;
@@ -158,13 +159,14 @@ CKEDITOR.dialog.add( 'smiley', function( editor )
 
 		html.push(
 			'<td class="cke_dark_background cke_hand cke_centered" style="vertical-align: middle;">' +
-				'<a href="javascript:void(0)" class="cke_smile" tabindex="-1" onkeydown="CKEDITOR.tools.callFunction( ', onKeydown, ', event, this );">',
+				'<a href="javascript:void(0)" role="button" aria-labelledby="cke_smile_label_' + i + '" class="cke_smile" tabindex="-1" onkeydown="CKEDITOR.tools.callFunction( ', onKeydown, ', event, this );">',
 					'<img class="hand" title="', config.smiley_descriptions[i], '"' +
 						' cke_src="', CKEDITOR.tools.htmlEncode( config.smiley_path + images[ i ] ), '" alt="', config.smiley_descriptions[i], '"',
 						' src="', CKEDITOR.tools.htmlEncode( config.smiley_path + images[ i ] ), '"',
 						// IE BUG: Below is a workaround to an IE image loading bug to ensure the image sizes are correct.
 						( CKEDITOR.env.ie ? ' onload="this.setAttribute(\'width\', 2); this.removeAttribute(\'width\');" ' : '' ),
 					'>' +
+					'<span id="cke_smile_label_' + i + '" class="cke_label">' +lang.smileyLabels[ i ]  + '</span>' +
 				'</a>',
  			'</td>' );
 

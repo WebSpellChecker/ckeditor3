@@ -61,7 +61,7 @@ CKEDITOR.config.smiley_images = [
  * @type Array
  * @default (see example)
  * @example
- * // This is actually the default value.
+ * // The ASCII smileys are actually the default values.
  * config.smiley_descriptions = [
  *     ':)', ':(', ';)', ':D', ':/', ':P',
  *     '', '', '', '', '', '',
@@ -69,7 +69,6 @@ CKEDITOR.config.smiley_images = [
  *     '', ':kiss', '' ];
  */
 CKEDITOR.config.smiley_descriptions = [
-	':)', ':(', ';)', ':D', ':/', ':P',
-	'', '', '', '', '', '',
-	'', ';(', '', '', '', '',
-	'', ':kiss', '' ];
+	':)', ':(', ';)', ':D', ':/', ':P', ':*)', ':-o',
+	':|', '>:(', 'o:)', '8-)', '>:-)', ';(', '', '', '',
+	'', '', ':-*', '' ];

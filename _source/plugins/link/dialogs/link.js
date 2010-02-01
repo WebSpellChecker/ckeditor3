@@ -54,19 +54,6 @@ CKEDITOR.dialog.add( 'link', function( editor )
 				dialog.hidePage( 'upload' );
 		}
 
-		// Describe 'linkType' combo if no anchors are available.  
-		if( typeValue == 'anchor' )
-		{
-			var combo = this.getInputElement();
-			if(  !dialog.data.anchors.length )
-			{
-				var noAnchorDesc = dialog.getContentElement( 'info', 'noAnchors' );
-				combo.setAttribute( 'aria-describedby', noAnchorDesc.domId );
-			}
-			else
-				combo.removeAttribute( 'aria-describedby' );
-		}
-
 		for ( var i = 0 ; i < partIds.length ; i++ )
 		{
 			var element = dialog.getContentElement( 'info', partIds[i] );
@@ -625,7 +612,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 								type : 'html',
 								id : 'noAnchors',
 								style : 'text-align: center;',
-								html : '<div>' + CKEDITOR.tools.htmlEncode( editor.lang.link.noAnchors ) + '</div>',
+								html : '<div role="label" tabIndex="-1">' + CKEDITOR.tools.htmlEncode( editor.lang.link.noAnchors ) + '</div>',
 								focus : function(){},
 								setup : function( data )
 								{
@@ -1162,7 +1149,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 					element = null;
 			}
 
-			this.setupContent( this.data = parseLink.apply( this, [ editor, element ] ) );
+			this.setupContent( parseLink.apply( this, [ editor, element ] ) );
 		},
 		onOk : function()
 		{

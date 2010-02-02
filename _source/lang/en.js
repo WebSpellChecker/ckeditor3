@@ -103,6 +103,7 @@ CKEDITOR.lang['en'] =
 	specialChar		:
 	{
 		toolbar		: 'Insert Special Character',
+		charsTableLabel : 'Special character options',
 		title		: 'Select Special Character'
 	},
 
@@ -476,6 +477,7 @@ CKEDITOR.lang['en'] =
 	{
 		toolbar	: 'Smiley',
 		title	: 'Insert a Smiley',
+		smileyEmotionsLabel : 'Emotion options',
 		smileyLabels :
 		[
 			'smiley', 'sad', 'wink', 'laugh', 'frown', 'cheeky', 'blush', 'surprise',

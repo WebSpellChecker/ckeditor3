@@ -56,26 +56,6 @@ CKEDITOR.dialog.add( 'smiley', function( editor )
 		var keystroke = ev.getKeystroke();
 		switch ( keystroke )
 		{
-			// RIGHT-ARROW
-			case 39 :
-				// relative is TD
-				if ( ( relative = element.getParent().getNext() ) )
-				{
-					nodeToMove = relative.getChild( 0 );
-					nodeToMove.focus();
-				}
-				ev.preventDefault();
-				break;
-			// LEFT-ARROW
-			case 37 :
-				// relative is TD
-				if ( ( relative = element.getParent().getPrevious() ) )
-				{
-					nodeToMove = relative.getChild( 0 );
-					nodeToMove.focus();
-				}
-				ev.preventDefault();
-				break;
 			// UP-ARROW
 			case 38 :
 				// relative is TR
@@ -103,6 +83,9 @@ CKEDITOR.dialog.add( 'smiley', function( editor )
 				onClick( { data: ev } );
 				ev.preventDefault();
 				break;
+
+			// RIGHT-ARROW
+			case 39 :
 			// TAB
 			case 9 :
 				// relative is TD
@@ -121,6 +104,9 @@ CKEDITOR.dialog.add( 'smiley', function( editor )
 					ev.preventDefault(true);
 				}
 				break;
+
+			// LEFT-ARROW
+			case 37 :
 			// SHIFT + TAB
 			case CKEDITOR.SHIFT + 9 :
 				// relative is TD

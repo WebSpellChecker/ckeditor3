@@ -619,11 +619,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															{
 																commitInternally.call( this, 'advanced:txtdlgGenStyle' );
 															},
-															validate: function()
+															validate : function()
 															{
 																var aMatch  =  this.getValue().match( regexGetSizeOrEmpty );
 																if ( !aMatch )
-																	alert( editor.lang.common.validateNumberFailed );
+																	alert( editor.lang.image.validateWidth );
 																return !!aMatch;
 															},
 															setup : setupDimension,
@@ -669,11 +669,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															{
 																commitInternally.call( this, 'advanced:txtdlgGenStyle' );
 															},
-															validate: function()
+															validate : function()
 															{
 																var aMatch = this.getValue().match( regexGetSizeOrEmpty );
 																if ( !aMatch )
-																	alert( editor.lang.common.validateNumberFailed );
+																	alert( editor.lang.image.validateHeight );
 																return !!aMatch;
 															},
 															setup : setupDimension,
@@ -792,11 +792,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 													{
 														commitInternally.call( this, 'advanced:txtdlgGenStyle' );
 													},
-													validate: function()
-													{
-														var func = CKEDITOR.dialog.validate.integer( editor.lang.common.validateNumberFailed );
-														return func.apply( this );
-													},
+													validate : CKEDITOR.dialog.validate.integer( editor.lang.image.validateBorder ),
 													setup : function( type, element )
 													{
 														if ( type == IMAGE )
@@ -855,11 +851,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 													{
 														commitInternally.call( this, 'advanced:txtdlgGenStyle' );
 													},
-													validate: function()
-													{
-														var func = CKEDITOR.dialog.validate.integer( editor.lang.common.validateNumberFailed );
-														return func.apply( this );
-													},
+													validate : CKEDITOR.dialog.validate.integer( editor.lang.image.validateHSpace ),
 													setup : function( type, element )
 													{
 														if ( type == IMAGE )
@@ -923,11 +915,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 													{
 														commitInternally.call( this, 'advanced:txtdlgGenStyle' );
 													},
-													validate: function()
-													{
-														var func = CKEDITOR.dialog.validate.integer( editor.lang.common.validateNumberFailed );
-														return func.apply( this );
-													},
+													validate : CKEDITOR.dialog.validate.integer( editor.lang.image.validateVSpace ),
 													setup : function( type, element )
 													{
 														if ( type == IMAGE )

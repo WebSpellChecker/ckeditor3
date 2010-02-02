@@ -395,7 +395,12 @@ CKEDITOR.lang['en'] =
 		linkTab	: 'Link',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?',
 		img2Button	: 'Do you want to transform the selected image on a image button?',
-		urlMissing : 'Image source URL is missing.'
+		urlMissing : 'Image source URL is missing.',
+		validateWidth : 'Width must be one of an integer, a pixel number, or a percentage.',
+		validateHeight : 'Height must be one of an integer, a pixel number, or a percentage.',
+		validateBorder : 'Border must be a whole number.',
+		validateHSpace : 'HSpace must be a whole number.',
+		validateVSpace : 'VSpace must be a whole number.'
 	},
 
 	// Flash Dialog

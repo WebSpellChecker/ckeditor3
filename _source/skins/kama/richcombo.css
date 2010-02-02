@@ -132,6 +132,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	background-repeat: no-repeat;
 }
 
+.cke_skin_kama .cke_rcombo .cke_openbutton span
+{
+	display: none;
+}
+.cke_skin_kama .cke_hc .cke_rcombo .cke_openbutton span
+{
+	display	: inline;
+}
+
 .cke_skin_kama .cke_browser_iequirks .cke_rcombo .cke_openbutton
 {
 	margin-bottom: 0;

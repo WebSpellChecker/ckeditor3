@@ -291,8 +291,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										var toolboxContainer = toolbox.getParent();
 										var contentHeight = parseInt( contents.$.style.height, 10 );
 										var previousHeight = toolboxContainer.$.offsetHeight;
+										var collapsed = !toolbox.isVisible();
 
-										if ( toolbox.isVisible() )
+										if ( !collapsed )
 										{
 											toolbox.hide();
 											collapser.addClass( 'cke_toolbox_collapser_min' );
@@ -304,6 +305,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											collapser.removeClass( 'cke_toolbox_collapser_min' );
 											collapser.setAttribute( 'title', editor.lang.toolbarCollapse );
 										}
+
+										// Update collapser symbol. 
+										collapser.getFirst().setText( collapsed ?
+											'\u25B2' :		// ¨‹
+											'\u25C0' );		// ?
 
 										var dy = toolboxContainer.$.offsetHeight - previousHeight;
 										contents.setStyle( 'height', ( contentHeight - dy ) + 'px' );
@@ -318,7 +324,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							if ( !expanded )
 								output.push( ' cke_toolbox_collapser_min' );
 
-							output.push( '" onclick="CKEDITOR.tools.callFunction(' + collapserFn + ')"></a>' );
+							output.push( '" onclick="CKEDITOR.tools.callFunction(' + collapserFn + ')">' +
+										 '<span>&#9650;</span>' +		// ¨‹
+										 '</a>' );
 						}
 
 						event.data.html += output.join( '' );

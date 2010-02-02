@@ -195,7 +195,7 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 						'<span>' +
 							'<span id="' + id + '_text" class="cke_text cke_inline_label">' + this.label + '</span>' +
 						'</span>' +
-						'<span class=cke_openbutton></span>' +
+						'<span class=cke_openbutton><span>&#9660;</span></span>' +		//¨‹
 					'</a>' +
 				'</span>' +
 				'</span>' );

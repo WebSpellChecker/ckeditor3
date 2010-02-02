@@ -133,19 +133,26 @@ CKEDITOR.dialog.add( 'smiley', function( editor )
 	// Build the HTML for the smiley images table.
 	var html =
 	[
-		'<table cellspacing="2" cellpadding="2"',
+		'<div>' +
+		'<span id="smiley_emtions_label" class="cke_label">' + lang.smileyEmotionsLabel +'</span>',
+		'<table role="listbox" aria-labelledby="smiley_emtions_label" style="width:100%;height:100%" cellspacing="2" cellpadding="2"',
 		CKEDITOR.env.ie && CKEDITOR.env.quirks ? ' style="position:absolute;"' : '',
 		'><tbody>'
 	];
 
-	for ( i = 0 ; i < images.length ; i++ )
+	var size = images.length;
+	for ( i = 0 ; i < size ; i++ )
 	{
 		if ( i % columns === 0 )
 			html.push( '<tr>' );
 
 		html.push(
 			'<td class="cke_dark_background cke_hand cke_centered" style="vertical-align: middle;">' +
-				'<a href="javascript:void(0)" role="button" aria-labelledby="cke_smile_label_' + i + '" class="cke_smile" tabindex="-1" onkeydown="CKEDITOR.tools.callFunction( ', onKeydown, ', event, this );">',
+				'<a href="javascript:void(0)" role="option"',
+					' aria-posinset="' + ( i +1 ) + '"',
+					' aria-setsize="' + size + '"',
+					' aria-labelledby="cke_smile_label_' + i + '"',
+					' class="cke_smile" tabindex="-1" onkeydown="CKEDITOR.tools.callFunction( ', onKeydown, ', event, this );">',
 					'<img class="hand" title="', config.smiley_descriptions[i], '"' +
 						' cke_src="', CKEDITOR.tools.htmlEncode( config.smiley_path + images[ i ] ), '" alt="', config.smiley_descriptions[i], '"',
 						' src="', CKEDITOR.tools.htmlEncode( config.smiley_path + images[ i ] ), '"',
@@ -167,7 +174,7 @@ CKEDITOR.dialog.add( 'smiley', function( editor )
 		html.push( '</tr>' );
 	}
 
-	html.push( '</tbody></table>' );
+	html.push( '</tbody></table></div>' );
 
 	var smileySelector =
 	{
@@ -179,7 +186,7 @@ CKEDITOR.dialog.add( 'smiley', function( editor )
 		},
 		focus : function()
  		{
-			var firstSmile = this.getElement().getChild( [0, 0, 0, 0] );
+			var firstSmile = this.getElement().getElementsByTag( 'a' ).getItem( 0 );
 			firstSmile.focus();
  		},
 		onClick : onClick,

@@ -9,7 +9,8 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 	 * Simulate "this" of a dialog for non-dialog events.
 	 * @type {CKEDITOR.dialog}
 	 */
-	var dialog;
+	var dialog,
+			lang = editor.lang.specialChar;
 	var onChoice = function( evt )
 	{
 		var target, value;
@@ -183,7 +184,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 	});
 
 	return {
-		title : editor.lang.specialChar.title,
+		title : lang.title,
 		minWidth : 430,
 		minHeight : 280,
 		buttons : [ CKEDITOR.dialog.cancelButton ],
@@ -224,10 +225,14 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 			var columns = this.definition.charColumns,
 				chars = this.definition.chars;
 
-			var html = [ '<table style="width: 320px; height: 100%; border-collapse: separate;" align="center" cellspacing="2" cellpadding="2" border="0">' ];
+			var html = [ '<span id="specialchar_table_label" class="cke_label">' + lang.charsTableLabel +'</span>' +
+						 			'<table role="listbox" aria-labelledby="specialchar_table_label"' +
+						 			' style="width: 320px; height: 100%; border-collapse: separate;"' +
+						 			' align="center" cellspacing="2" cellpadding="2" border="0">' ];
 
-			var i = 0 ;
-			while ( i < chars.length )
+			var i = 0,
+					size = chars.length;
+			while ( i < size )
 			{
 				html.push( '<tr>' ) ;
 
@@ -237,11 +242,15 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 					{
 						html.push(
 							'<td class="cke_dark_background" style="cursor: default">' +
-							'<a href="javascript: void(0);" style="cursor: inherit; display: block; height: 1.25em; margin-top: 0.25em; text-align: center;" title="', chars[i].replace( /&/g, '&amp;' ), '"' +
+							'<a href="javascript: void(0);" role="option"' +
+							' aria-posinset="' + ( i +1 ) + '"',
+							' aria-setsize="' + size + '"',
+							' aria-labelledby="cke_specialchar_label_' + i + '"',
+							' style="cursor: inherit; display: block; height: 1.25em; margin-top: 0.25em; text-align: center;" title="', chars[i].replace( /&/g, '&amp;' ), '"' +
 							' onkeydown="CKEDITOR.tools.callFunction( ' + onKeydown + ', event, this )"' +
 							' onclick="CKEDITOR.tools.callFunction(' + onClick + ', this); return false;"' +
 							' tabindex="-1">' +
-							'<span style="margin: 0 auto;cursor: inherit">' +
+							'<span id="cke_specialchar_label_' + i + 'style="margin: 0 auto;cursor: inherit">' +
 							chars[i] +
 							'</span></a>');
 					}
@@ -279,7 +288,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 								onMouseout : onBlur,
 								focus : function()
 								{
-									var firstChar = this.getElement().getChild( [0, 0, 0, 0, 0] );
+									var firstChar = this.getElement().getElementsByTag( 'a' ).getItem( 0 );
 									setTimeout(function()
 									{
 										firstChar.focus();

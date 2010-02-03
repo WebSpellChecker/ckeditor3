@@ -250,7 +250,8 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 							' onkeydown="CKEDITOR.tools.callFunction( ' + onKeydown + ', event, this )"' +
 							' onclick="CKEDITOR.tools.callFunction(' + onClick + ', this); return false;"' +
 							' tabindex="-1">' +
-							'<span id="cke_specialchar_label_' + i + 'style="margin: 0 auto;cursor: inherit">' +
+							'<span id="cke_specialchar_label_' + i + '"' +
+							' style="margin: 0 auto;cursor: inherit">' +
 							chars[i] +
 							'</span></a>');
 					}

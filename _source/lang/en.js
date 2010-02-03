@@ -486,7 +486,7 @@ CKEDITOR.lang['en'] =
 		smileyLabels :
 		[
 			'smiley', 'sad', 'wink', 'laugh', 'frown', 'cheeky', 'blush', 'surprise',
-			'indecision', 'angry', 'angle', 'cool', 'devil', 'crying', '', 'no',
+			'indecision', 'angry', 'angle', 'cool', 'devil', 'crying', 'enlightened', 'no',
 			'yes', 'heart', 'broken heart', 'kiss', 'mail'
 		]
 	},

@@ -323,6 +323,18 @@ body .cke_dialog
 	height: 14px;
 }
 
+.cke_skin_v2 .cke_browser_gecko.cke_hc div.cke_dialog_ui_input_text,
+.cke_skin_v2 .cke_browser_gecko.cke_hc div.cke_dialog_ui_input_password
+{
+	border-width: 0px;
+}
+
+.cke_skin_v2 .cke_browser_gecko18.cke_hc div.cke_dialog_ui_input_text,
+.cke_skin_v2 .cke_browser_gecko18.cke_hc div.cke_dialog_ui_input_password
+{
+	border-width: 1px;
+}
+
 .cke_skin_v2 div.cke_dialog_ui_input_text,
 .cke_skin_v2 div.cke_dialog_ui_input_password
 {

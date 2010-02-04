@@ -54,11 +54,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 .cke_skin_kama .cke_tpl_list a:hover .cke_tpl_item,
 .cke_skin_kama .cke_tpl_list a:focus .cke_tpl_item
 {
-	border: #ff9933 1px solid !important;
-	background-color: #fffacd !important;
+	border: #ff9933 1px solid;
+	background-color: #fffacd; 
 	cursor: pointer;
 	cursor: hand;
 }
+
+.cke_skin_kama .cke_hc .cke_tpl_list a:active .cke_tpl_item,
+.cke_skin_kama .cke_hc .cke_tpl_list a:hover .cke_tpl_item,
+.cke_skin_kama .cke_hc .cke_tpl_list a:focus .cke_tpl_item
+{
+	border-width: 3px;
+}
+
 /*
  * Fix property 'cursor' doesn't inherit on table
  */

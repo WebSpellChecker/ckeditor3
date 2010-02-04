@@ -89,6 +89,7 @@ CKEDITOR.lang['en'] =
 		cssStyle		: 'Style',
 		ok				: 'OK',
 		cancel			: 'Cancel',
+		close : 'Close',
 		generalTab		: 'General',
 		advancedTab		: 'Advanced',
 		validateNumberFailed	: 'This value is not a number.',

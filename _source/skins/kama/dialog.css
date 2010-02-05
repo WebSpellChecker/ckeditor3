@@ -526,7 +526,7 @@ body .cke_dialog
 
 /* close_button */
 
-.cke_skin_kama .cke_dialog_close_button
+.cke_skin_kama .cke_dialog .cke_dialog_body .cke_dialog_close_button
 {
 	background-image: url(images/sprites.png);
 	background-repeat: no-repeat;
@@ -537,7 +537,6 @@ body .cke_dialog
 	height: 20px;
 	width: 20px;
 	top: 5px;
-
 	/* IE 6 */
 	_background-image: url(images/sprites_ie6.png);
 }

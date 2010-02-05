@@ -175,9 +175,7 @@ CKEDITOR.themes.add( 'default', (function()
 							'<tr><td>' +
 							'<div class="%body">' +
 								'<div id="%title#" class="%title"></div>' +
-								'<div id="%close_button#" class="%close_button">' +
-									'<a href="javascript:void(0)" title="' +  editor.lang.common.close+'"><span class="cke_label">X</span></a>' +
-								'</div>' +
+								'<a id="%close_button#" class="%close_button" href="javascript:void(0)" title="' +  editor.lang.common.close+'"><span class="cke_label">X</span></a>' +
 								'<div id="%tabs#" class="%tabs"></div>' +
 								  '<table class="%contents"><tr>' +
 								  '<td id="%contents#" class="%contents"></td>' +

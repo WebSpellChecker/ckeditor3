@@ -467,7 +467,7 @@ body .cke_dialog
 
 /* close_button */
 
-.cke_skin_v2 .cke_dialog_close_button
+.cke_skin_v2 .cke_dialog .cke_dialog_body .cke_dialog_close_button
 {
 	background-image: url(images/sprites.png);
 	background-repeat: no-repeat;

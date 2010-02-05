@@ -206,7 +206,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 				'&sup3;(SUPERSCRIPT THREE)','&acute;(ACUTE ACCENT)','&micro;(MICRO SIGN)','&para;(PILCROW SIGN)','&middot;(MIDDLE DOT)','&cedil;(CEDILLA)',
 				'&sup1;(SUPERSCRIPT ONE)','&ordm;(MASCULINE ORDINAL INDICATOR)','&raquo;(RIGHT-POINTING DOUBLE ANGLE QUOTATION MARK)','&frac14;(VULGAR FRACTION ONE QUARTER)','&frac12;(VULGAR FRACTION ONE HALF)','&frac34;(VULGAR FRACTION THREE QUARTERS)',
 				'&iquest;(INVERTED QUESTION MARK)','&Agrave;(LATIN CAPITAL LETTER A WITH GRAVE)','&Aacute;(LATIN CAPITAL LETTER A WITH ACUTE)','&Acirc;(LATIN CAPITAL LETTER A WITH CIRCUMFLEX)','&Atilde;(LATIN CAPITAL LETTER A WITH TILDE)','&Auml;(LATIN CAPITAL LETTER A WITH DIAERESIS)',
-				'&Aring;(LATIN CAPITAL LETTER A WITH RING ABOVE)','&AElig;(LATIN CAPITAL LETTER AE)','&Ccedil;(LATIN CAPITAL LETTER C WITH CEDILLA)','&Egrave;(LATIN CAPITAL LETTER E WITH GRAVE)','&Eacute;(LATIN CAPITAL LETTER E WITH ACUTE)','&Ecirc;( LATIN CAPITAL LETTER E WITH CIRCUMFLEX)',
+				'&Aring;(LATIN CAPITAL LETTER A WITH RING ABOVE)','&AElig;(LATIN CAPITAL LETTER AE)','&Ccedil;(LATIN CAPITAL LETTER C WITH CEDILLA)','&Egrave;(LATIN CAPITAL LETTER E WITH GRAVE)','&Eacute;(LATIN CAPITAL LETTER E WITH ACUTE)','&Ecirc;(LATIN CAPITAL LETTER E WITH CIRCUMFLEX)',
 				'&Euml;(LATIN CAPITAL LETTER E WITH DIAERESIS)','&Igrave;(LATIN CAPITAL LETTER I WITH GRAVE)','&Iacute;(LATIN CAPITAL LETTER I WITH ACUTE)','&Icirc;(LATIN CAPITAL LETTER I WITH CIRCUMFLEX)','&Iuml;(LATIN CAPITAL LETTER I WITH DIAERESIS)','&ETH;(LATIN CAPITAL LETTER ETH)',
 				'&Ntilde;(LATIN CAPITAL LETTER N WITH TILDE)','&Ograve;(LATIN CAPITAL LETTER O WITH GRAVE)','&Oacute;(LATIN CAPITAL LETTER O WITH ACUTE)','&Ocirc;(LATIN CAPITAL LETTER O WITH CIRCUMFLEX)','&Otilde;(LATIN CAPITAL LETTER O WITH TILDE)','&Ouml;(LATIN CAPITAL LETTER O WITH DIAERESIS)',
 				'&times;(MULTIPLICATION SIGN)','&Oslash;(LATIN CAPITAL LETTER O WITH STROKE)','&Ugrave;(LATIN CAPITAL LETTER U WITH GRAVE)','&Uacute;(LATIN CAPITAL LETTER U WITH ACUTE)','&Ucirc;(LATIN CAPITAL LETTER U WITH CIRCUMFLEX)','&Uuml;(LATIN CAPITAL LETTER U WITH DIAERESIS)',
@@ -232,7 +232,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 			var columns = this.definition.charColumns,
 				chars = this.definition.chars;
 
-			var html = [ '<span id="specialchar_table_label" class="cke_label">' + lang.charsTableLabel +'</span>' +
+			var html = [ '<span id="specialchar_table_label" class="cke_voice_label">' + lang.charsTableLabel +'</span>' +
 						 			'<table role="listbox" aria-labelledby="specialchar_table_label"' +
 						 			' style="width: 320px; height: 100%; border-collapse: separate;"' +
 						 			' align="center" cellspacing="2" cellpadding="2" border="0">' ];
@@ -273,7 +273,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 							'<span style="margin: 0 auto;cursor: inherit">' +
 							char +
 							'</span>' +
-							'<span class="cke_label" id="cke_specialchar_label_' + i + '">' +
+							'<span class="cke_voice_label" id="cke_specialchar_label_' + i + '">' +
 							charDesc +
 							'</span></a>');
 					}

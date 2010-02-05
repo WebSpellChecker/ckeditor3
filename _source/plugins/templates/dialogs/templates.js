@@ -171,9 +171,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											catch( er ){}
 										},
 										html :
-											'<div class="cke_tpl_list" tabIndex="-1" role="listbox" aria-label="' + editor.lang.templates.optionsArea +'">' +
+											'<div class="cke_tpl_list" tabIndex="-1" role="listbox" aria-labelledby="cke_tpl_list_label">' +
 												'<div class="cke_tpl_loading"><span></span></div>' +
-											'</div>'
+											'</div>' +
+											'<span class="cke_voice_label" id="cke_tpl_list_label">' + editor.lang.templates.optionsArea+ '</span>'
 									},
 									{
 										id : 'chkInsertOpt',

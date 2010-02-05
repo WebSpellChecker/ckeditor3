@@ -121,17 +121,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	position: absolute;
 }
 
-.cke_skin_v2 fieldset.cke_voicelabel_invisible
-{
-	height: 100%;
-	position: relative;
-}
-
-.cke_skin_v2 legend.cke_voicelabel_invisible
+/* All voice labels are not displayed. */
+.cke_skin_v2 .cke_voice_label
 {
 	display: none;
 }
-.cke_skin_v2 .cke_browser_ie legend.cke_voicelabel_invisible
+
+.cke_skin_v2 legend.cke_voice_label
+{
+	display: none;
+}
+.cke_skin_v2 .cke_browser_ie legend.cke_voice_label
 {
 	position: absolute;
 	display: block;

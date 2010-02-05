@@ -59,8 +59,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		if( role == 'dialog' )
 		{
 			var fieldset = CKEDITOR.dom.element.createFromHtml(
-					'<fieldset class="cke_voicelabel_invisible">' +
-						'<legend class="cke_voicelabel_invisible">' +
+					'<fieldset style="position: relative;height: 100%;">' +
+						'<legend class="cke_voice_label">' +
 							CKEDITOR.tools.htmlEncode( allInOne ) +
 						'</legend>' +
 					'</fieldset>', doc );

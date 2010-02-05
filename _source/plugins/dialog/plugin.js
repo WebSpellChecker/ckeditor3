@@ -291,7 +291,15 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			if ( focusList.length < 1 )
 				return;
 
-			var startIndex = ( me._.currentFocusIndex + offset + focusList.length ) % focusList.length,
+			var current = me._.currentFocusIndex;
+
+			// Trigger the 'blur' event of  any input element before anything,
+			// since certain UI updates may depend on it.
+			try {
+				focusList[ current ].getInputElement().$.blur();
+			}catch( er ){}
+
+			var startIndex = ( current + offset + focusList.length ) % focusList.length,
 				currentIndex = startIndex;
 			while ( !focusList[ currentIndex ].isFocusable() )
 			{

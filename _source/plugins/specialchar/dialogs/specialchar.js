@@ -238,9 +238,9 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 						 			' align="center" cellspacing="2" cellpadding="2" border="0">' ];
 
 			var i = 0,
-					size = chars.length,
-					char,
-					charDesc;
+				size = chars.length,
+				character,
+				charDesc;
 
 			while ( i < size )
 			{
@@ -248,17 +248,17 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 
 				for( var j = 0 ; j < columns ; j++, i++ )
 				{
-					if ( char = chars[ i ] )
+					if ( ( character = chars[ i ] ) )
 					{
 						charDesc = '';
-						char = char.replace( /\((.*?)\)/, function( match, desc )
+						character = character.replace( /\((.*?)\)/, function( match, desc )
 							{
 								charDesc = desc;
 								return '';
 							} );
 						
 						// Use character in case description unavailable.
-						charDesc = charDesc || char;
+						charDesc = charDesc || character;
 
 						html.push(
 							'<td class="cke_dark_background" style="cursor: default">' +
@@ -271,7 +271,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 							' onclick="CKEDITOR.tools.callFunction(' + onClick + ', this); return false;"' +
 							' tabindex="-1">' +
 							'<span style="margin: 0 auto;cursor: inherit">' +
-							char +
+							character +
 							'</span>' +
 							'<span class="cke_voice_label" id="cke_specialchar_label_' + i + '">' +
 							charDesc +

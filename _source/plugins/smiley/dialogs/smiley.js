@@ -159,7 +159,7 @@ CKEDITOR.dialog.add( 'smiley', function( editor )
 						// IE BUG: Below is a workaround to an IE image loading bug to ensure the image sizes are correct.
 						( CKEDITOR.env.ie ? ' onload="this.setAttribute(\'width\', 2); this.removeAttribute(\'width\');" ' : '' ),
 					'>' +
-					'<span id="cke_smile_label_' + i + '" class="cke_label">' +lang.smileyLabels[ i ]  + '</span>' +
+					'<span id="cke_smile_label_' + i + '" class="cke_label">' +config.smiley_descriptions[ i ]  + '</span>' +
 				'</a>',
  			'</td>' );
 

@@ -483,13 +483,7 @@ CKEDITOR.lang['en'] =
 	{
 		toolbar	: 'Smiley',
 		title	: 'Insert a Smiley',
-		smileyEmotionsLabel : 'Emotion options',
-		smileyLabels :
-		[
-			'smiley', 'sad', 'wink', 'laugh', 'frown', 'cheeky', 'blush', 'surprise',
-			'indecision', 'angry', 'angle', 'cool', 'devil', 'crying', 'enlightened', 'no',
-			'yes', 'heart', 'broken heart', 'kiss', 'mail'
-		]
+		smileyEmotionsLabel : 'Emotion options'
 	},
 
 	elementsPath :

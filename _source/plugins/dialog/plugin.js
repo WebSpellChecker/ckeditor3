@@ -264,6 +264,26 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 						this.hide();
 				}, this );
 
+		// Sort focus list according to tab order definitions.
+		function setupFocus()
+		{
+			var focusList = me._.focusList;
+			focusList.sort( function( a, b )
+				{
+					// Mimics browser tab order logics;
+					if( a.tabIndex != b.tabIndex )
+						return b.tabIndex - a.tabIndex;
+					//  Sort is not stable in some browsers,
+					// fall-back the comparator to 'focusIndex';
+					else
+						return a.focusIndex - b.focusIndex;
+				});
+
+			var size = focusList.length;
+			for ( var i = 0; i < size; i++ )
+				focusList[ i ].focusIndex = i;
+		}
+
 		function changeFocus( forward )
 		{
 			var focusList = me._.focusList,
@@ -389,8 +409,8 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				if ( !this._.hasFocus )
 				{
 					this._.currentFocusIndex = -1;
+					setupFocus();
 					changeFocus( true );
-
 					/*
 					 * IE BUG: If the initial focus went into a non-text element (e.g. button),
 					 * then IE would still leave the caret inside the editing area.
@@ -478,6 +498,8 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 	{
 		this.element = element;
 		this.focusIndex = index;
+		// TODO: support tabIndex for focusables.
+		this.tabIndex = 0;
 		this.isFocusable = function()
 		{
 			return !element.getAttribute( 'disabled' ) && element.isVisible();
@@ -2056,6 +2078,9 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				// Register the object as a tab focus if it can be included.
 				if ( this.keyboardFocusable )
 				{
+					this.tabIndex = elementDefinition.tabIndex == null ?
+						0 : elementDefinition.tabIndex;
+
 					this.focusIndex = dialog._.focusList.push( this ) - 1;
 					this.on( 'focus', function()
 						{

@@ -414,7 +414,12 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		// Auto-focus logic in dialog.
 		this.on( 'show', function()
 			{
-				if ( !this._.hasFocus )
+				if( editor.config.dialog_startupFocusTab )
+				{
+					me._.tabBarMode = true;
+					me._.tabs[ me._.currentTabId ][ 0 ].focus();
+				}
+				else if ( !this._.hasFocus )
 				{
 					this._.currentFocusIndex = -1;
 					setupFocus();
@@ -2833,6 +2838,15 @@ CKEDITOR.plugins.add( 'dialog',
  * @default 0.5
  * @example
  * config.dialog_backgroundCoverOpacity = 0.7;
+ */
+
+/**
+ * If the dialog has more than one tab, put focus into the first tab as soon as dialog is opened.
+ * @name CKEDITOR.config.dialog_startupFocusTab
+ * @type Boolean
+ * @default false
+ * @example
+ * config.dialog_startupFocusTab = true;
  */
 
 /**

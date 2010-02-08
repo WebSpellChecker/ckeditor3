@@ -43,7 +43,7 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 				className : editor.skinClass + ' cke_contextmenu',
 				aria :
 				{
-					'aria-label' : editor.lang.contextMenu.panelTitle,
+					'aria-label' : editor.lang.common.options,
 					'aria-describedby' : editor.lang.contextMenu.panelVoiceLabel
 				}
 			}

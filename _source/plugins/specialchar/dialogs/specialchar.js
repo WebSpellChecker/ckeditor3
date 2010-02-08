@@ -232,7 +232,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 			var columns = this.definition.charColumns,
 				chars = this.definition.chars;
 
-			var html = [ '<span id="specialchar_table_label" class="cke_voice_label">' + lang.charsTableLabel +'</span>' +
+			var html = [ '<span id="specialchar_table_label" class="cke_voice_label">' + lang.common.options +'</span>' +
 						 			'<table role="listbox" aria-labelledby="specialchar_table_label"' +
 						 			' style="width: 320px; height: 100%; border-collapse: separate;"' +
 						 			' align="center" cellspacing="2" cellpadding="2" border="0">' ];

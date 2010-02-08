@@ -94,6 +94,7 @@ CKEDITOR.lang['en'] =
 		validateNumberFailed	: 'This value is not a number.',
 		confirmNewPage	: 'Any unsaved changes to this content will be lost. Are you sure you want to load new page?',
 		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?',
+		options : 'Options',
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>'
@@ -103,7 +104,6 @@ CKEDITOR.lang['en'] =
 	specialChar		:
 	{
 		toolbar		: 'Insert Special Character',
-		charsTableLabel : 'Special character options',
 		title		: 'Select Special Character'
 	},
 
@@ -482,7 +482,6 @@ CKEDITOR.lang['en'] =
 	{
 		toolbar	: 'Smiley',
 		title	: 'Insert a Smiley',
-		smileyEmotionsLabel : 'Emotion options'
 	},
 
 	elementsPath :
@@ -536,7 +535,6 @@ CKEDITOR.lang['en'] =
 		title : 'Content Templates',
 		insertOption: 'Replace actual contents',
 		selectPromptMsg: 'Please select the template to open in the editor',
-		optionsArea	 : 'Templates Options',
 		emptyListMsg : '(No templates defined)'
 	},
 
@@ -572,7 +570,6 @@ CKEDITOR.lang['en'] =
 
 	contextMenu :
 	{
-		panelTitle : 'context menu options',
 		panelVoiceLabel: ''
 	},
 

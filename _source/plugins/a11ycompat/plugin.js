@@ -7,10 +7,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @fileOverview Bring better accessibility support to browsers that has limited support for modern technologies (e.g. ARIA).
  */
 
-( function()
+(function()
 {
 	var dtd = CKEDITOR.dtd,
-		 env = CKEDITOR.env;
+		env = CKEDITOR.env;
+
 	// List of in-use ARIA roles and states. 
 	var roles = [ 'role' ],
 		 // List of roles that role type should not be announced.
@@ -21,9 +22,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	function lookupARIASupport( role, tagName )
 	{
 		return {
-			'dialog' :	 env.gecko && CKEDITOR.env.version >= 10900,
-			'region' : env.gecko && CKEDITOR.env.version >= 10900
-		}[ role ];
+				'dialog' :	 env.gecko && env.version >= 10900,
+				'region' : env.gecko && env.version >= 10900
+			}[ role ];
 	}
 
 	/**
@@ -34,17 +35,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		// Save the interested ARIA attributes first.
 		var doc = element.getDocument(),
-				role = element.getAttribute( 'role' ) || '';
+			role = element.getAttribute( 'role' ) || '';
 
 		// Just leave the original element untouched if
 		// the role is already supported on it.
-		if( lookupARIASupport( role, element.getName() ) !== false )
+		if ( lookupARIASupport( role, element.getName() ) !== false )
 			return;
 
 		var attrValue,
-			 labelText = element.getAttribute( 'aria-label' ) || ( attrValue = element.getAttribute( 'aria-labelledby' ) ) && doc.getById( attrValue ).getText() || '',
-			 descriptionText = ( attrValue = element.getAttribute( 'aria-describedby' ) ) && doc.getById( attrValue ).getText() || '',
-			 allInOne = [ labelText, role in silentRoles ? '' : role, descriptionText ].join( ' ' );
+			labelText = element.getAttribute( 'aria-label' ) || ( attrValue = element.getAttribute( 'aria-labelledby' ) ) && doc.getById( attrValue ).getText() || '',
+			descriptionText = ( attrValue = element.getAttribute( 'aria-describedby' ) ) && doc.getById( attrValue ).getText() || '',
+			allInOne = [ labelText, role in silentRoles ? '' : role, descriptionText ].join( ' ' );
 
 		// Remove all ARIA attributes on the widget that could
 		// bring down or conflict with the degradtion label.
@@ -56,7 +57,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		// Translate 'dialog' role by wrapping all containing form fields with a legend that composed of all ARIA
 		// attributes of the dialog which leads to be announced by ATs.
-		if( role == 'dialog' )
+		if ( role == 'dialog' )
 		{
 			var fieldset = CKEDITOR.dom.element.createFromHtml(
 					'<fieldset style="position: relative;height: 100%;">' +
@@ -84,56 +85,56 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	}
 
-	CKEDITOR.plugins.add( 'accessibility',
+	CKEDITOR.plugins.add( 'a11ycompat',
 	{
 		init : function( editor )
 		{
 			editor.on( 'ariaWidget', function( evt )
-			{
-				degradeARIA( evt.data, editor );
-			} );
+				{
+					degradeARIA( evt.data, editor );
+				});
 
-			if( !( env.gecko && env.version >= 10900 ) )
+			if ( !( env.gecko && env.version >= 10900 ) )
 			{
 				var uiButtonProto = CKEDITOR.ui.button.prototype;
 				uiButtonProto.setState = CKEDITOR.tools.override( uiButtonProto.setState, function( org )
-				{
-					return function( state )
 					{
-						if( org.apply( this, arguments ) )
+						return function( state )
 						{
-							var element = CKEDITOR.document.getById( this._.id ),
-								htmlTitle = this.title,
-								unavailableLabel = this._.editor.lang.common.unavailable,
-								labelElement = element.getChild( 1 );
+							if ( org.apply( this, arguments ) )
+							{
+								var element = CKEDITOR.document.getById( this._.id ),
+									htmlTitle = this.title,
+									unavailableLabel = this._.editor.lang.common.unavailable,
+									labelElement = element.getChild( 1 );
 
-							state == CKEDITOR.TRISTATE_DISABLED && ( htmlTitle = unavailableLabel.replace( '%1', this.title ) );
-							labelElement.setHtml( htmlTitle );
-						}
-					};
-				} );
+								state == CKEDITOR.TRISTATE_DISABLED && ( htmlTitle = unavailableLabel.replace( '%1', this.title ) );
+								labelElement.setHtml( htmlTitle );
+							}
+						};
+					});
 			}
 
-			// IE 	doesn't support 'aria-label', use 'aria-labelledby' instead.
-			if( CKEDITOR.env.ie )
+			// IE doesn't support 'aria-label', use 'aria-labelledby' instead.
+			if ( CKEDITOR.env.ie )
 			{
 				CKEDITOR.on( 'ariaWidget', function( evt )
-				{
-					var target = evt.data,
-						ariaLabel;
-					if( ( ariaLabel = target.getAttribute( 'aria-label' ) ) )
 					{
-						var labelId = 'cke_label_' + CKEDITOR.tools.getNextNumber();
-						ariaLabel = CKEDITOR.dom.element.createFromHtml(
-								'<span class="cke_label" id="' + labelId + '">' + ariaLabel+ '</span>',
-								target.getDocument() );
-						ariaLabel.insertBefore( target );
-						target.removeAttribute( 'aria-label' );
-						target.setAttribute( 'aria-labelledby', labelId );
-					}
-				} );
+						var target = evt.data,
+							ariaLabel;
+
+						if ( ( ariaLabel = target.getAttribute( 'aria-label' ) ) )
+						{
+							var labelId = 'cke_label_' + CKEDITOR.tools.getNextNumber();
+							ariaLabel = CKEDITOR.dom.element.createFromHtml(
+									'<span class="cke_label" id="' + labelId + '">' + ariaLabel+ '</span>',
+									target.getDocument() );
+							ariaLabel.insertBefore( target );
+							target.removeAttribute( 'aria-label' );
+							target.setAttribute( 'aria-labelledby', labelId );
+						}
+					});
 			}
 		}
 	});
-
-} )();
+})();

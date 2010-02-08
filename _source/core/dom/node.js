@@ -25,7 +25,7 @@ CKEDITOR.dom.node = function( domNode )
 	{
 		switch ( domNode.nodeType )
 		{
-			// Safari don't consider document as element node type(#3389).
+			// Safari don't consider document as element node type. (#3389)
 			case CKEDITOR.NODE_DOCUMENT :
 				return new CKEDITOR.dom.document( domNode );
 

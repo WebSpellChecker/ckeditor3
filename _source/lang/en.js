@@ -544,7 +544,6 @@ CKEDITOR.lang['en'] =
 	{
 		label : 'Styles',
 		panelTitle : 'Formatting Styles',
-		panelVoiceLabel : 'Select a style',
 		panelTitle1 : 'Block Styles',
 		panelTitle2 : 'Inline Styles',
 		panelTitle3 : 'Object Styles'
@@ -554,7 +553,6 @@ CKEDITOR.lang['en'] =
 	{
 		label : 'Format',
 		panelTitle : 'Paragraph Format',
-		panelVoiceLabel : 'Select a paragraph format',
 
 		tag_p : 'Normal',
 		tag_pre : 'Formatted',
@@ -570,7 +568,6 @@ CKEDITOR.lang['en'] =
 
 	contextMenu :
 	{
-		panelVoiceLabel: ''
 	},
 
 	div :
@@ -595,7 +592,6 @@ CKEDITOR.lang['en'] =
 		label : 'Font',
 		voiceLabel : 'Font',
 		panelTitle : 'Font Name',
-		panelVoiceLabel : 'Select a font'
 	},
 
 	fontSize :
@@ -603,7 +599,6 @@ CKEDITOR.lang['en'] =
 		label : 'Size',
 		voiceLabel : 'Font Size',
 		panelTitle : 'Font Size',
-		panelVoiceLabel : 'Select a font size'
 	},
 
 	colorButton :
@@ -611,7 +606,6 @@ CKEDITOR.lang['en'] =
 		textColorTitle : 'Text Color',
 		bgColorTitle : 'Background Color',
 		panelTitle : 'Colors',
-		panelVoiceLabel : 'Select a color',
 		auto : 'Automatic',
 		more : 'More Colors...'
 	},

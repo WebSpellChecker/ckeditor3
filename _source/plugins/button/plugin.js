@@ -131,7 +131,6 @@ CKEDITOR.ui.button.prototype =
 		if ( this.className )
 			classes += ' ' + this.className;
 
-		env = CKEDITOR.env;
 		output.push(
 			'<span class="cke_button">',
 			'<a id="', id, '"' +

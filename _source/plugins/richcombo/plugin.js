@@ -88,6 +88,8 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 		 */
 		render : function( editor, output )
 		{
+			var env = CKEDITOR.env;
+
 			var id = 'cke_' + this.id;
 			var clickFn = CKEDITOR.tools.addFunction( function( $element )
 				{
@@ -169,7 +171,8 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 			output.push(
 				'>' +
 					'<span id="' + id+ '_label" class=cke_label>', this.label, '</span>' +
-					'<a hidefocus=true title="', this.title, '" tabindex="-1" href="javascript:void(\'', this.label, '\')"' +
+					'<a hidefocus=true title="', this.title, '" tabindex="-1"',
+						env.gecko && env.version >= 10900 && !env.hc ? '' : ' href="javascript:void(\'' + this.label + '\')"',
 						' role="button" aria-labelledby="', id , '_label" aria-describedby="', id, '_text" aria-haspopup="true"' );
 
 			// Some browsers don't cancel key events in the keydown but in the

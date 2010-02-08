@@ -5,6 +5,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 (function()
 {
+	var stylesManager;
+
 	CKEDITOR.plugins.add( 'stylescombo',
 	{
 		requires : [ 'richcombo', 'styles' ],
@@ -15,6 +17,28 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				lang = editor.lang.stylesCombo,
 				pluginPath = this.path,
 				styles;
+
+			if ( !stylesManager )
+			{
+				stylesManager = CKEDITOR.stylesSet;
+
+				// Backward compatibilities (#5025).
+				CKEDITOR.addStylesSet = CKEDITOR.tools.bind( stylesManager.add, stylesManager );
+				CKEDITOR.loadStylesSet = function( name, url, callback )
+					{
+						stylesManager.addExternal( name, url, '' );
+						CKEDITOR.stylesSet.load( name, callback );
+					};
+			}
+			
+			var comboStylesSet = config.stylesCombo_stylesSet.split( ':' ),
+				styleSetName = comboStylesSet[ 0 ],
+				externalPath = comboStylesSet[ 1 ];
+
+			stylesManager.addExternal( styleSetName,
+					externalPath ?
+						comboStylesSet.slice( 1 ).join( ':' ) :
+						pluginPath + 'styles/' + styleSetName + '.js', '' );
 
 			editor.ui.addRichCombo( 'Styles',
 				{
@@ -32,18 +56,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					init : function()
 					{
-						var combo = this,
-							stylesSet = config.stylesCombo_stylesSet.split( ':' );
+						var combo = this;
 
-						var stylesSetPath = stylesSet[ 1 ] ?
-								stylesSet.slice( 1 ).join( ':' ) :		// #4481
-								CKEDITOR.getUrl( pluginPath + 'styles/' + stylesSet[ 0 ] + '.js' ) ;
-
-						stylesSet = stylesSet[ 0 ];
-
-						CKEDITOR.loadStylesSet( stylesSet, stylesSetPath, function( stylesDefinitions )
+						CKEDITOR.stylesSet.load( styleSetName, function( stylesSet )
 							{
-								var style,
+								var stylesDefinitions = stylesSet[ styleSetName ],
+									style,
 									styleName,
 									stylesList = [];
 
@@ -206,29 +224,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				});
 		}
 	});
-
-	var stylesSets = {};
-
-	CKEDITOR.addStylesSet = function( name, styles )
-	{
-		stylesSets[ name ] = styles;
-	};
-
-	CKEDITOR.loadStylesSet = function( name, url, callback )
-	{
-		var stylesSet = stylesSets[ name ];
-
-		if ( stylesSet )
-		{
-			callback( stylesSet );
-			return ;
-		}
-
-		CKEDITOR.scriptLoader.load( url, function()
-			{
-				callback( stylesSets[ name ] );
-			});
-	};
 
 	function buildPreview( styleDefinition )
 	{

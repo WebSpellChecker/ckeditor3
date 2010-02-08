@@ -43,12 +43,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				// Build the inner HTML of our new item DIV.
 				var html = '<table style="width:350px;" class="cke_tpl_preview"><tr>';
 
-				if( template.image && imagesPath )
+				if ( template.image && imagesPath )
 					html += '<td class="cke_tpl_preview_img"><img src="' + CKEDITOR.getUrl( imagesPath + template.image ) + '"></td>';
 
 				html += '<td style="white-space:normal;"><span class="cke_tpl_title">' + template.title + '</span><br/>';
 
-				if( template.description )
+				if ( template.description )
 					html += '<span>' + template.description + '</span>';
 
 				html += '</td></tr></table>';
@@ -69,7 +69,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				var dialog = CKEDITOR.dialog.getCurrent(),
 					isInsert = dialog.getValueOf( 'selectTpl', 'chkInsertOpt' );
 
-				if( isInsert )
+				if ( isInsert )
 				{
 					// Everything should happen after the document is loaded (#4073).
 					editor.on( 'contentDom', function( evt )
@@ -94,16 +94,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			function keyNavigation( evt )
 			{
 				var target = evt.data.getTarget(),
-						position = listContainer.getPosition( target );
+					position = listContainer.getPosition( target );
 
 				// Keyboard navigation for template list.
 				if( position > CKEDITOR.POSITION_CONTAINS )
 				{
 					var keystroke = evt.data.getKeystroke(),
-							items = listContainer.getElementsByTag( 'a' ),
-							focusItem;
+						items = listContainer.getElementsByTag( 'a' ),
+						focusItem;
 
-					if( items )
+					if ( items )
 					{
 						switch ( keystroke )
 						{
@@ -207,9 +207,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							else
 							{
 								listContainer.setHtml(
-										'<div class="cke_tpl_empty">' +
+									'<div class="cke_tpl_empty">' +
 										'<span>' + editor.lang.templates.emptyListMsg + '</span>' +
-										'</div>' );
+									'</div>' );
 							}
 						});
 

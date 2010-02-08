@@ -10,7 +10,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 	 * @type {CKEDITOR.dialog}
 	 */
 	var dialog,
-			lang = editor.lang.specialChar;
+		lang = editor.lang.specialChar;
 	var onChoice = function( evt )
 	{
 		var target, value;

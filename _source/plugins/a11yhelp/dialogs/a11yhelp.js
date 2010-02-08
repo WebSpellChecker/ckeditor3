@@ -11,8 +11,8 @@ CKEDITOR.dialog.add( 'a11yHelp', function( editor )
 	function buildHelpContents()
 	{
 		var pageTpl = '<div class="cke_accessibility_legend" role="document" tabIndex="-1">%1</div>',
-			 sectionTpl = '<h1>%1</h1><dl>%2</dl>',
-			 itemTpl = '<dt>%1</dt><dd>%2</dd>';
+			sectionTpl = '<h1>%1</h1><dl>%2</dl>',
+			itemTpl = '<dt>%1</dt><dd>%2</dd>';
 
 		var pageHtml = [],
 			sections = lang.legend,
@@ -91,4 +91,4 @@ CKEDITOR.dialog.add( 'a11yHelp', function( editor )
 		],
 		buttons : [ CKEDITOR.dialog.cancelButton ]
 	};
-} );
+});

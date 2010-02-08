@@ -147,7 +147,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 				{
 					var html = [];
 					if ( elementDefinition.labelLayout != 'horizontal' )
-						html.push( '<label class="cke_dialog_ui_labeled_label" ' +
+						html.push( '<label class="cke_dialog_ui_labeled_label" ',
 								' id="'+  _.labelId + '"',
 								' for="' + _.inputId + '"',
 								' style="' + elementDefinition.labelStyle + '">',
@@ -1391,7 +1391,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 
 	CKEDITOR.ui.dialog.fileButton.prototype = new CKEDITOR.ui.dialog.button;
 
-	CKEDITOR.ui.dialog.fieldset.prototype = CKEDITOR.tools.extend( {}, CKEDITOR.ui.dialog.hbox.prototype );
+	CKEDITOR.ui.dialog.fieldset.prototype = CKEDITOR.tools.clone( CKEDITOR.ui.dialog.hbox.prototype );
 
 	CKEDITOR.dialog.addUIElement( 'text', textBuilder );
 	CKEDITOR.dialog.addUIElement( 'password', textBuilder );

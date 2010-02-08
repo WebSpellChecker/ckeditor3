@@ -475,7 +475,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 												this.setValue( data.url.url );
 											this.allowOnChange = true;
 
-											// Araise the tab order of this field to top in case of URL.
+											// Raise  the tab order of this field to top in case of URL.
 											var linkType = this.getDialog().getContentElement( 'info', 'linkType' );
 											if ( linkType && linkType.getValue() == 'url' )
 												this.tabIndex = 1;

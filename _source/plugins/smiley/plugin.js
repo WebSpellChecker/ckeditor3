@@ -61,11 +61,21 @@ CKEDITOR.config.smiley_images = [
  * @type Array
  * @default  The textual descriptions of smiley.
  * @example
- * // Use the emoticons as descriptions..
- * config.smiley_descriptions = [
- *	':)', ':(', ';)', ':D', ':/', ':P', ':*)', ':-o',
- *	':|', '>:(', 'o:)', '8-)', '>:-)', ';(', '', '', '',
- *	'', '', ':-*', '' ];
+ * // Default settings.
+ * config.smiley_descriptions =
+ *     [
+ *         'smiley', 'sad', 'wink', 'laugh', 'frown', 'cheeky', 'blush', 'surprise',
+ *         'indecision', 'angry', 'angle', 'cool', 'devil', 'crying', 'enlightened', 'no',
+ *         'yes', 'heart', 'broken heart', 'kiss', 'mail'
+ *     ];
+ * @example
+ * // Use textual emoticons as description.
+ * config.smiley_descriptions =
+ *     [
+ *         ':)', ':(', ';)', ':D', ':/', ':P', ':*)', ':-o',
+ *         ':|', '>:(', 'o:)', '8-)', '>:-)', ';(', '', '', '',
+ *         '', '', ':-*', ''
+ *     ];
  */
 CKEDITOR.config.smiley_descriptions =
 	[

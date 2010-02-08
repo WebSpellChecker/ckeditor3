@@ -238,7 +238,8 @@ CKEDITOR.plugins.add( 'floatpanel',
 									opacity : '1'
 								} );
 
-							// Give focus to the panel block with a delay. (to help screen-readers to speak out the widget)
+							// Give focus to the panel block with a delay,
+							// to help screen-readers to speak out the widget.
 							setTimeout( function() { block.element.focus(); }, 500 );
 						} , this );
 

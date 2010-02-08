@@ -345,6 +345,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											filebrowser : 'info:src',
 											hidden : true,
 											// v-align with the 'src' field.
+											// TODO: We need something better than a fixed size here.
 											style : 'display:inline-block;margin-top:10px;',
 											label : editor.lang.common.browseServer
 										}

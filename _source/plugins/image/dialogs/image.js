@@ -546,6 +546,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											type : 'button',
 											id : 'browse',
 											// v-align with the 'txtUrl' field.
+											// TODO: We need something better than a fixed size here.
 											style : 'display:inline-block;margin-top:10px;',
 											align : 'center',
 											label : editor.lang.common.browseServer,

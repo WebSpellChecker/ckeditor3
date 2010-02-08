@@ -139,15 +139,15 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			 titleId = this.parts.title.$.id;
 
 		dialogPart.setAttributes(
-		{
-			'role' : 'dialog',
-			'aria-labelledby' : titleId
-		} );
+			{
+				'role' : 'dialog',
+				'aria-labelledby' : titleId
+			});
 
 		CKEDITOR.tools.setTimeout( function()
-		{
-			editor.fire( 'ariaWidget', this.parts.contents );
-		}, 0, this );
+			{
+				editor.fire( 'ariaWidget', this.parts.contents );
+			}, 0, this );
 		
 		// Set the startup styles for the dialog, avoiding it enlarging the
 		// page size on the dialog creation.
@@ -160,6 +160,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			});
 
 		this.parts.tabs.setAttribute( 'role', 'tablist' );
+
 		// Call the CKEDITOR.event constructor to initialize this instance.
 		CKEDITOR.event.call( this );
 
@@ -290,9 +291,11 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 			// Trigger the 'blur' event of  any input element before anything,
 			// since certain UI updates may depend on it.
-			try {
+			try
+			{
 				focusList[ current ].getInputElement().$.blur();
-			}catch( er ){}
+			}
+			catch( er ){}
 
 			var startIndex = ( current + offset + focusList.length ) % focusList.length,
 				currentIndex = startIndex;
@@ -363,7 +366,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				this._.tabBarMode = false;
 				this._.currentFocusIndex = -1;
 				changeFocus( true );
-				processed =1;
+				processed = 1;
 			}
 
 			if ( processed )
@@ -877,7 +880,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 						' id="', tabId, '"',
 						env.gecko && env.version >= 10900 && !env.hc ? '' : ' href="javascript:void(0)"',
 						' tabIndex="-1"',
-						' hidefocus="true"' +
+						' hidefocus="true"',
 						' role="tab">',
 							contents.label,
 					'</a>'
@@ -2086,8 +2089,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				// Register the object as a tab focus if it can be included.
 				if ( this.keyboardFocusable )
 				{
-					this.tabIndex = elementDefinition.tabIndex == null ?
-						0 : elementDefinition.tabIndex;
+					this.tabIndex = elementDefinition.tabIndex || 0;
 
 					this.focusIndex = dialog._.focusList.push( this ) - 1;
 					this.on( 'focus', function()

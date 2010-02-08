@@ -308,8 +308,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 										// Update collapser symbol. 
 										collapser.getFirst().setText( collapsed ?
-											'\u25B2' :		// ¨‹
-											'\u25C0' );		// ?
+											'\u25B2' :		// BLACK UP-POINTING TRIANGLE
+											'\u25C0' );		// BLACK LEFT-POINTING TRIANGLE
 
 										var dy = toolboxContainer.$.offsetHeight - previousHeight;
 										contents.setStyle( 'height', ( contentHeight - dy ) + 'px' );
@@ -324,9 +324,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							if ( !expanded )
 								output.push( ' cke_toolbox_collapser_min' );
 
-							output.push( '" onclick="CKEDITOR.tools.callFunction(' + collapserFn + ')">' +
-										 '<span>&#9650;</span>' +		// ¨‹
-										 '</a>' );
+							output.push( '" onclick="CKEDITOR.tools.callFunction(' + collapserFn + ')">',
+										'<span>&#9650;</span>',		// BLACK UP-POINTING TRIANGLE
+										'</a>' );
 						}
 
 						event.data.html += output.join( '' );

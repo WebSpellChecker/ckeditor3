@@ -32,7 +32,6 @@ CKEDITOR.lang['en'] =
 	 * of reading non-English words. So be careful while translating it.
 	 */
 	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.',
-	dialogVoiceLabel : '',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Source',

@@ -136,17 +136,12 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		this.parts = themeBuilt.parts;
 
 		var dialogPart = this.parts.dialog,
-			 contentsPart = this.parts.contents,
-			 titleId = this.parts.title.$.id,
-			 descriptiveLabelId = titleId.replace( 'title', 'desc' ),
-			 descriptiveLabel = CKEDITOR.dom.element.createFromHtml( '<label id="' + descriptiveLabelId + '" style="display:none">' + editor.lang.dialogVoiceLabel+ '</label>' );
+			 titleId = this.parts.title.$.id;
 
-		descriptiveLabel.insertAfter( dialogPart );
 		dialogPart.setAttributes(
 		{
 			'role' : 'dialog',
-			'aria-labelledby' : titleId,
-			'aria-describedby' : descriptiveLabelId
+			'aria-labelledby' : titleId
 		} );
 
 		CKEDITOR.tools.setTimeout( function()

@@ -777,6 +777,7 @@ body .cke_dialog
 {
 	display: none;
 }
+
 .cke_skin_kama .cke_hc .cke_dialog_body .cke_label
 {
 	display: inline;
@@ -787,15 +788,16 @@ body .cke_dialog
 .cke_skin_kama .cke_hc a.cke_btn_reset
 {
 	border-style: solid;
-	float:left;
-	width:auto;
-	height:auto;
+	float: left;
+	width: auto;
+	height: auto;
 }
+
 .cke_skin_kama .cke_rtl.cke_hc a.cke_btn_locked,
 .cke_skin_kama .cke_rtl.cke_hc a.cke_btn_unlocked,
 .cke_skin_kama .cke_rtl.cke_hc a.cke_btn_reset
 {
-	float:right;
+	float: right;
 }
 
 .cke_skin_kama a.cke_smile img

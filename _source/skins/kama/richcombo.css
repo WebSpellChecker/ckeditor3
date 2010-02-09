@@ -89,9 +89,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	color: #666666;
 }
 
-.cke_skin_kama .cke_browser_ie .cke_rcombo .cke_text
+.cke_skin_kama .cke_browser_ie8 .cke_rcombo .cke_text
 {
-/*	float: left; */
+	vertical-align: top;
+}
+
+.cke_skin_kama .cke_browser_ie7 .cke_rcombo .cke_text
+{
+	vertical-align: text-top;
+}
+.cke_skin_kama .cke_browser_ie7 .cke_rcombo .cke_openbutton
+{
+	vertical-align: middle;
 }
 
 .cke_skin_kama .cke_hc .cke_rcombo .cke_label

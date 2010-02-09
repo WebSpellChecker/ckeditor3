@@ -475,11 +475,6 @@ CKEDITOR.dialog.add( 'link', function( editor )
 												this.setValue( data.url.url );
 											this.allowOnChange = true;
 
-											// Raise the tab order of this field to top in case of URL.
-											var linkType = this.getDialog().getContentElement( 'info', 'linkType' );
-											if ( linkType && linkType.getValue() == 'url' )
-												this.tabIndex = 1;
-
 										},
 										commit : function( data )
 										{
@@ -614,7 +609,8 @@ CKEDITOR.dialog.add( 'link', function( editor )
 								id : 'noAnchors',
 								style : 'text-align: center;',
 								html : '<div role="label" tabIndex="-1">' + CKEDITOR.tools.htmlEncode( editor.lang.link.noAnchors ) + '</div>',
-								focus : function(){},
+								// Focus the first element defined in above html. 
+								focus : true,
 								setup : function( data )
 								{
 									if ( data.anchors.length < 1 )
@@ -1364,6 +1360,13 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			if ( !editor.config.linkShowTargetTab )
 				this.hidePage( 'target' );		//Hide Target tab.
 
+		},
+		// Inital focus on 'url' field if link is of type URL.
+		onFocus : function()
+		{
+			var linkType = this.getContentElement( 'info', 'linkType' );
+			if ( linkType && linkType.getValue() == 'url' )
+				return this.getContentElement( 'info', 'url' );
 		}
 	};
 });

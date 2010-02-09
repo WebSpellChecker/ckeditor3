@@ -421,7 +421,18 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				{
 					this._.currentFocusIndex = -1;
 					setupFocus();
-					changeFocus( true );
+
+					// Decide where to put the initial focus.
+					if ( definition.onFocus )
+					{
+						var initialFocus = definition.onFocus.call( this );
+						// Focus the field that the user specified.
+						initialFocus && initialFocus.focus();
+					}
+					// Focus the first field in layout order.
+					else
+						changeFocus( true );
+
 					/*
 					 * IE BUG: If the initial focus went into a non-text element (e.g. button),
 					 * then IE would still leave the caret inside the editing area.

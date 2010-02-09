@@ -767,13 +767,14 @@ CKEDITOR.plugins.add( 'dialogui' );
 						theirHtml = '<span>' + theirHtml + '</span>';
 
 					// Look for focus function in definition.
-					if ( elementDefinition.focus )
+					var focus = elementDefinition.focus;
+					if ( focus )
 					{
 						var oldFocus = this.focus;
 						this.focus = function()
 						{
 							oldFocus.call( this );
-							elementDefinition.focus.call( this );
+							typeof focus == 'function' && focus.call( this );
 							this.fire( 'focus' );
 						};
 						if ( elementDefinition.isFocusable )

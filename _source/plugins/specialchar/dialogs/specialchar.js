@@ -1,3 +1,8 @@
+
+
+
+
+
 /*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
@@ -232,8 +237,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 			var columns = this.definition.charColumns,
 				chars = this.definition.chars;
 
-			var html = [ '<span id="specialchar_table_label" class="cke_voice_label">' + lang.common.options +'</span>' +
-						 			'<table role="listbox" aria-labelledby="specialchar_table_label"' +
+			var html = [ '<table role="listbox" aria-labelledby="specialchar_table_label"' +
 						 			' style="width: 320px; height: 100%; border-collapse: separate;"' +
 						 			' align="center" cellspacing="2" cellpadding="2" border="0">' ];
 
@@ -285,7 +289,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 				html.push( '</tr>' );
 			}
 
-			html.push( '</tbody></table>' );
+			html.push( '</tbody></table>', '<span id="specialchar_table_label" class="cke_voice_label">' + editor.lang.common.options +'</span>' );
 
 			this.getContentElement( 'info', 'charContainer' ).getElement().setHtml( html.join( '' ) );
 		},
@@ -318,15 +322,14 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 										onFocus( null, firstChar );
 									});
 								},
-								// Needed only for webkit.
 								onShow : function()
 								{
-									var firstChar = this.getElement().getChild( [0, 0, 0, 0, 0] );
-									setTimeout(function()
-									{
-										firstChar.focus();
-										onFocus( null, firstChar );
-									});
+									var firstChar = this.getElement().getChild( [ 0, 0, 0, 0, 0] );
+									setTimeout( function()
+										{
+											firstChar.focus();
+											onFocus( null, firstChar );
+										});
 								},
 								onLoad : function( event )
 								{

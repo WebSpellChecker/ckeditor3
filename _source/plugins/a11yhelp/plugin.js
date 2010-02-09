@@ -14,16 +14,24 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	
 	CKEDITOR.plugins.add( pluginName,
 	{
+		langs : [ 'en' ],
 		init : function( editor )
 		{
+			var plugin = this;
 			editor.addCommand( commandName,
 				{
 					exec : function()
 					{
-						editor.loadPluginLang( pluginName, function()
-							{
-								editor.openDialog( commandName );
-							});
+						var langCode = ( CKEDITOR.tools.indexOf( plugin.langs, editor.langCode ) >= 0 ?
+							editor.langCode : plugin.langs[ 0 ] );
+
+						CKEDITOR.scriptLoader.load(
+								CKEDITOR.getUrl( plugin.path + 'lang/' + langCode + '.js' ),
+								function()
+								{
+									CKEDITOR.tools.extend( editor.lang, plugin.lang[ langCode ] );
+									editor.openDialog( commandName );
+								})	;
 					},
 					modes : { wysiwyg:1, source:1 },
 					canUndo : false

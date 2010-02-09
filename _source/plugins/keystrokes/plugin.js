@@ -214,5 +214,6 @@ CKEDITOR.config.keystrokes =
 	[ CKEDITOR.CTRL + 73 /*I*/, 'italic' ],
 	[ CKEDITOR.CTRL + 85 /*U*/, 'underline' ],
 
-	[ CKEDITOR.ALT + 109 /*-*/, 'toolbarCollapse' ]
+	[ CKEDITOR.ALT + 109 /*-*/, 'toolbarCollapse' ],
+	[ CKEDITOR.ALT + 48 /*-*/, 'a11yHelp' ]
 ];

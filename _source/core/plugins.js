@@ -76,31 +76,6 @@ CKEDITOR.plugins.load = CKEDITOR.tools.override( CKEDITOR.plugins.load, function
 		};
 	});
 
-/**
- *  Used for lazy load an individual plugin's language file.
- * @param pluginName
- * @param callback
- */
-CKEDITOR.editor.prototype.loadPluginLang = function( pluginName,  callback )
-{
-
-	var plugin = CKEDITOR.plugins.get( pluginName ),
-			langCode = this.langCode;
-
-	if( plugin.lang )
-		callback.apply( plugin );
-	else
-	{
-		CKEDITOR.scriptLoader.load(
-				CKEDITOR.getUrl( plugin.path + 'lang/' + langCode + '.js' ),
-				function()
-				{
-					CKEDITOR.tools.extend( this.lang, plugin.lang[ langCode ] );
-					callback.apply( plugin, arguments );
-				}, this )	;
-	}
-};
-
 CKEDITOR.plugins.setLang = function( pluginName, languageCode, languageEntries )
 {
 	var plugin = this.get( pluginName ),

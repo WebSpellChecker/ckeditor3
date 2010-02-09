@@ -412,6 +412,10 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		// Auto-focus logic in dialog.
 		this.on( 'show', function()
 			{
+				// Setup tabIndex on showing the dialog instead of on loading
+				// to allow dynamic tab order happen in dialog definition.
+				setupFocus();
+
 				if( editor.config.dialog_startupFocusTab
 					&& me._.tabIdList.length > 1 )
 				{
@@ -421,7 +425,6 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				else if ( !this._.hasFocus )
 				{
 					this._.currentFocusIndex = -1;
-					setupFocus();
 
 					// Decide where to put the initial focus.
 					if ( definition.onFocus )

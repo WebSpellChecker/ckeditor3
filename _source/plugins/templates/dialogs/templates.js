@@ -97,7 +97,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					position = listContainer.getPosition( target );
 
 				// Keyboard navigation for template list.
-				if( position > CKEDITOR.POSITION_CONTAINS )
+				if ( position > CKEDITOR.POSITION_CONTAINS )
 				{
 					var keystroke = evt.data.getKeystroke(),
 						items = listContainer.getElementsByTag( 'a' ),
@@ -122,7 +122,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								target.fire( 'click' );
 						}
 
-						if( focusItem )
+						if ( focusItem )
 						{
 							focusItem.focus();
 							evt.data.preventDefault();

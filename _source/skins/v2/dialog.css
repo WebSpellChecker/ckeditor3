@@ -254,6 +254,7 @@ body .cke_dialog
 {
 	background-color: #f1f1e3;
 }
+
 .cke_skin_v2 .cke_hc a:hover.cke_dialog_tab
 {
 	padding: 2px 3px !important;
@@ -271,6 +272,7 @@ body .cke_dialog
 	font-weight: bold;
 	cursor: default;
 }
+
 .cke_skin_v2 .cke_hc a.cke_dialog_tab_selected,
 .cke_skin_v2 .cke_hc a:link.cke_dialog_tab_selected,
 .cke_skin_v2 .cke_hc a:active.cke_dialog_tab_selected,
@@ -295,7 +297,6 @@ body .cke_dialog
 {
 	display: none;
 }
-
 
 .cke_skin_v2 .cke_single_page .cke_dialog_title
 {
@@ -697,6 +698,7 @@ body .cke_dialog
 {
 	display: none;
 }
+
 .cke_skin_v2 .cke_hc .cke_dialog_body .cke_label
 {
 	display: inline;

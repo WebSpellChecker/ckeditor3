@@ -83,5 +83,3 @@ CKEDITOR.config.smiley_descriptions =
 		'indecision', 'angry', 'angle', 'cool', 'devil', 'crying', 'enlightened', 'no',
 		'yes', 'heart', 'broken heart', 'kiss', 'mail'
 	];
-
-

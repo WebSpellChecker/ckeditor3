@@ -295,7 +295,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			{
 				focusList[ current ].getInputElement().$.blur();
 			}
-			catch( er ){}
+			catch( e ){}
 
 			var startIndex = ( current + offset + focusList.length ) % focusList.length,
 				currentIndex = startIndex;

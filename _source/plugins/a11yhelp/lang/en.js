@@ -16,17 +16,17 @@ CKEDITOR.plugins.setLang( 'a11yhelp', 'en',
 						[
 							{
 								name : 'Editor Toolbar',
-								legend: 'Press ALT + F10 to navigate to the toolbar; Move to next toolbar button with TAB or RIGHT ARROW; Move to previous button with  SHIFT+TAB or LEFT ARROW; Press SPACE or ENTER to trigger the toolbar button.'
+								legend: 'Press ${toolbarFocus} to navigate to the toolbar; Move to next toolbar button with TAB or RIGHT ARROW; Move to previous button with  SHIFT+TAB or LEFT ARROW; Press SPACE or ENTER to trigger the toolbar button.'
 							},
 
 							{
 								name : 'Editor Element Pathbar',
-								legend : 'Press ALT + F10 to navigate to the elements pathbar; Move to next element button with TAB or RIGHT ARROW; Move to previous button with  SHIFT+TAB or LEFT ARROW. Press SPACE or ENTER to select the element in editor.'
+								legend : 'Press ${elementsPathFocus} to navigate to the elements pathbar; Move to next element button with TAB or RIGHT ARROW; Move to previous button with  SHIFT+TAB or LEFT ARROW. Press SPACE or ENTER to select the element in editor.'
 							},
 
 							{
 								name : 'Editor Context Menu',
-								legend : 'Press SHIFT + F10 or CTRL + SHIFT + F10 or APPLICATION KEY to open context-menu. Then move to next menu option with TAB or DOWN ARROW; Move to previous option with  SHIFT+TAB or UP ARROW. Press SPACE or ENTER to select the menu option.' +
+								legend : 'Press ${contextMenu} or APPLICATION KEY to open context-menu. Then move to next menu option with TAB or DOWN ARROW; Move to previous option with  SHIFT+TAB or UP ARROW. Press SPACE or ENTER to select the menu option.' +
 										 'Open sub-menu of current option wtih SPACE or ENTER or RIGHT ARROW; Go back to parent menu item with ESC or LEFT ARROW;' +
 										 'Close context menu with ESC.'
 							},
@@ -49,31 +49,35 @@ CKEDITOR.plugins.setLang( 'a11yhelp', 'en',
 						[
 							{
 								name : ' Undo command',
-								legend : 'Press CTRL + Z'
+								legend : 'Press ${undo}'
 							},
 							{
 								name : ' Redo command',
-								legend : 'Press CTRL + Y or CTRL + SHIFT + Y'
+								legend : 'Press ${redo}'
 							},
 							{
 								name : ' Bold command',
-								legend : 'Press CTRL + B'
+								legend : 'Press ${bold}'
 							},
 							{
 								name : ' Italic command',
-								legend : 'Press CTRL + I'
+								legend : 'Press ${italic}'
 							},
 							{
 								name : ' Underline command',
-								legend : 'Press CTRL + U'
+								legend : 'Press ${underline}'
 							},
 							{
 								name : ' Link command',
-								legend : 'Press CTRL + L'
+								legend : 'Press ${link}'
 							},
 							{
 								name : ' Toolbar Collapse command',
-								legend : 'Press ALT + -'
+								legend : 'Press ${toolbarCollapse}'
+							},
+							{
+								name : ' Accessibility Help',
+								legend : 'Press ${a11yHelp}'
 							}
 						]
 			}

@@ -412,7 +412,8 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		// Auto-focus logic in dialog.
 		this.on( 'show', function()
 			{
-				if( editor.config.dialog_startupFocusTab )
+				if( editor.config.dialog_startupFocusTab
+					&& me._.tabIdList.length > 1 )
 				{
 					me._.tabBarMode = true;
 					me._.tabs[ me._.currentTabId ][ 0 ].focus();

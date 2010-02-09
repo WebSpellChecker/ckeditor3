@@ -68,9 +68,9 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 				block : {}
 			} );
 
-			var aria = panelDefinition.block.aria = ( panelDefinition.aria || {} );
+			var attrs = panelDefinition.block.attributes = ( panelDefinition.attributes || {} );
 			// Provide default role of 'menu'.
-			!aria.role && ( aria.role = 'menu' );
+			!attrs.role && ( attrs.role = 'menu' );
 			this._.panelDefinition = panelDefinition;
 		},
 

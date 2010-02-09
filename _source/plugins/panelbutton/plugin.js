@@ -59,7 +59,7 @@ CKEDITOR.UI_PANELBUTTON = 4;
 
 			panelDefinition.block =
 			{
-				aria : panelDefinition.aria
+				attributes : panelDefinition.attributes
 			};
 
 			this.hasArrow = true;

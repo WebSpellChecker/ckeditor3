@@ -32,7 +32,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 					panel :
 					{
 						css : editor.skin.editor.css,
-						aria : { role : 'listbox', 'aria-label' : lang.panelTitle }
+						attributes : { role : 'listbox', 'aria-label' : lang.panelTitle }
 					},
 
 					onBlock : function( panel, block )

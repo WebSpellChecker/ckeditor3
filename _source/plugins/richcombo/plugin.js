@@ -47,7 +47,7 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 		panelDefinition.block =
 		{
 			multiSelect : panelDefinition.multiSelect,
-			aria : panelDefinition.aria
+			attributes : panelDefinition.attributes
 		};
 
 		this._ =
@@ -170,7 +170,7 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 
 			output.push(
 				'>' +
-					'<span id="' + id+ '_label" class=cke_label>', this.label, '</span>' +
+					'<span id="' + id+ '_label" class=cke_label>', this.label, '</span>',
 					'<a hidefocus=true title="', this.title, '" tabindex="-1"',
 						env.gecko && env.version >= 10900 && !env.hc ? '' : ' href="javascript:void(\'' + this.label + '\')"',
 						' role="button" aria-labelledby="', id , '_label" aria-describedby="', id, '_text" aria-haspopup="true"' );
@@ -198,7 +198,7 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 						'<span>' +
 							'<span id="' + id + '_text" class="cke_text cke_inline_label">' + this.label + '</span>' +
 						'</span>' +
-						'<span class=cke_openbutton><span>&#9660;</span></span>' +		//¨‹
+						'<span class=cke_openbutton><span>&#9660;</span></span>' +	// BLACK DOWN-POINTING TRIANGLE
 					'</a>' +
 				'</span>' +
 				'</span>' );

@@ -262,8 +262,9 @@ CKEDITOR.ui.panel.block = CKEDITOR.tools.createClass(
 				}) );
 
 		blockDefinition = blockDefinition || {};
-		var aria = blockDefinition.aria;
-		aria && this.element.setAttributes( aria );
+
+		var attribs = blockDefinition.attributes;
+		attribs && this.element.setAttributes( attribs );
 
 		CKEDITOR.fire( 'ariaWidget', this.element );
 		this.keys = {};

@@ -9,9 +9,9 @@ CKEDITOR.plugins.add( 'listblock',
 
 	onLoad : function()
 	{
-		CKEDITOR.ui.panel.prototype.addListBlock = function( name, multiSelect )
+		CKEDITOR.ui.panel.prototype.addListBlock = function( name, definiton )
 		{
-			return this.addBlock( name, new CKEDITOR.ui.listBlock( this.getHolderElement(), multiSelect ) );
+			return this.addBlock( name, new CKEDITOR.ui.listBlock( this.getHolderElement(), definiton ) );
 		};
 
 		CKEDITOR.ui.listBlock = CKEDITOR.tools.createClass(
@@ -22,11 +22,11 @@ CKEDITOR.plugins.add( 'listblock',
 				{
 					blockDefinition = blockDefinition || {};
 
-					var aria = blockDefinition.aria || ( blockDefinition.aria = {} );
+					var attribs = blockDefinition.attributes || ( blockDefinition.attributes = {} );
 					( this.multiSelect = !!blockDefinition.multiSelect ) &&
-						( aria[ 'aria-multiselectable' ] = true );
+						( attribs[ 'aria-multiselectable' ] = true );
 					// Provide default role of 'listbox'.
-					!aria.role && ( aria.role = 'listbox' );
+					!attribs.role && ( attribs.role = 'listbox' );
 					
 					// Call the base contructor.
 					this.base.apply( this, arguments );

@@ -1383,9 +1383,13 @@ CKEDITOR.dialog.add( 'link', function( editor )
 		// Inital focus on 'url' field if link is of type URL.
 		onFocus : function()
 		{
-			var linkType = this.getContentElement( 'info', 'linkType' );
-			if ( linkType && linkType.getValue() == 'url' )
-				return this.getContentElement( 'info', 'url' );
+			var linkType = this.getContentElement( 'info', 'linkType' ),
+					urlField;
+			if ( linkType && linkType.getValue( ) == 'url' )
+			{
+				urlField = this.getContentElement( 'info', 'url' );
+				urlField.select();
+			}
 		}
 	};
 });

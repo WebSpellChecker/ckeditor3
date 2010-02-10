@@ -108,13 +108,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						switch ( keystroke )
 						{
 							case 40 :					// ARROW-DOWN
-								focusItem = target.getNext()
-										|| items.getItem( 0 );
+								focusItem = target.getNext();
 								break;
 
 							case 38 :					// ARROW-UP
-								focusItem = target.getPrevious()
-										|| items.getItem( items.count() - 1 );
+								focusItem = target.getPrevious();
 								break;
 
 							case 13 :					// ENTER

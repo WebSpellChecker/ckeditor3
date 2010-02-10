@@ -4,7 +4,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 /**
- * @fileOverview Bring better accessibility support to browsers that has limited support for modern technologies (e.g. ARIA).
+ * @fileOverview Plugin definition for the a11yhelp, which provides a dialog
+ * with accessibility related help.
  */
 
 (function()
@@ -14,7 +15,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	
 	CKEDITOR.plugins.add( pluginName,
 	{
-		langs : [ 'en' ],
+		// List of available localizations.
+		availableLangs : { en:1 },
+
 		init : function( editor )
 		{
 			var plugin = this;
@@ -22,8 +25,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					exec : function()
 					{
-						var langCode = ( CKEDITOR.tools.indexOf( plugin.langs, editor.langCode ) >= 0 ?
-							editor.langCode : plugin.langs[ 0 ] );
+						var langCode = editor.langCode;
+						langCode = plugin.availableLangs[ langCode ] ? langCode : 'en';
 
 						CKEDITOR.scriptLoader.load(
 								CKEDITOR.getUrl( plugin.path + 'lang/' + langCode + '.js' ),
@@ -31,7 +34,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								{
 									CKEDITOR.tools.extend( editor.lang, plugin.lang[ langCode ] );
 									editor.openDialog( commandName );
-								})	;
+								});
 					},
 					modes : { wysiwyg:1, source:1 },
 					canUndo : false

@@ -302,7 +302,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// The script that launches the bootstrap logic on 'domReady', so the document
 					// is fully editable even before the editing iframe is fully loaded (#4455).
 					var activationScript =
-						'<script id="cke_actscrpt" type="text/javascript">' +
+						'<script id="cke_actscrpt" type="text/javascript" cke_temp="1">' +
 							'window.parent.CKEDITOR._["contentDomReady' + editor.name + '"]( window );' +
 						'</script>';
 
@@ -438,20 +438,34 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						if ( CKEDITOR.env.ie )
 						{
-							// Cancel default action for backspace in IE on control types. (#4047)
+							// Override keystrokes which should have deletion behavior
+							//  on control types in IE . (#4047)
 							domDocument.on( 'keydown', function( evt )
 							{
-								// Backspace.
-								var control = evt.data.getKeystroke() == 8
-											  && editor.getSelection().getSelectedElement();
-								if ( control )
+								var keyCode = evt.data.getKeystroke();
+
+								// Backspace OR Delete.
+								if ( keyCode in { 8 : 1, 46 : 1 } )
 								{
-									// Make undo snapshot.
-									editor.fire( 'saveSnapshot' );
-									// Remove manually.
-									control.remove();
-									editor.fire( 'saveSnapshot' );
-									evt.cancel();
+									var sel = editor.getSelection(),
+										control = sel.getSelectedElement();
+
+									if ( control )
+									{
+										// Make undo snapshot.
+										editor.fire( 'saveSnapshot' );
+
+										// Delete any element that 'hasLayout' (e.g. hr,table) in IE8 will
+										// break up the selection, safely manage it here. (#4795)
+										var bookmark = sel.getRanges()[ 0 ].createBookmark();
+										// Remove the control manually.
+										control.remove();
+										sel.selectBookmarks( [ bookmark ] );
+
+										editor.fire( 'saveSnapshot' );
+
+										evt.data.preventDefault();
+									}
 								}
 							} );
 
@@ -730,17 +744,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	// Fixing Firefox 'Back-Forward Cache' break design mode. (#4514)
 	if( CKEDITOR.env.gecko )
 	{
-		var topWin = window.top;
-
 		( function ()
 		{
-			var topBody = topWin.document.body;
+			var body = document.body;
 
-			if( !topBody )
-				topWin.addEventListener( 'load', arguments.callee, false );
+			if( !body )
+				window.addEventListener( 'load', arguments.callee, false );
 			else
 			{
-				topBody.setAttribute( 'onpageshow', topBody.getAttribute( 'onpageshow' )
+				body.setAttribute( 'onpageshow', body.getAttribute( 'onpageshow' )
 						+ ';event.persisted && CKEDITOR.tools.callFunction(' +
 						CKEDITOR.tools.addFunction( function()
 						{
@@ -810,3 +822,9 @@ CKEDITOR.config.disableNativeSpellChecker = true;
  * config.ignoreEmptyParagraph = false;
  */
 CKEDITOR.config.ignoreEmptyParagraph = true;
+
+/**
+ * Fired when data is loaded and ready for retrieval in an editor instance.
+ * @name CKEDITOR.editor#dataReady
+ * @event
+ */

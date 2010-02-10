@@ -722,9 +722,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															ratioButton = CKEDITOR.document.getById( 'btnLockSizes' );
 														if ( resetButton )
 														{
-															resetButton.on( 'click', function()
+															resetButton.on( 'click', function(evt)
 																{
 																	resetSize( this );
+																	evt.data.preventDefault();
 																}, this.getDialog() );
 															resetButton.on( 'mouseover', function()
 																{
@@ -738,7 +739,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 														// Activate (Un)LockRatio button
 														if ( ratioButton )
 														{
-															ratioButton.on( 'click', function()
+															ratioButton.on( 'click', function(evt)
 																{
 																	var locked = switchLockRatio( this ),
 																		oImageOriginal = this.originalElement,
@@ -753,6 +754,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 																			updatePreview( this );
 																		}
 																	}
+																	evt.data.preventDefault();
 																}, this.getDialog() );
 															ratioButton.on( 'mouseover', function()
 																{
@@ -800,11 +802,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 														{
 															var value,
 																borderStyle = element.getStyle( 'border-width' );
-
 															borderStyle = borderStyle && borderStyle.match( /^(\d+px)(?: \1 \1 \1)?$/ );
 															value = borderStyle && parseInt( borderStyle[ 1 ], 10 );
-															!value && ( value = element.getAttribute( 'border' ) );
-
+															isNaN ( parseInt( value ) ) && ( value = element.getAttribute( 'border' ) );
 															this.setValue( value );
 														}
 													},
@@ -813,7 +813,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 														var value = parseInt( this.getValue(), 10 );
 														if ( type == IMAGE || type == PREVIEW )
 														{
-															if ( value )
+															if ( !isNaN( value ) )
 															{
 																element.setStyle( 'border-width', CKEDITOR.tools.cssLength( value ) );
 																element.setStyle( 'border-style', 'solid' );
@@ -869,7 +869,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															marginRightPx = parseInt( marginRightStyle, 10 );
 
 															value = ( marginLeftPx == marginRightPx ) && marginLeftPx;
-															!value && ( value = element.getAttribute( 'hspace' ) );
+															isNaN( parseInt( value ) ) && ( value = element.getAttribute( 'hspace' ) );
 
 															this.setValue( value );
 														}
@@ -879,7 +879,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 														var value = parseInt( this.getValue(), 10 );
 														if ( type == IMAGE || type == PREVIEW )
 														{
-															if ( value )
+															if ( !isNaN( value ) )
 															{
 																element.setStyle( 'margin-left', CKEDITOR.tools.cssLength( value ) );
 																element.setStyle( 'margin-right', CKEDITOR.tools.cssLength( value ) );
@@ -933,7 +933,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															marginBottomPx = parseInt( marginBottomStyle, 10 );
 
 															value = ( marginTopPx == marginBottomPx ) && marginTopPx;
-															!value && ( value = element.getAttribute( 'vspace' ) );
+															isNaN ( parseInt( value ) ) && ( value = element.getAttribute( 'vspace' ) );
 															this.setValue( value );
 														}
 													},
@@ -942,7 +942,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 														var value = parseInt( this.getValue(), 10 );
 														if ( type == IMAGE || type == PREVIEW )
 														{
-															if ( value )
+															if ( !isNaN( value ) )
 															{
 																element.setStyle( 'margin-top', CKEDITOR.tools.cssLength( value ) );
 																element.setStyle( 'margin-bottom', CKEDITOR.tools.cssLength( value ) );
@@ -1016,7 +1016,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 														{
 															if ( value )
 																element.setStyle( 'float', value );
-															else if ( !value && this.isChanged( ) )
+															else
 																element.removeStyle( 'float' );
 
 															if( !internalCommit && type == IMAGE )

@@ -121,3 +121,17 @@ CKEDITOR.focusManager.prototype =
 		}
 	}
 };
+
+/**
+ * Fired when the editor instance receives the input focus.
+ * @name CKEDITOR.editor#focus
+ * @event
+ * @param {CKEDITOR.editor} editor The editor instance.
+ */
+
+/**
+ * Fired when the editor instance loses the input focus.
+ * @name CKEDITOR.editor#blur
+ * @event
+ * @param {CKEDITOR.editor} editor The editor instance.
+ */

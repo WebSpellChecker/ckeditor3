@@ -582,6 +582,7 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 		 *
 		 * @param {String} data HTML code to replace the curent content in the editor.
 		 * @param {Function} callback Function to be called after the setData is completed.
+		 * @param {Boolean} noUndo Specify false to avoid editor from creating undo snapshot for this load.    
 		 * @example
 		 * CKEDITOR.instances.editor1.<b>setData( '&lt;p&gt;This is the editor data.&lt;/p&gt;' )</b>;
 		 * CKEDITOR.instances.editor1.setData( '&lt;p&gt;Some other editor data.&lt;/p&gt;', function()
@@ -589,16 +590,16 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 		 * 		CKEDITOR.instances.editor1.checkDirty(); 	// true
 		 * } );
 		 */
-		setData : function( data , callback )
+		setData : function( data , callback, noUndo )
 		{
-			if( callback )
-			{
-				this.on( 'dataReady', function( evt )
+			noUndo !== false && this.fire( 'saveSnapshot' );
+
+			this.on( 'dataReady', function( evt )
 				{
 					evt.removeListener();
-					callback.call( evt.editor );
-				} );
-			}
+					callback && callback.call( evt.editor );
+					noUndo !== false && this.fire( 'saveSnapshot' );
+				});
 			// Fire "setData" so data manipulation may happen.
 			var eventData = { dataValue : data };
 			this.fire( 'setData', eventData );
@@ -685,8 +686,31 @@ CKEDITOR.on( 'loaded', function()
 /**
  * Whether escape HTML when editor update original input element.
  * @name CKEDITOR.config.htmlEncodeOutput
+ * @since 3.1
  * @type {Boolean}
  * @default false
  * @example
  * config.htmlEncodeOutput = true;
+ */
+
+/**
+ * Fired when a CKEDITOR instance is created, but still before initializing it.
+ * To interact with a fully initialized instance, use the
+ * {@link CKEDITOR#instanceReady} event instead.
+ * @name CKEDITOR#instanceCreated
+ * @event
+ * @param {CKEDITOR.editor} editor The editor instance that has been created.
+ */
+
+/**
+ * Fired when a CKEDITOR instance is destroyed.
+ * @name CKEDITOR#instanceDestroyed
+ * @event
+ * @param {CKEDITOR.editor} editor The editor instance that has been destroyed.
+ */
+
+/**
+ * Fired when all plugins are loaded and initialized into the editor instance.
+ * @name CKEDITOR#pluginsLoaded
+ * @event
  */

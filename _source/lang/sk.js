@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -31,7 +31,7 @@ CKEDITOR.lang['sk'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle		: 'Rich text editor, %1', // MISSING
+	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
 	// Toolbar buttons without dialogs.
 	source			: 'Zdroj',
@@ -88,11 +88,13 @@ CKEDITOR.lang['sk'] =
 		cssStyle		: 'Štýl',
 		ok				: 'OK',
 		cancel			: 'Zrušiť',
+		close : 'Close', // MISSING
 		generalTab		: 'Hlavné',
 		advancedTab		: 'Rozšírené',
 		validateNumberFailed	: 'This value is not a number.', // MISSING
 		confirmNewPage	: 'Any unsaved changes to this content will be lost. Are you sure you want to load new page?', // MISSING
 		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -210,6 +212,7 @@ CKEDITOR.lang['sk'] =
 		width		: 'Šírka',
 		widthPx		: 'pixelov',
 		widthPc		: 'percent',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Výška',
 		cellSpace	: 'Vzdialenosť buniek',
 		cellPad		: 'Odsadenie obsahu',
@@ -379,6 +382,7 @@ CKEDITOR.lang['sk'] =
 		width		: 'Šírka',
 		height	: 'Výška',
 		lockRatio	: 'Zámok',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Pôvodná veľkosť',
 		border	: 'Okraje',
 		hSpace	: 'H-medzera',
@@ -391,7 +395,12 @@ CKEDITOR.lang['sk'] =
 		linkTab	: 'Odkaz',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['sk'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element' // MISSING
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['sk'] =
 		cutError	: 'Bezpečnostné nastavenia Vášho prehliadača nedovoľujú editoru spustiť funkciu pre vystrihnutie zvoleného textu do schránky. Prosím vystrihnite zvolený text do schránky pomocou klávesnice (Ctrl+X).',
 		copyError	: 'Bezpečnostné nastavenia Vášho prehliadača nedovoľujú editoru spustiť funkciu pre kopírovanie zvoleného textu do schránky. Prosím skopírujte zvolený text do schránky pomocou klávesnice (Ctrl+C).',
 		pasteMsg	: 'Prosím vložte nasledovný rámček použitím klávesnice (<STRONG>Ctrl+V</STRONG>) a stlačte <STRONG>OK</STRONG>.',
-		securityMsg	: 'Bezpečnostné nastavenia Vášho prehliadača nedovoľujú editoru pristupovať priamo k datám v schránke. Musíte ich vložiť znovu do tohto okna.'
+		securityMsg	: 'Bezpečnostné nastavenia Vášho prehliadača nedovoľujú editoru pristupovať priamo k datám v schránke. Musíte ich vložiť znovu do tohto okna.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['sk'] =
 	stylesCombo :
 	{
 		label : 'Štýl',
-		voiceLabel : 'Styles', // MISSING
-		panelVoiceLabel : 'Select a style', // MISSING
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Block Styles', // MISSING
 		panelTitle2 : 'Inline Styles', // MISSING
 		panelTitle3 : 'Object Styles' // MISSING
@@ -542,9 +552,7 @@ CKEDITOR.lang['sk'] =
 	format :
 	{
 		label : 'Formát',
-		voiceLabel : 'Format', // MISSING
 		panelTitle : 'Formát',
-		panelVoiceLabel : 'Select a paragraph format', // MISSING
 
 		tag_p : 'Normálny',
 		tag_pre : 'Formátovaný',
@@ -579,22 +587,21 @@ CKEDITOR.lang['sk'] =
 	{
 		label : 'Písmo',
 		voiceLabel : 'Font', // MISSING
-		panelTitle : 'Písmo',
-		panelVoiceLabel : 'Select a font' // MISSING
+		panelTitle : 'Písmo'
 	},
 
 	fontSize :
 	{
 		label : 'Veľkosť',
 		voiceLabel : 'Font Size', // MISSING
-		panelTitle : 'Veľkosť',
-		panelVoiceLabel : 'Select a font size' // MISSING
+		panelTitle : 'Veľkosť'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Farba textu',
 		bgColorTitle : 'Farba pozadia',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automaticky',
 		more : 'Viac farieb...'
 	},

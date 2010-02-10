@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -31,7 +31,7 @@ CKEDITOR.lang['hu'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle		: 'Rich text editor, %1', // MISSING
+	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
 	// Toolbar buttons without dialogs.
 	source			: 'Forráskód',
@@ -88,11 +88,13 @@ CKEDITOR.lang['hu'] =
 		cssStyle		: 'Stílus',
 		ok				: 'Rendben',
 		cancel			: 'Mégsem',
+		close : 'Close', // MISSING
 		generalTab		: 'General', // MISSING
 		advancedTab		: 'További opciók',
 		validateNumberFailed	: 'This value is not a number.', // MISSING
 		confirmNewPage	: 'Any unsaved changes to this content will be lost. Are you sure you want to load new page?', // MISSING
 		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -210,6 +212,7 @@ CKEDITOR.lang['hu'] =
 		width		: 'Szélesség',
 		widthPx		: 'képpont',
 		widthPc		: 'százalék',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Magasság',
 		cellSpace	: 'Cella térköz',
 		cellPad		: 'Cella belső margó',
@@ -379,6 +382,7 @@ CKEDITOR.lang['hu'] =
 		width		: 'Szélesség',
 		height	: 'Magasság',
 		lockRatio	: 'Arány megtartása',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Eredeti méret',
 		border	: 'Keret',
 		hSpace	: 'Vízsz. táv',
@@ -391,7 +395,12 @@ CKEDITOR.lang['hu'] =
 		linkTab	: 'Hivatkozás',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['hu'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element' // MISSING
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['hu'] =
 		cutError	: 'A böngésző biztonsági beállításai nem engedélyezik a szerkesztőnek, hogy végrehajtsa a kivágás műveletet. Használja az alábbi billentyűkombinációt (Ctrl+X).',
 		copyError	: 'A böngésző biztonsági beállításai nem engedélyezik a szerkesztőnek, hogy végrehajtsa a másolás műveletet. Használja az alábbi billentyűkombinációt (Ctrl+X).',
 		pasteMsg	: 'Másolja be az alábbi mezőbe a <STRONG>Ctrl+V</STRONG> billentyűk lenyomásával, majd nyomjon <STRONG>Rendben</STRONG>-t.',
-		securityMsg	: 'A böngésző biztonsági beállításai miatt a szerkesztő nem képes hozzáférni a vágólap adataihoz. Illeszd be újra ebben az ablakban.'
+		securityMsg	: 'A böngésző biztonsági beállításai miatt a szerkesztő nem képes hozzáférni a vágólap adataihoz. Illeszd be újra ebben az ablakban.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['hu'] =
 	stylesCombo :
 	{
 		label : 'Stílus',
-		voiceLabel : 'Styles', // MISSING
-		panelVoiceLabel : 'Select a style', // MISSING
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Block Styles', // MISSING
 		panelTitle2 : 'Inline Styles', // MISSING
 		panelTitle3 : 'Object Styles' // MISSING
@@ -542,9 +552,7 @@ CKEDITOR.lang['hu'] =
 	format :
 	{
 		label : 'Formátum',
-		voiceLabel : 'Format', // MISSING
 		panelTitle : 'Formátum',
-		panelVoiceLabel : 'Select a paragraph format', // MISSING
 
 		tag_p : 'Normál',
 		tag_pre : 'Formázott',
@@ -579,22 +587,21 @@ CKEDITOR.lang['hu'] =
 	{
 		label : 'Betűtípus',
 		voiceLabel : 'Font', // MISSING
-		panelTitle : 'Betűtípus',
-		panelVoiceLabel : 'Select a font' // MISSING
+		panelTitle : 'Betűtípus'
 	},
 
 	fontSize :
 	{
 		label : 'Méret',
 		voiceLabel : 'Font Size', // MISSING
-		panelTitle : 'Méret',
-		panelVoiceLabel : 'Select a font size' // MISSING
+		panelTitle : 'Méret'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Betűszín',
 		bgColorTitle : 'Háttérszín',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automatikus',
 		more : 'További színek...'
 	},

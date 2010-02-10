@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -31,7 +31,7 @@ CKEDITOR.lang['sv'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle		: 'Rich text editor, %1', // MISSING
+	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
 	// Toolbar buttons without dialogs.
 	source			: 'Källa',
@@ -88,11 +88,13 @@ CKEDITOR.lang['sv'] =
 		cssStyle		: 'Style',
 		ok				: 'OK',
 		cancel			: 'Avbryt',
+		close : 'Close', // MISSING
 		generalTab		: 'General', // MISSING
 		advancedTab		: 'Avancerad',
 		validateNumberFailed	: 'This value is not a number.', // MISSING
 		confirmNewPage	: 'Any unsaved changes to this content will be lost. Are you sure you want to load new page?', // MISSING
 		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -210,6 +212,7 @@ CKEDITOR.lang['sv'] =
 		width		: 'Bredd',
 		widthPx		: 'pixlar',
 		widthPc		: 'procent',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Höjd',
 		cellSpace	: 'Cellavstånd',
 		cellPad		: 'Cellutfyllnad',
@@ -379,6 +382,7 @@ CKEDITOR.lang['sv'] =
 		width		: 'Bredd',
 		height	: 'Höjd',
 		lockRatio	: 'Lås höjd/bredd förhållanden',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Återställ storlek',
 		border	: 'Kant',
 		hSpace	: 'Horis. marginal',
@@ -391,7 +395,12 @@ CKEDITOR.lang['sv'] =
 		linkTab	: 'Länk',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['sv'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element' // MISSING
 	},
 
@@ -493,7 +503,7 @@ CKEDITOR.lang['sv'] =
 		block : 'Justera till marginaler'
 	},
 
-	blockquote : 'Blockquote', // MISSING
+	blockquote : 'Block Quote', // MISSING
 
 	clipboard :
 	{
@@ -501,7 +511,8 @@ CKEDITOR.lang['sv'] =
 		cutError	: 'Säkerhetsinställningar i Er webläsare tillåter inte åtgården Klipp ut. Använd (Ctrl+X) istället.',
 		copyError	: 'Säkerhetsinställningar i Er webläsare tillåter inte åtgården Kopiera. Använd (Ctrl+C) istället',
 		pasteMsg	: 'Var god och klistra in Er text i rutan nedan genom att använda (<STRONG>Ctrl+V</STRONG>) klicka sen på <STRONG>OK</STRONG>.',
-		securityMsg	: 'På grund av din webläsares säkerhetsinställningar kan verktyget inte få åtkomst till urklippsdatan. Var god och använd detta fönster istället.'
+		securityMsg	: 'På grund av din webläsares säkerhetsinställningar kan verktyget inte få åtkomst till urklippsdatan. Var god och använd detta fönster istället.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['sv'] =
 	stylesCombo :
 	{
 		label : 'Anpassad stil',
-		voiceLabel : 'Styles', // MISSING
-		panelVoiceLabel : 'Select a style', // MISSING
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Block Styles', // MISSING
 		panelTitle2 : 'Inline Styles', // MISSING
 		panelTitle3 : 'Object Styles' // MISSING
@@ -542,9 +552,7 @@ CKEDITOR.lang['sv'] =
 	format :
 	{
 		label : 'Teckenformat',
-		voiceLabel : 'Format', // MISSING
 		panelTitle : 'Teckenformat',
-		panelVoiceLabel : 'Select a paragraph format', // MISSING
 
 		tag_p : 'Normal',
 		tag_pre : 'Formaterad',
@@ -579,22 +587,21 @@ CKEDITOR.lang['sv'] =
 	{
 		label : 'Typsnitt',
 		voiceLabel : 'Font', // MISSING
-		panelTitle : 'Typsnitt',
-		panelVoiceLabel : 'Select a font' // MISSING
+		panelTitle : 'Typsnitt'
 	},
 
 	fontSize :
 	{
 		label : 'Storlek',
 		voiceLabel : 'Font Size', // MISSING
-		panelTitle : 'Storlek',
-		panelVoiceLabel : 'Select a font size' // MISSING
+		panelTitle : 'Storlek'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Textfärg',
 		bgColorTitle : 'Bakgrundsfärg',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automatisk',
 		more : 'Fler färger...'
 	},

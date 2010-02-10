@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['ar'] =
 		cssStyle		: 'نمط',
 		ok				: 'موافق',
 		cancel			: 'إلغاء الأمر',
+		close : 'Close', // MISSING
 		generalTab		: 'عام',
 		advancedTab		: 'متقدم',
 		validateNumberFailed	: 'لايوجد نتيجة',
 		confirmNewPage	: 'ستفقد أي متغييرات اذا لم تقم بحفظها اولا. هل أنت متأكد أنك تريد صفحة جديدة؟',
 		confirmCancel	: 'بعض الخيارات قد تغيرت. هل أنت متأكد من إغلاق مربع النص؟',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, غير متاح</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['ar'] =
 		width		: 'العرض',
 		widthPx		: 'بكسل',
 		widthPc		: 'بالمئة',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'الإرتفاع',
 		cellSpace	: 'تباعد الخلايا',
 		cellPad		: 'المسافة البادئة',
@@ -379,6 +382,7 @@ CKEDITOR.lang['ar'] =
 		width		: 'العرض',
 		height	: 'الإرتفاع',
 		lockRatio	: 'تناسق الحجم',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'إستعادة الحجم الأصلي',
 		border	: 'سمك الحدود',
 		hSpace	: 'تباعد أفقي',
@@ -391,7 +395,12 @@ CKEDITOR.lang['ar'] =
 		linkTab	: 'الرابط',
 		button2Img	: 'هل تريد تحويل زر الصورة المختار إلى صورة بسيطة؟',
 		img2Button	: 'هل تريد تحويل الصورة المختارة إلى زر صورة؟',
-		urlMissing : 'عنوان مصدر الصورة مفقود'
+		urlMissing : 'عنوان مصدر الصورة مفقود',
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['ar'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : 'عنصر 1%'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['ar'] =
 		cutError	: 'الإعدادات الأمنية للمتصفح الذي تستخدمه تمنع القص التلقائي. فضلاً إستخدم لوحة المفاتيح لفعل ذلك (Ctrl+X).',
 		copyError	: 'الإعدادات الأمنية للمتصفح الذي تستخدمه تمنع النسخ التلقائي. فضلاً إستخدم لوحة المفاتيح لفعل ذلك (Ctrl+C).',
 		pasteMsg	: 'الصق داخل الصندوق بإستخدام زرائر (<STRONG>Ctrl+V</STRONG>) في لوحة المفاتيح، ثم اضغط زر  <STRONG>موافق</STRONG>.',
-		securityMsg	: 'نظراً لإعدادات الأمان الخاصة بمتصفحك، لن يتمكن هذا المحرر من الوصول لمحتوى حافظتك، لذلك يجب عليك لصق المحتوى مرة أخرى في هذه النافذة.'
+		securityMsg	: 'نظراً لإعدادات الأمان الخاصة بمتصفحك، لن يتمكن هذا المحرر من الوصول لمحتوى حافظتك، لذلك يجب عليك لصق المحتوى مرة أخرى في هذه النافذة.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['ar'] =
 	stylesCombo :
 	{
 		label : 'أنماط',
-		voiceLabel : 'أنماط',
-		panelVoiceLabel : 'اختر نمط',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'أنماط الفقرة',
 		panelTitle2 : 'أنماط مضمنة',
 		panelTitle3 : 'أنماط الكائن'
@@ -542,9 +552,7 @@ CKEDITOR.lang['ar'] =
 	format :
 	{
 		label : 'تنسيق',
-		voiceLabel : 'تنسيق',
 		panelTitle : 'تنسيق الفقرة',
-		panelVoiceLabel : 'اختر تنسيق الفقرة',
 
 		tag_p : 'عادي',
 		tag_pre : 'منسّق',
@@ -579,22 +587,21 @@ CKEDITOR.lang['ar'] =
 	{
 		label : 'خط',
 		voiceLabel : 'حجم الخط',
-		panelTitle : 'حجم الخط',
-		panelVoiceLabel : 'اختر حجم الخط'
+		panelTitle : 'حجم الخط'
 	},
 
 	fontSize :
 	{
 		label : 'حجم الخط',
 		voiceLabel : 'حجم الخط',
-		panelTitle : 'حجم الخط',
-		panelVoiceLabel : 'اختر حجم الخط'
+		panelTitle : 'حجم الخط'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'لون النص',
 		bgColorTitle : 'لون الخلفية',
+		panelTitle : 'Colors', // MISSING
 		auto : 'تلقائي',
 		more : 'ألوان إضافية...'
 	},

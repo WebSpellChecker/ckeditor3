@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -31,7 +31,7 @@ CKEDITOR.lang['bn'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle		: 'Rich text editor, %1', // MISSING
+	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
 	// Toolbar buttons without dialogs.
 	source			: 'সোর্স',
@@ -88,11 +88,13 @@ CKEDITOR.lang['bn'] =
 		cssStyle		: 'স্টাইল',
 		ok				: 'ওকে',
 		cancel			: 'বাতিল',
+		close : 'Close', // MISSING
 		generalTab		: 'General', // MISSING
 		advancedTab		: 'এডভান্সড',
 		validateNumberFailed	: 'This value is not a number.', // MISSING
 		confirmNewPage	: 'Any unsaved changes to this content will be lost. Are you sure you want to load new page?', // MISSING
 		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -210,6 +212,7 @@ CKEDITOR.lang['bn'] =
 		width		: 'প্রস্থ',
 		widthPx		: 'পিক্সেল',
 		widthPc		: 'শতকরা',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'দৈর্ঘ্য',
 		cellSpace	: 'সেল স্পেস',
 		cellPad		: 'সেল প্যাডিং',
@@ -379,6 +382,7 @@ CKEDITOR.lang['bn'] =
 		width		: 'প্রস্থ',
 		height	: 'দৈর্ঘ্য',
 		lockRatio	: 'অনুপাত লক কর',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'সাইজ পূর্বাবস্থায় ফিরিয়ে দাও',
 		border	: 'বর্ডার',
 		hSpace	: 'হরাইজন্টাল স্পেস',
@@ -391,7 +395,12 @@ CKEDITOR.lang['bn'] =
 		linkTab	: 'লিংক',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['bn'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element' // MISSING
 	},
 
@@ -493,7 +503,7 @@ CKEDITOR.lang['bn'] =
 		block : 'ব্লক জাস্টিফাই'
 	},
 
-	blockquote : 'Blockquote', // MISSING
+	blockquote : 'Block Quote', // MISSING
 
 	clipboard :
 	{
@@ -501,7 +511,8 @@ CKEDITOR.lang['bn'] =
 		cutError	: 'আপনার ব্রাউজারের সুরক্ষা সেটিংস এডিটরকে অটোমেটিক কাট করার অনুমতি দেয়নি। দয়া করে এই কাজের জন্য কিবোর্ড ব্যবহার করুন (Ctrl+X)।',
 		copyError	: 'আপনার ব্রাউজারের সুরক্ষা সেটিংস এডিটরকে অটোমেটিক কপি করার অনুমতি দেয়নি। দয়া করে এই কাজের জন্য কিবোর্ড ব্যবহার করুন (Ctrl+C)।',
 		pasteMsg	: 'অনুগ্রহ করে নীচের বাক্সে কিবোর্ড ব্যবহার করে (<STRONG>Ctrl+V</STRONG>) পেস্ট করুন এবং <STRONG>OK</STRONG> চাপ দিন',
-		securityMsg	: 'Because of your browser security settings, the editor is not able to access your clipboard data directly. You are required to paste it again in this window.' // MISSING
+		securityMsg	: 'Because of your browser security settings, the editor is not able to access your clipboard data directly. You are required to paste it again in this window.', // MISSING
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['bn'] =
 	stylesCombo :
 	{
 		label : 'স্টাইল',
-		voiceLabel : 'Styles', // MISSING
-		panelVoiceLabel : 'Select a style', // MISSING
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Block Styles', // MISSING
 		panelTitle2 : 'Inline Styles', // MISSING
 		panelTitle3 : 'Object Styles' // MISSING
@@ -542,9 +552,7 @@ CKEDITOR.lang['bn'] =
 	format :
 	{
 		label : 'ফন্ট ফরমেট',
-		voiceLabel : 'Format', // MISSING
 		panelTitle : 'ফন্ট ফরমেট',
-		panelVoiceLabel : 'Select a paragraph format', // MISSING
 
 		tag_p : 'সাধারণ',
 		tag_pre : 'ফর্মেটেড',
@@ -579,22 +587,21 @@ CKEDITOR.lang['bn'] =
 	{
 		label : 'ফন্ট',
 		voiceLabel : 'Font', // MISSING
-		panelTitle : 'ফন্ট',
-		panelVoiceLabel : 'Select a font' // MISSING
+		panelTitle : 'ফন্ট'
 	},
 
 	fontSize :
 	{
 		label : 'সাইজ',
 		voiceLabel : 'Font Size', // MISSING
-		panelTitle : 'সাইজ',
-		panelVoiceLabel : 'Select a font size' // MISSING
+		panelTitle : 'সাইজ'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'টেক্স্ট রং',
 		bgColorTitle : 'বেকগ্রাউন্ড রং',
+		panelTitle : 'Colors', // MISSING
 		auto : 'অটোমেটিক',
 		more : 'আরও রং...'
 	},

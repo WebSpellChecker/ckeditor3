@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['cy'] =
 		cssStyle		: 'Arddull',
 		ok				: 'Iawn',
 		cancel			: 'Diddymu',
+		close : 'Close', // MISSING
 		generalTab		: 'Cyffredinol',
 		advancedTab		: 'Uwch',
 		validateNumberFailed	: 'Nid yw\'r gwerth hwn yn rhif.',
 		confirmNewPage	: 'Byddwch yn colli unrhyw newidiadau i\'r cynnwys sydd heb eu cadw. A ydych am barhau i lwytho tudalen newydd?',
 		confirmCancel	: 'Mae rhai o\'r opsiynau wedi\'u newid. A ydych wir am gau\'r deialog?',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, ddim ar gael</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['cy'] =
 		width		: 'Lled',
 		widthPx		: 'picsel',
 		widthPc		: 'y cant',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Uchder',
 		cellSpace	: 'Bylchu\'r gell',
 		cellPad		: 'Padio\'r gell',
@@ -379,6 +382,7 @@ CKEDITOR.lang['cy'] =
 		width		: 'Lled',
 		height	: 'Uchder',
 		lockRatio	: 'Cloi Cymhareb',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Ailosod Maint',
 		border	: 'Ymyl',
 		hSpace	: 'BwlchLl',
@@ -391,7 +395,12 @@ CKEDITOR.lang['cy'] =
 		linkTab	: 'Dolen',
 		button2Img	: 'Ydych am drawsffurfio\'r botwm ddelwedd hwn ar ddelwedd syml?',
 		img2Button	: 'Ydych am drawsffurfio\'r ddelwedd hon ar fotwm delwedd?',
-		urlMissing : 'URL tarddle\'r ddelwedd ar goll.'
+		urlMissing : 'URL tarddle\'r ddelwedd ar goll.',
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['cy'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : 'Elfen %1'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['cy'] =
 		cutError	: 'Nid yw gosodiadau diogelwch eich porwr yn caniatàu\'r golygydd i gynnal \'gweithredoedd torri\' yn awtomatig. Defnyddiwch y bysellfwrdd (Ctrl+X).',
 		copyError	: 'Nid yw gosodiadau diogelwch eich porwr yn caniatàu\'r golygydd i gynnal \'gweithredoedd copïo\' yn awtomatig. Defnyddiwch y bysellfwrdd (Ctrl+C).',
 		pasteMsg	: 'Gludwch i mewn i\'r blwch canlynol gan ddefnyddio\'r bysellfwrdd (<strong>Ctrl+V</strong>) a phwyso <strong>Iawn</strong>.',
-		securityMsg	: 'Oherwydd gosodiadau diogelwch eich porwr, nid yw\'r porwr yn gallu ennill mynediad i\'r data ar y clipfwrdd yn uniongyrchol. Mae angen i chi ei ludo eto i\'r ffenestr hon.'
+		securityMsg	: 'Oherwydd gosodiadau diogelwch eich porwr, nid yw\'r porwr yn gallu ennill mynediad i\'r data ar y clipfwrdd yn uniongyrchol. Mae angen i chi ei ludo eto i\'r ffenestr hon.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['cy'] =
 	stylesCombo :
 	{
 		label : 'Arddulliau',
-		voiceLabel : 'Arddulliau',
-		panelVoiceLabel : 'Dewiswch arddull',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Arddulliau Bloc',
 		panelTitle2 : 'Arddulliau Mewnol',
 		panelTitle3 : 'Arddulliau Gwrthrych'
@@ -542,9 +552,7 @@ CKEDITOR.lang['cy'] =
 	format :
 	{
 		label : 'Fformat',
-		voiceLabel : 'Fformat',
 		panelTitle : 'Fformat Paragraff',
-		panelVoiceLabel : 'Dewiswch fformat y paragraff',
 
 		tag_p : 'Normal',
 		tag_pre : 'Wedi\'i Fformatio',
@@ -579,22 +587,21 @@ CKEDITOR.lang['cy'] =
 	{
 		label : 'Ffont',
 		voiceLabel : 'Ffont',
-		panelTitle : 'Enw\'r Ffont',
-		panelVoiceLabel : 'Dewiswch ffont'
+		panelTitle : 'Enw\'r Ffont'
 	},
 
 	fontSize :
 	{
 		label : 'Maint',
 		voiceLabel : 'Maint y Ffont',
-		panelTitle : 'Maint y Ffont',
-		panelVoiceLabel : 'Dewiswch faint i\'r ffont'
+		panelTitle : 'Maint y Ffont'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Lliw Testun',
 		bgColorTitle : 'Lliw Cefndir',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Awtomatig',
 		more : 'Mwy o Liwiau...'
 	},

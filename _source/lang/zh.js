@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['zh'] =
 		cssStyle		: '樣式',
 		ok				: '確定',
 		cancel			: '取消',
+		close : 'Close', // MISSING
 		generalTab		: '一般',
 		advancedTab		: '進階',
 		validateNumberFailed	: '需要輸入數字格式',
 		confirmNewPage	: '現存的修改尚未儲存，要開新檔案？',
 		confirmCancel	: '部份選項尚未儲存，要關閉對話盒？',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, 已關閉</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['zh'] =
 		width		: '寬度',
 		widthPx		: '像素',
 		widthPc		: '百分比',
+		widthUnit	: 'width unit', // MISSING
 		height		: '高度',
 		cellSpace	: '間距',
 		cellPad		: '內距',
@@ -379,6 +382,7 @@ CKEDITOR.lang['zh'] =
 		width		: '寬度',
 		height	: '高度',
 		lockRatio	: '等比例',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: '重設為原大小',
 		border	: '邊框',
 		hSpace	: '水平距離',
@@ -391,7 +395,12 @@ CKEDITOR.lang['zh'] =
 		linkTab	: '超連結',
 		button2Img	: '要把影像按鈕改成影像嗎？',
 		img2Button	: '要把影像改成影像按鈕嗎？',
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['zh'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 元素'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['zh'] =
 		cutError	: '瀏覽器的安全性設定不允許編輯器自動執行剪下動作。請使用快捷鍵 (Ctrl+X) 剪下。',
 		copyError	: '瀏覽器的安全性設定不允許編輯器自動執行複製動作。請使用快捷鍵 (Ctrl+C) 複製。',
 		pasteMsg	: '請使用快捷鍵 (<strong>Ctrl+V</strong>) 貼到下方區域中並按下 <strong>確定</strong>',
-		securityMsg	: '因為瀏覽器的安全性設定，本編輯器無法直接存取您的剪貼簿資料，請您自行在本視窗進行貼上動作。'
+		securityMsg	: '因為瀏覽器的安全性設定，本編輯器無法直接存取您的剪貼簿資料，請您自行在本視窗進行貼上動作。',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['zh'] =
 	stylesCombo :
 	{
 		label : '樣式',
-		voiceLabel : '樣式',
-		panelVoiceLabel : '選擇樣式',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : '塊級元素樣式',
 		panelTitle2 : '內聯元素樣式',
 		panelTitle3 : '物件元素樣式'
@@ -542,9 +552,7 @@ CKEDITOR.lang['zh'] =
 	format :
 	{
 		label : '格式',
-		voiceLabel : '格式',
 		panelTitle : '格式',
-		panelVoiceLabel : '選擇段落格式',
 
 		tag_p : '一般',
 		tag_pre : '已格式化',
@@ -579,22 +587,21 @@ CKEDITOR.lang['zh'] =
 	{
 		label : '字體',
 		voiceLabel : '字體',
-		panelTitle : '字體',
-		panelVoiceLabel : '選擇字體'
+		panelTitle : '字體'
 	},
 
 	fontSize :
 	{
 		label : '大小',
 		voiceLabel : '文字大小',
-		panelTitle : '大小',
-		panelVoiceLabel : '選擇文字大小'
+		panelTitle : '大小'
 	},
 
 	colorButton :
 	{
 		textColorTitle : '文字顏色',
 		bgColorTitle : '背景顏色',
+		panelTitle : 'Colors', // MISSING
 		auto : '自動',
 		more : '更多顏色…'
 	},

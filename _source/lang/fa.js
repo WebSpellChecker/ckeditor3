@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -31,7 +31,7 @@ CKEDITOR.lang['fa'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle		: 'Rich text editor, %1', // MISSING
+	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
 	// Toolbar buttons without dialogs.
 	source			: 'منبع',
@@ -88,11 +88,13 @@ CKEDITOR.lang['fa'] =
 		cssStyle		: 'شیوه(style)',
 		ok				: 'پذیرش',
 		cancel			: 'انصراف',
+		close : 'Close', // MISSING
 		generalTab		: 'General', // MISSING
 		advancedTab		: 'پیشرفته',
 		validateNumberFailed	: 'This value is not a number.', // MISSING
 		confirmNewPage	: 'Any unsaved changes to this content will be lost. Are you sure you want to load new page?', // MISSING
 		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -210,6 +212,7 @@ CKEDITOR.lang['fa'] =
 		width		: 'پهنا',
 		widthPx		: 'پیکسل',
 		widthPc		: 'درصد',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'درازا',
 		cellSpace	: 'فاصلهٴ میان سلولها',
 		cellPad		: 'فاصلهٴ پرشده در سلول',
@@ -379,6 +382,7 @@ CKEDITOR.lang['fa'] =
 		width		: 'پهنا',
 		height	: 'درازا',
 		lockRatio	: 'قفلکردن ِنسبت',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'بازنشانی اندازه',
 		border	: 'لبه',
 		hSpace	: 'فاصلهٴ افقی',
@@ -391,7 +395,12 @@ CKEDITOR.lang['fa'] =
 		linkTab	: 'پیوند',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['fa'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element' // MISSING
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['fa'] =
 		cutError	: 'تنظیمات امنیتی مرورگر شما اجازه نمیدهد که ویرایشگر به طور خودکار عملکردهای برش را انجام دهد. لطفا با دکمههای صفحهکلید این کار را انجام دهید (Ctrl+X).',
 		copyError	: 'تنظیمات امنیتی مرورگر شما اجازه نمیدهد که ویرایشگر به طور خودکار عملکردهای کپیکردن را انجام دهد. لطفا با دکمههای صفحهکلید این کار را انجام دهید (Ctrl+C).',
 		pasteMsg	: 'لطفا متن را با کلیدهای (<STRONG>Ctrl+V</STRONG>) در این جعبهٴ متنی بچسبانید و <STRONG>پذیرش</STRONG> را بزنید.',
-		securityMsg	: 'به خاطر تنظیمات امنیتی مرورگر شما، ویرایشگر نمیتواند دسترسی مستقیم به دادههای clipboard داشته باشد. شما باید دوباره آنرا در این پنجره بچسبانید.'
+		securityMsg	: 'به خاطر تنظیمات امنیتی مرورگر شما، ویرایشگر نمیتواند دسترسی مستقیم به دادههای clipboard داشته باشد. شما باید دوباره آنرا در این پنجره بچسبانید.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['fa'] =
 	stylesCombo :
 	{
 		label : 'سبک',
-		voiceLabel : 'Styles', // MISSING
-		panelVoiceLabel : 'Select a style', // MISSING
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Block Styles', // MISSING
 		panelTitle2 : 'Inline Styles', // MISSING
 		panelTitle3 : 'Object Styles' // MISSING
@@ -542,9 +552,7 @@ CKEDITOR.lang['fa'] =
 	format :
 	{
 		label : 'فرمت',
-		voiceLabel : 'Format', // MISSING
 		panelTitle : 'فرمت',
-		panelVoiceLabel : 'Select a paragraph format', // MISSING
 
 		tag_p : 'نرمال',
 		tag_pre : 'فرمتشده',
@@ -579,22 +587,21 @@ CKEDITOR.lang['fa'] =
 	{
 		label : 'قلم',
 		voiceLabel : 'Font', // MISSING
-		panelTitle : 'قلم',
-		panelVoiceLabel : 'Select a font' // MISSING
+		panelTitle : 'قلم'
 	},
 
 	fontSize :
 	{
 		label : 'اندازه',
 		voiceLabel : 'Font Size', // MISSING
-		panelTitle : 'اندازه',
-		panelVoiceLabel : 'Select a font size' // MISSING
+		panelTitle : 'اندازه'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'رنگ متن',
 		bgColorTitle : 'رنگ پسزمینه',
+		panelTitle : 'Colors', // MISSING
 		auto : 'خودکار',
 		more : 'رنگهای بیشتر...'
 	},

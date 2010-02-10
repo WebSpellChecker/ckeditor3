@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['he'] =
 		cssStyle		: 'סגנון',
 		ok				: 'אישור',
 		cancel			: 'ביטול',
+		close : 'Close', // MISSING
 		generalTab		: 'כללי',
 		advancedTab		: 'אפשרויות מתקדמות',
 		validateNumberFailed	: 'הערך חייב להיות מספרי.',
 		confirmNewPage	: 'כל השינויים שלא נשמרו יאבדו. האם להעלות דף חדש?',
 		confirmCancel	: 'חלק מהאפשרויות שונו, האם לסגור את הדיאלוג?',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, לא זמין</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['he'] =
 		width		: 'רוחב',
 		widthPx		: 'פיקסלים',
 		widthPc		: 'אחוז',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'גובה',
 		cellSpace	: 'מרווח תא',
 		cellPad		: 'ריפוד תא',
@@ -379,6 +382,7 @@ CKEDITOR.lang['he'] =
 		width		: 'רוחב',
 		height	: 'גובה',
 		lockRatio	: 'נעילת היחס',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'איפוס הגודל',
 		border	: 'מסגרת',
 		hSpace	: 'מרווח אופקי',
@@ -391,7 +395,12 @@ CKEDITOR.lang['he'] =
 		linkTab	: 'קישור',
 		button2Img	: 'האם להפוך את תמונת הכפתור לתמונה פשוטה?',
 		img2Button	: 'האם להפוך את התמונה לכפתור תמונה?',
-		urlMissing : 'כתובת התמונה חסרה.'
+		urlMissing : 'כתובת התמונה חסרה.',
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['he'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 אלמנט'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['he'] =
 		cutError	: 'הגדרות האבטחה בדפדפן שלך לא מאפשרות לעורך לבצע פעולות גזירה אוטומטיות. יש להשתמש במקלדת לשם כך (Ctrl+X).',
 		copyError	: 'הגדרות האבטחה בדפדפן שלך לא מאפשרות לעורך לבצע פעולות העתקה אוטומטיות. יש להשתמש במקלדת לשם כך (Ctrl+C).',
 		pasteMsg	: 'נא להדביק בתוך הקופסה באמצעות (<STRONG>Ctrl+V</STRONG>) וללחוץ על <STRONG>אישור</STRONG>.',
-		securityMsg	: 'עקב הגדרות אבטחה בדפדפן, לא ניתן לגשת אל לוח הגזירים (Clipboard) בצורה ישירה. נא להדביק שוב בחלון זה.'
+		securityMsg	: 'עקב הגדרות אבטחה בדפדפן, לא ניתן לגשת אל לוח הגזירים (Clipboard) בצורה ישירה. נא להדביק שוב בחלון זה.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['he'] =
 	stylesCombo :
 	{
 		label : 'סגנון',
-		voiceLabel : 'סגנונות',
-		panelVoiceLabel : 'בחירת סגנון',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'סגנונות בלוק',
 		panelTitle2 : 'סגנונות רצף',
 		panelTitle3 : 'סגנונות אובייקט'
@@ -542,9 +552,7 @@ CKEDITOR.lang['he'] =
 	format :
 	{
 		label : 'עיצוב',
-		voiceLabel : 'עיצוב',
 		panelTitle : 'עיצוב',
-		panelVoiceLabel : 'בחירת עיצוב פסקה',
 
 		tag_p : 'נורמלי',
 		tag_pre : 'קוד',
@@ -579,22 +587,21 @@ CKEDITOR.lang['he'] =
 	{
 		label : 'גופן',
 		voiceLabel : 'גופן',
-		panelTitle : 'גופן',
-		panelVoiceLabel : 'בחירת גופן'
+		panelTitle : 'גופן'
 	},
 
 	fontSize :
 	{
 		label : 'גודל',
 		voiceLabel : 'גודל',
-		panelTitle : 'גודל',
-		panelVoiceLabel : 'בחירת גודל גופן'
+		panelTitle : 'גודל'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'צבע טקסט',
 		bgColorTitle : 'צבע רקע',
+		panelTitle : 'Colors', // MISSING
 		auto : 'אוטומטי',
 		more : 'צבעים נוספים...'
 	},

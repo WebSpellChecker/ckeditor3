@@ -119,6 +119,7 @@ CKEDITOR.themes.add( 'default', (function()
 					' title="', ( CKEDITOR.env.gecko ? ' ' : '' ), '"' +
 					' lang="', editor.langCode, '"' +
 					' tabindex="' + tabIndex + '"' +
+					' role="application"' +
 					( style ? ' style="' + style + '"' : '' ) +
 					'>' +
 					'<span class="' , CKEDITOR.env.cssClass, '">' +
@@ -167,15 +168,14 @@ CKEDITOR.themes.add( 'default', (function()
 					'<div class="cke_editor_' + editor.name.replace('.', '\\.') + '_dialog cke_skin_', editor.skinName,
 						'" dir="', editor.lang.dir, '"' +
 						' lang="', editor.langCode, '"' +
+						' role="application"' +
 						'>' +
 						'<table class="cke_dialog', ' ' + CKEDITOR.env.cssClass,
 							' cke_', editor.lang.dir, '" style="position:absolute">' +
 							'<tr><td>' +
 							'<div class="%body">' +
 								'<div id="%title#" class="%title"></div>' +
-								'<div id="%close_button#" class="%close_button">' +
-									'<span>X</span>' +
-								'</div>' +
+								'<a id="%close_button#" class="%close_button" href="javascript:void(0)" title="' +  editor.lang.common.close+'"><span class="cke_label">X</span></a>' +
 								'<div id="%tabs#" class="%tabs"></div>' +
 								  '<table class="%contents"><tr>' +
 								  '<td id="%contents#" class="%contents"></td>' +

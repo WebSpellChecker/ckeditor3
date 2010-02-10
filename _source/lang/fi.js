@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['fi'] =
 		cssStyle		: 'Tyyli',
 		ok				: 'OK',
 		cancel			: 'Peruuta',
+		close : 'Close', // MISSING
 		generalTab		: 'Yleinen',
 		advancedTab		: 'Lisäominaisuudet',
 		validateNumberFailed	: 'Arvon pitää olla numero.',
 		confirmNewPage	: 'Kaikki tallentamattomat muutokset tähän sisältöön menetetään. Oletko varma, että haluat ladata uuden sivun?',
 		confirmCancel	: 'Jotkut asetuksista on muuttuneet. Oletko varma, että haluat sulkea valintaikkunan?',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, ei saatavissa</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['fi'] =
 		width		: 'Leveys',
 		widthPx		: 'pikseliä',
 		widthPc		: 'prosenttia',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Korkeus',
 		cellSpace	: 'Solujen väli',
 		cellPad		: 'Solujen sisennys',
@@ -379,6 +382,7 @@ CKEDITOR.lang['fi'] =
 		width		: 'Leveys',
 		height	: 'Korkeus',
 		lockRatio	: 'Lukitse suhteet',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Alkuperäinen koko',
 		border	: 'Raja',
 		hSpace	: 'Vaakatila',
@@ -391,7 +395,12 @@ CKEDITOR.lang['fi'] =
 		linkTab	: 'Linkki',
 		button2Img	: 'Haluatko muuntaa valitun kuvanäppäimen kuvaksi?',
 		img2Button	: 'Haluatko muuntaa valitun kuvan kuvanäppäimeksi?',
-		urlMissing : 'Kuvan lähdeosoite puuttuu.'
+		urlMissing : 'Kuvan lähdeosoite puuttuu.',
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['fi'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 elementti'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['fi'] =
 		cutError	: 'Selaimesi turva-asetukset eivät salli editorin toteuttaa leikkaamista. Käytä näppäimistöä leikkaamiseen (Ctrl+X).',
 		copyError	: 'Selaimesi turva-asetukset eivät salli editorin toteuttaa kopioimista. Käytä näppäimistöä kopioimiseen (Ctrl+C).',
 		pasteMsg	: 'Liitä painamalla (<STRONG>Ctrl+V</STRONG>) ja painamalla <STRONG>OK</STRONG>.',
-		securityMsg	: 'Selaimesi turva-asetukset eivät salli editorin käyttää leikepöytää suoraan. Sinun pitää suorittaa liittäminen tässä ikkunassa.'
+		securityMsg	: 'Selaimesi turva-asetukset eivät salli editorin käyttää leikepöytää suoraan. Sinun pitää suorittaa liittäminen tässä ikkunassa.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['fi'] =
 	stylesCombo :
 	{
 		label : 'Tyyli',
-		voiceLabel : 'Tyylit',
-		panelVoiceLabel : 'Valitse tyyli',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Lohkojen tyylit',
 		panelTitle2 : 'Rivinsisäiset tyylit',
 		panelTitle3 : 'Objektien tyylit'
@@ -542,9 +552,7 @@ CKEDITOR.lang['fi'] =
 	format :
 	{
 		label : 'Muotoilu',
-		voiceLabel : 'Muotoilu',
 		panelTitle : 'Muotoilu',
-		panelVoiceLabel : 'Valitse kappaleen muotoilu',
 
 		tag_p : 'Normaali',
 		tag_pre : 'Muotoiltu',
@@ -579,22 +587,21 @@ CKEDITOR.lang['fi'] =
 	{
 		label : 'Kirjaisinlaji',
 		voiceLabel : 'Kirjaisinlaji',
-		panelTitle : 'Kirjaisinlaji',
-		panelVoiceLabel : 'Valitse kirjaisinlaji'
+		panelTitle : 'Kirjaisinlaji'
 	},
 
 	fontSize :
 	{
 		label : 'Koko',
 		voiceLabel : 'Kirjaisimen koko',
-		panelTitle : 'Koko',
-		panelVoiceLabel : 'Valitse kirjaisimen koko'
+		panelTitle : 'Koko'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Tekstiväri',
 		bgColorTitle : 'Taustaväri',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automaattinen',
 		more : 'Lisää värejä...'
 	},

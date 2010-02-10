@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -31,7 +31,7 @@ CKEDITOR.lang['ko'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle		: 'Rich text editor, %1', // MISSING
+	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
 	// Toolbar buttons without dialogs.
 	source			: '소스',
@@ -88,11 +88,13 @@ CKEDITOR.lang['ko'] =
 		cssStyle		: 'Style',
 		ok				: '예',
 		cancel			: '아니오',
+		close : 'Close', // MISSING
 		generalTab		: 'General', // MISSING
 		advancedTab		: '자세히',
 		validateNumberFailed	: 'This value is not a number.', // MISSING
 		confirmNewPage	: 'Any unsaved changes to this content will be lost. Are you sure you want to load new page?', // MISSING
 		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -210,6 +212,7 @@ CKEDITOR.lang['ko'] =
 		width		: '너비',
 		widthPx		: '픽셀',
 		widthPc		: '퍼센트',
+		widthUnit	: 'width unit', // MISSING
 		height		: '높이',
 		cellSpace	: '셀 간격',
 		cellPad		: '셀 여백',
@@ -379,6 +382,7 @@ CKEDITOR.lang['ko'] =
 		width		: '너비',
 		height	: '높이',
 		lockRatio	: '비율 유지',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: '원래 크기로',
 		border	: '테두리',
 		hSpace	: '수평여백',
@@ -391,7 +395,12 @@ CKEDITOR.lang['ko'] =
 		linkTab	: '링크',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['ko'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element' // MISSING
 	},
 
@@ -493,7 +503,7 @@ CKEDITOR.lang['ko'] =
 		block : '양쪽 맞춤'
 	},
 
-	blockquote : 'Blockquote', // MISSING
+	blockquote : 'Block Quote', // MISSING
 
 	clipboard :
 	{
@@ -501,7 +511,8 @@ CKEDITOR.lang['ko'] =
 		cutError	: '브라우저의 보안설정때문에 잘라내기 기능을 실행할 수 없습니다. 키보드 명령을 사용하십시요. (Ctrl+X).',
 		copyError	: '브라우저의 보안설정때문에 복사하기 기능을 실행할 수 없습니다. 키보드 명령을 사용하십시요.  (Ctrl+C).',
 		pasteMsg	: '키보드의 (<STRONG>Ctrl+V</STRONG>) 를 이용해서 상자안에 붙여넣고 <STRONG>OK</STRONG> 를 누르세요.',
-		securityMsg	: '브러우저 보안 설정으로 인해, 클립보드의 자료를 직접 접근할 수 없습니다. 이 창에 다시 붙여넣기 하십시오.'
+		securityMsg	: '브러우저 보안 설정으로 인해, 클립보드의 자료를 직접 접근할 수 없습니다. 이 창에 다시 붙여넣기 하십시오.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['ko'] =
 	stylesCombo :
 	{
 		label : '스타일',
-		voiceLabel : 'Styles', // MISSING
-		panelVoiceLabel : 'Select a style', // MISSING
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Block Styles', // MISSING
 		panelTitle2 : 'Inline Styles', // MISSING
 		panelTitle3 : 'Object Styles' // MISSING
@@ -542,9 +552,7 @@ CKEDITOR.lang['ko'] =
 	format :
 	{
 		label : '포맷',
-		voiceLabel : 'Format', // MISSING
 		panelTitle : '포맷',
-		panelVoiceLabel : 'Select a paragraph format', // MISSING
 
 		tag_p : 'Normal',
 		tag_pre : 'Formatted',
@@ -579,22 +587,21 @@ CKEDITOR.lang['ko'] =
 	{
 		label : '폰트',
 		voiceLabel : 'Font', // MISSING
-		panelTitle : '폰트',
-		panelVoiceLabel : 'Select a font' // MISSING
+		panelTitle : '폰트'
 	},
 
 	fontSize :
 	{
 		label : '글자 크기',
 		voiceLabel : 'Font Size', // MISSING
-		panelTitle : '글자 크기',
-		panelVoiceLabel : 'Select a font size' // MISSING
+		panelTitle : '글자 크기'
 	},
 
 	colorButton :
 	{
 		textColorTitle : '글자 색상',
 		bgColorTitle : '배경 색상',
+		panelTitle : 'Colors', // MISSING
 		auto : '기본색상',
 		more : '색상선택...'
 	},

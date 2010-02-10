@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -31,7 +31,7 @@ CKEDITOR.lang['it'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle		: 'Rich text editor, %1', // MISSING
+	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
 	// Toolbar buttons without dialogs.
 	source			: 'Codice Sorgente',
@@ -88,11 +88,13 @@ CKEDITOR.lang['it'] =
 		cssStyle		: 'Stile',
 		ok				: 'OK',
 		cancel			: 'Annulla',
+		close : 'Close', // MISSING
 		generalTab		: 'Generale',
 		advancedTab		: 'Avanzate',
 		validateNumberFailed	: 'Il valore inserito non è un numero.',
 		confirmNewPage	: 'Ogni modifica non salvata sarà persa. Sei sicuro di voler caricare una nuova pagina?',
 		confirmCancel	: 'Alcune delle opzioni sono state cambiate. Sei sicuro di voler chiudere la finestra di dialogo?',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, non disponibile</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['it'] =
 		width		: 'Larghezza',
 		widthPx		: 'pixel',
 		widthPc		: 'percento',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Altezza',
 		cellSpace	: 'Spaziatura celle',
 		cellPad		: 'Padding celle',
@@ -379,6 +382,7 @@ CKEDITOR.lang['it'] =
 		width		: 'Larghezza',
 		height	: 'Altezza',
 		lockRatio	: 'Blocca rapporto',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Reimposta dimensione',
 		border	: 'Bordo',
 		hSpace	: 'HSpace',
@@ -391,7 +395,12 @@ CKEDITOR.lang['it'] =
 		linkTab	: 'Collegamento',
 		button2Img	: 'Vuoi trasformare il bottone immagine selezionato in un\'immagine semplice?',
 		img2Button	: 'Vuoi trasferomare l\'immagine selezionata in un bottone immagine?',
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['it'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 elemento'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['it'] =
 		cutError	: 'Le impostazioni di sicurezza del browser non permettono di tagliare automaticamente il testo. Usa la tastiera (Ctrl+X).',
 		copyError	: 'Le impostazioni di sicurezza del browser non permettono di copiare automaticamente il testo. Usa la tastiera (Ctrl+C).',
 		pasteMsg	: 'Incolla il testo all\'interno dell\'area sottostante usando la scorciatoia di tastiere (<STRONG>Ctrl+V</STRONG>) e premi <STRONG>OK</STRONG>.',
-		securityMsg	: 'A causa delle impostazioni di sicurezza del browser,l\'editor non è in grado di accedere direttamente agli appunti. E\' pertanto necessario incollarli di nuovo in questa finestra.'
+		securityMsg	: 'A causa delle impostazioni di sicurezza del browser,l\'editor non è in grado di accedere direttamente agli appunti. E\' pertanto necessario incollarli di nuovo in questa finestra.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['it'] =
 	stylesCombo :
 	{
 		label : 'Stile',
-		voiceLabel : 'Stili',
-		panelVoiceLabel : 'Seleziona uno stile',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Stili per blocchi',
 		panelTitle2 : 'Stili in linea',
 		panelTitle3 : 'Stili per oggetti'
@@ -542,9 +552,7 @@ CKEDITOR.lang['it'] =
 	format :
 	{
 		label : 'Formato',
-		voiceLabel : 'Formato',
 		panelTitle : 'Formato',
-		panelVoiceLabel : 'Seleziona il formato per paragrafo',
 
 		tag_p : 'Normale',
 		tag_pre : 'Formattato',
@@ -579,22 +587,21 @@ CKEDITOR.lang['it'] =
 	{
 		label : 'Font',
 		voiceLabel : 'Font',
-		panelTitle : 'Font',
-		panelVoiceLabel : 'Seleziona un font'
+		panelTitle : 'Font'
 	},
 
 	fontSize :
 	{
 		label : 'Dimensione',
 		voiceLabel : 'Dimensione Font',
-		panelTitle : 'Dimensione',
-		panelVoiceLabel : 'Seleziona una dimensione font'
+		panelTitle : 'Dimensione'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Colore testo',
 		bgColorTitle : 'Colore sfondo',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automatico',
 		more : 'Altri colori...'
 	},

@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -31,7 +31,7 @@ CKEDITOR.lang['is'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle		: 'Rich text editor, %1', // MISSING
+	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
 	// Toolbar buttons without dialogs.
 	source			: 'Kóði',
@@ -88,11 +88,13 @@ CKEDITOR.lang['is'] =
 		cssStyle		: 'Stíll',
 		ok				: 'Í lagi',
 		cancel			: 'Hætta við',
+		close : 'Close', // MISSING
 		generalTab		: 'Almennt',
 		advancedTab		: 'Tæknilegt',
 		validateNumberFailed	: 'This value is not a number.', // MISSING
 		confirmNewPage	: 'Any unsaved changes to this content will be lost. Are you sure you want to load new page?', // MISSING
 		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -210,6 +212,7 @@ CKEDITOR.lang['is'] =
 		width		: 'Breidd',
 		widthPx		: 'myndeindir',
 		widthPc		: 'prósent',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Hæð',
 		cellSpace	: 'Bil milli reita',
 		cellPad		: 'Reitaspássía',
@@ -379,6 +382,7 @@ CKEDITOR.lang['is'] =
 		width		: 'Breidd',
 		height	: 'Hæð',
 		lockRatio	: 'Festa stærðarhlutfall',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Reikna stærð',
 		border	: 'Rammi',
 		hSpace	: 'Vinstri bil',
@@ -391,7 +395,12 @@ CKEDITOR.lang['is'] =
 		linkTab	: 'Stikla',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['is'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element' // MISSING
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['is'] =
 		cutError	: 'Öryggisstillingar vafrans þíns leyfa ekki klippingu texta með músaraðgerð. Notaðu lyklaborðið í klippa (Ctrl+X).',
 		copyError	: 'Öryggisstillingar vafrans þíns leyfa ekki afritun texta með músaraðgerð. Notaðu lyklaborðið í afrita (Ctrl+C).',
 		pasteMsg	: 'Límdu í svæðið hér að neðan og (<STRONG>Ctrl+V</STRONG>) og smelltu á <STRONG>OK</STRONG>.',
-		securityMsg	: 'Vegna öryggisstillinga í vafranum þínum fær ritillinn ekki beinan aðgang að klippuborðinu. Þú verður að líma innihaldið aftur inn í þennan glugga.'
+		securityMsg	: 'Vegna öryggisstillinga í vafranum þínum fær ritillinn ekki beinan aðgang að klippuborðinu. Þú verður að líma innihaldið aftur inn í þennan glugga.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['is'] =
 	stylesCombo :
 	{
 		label : 'Stílflokkur',
-		voiceLabel : 'Styles', // MISSING
-		panelVoiceLabel : 'Select a style', // MISSING
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Block Styles', // MISSING
 		panelTitle2 : 'Inline Styles', // MISSING
 		panelTitle3 : 'Object Styles' // MISSING
@@ -542,9 +552,7 @@ CKEDITOR.lang['is'] =
 	format :
 	{
 		label : 'Stílsnið',
-		voiceLabel : 'Format', // MISSING
 		panelTitle : 'Stílsnið',
-		panelVoiceLabel : 'Select a paragraph format', // MISSING
 
 		tag_p : 'Venjulegt letur',
 		tag_pre : 'Forsniðið',
@@ -579,22 +587,21 @@ CKEDITOR.lang['is'] =
 	{
 		label : 'Leturgerð ',
 		voiceLabel : 'Font', // MISSING
-		panelTitle : 'Leturgerð ',
-		panelVoiceLabel : 'Select a font' // MISSING
+		panelTitle : 'Leturgerð '
 	},
 
 	fontSize :
 	{
 		label : 'Leturstærð ',
 		voiceLabel : 'Font Size', // MISSING
-		panelTitle : 'Leturstærð ',
-		panelVoiceLabel : 'Select a font size' // MISSING
+		panelTitle : 'Leturstærð '
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Litur texta',
 		bgColorTitle : 'Bakgrunnslitur',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Sjálfval',
 		more : 'Fleiri liti...'
 	},

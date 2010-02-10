@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['da'] =
 		cssStyle		: 'Typografi (CSS)',
 		ok				: 'OK',
 		cancel			: 'Annullér',
+		close : 'Close', // MISSING
 		generalTab		: 'Generelt',
 		advancedTab		: 'Avanceret',
 		validateNumberFailed	: 'Værdien er ikke et tal.',
 		confirmNewPage	: 'Alt indhold, der ikke er blevet gemt, vil gå tabt. Er du sikker på, at du vil indlæse en ny side?',
 		confirmCancel	: 'Nogle af indstillingerne er blevet ændret. Er du sikker på, at du vil lukke vinduet?',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, ikke tilgængelig</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['da'] =
 		width		: 'Bredde',
 		widthPx		: 'pixels',
 		widthPc		: 'procent',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Højde',
 		cellSpace	: 'Celleafstand',
 		cellPad		: 'Cellemargen',
@@ -379,6 +382,7 @@ CKEDITOR.lang['da'] =
 		width		: 'Bredde',
 		height	: 'Højde',
 		lockRatio	: 'Lås størrelsesforhold',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Nulstil størrelse',
 		border	: 'Ramme',
 		hSpace	: 'Vandret margen',
@@ -391,7 +395,12 @@ CKEDITOR.lang['da'] =
 		linkTab	: 'Hyperlink',
 		button2Img	: 'Vil du lave billedknappen om til et almindeligt billede?',
 		img2Button	: 'Vil du lave billedet om til en billedknap?',
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['da'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['da'] =
 		cutError	: 'Din browsers sikkerhedsindstillinger tillader ikke editoren at få automatisk adgang til udklipsholderen.<br><br>Brug i stedet tastaturet til at klippe teksten (Ctrl+X).',
 		copyError	: 'Din browsers sikkerhedsindstillinger tillader ikke editoren at få automatisk adgang til udklipsholderen.<br><br>Brug i stedet tastaturet til at kopiere teksten (Ctrl+C).',
 		pasteMsg	: 'Indsæt i feltet herunder (<STRONG>Ctrl+V</STRONG>) og klik på <STRONG>OK</STRONG>.',
-		securityMsg	: 'Din browsers sikkerhedsindstillinger tillader ikke editoren at få automatisk adgang til udklipsholderen.<br><br>Du skal indsætte udklipsholderens indhold i dette vindue igen.'
+		securityMsg	: 'Din browsers sikkerhedsindstillinger tillader ikke editoren at få automatisk adgang til udklipsholderen.<br><br>Du skal indsætte udklipsholderens indhold i dette vindue igen.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['da'] =
 	stylesCombo :
 	{
 		label : 'Typografi',
-		voiceLabel : 'Typografi',
-		panelVoiceLabel : 'Vælg typografi',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Block typografi',
 		panelTitle2 : 'Inline typografi',
 		panelTitle3 : 'Object typografi'
@@ -542,9 +552,7 @@ CKEDITOR.lang['da'] =
 	format :
 	{
 		label : 'Formatering',
-		voiceLabel : 'Formatering',
 		panelTitle : 'Formatering',
-		panelVoiceLabel : 'Vælg afsnitsformatering',
 
 		tag_p : 'Normal',
 		tag_pre : 'Formateret',
@@ -579,22 +587,21 @@ CKEDITOR.lang['da'] =
 	{
 		label : 'Skrifttype',
 		voiceLabel : 'Skrifttype',
-		panelTitle : 'Skrifttype',
-		panelVoiceLabel : 'Vælg skrifttype'
+		panelTitle : 'Skrifttype'
 	},
 
 	fontSize :
 	{
 		label : 'Skriftstørrelse',
 		voiceLabel : 'Skriftstørrelse',
-		panelTitle : 'Skriftstørrelse',
-		panelVoiceLabel : 'Vælg skriftstørrelse'
+		panelTitle : 'Skriftstørrelse'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Tekstfarve',
 		bgColorTitle : 'Baggrundsfarve',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automatisk',
 		more : 'Flere farver...'
 	},

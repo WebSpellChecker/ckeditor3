@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['vi'] =
 		cssStyle		: 'Mẫu',
 		ok				: 'Đồng ý',
 		cancel			: 'Bỏ qua',
+		close : 'Close', // MISSING
 		generalTab		: 'Chung',
 		advancedTab		: 'Mở rộng',
 		validateNumberFailed	: 'Giá trị này không phải là số.',
 		confirmNewPage	: 'Mọi thay đổi không được không được lưu lại của nội dung này sẽ bị mất. Bạn có chắc chắn muốn tải một trang mới?',
 		confirmCancel	: 'Một vài tùy chọn đã bị thay đổi. Bạn có chắc chắn muốn đóng hộp thoại?',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, không có</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['vi'] =
 		width		: 'Rộng',
 		widthPx		: 'điểm (px)',
 		widthPc		: '%',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Cao',
 		cellSpace	: 'Khoảng cách Ô',
 		cellPad		: 'Đệm Ô',
@@ -379,6 +382,7 @@ CKEDITOR.lang['vi'] =
 		width		: 'Rộng',
 		height	: 'Cao',
 		lockRatio	: 'Giữ nguyên tỷ lệ',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Kích thước gốc',
 		border	: 'Đường viền',
 		hSpace	: 'HSpace',
@@ -391,7 +395,12 @@ CKEDITOR.lang['vi'] =
 		linkTab	: 'Liên kết',
 		button2Img	: 'Bạn có muốn chuyển nút bấm bằng hình ảnh được chọn thành hình ảnh?',
 		img2Button	: 'Bạn có muốn chuyển đổi hình ảnh được chọn thành nút bấm bằng hình ảnh?',
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['vi'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 thành phần'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['vi'] =
 		cutError	: 'Các thiết lập bảo mật của trình duyệt không cho phép trình biên tập tự động thực thi lệnh cắt. Hãy sử dụng bàn phím cho lệnh này (Ctrl+X).',
 		copyError	: 'Các thiết lập bảo mật của trình duyệt không cho phép trình biên tập tự động thực thi lệnh sao chép. Hãy sử dụng bàn phím cho lệnh này (Ctrl+C).',
 		pasteMsg	: 'Hãy dán nội dung vào trong khung bên dưới, sử dụng tổ hợp phím (<STRONG>Ctrl+V</STRONG>) và nhấn vào nút <STRONG>Đồng ý</STRONG>.',
-		securityMsg	: 'Do thiết lập bảo mật của trình duyệt nên trình biên tập không thể truy cập trực tiếp vào nội dung đã sao chép. Bạn cần phải dán lại nội dung vào cửa sổ này.'
+		securityMsg	: 'Do thiết lập bảo mật của trình duyệt nên trình biên tập không thể truy cập trực tiếp vào nội dung đã sao chép. Bạn cần phải dán lại nội dung vào cửa sổ này.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['vi'] =
 	stylesCombo :
 	{
 		label : 'Kiểu',
-		voiceLabel : 'Kiểu',
-		panelVoiceLabel : 'Chọn một kiểu',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Kiểu Khối',
 		panelTitle2 : 'Kiểu Trực tiếp',
 		panelTitle3 : 'Kiểu Đối tượng'
@@ -542,9 +552,7 @@ CKEDITOR.lang['vi'] =
 	format :
 	{
 		label : 'Định dạng',
-		voiceLabel : 'Định dạng',
 		panelTitle : 'Định dạng',
-		panelVoiceLabel : 'Chọn định dạng đoạn văn bản',
 
 		tag_p : 'Normal',
 		tag_pre : 'Formatted',
@@ -579,22 +587,21 @@ CKEDITOR.lang['vi'] =
 	{
 		label : 'Phông',
 		voiceLabel : 'Phông',
-		panelTitle : 'Phông',
-		panelVoiceLabel : 'Chọn phông'
+		panelTitle : 'Phông'
 	},
 
 	fontSize :
 	{
 		label : 'Cỡ chữ',
 		voiceLabel : 'Kích cỡ phông',
-		panelTitle : 'Cỡ chữ',
-		panelVoiceLabel : 'Chọn kích cỡ phông'
+		panelTitle : 'Cỡ chữ'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Màu chữ',
 		bgColorTitle : 'Màu nền',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Tự động',
 		more : 'Màu khác...'
 	},

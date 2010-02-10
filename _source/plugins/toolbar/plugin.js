@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -59,13 +59,36 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var itemKeystroke = function( item, keystroke )
 			{
+				var next, nextToolGroup, groupItemsCount;
+
 				switch ( keystroke )
 				{
 					case 39 :					// RIGHT-ARROW
 					case 9 :					// TAB
-						// Look for the next item in the toolbar.
-						while ( ( item = item.next || ( item.toolbar.next && item.toolbar.next.items[ 0 ] ) ) && !item.focus )
-						{ /*jsl:pass*/ }
+						do
+						{
+							// Look for the previous item in the toolbar.
+							next = item.next;
+
+							if( !next )
+							{
+								nextToolGroup = item.toolbar.next;
+								groupItemsCount = nextToolGroup && nextToolGroup.items.length;
+
+								// Bypass the empty toolgroups.
+								while( groupItemsCount === 0 )
+								{
+									nextToolGroup = nextToolGroup.next;
+									groupItemsCount = nextToolGroup && nextToolGroup.items.length;
+								}
+
+								if( nextToolGroup )
+									next = nextToolGroup.items[ 0 ];
+							}
+
+							item = next;
+						}
+						while ( item && !item.focus )
 
 						// If available, just focus it, otherwise focus the
 						// first one.
@@ -78,10 +101,31 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					case 37 :					// LEFT-ARROW
 					case CKEDITOR.SHIFT + 9 :	// SHIFT + TAB
-						// Look for the previous item in the toolbar.
-						while ( ( item = item.previous || ( item.toolbar.previous && item.toolbar.previous.items[ item.toolbar.previous.items.length - 1 ] ) ) && !item.focus )
-						{ /*jsl:pass*/ }
+						do
+						{
+							// Look for the previous item in the toolbar.
+							next = item.previous;
 
+							if( !next )
+							{
+								nextToolGroup = item.toolbar.previous;
+								groupItemsCount = nextToolGroup && nextToolGroup.items.length;
+
+								// Bypass the empty toolgroups.
+								while( groupItemsCount === 0 )
+								{
+									nextToolGroup = nextToolGroup.previous;
+									groupItemsCount = nextToolGroup && nextToolGroup.items.length;
+								}
+								
+								if( nextToolGroup )
+									next = nextToolGroup.items[ groupItemsCount - 1 ];
+							}
+
+							item = next;
+						}
+						while ( item && !item.focus )
+						
 						// If available, just focus it, otherwise focus the
 						// last one.
 						if ( item )
@@ -112,7 +156,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						editor.toolbox = new toolbox();
 
-						var output = [ '<div class="cke_toolbox"' ],
+						var output = [ '<div class="cke_toolbox" role="toolbar"' ],
 							expanded =  editor.config.toolbarStartupExpanded !== false,
 							groupStarted;
 
@@ -247,8 +291,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										var toolboxContainer = toolbox.getParent();
 										var contentHeight = parseInt( contents.$.style.height, 10 );
 										var previousHeight = toolboxContainer.$.offsetHeight;
+										var collapsed = !toolbox.isVisible();
 
-										if ( toolbox.isVisible() )
+										if ( !collapsed )
 										{
 											toolbox.hide();
 											collapser.addClass( 'cke_toolbox_collapser_min' );
@@ -260,6 +305,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											collapser.removeClass( 'cke_toolbox_collapser_min' );
 											collapser.setAttribute( 'title', editor.lang.toolbarCollapse );
 										}
+
+										// Update collapser symbol. 
+										collapser.getFirst().setText( collapsed ?
+											'\u25B2' :		// BLACK UP-POINTING TRIANGLE
+											'\u25C0' );		// BLACK LEFT-POINTING TRIANGLE
 
 										var dy = toolboxContainer.$.offsetHeight - previousHeight;
 										contents.setStyle( 'height', ( contentHeight - dy ) + 'px' );
@@ -276,7 +326,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							if ( !expanded )
 								output.push( ' cke_toolbox_collapser_min' );
 
-							output.push( '" onclick="CKEDITOR.tools.callFunction(' + collapserFn + ')"></a>' );
+							output.push( '" onclick="CKEDITOR.tools.callFunction(' + collapserFn + ')">',
+										'<span>&#9650;</span>',		// BLACK UP-POINTING TRIANGLE
+										'</a>' );
 						}
 
 						event.data.html += output.join( '' );
@@ -297,7 +349,7 @@ CKEDITOR.ui.separator =
 {
 	render : function( editor, output )
 	{
-		output.push( '<span class="cke_separator"></span>' );
+		output.push( '<span class="cke_separator" role="separator"></span>' );
 		return {};
 	}
 };

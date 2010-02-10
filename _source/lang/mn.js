@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -31,7 +31,7 @@ CKEDITOR.lang['mn'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle		: 'Rich text editor, %1', // MISSING
+	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
 	// Toolbar buttons without dialogs.
 	source			: 'Код',
@@ -88,11 +88,13 @@ CKEDITOR.lang['mn'] =
 		cssStyle		: 'Загвар',
 		ok				: 'OK',
 		cancel			: 'Болих',
+		close : 'Close', // MISSING
 		generalTab		: 'General', // MISSING
 		advancedTab		: 'Нэмэлт',
 		validateNumberFailed	: 'This value is not a number.', // MISSING
 		confirmNewPage	: 'Any unsaved changes to this content will be lost. Are you sure you want to load new page?', // MISSING
 		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -210,6 +212,7 @@ CKEDITOR.lang['mn'] =
 		width		: 'Өргөн',
 		widthPx		: 'цэг',
 		widthPc		: 'хувь',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Өндөр',
 		cellSpace	: 'Нүх хоорондын зай (spacing)',
 		cellPad		: 'Нүх доторлох(padding)',
@@ -379,6 +382,7 @@ CKEDITOR.lang['mn'] =
 		width		: 'Өргөн',
 		height	: 'Өндөр',
 		lockRatio	: 'Радио түгжих',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'хэмжээ дахин оноох',
 		border	: 'Хүрээ',
 		hSpace	: 'Хөндлөн зай',
@@ -391,7 +395,12 @@ CKEDITOR.lang['mn'] =
 		linkTab	: 'Линк',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['mn'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element' // MISSING
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['mn'] =
 		cutError	: 'Таны browser-ын хамгаалалтын тохиргоо editor-д автоматаар хайчлах үйлдэлийг зөвшөөрөхгүй байна. (Ctrl+X) товчны хослолыг ашиглана уу.',
 		copyError	: 'Таны browser-ын хамгаалалтын тохиргоо editor-д автоматаар хуулах үйлдэлийг зөвшөөрөхгүй байна. (Ctrl+C) товчны хослолыг ашиглана уу.',
 		pasteMsg	: '(<strong>Ctrl+V</strong>) товчийг ашиглан paste хийнэ үү. Мөн <strong>OK</strong> дар.',
-		securityMsg	: 'Таны үзүүлэгч/browser/-н хамгаалалтын тохиргооноос болоод editor clipboard өгөгдөлрүү шууд хандах боломжгүй. Энэ цонход дахин paste хийхийг оролд.'
+		securityMsg	: 'Таны үзүүлэгч/browser/-н хамгаалалтын тохиргооноос болоод editor clipboard өгөгдөлрүү шууд хандах боломжгүй. Энэ цонход дахин paste хийхийг оролд.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['mn'] =
 	stylesCombo :
 	{
 		label : 'Загвар',
-		voiceLabel : 'Styles', // MISSING
-		panelVoiceLabel : 'Select a style', // MISSING
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Block Styles', // MISSING
 		panelTitle2 : 'Inline Styles', // MISSING
 		panelTitle3 : 'Object Styles' // MISSING
@@ -542,9 +552,7 @@ CKEDITOR.lang['mn'] =
 	format :
 	{
 		label : 'Формат',
-		voiceLabel : 'Format', // MISSING
 		panelTitle : 'Формат',
-		panelVoiceLabel : 'Select a paragraph format', // MISSING
 
 		tag_p : 'Хэвийн',
 		tag_pre : 'Formatted',
@@ -579,22 +587,21 @@ CKEDITOR.lang['mn'] =
 	{
 		label : 'Фонт',
 		voiceLabel : 'Font', // MISSING
-		panelTitle : 'Фонт',
-		panelVoiceLabel : 'Select a font' // MISSING
+		panelTitle : 'Фонт'
 	},
 
 	fontSize :
 	{
 		label : 'Хэмжээ',
 		voiceLabel : 'Font Size', // MISSING
-		panelTitle : 'Хэмжээ',
-		panelVoiceLabel : 'Select a font size' // MISSING
+		panelTitle : 'Хэмжээ'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Фонтны өнгө',
 		bgColorTitle : 'Фонны өнгө',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Автоматаар',
 		more : 'Нэмэлт өнгөнүүд...'
 	},

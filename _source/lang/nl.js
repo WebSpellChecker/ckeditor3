@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['nl'] =
 		cssStyle		: 'Stijl',
 		ok				: 'OK',
 		cancel			: 'Annuleren',
+		close : 'Close', // MISSING
 		generalTab		: 'Algemeen',
 		advancedTab		: 'Geavanceerd',
 		validateNumberFailed	: 'Deze waarde is geen geldig getal.',
 		confirmNewPage	: 'Alle aangebrachte wijzigingen gaan verloren. Weet u zeker dat u een nieuwe pagina wilt openen?',
 		confirmCancel	: 'Enkele opties zijn gewijzigd. Weet u zeker dat u dit dialoogvenster wilt sluiten?',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, niet beschikbaar</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['nl'] =
 		width		: 'Breedte',
 		widthPx		: 'pixels',
 		widthPc		: 'procent',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Hoogte',
 		cellSpace	: 'Afstand tussen cellen',
 		cellPad		: 'Ruimte in de cel',
@@ -379,6 +382,7 @@ CKEDITOR.lang['nl'] =
 		width		: 'Breedte',
 		height	: 'Hoogte',
 		lockRatio	: 'Afmetingen vergrendelen',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Afmetingen resetten',
 		border	: 'Rand',
 		hSpace	: 'HSpace',
@@ -391,7 +395,12 @@ CKEDITOR.lang['nl'] =
 		linkTab	: 'Link',
 		button2Img	: 'Wilt u de geselecteerde afbeeldingsknop vervangen door een eenvoudige afbeelding?',
 		img2Button	: 'Wilt u de geselecteerde afbeelding vervangen door een afbeeldingsknop?',
-		urlMissing : 'De URL naar de afbeelding ontbreekt.'
+		urlMissing : 'De URL naar de afbeelding ontbreekt.',
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['nl'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['nl'] =
 		cutError	: 'De beveiligingsinstelling van de browser verhinderen het automatisch knippen. Gebruik de sneltoets Ctrl+X van het toetsenbord.',
 		copyError	: 'De beveiligingsinstelling van de browser verhinderen het automatisch kopiëren. Gebruik de sneltoets Ctrl+C van het toetsenbord.',
 		pasteMsg	: 'Plak de tekst in het volgende vak gebruik makend van uw toetsenbord (<strong>Ctrl+V</strong>) en klik op <strong>OK</strong>.',
-		securityMsg	: 'Door de beveiligingsinstellingen van uw browser is het niet mogelijk om direct vanuit het klembord in de editor te plakken. Middels opnieuw plakken in dit venster kunt u de tekst alsnog plakken in de editor.'
+		securityMsg	: 'Door de beveiligingsinstellingen van uw browser is het niet mogelijk om direct vanuit het klembord in de editor te plakken. Middels opnieuw plakken in dit venster kunt u de tekst alsnog plakken in de editor.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['nl'] =
 	stylesCombo :
 	{
 		label : 'Stijl',
-		voiceLabel : 'Stijl',
-		panelVoiceLabel : 'Selecteer een stijl',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Blok stijlen',
 		panelTitle2 : 'In-line stijlen',
 		panelTitle3 : 'Object stijlen'
@@ -542,9 +552,7 @@ CKEDITOR.lang['nl'] =
 	format :
 	{
 		label : 'Opmaak',
-		voiceLabel : 'Opmaak',
 		panelTitle : 'Opmaak',
-		panelVoiceLabel : 'Selecteer een alinea-opmaak',
 
 		tag_p : 'Normaal',
 		tag_pre : 'Met opmaak',
@@ -579,22 +587,21 @@ CKEDITOR.lang['nl'] =
 	{
 		label : 'Lettertype',
 		voiceLabel : 'Lettertype',
-		panelTitle : 'Lettertype',
-		panelVoiceLabel : 'Selecteer een lettertype'
+		panelTitle : 'Lettertype'
 	},
 
 	fontSize :
 	{
 		label : 'Lettergrootte',
 		voiceLabel : 'Lettergrootte',
-		panelTitle : 'Lettergrootte',
-		panelVoiceLabel : 'Selecteer een lettergrootte'
+		panelTitle : 'Lettergrootte'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Tekstkleur',
 		bgColorTitle : 'Achtergrondkleur',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automatisch',
 		more : 'Meer kleuren...'
 	},

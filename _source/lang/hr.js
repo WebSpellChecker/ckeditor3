@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['hr'] =
 		cssStyle		: 'Stil',
 		ok				: 'OK',
 		cancel			: 'Poništi',
+		close : 'Close', // MISSING
 		generalTab		: 'Općenito',
 		advancedTab		: 'Napredno',
 		validateNumberFailed	: 'Ova vrijednost nije broj.',
 		confirmNewPage	: 'Sve napravljene promjene će biti izgubljene ukoliko ih niste snimili. Sigurno želite učitati novu stranicu?',
 		confirmCancel	: 'Neke od opcija su promjenjene. Sigurno želite zatvoriti ovaj prozor?',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, nedostupno</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['hr'] =
 		width		: 'Širina',
 		widthPx		: 'piksela',
 		widthPc		: 'postotaka',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Visina',
 		cellSpace	: 'Prostornost ćelija',
 		cellPad		: 'Razmak ćelija',
@@ -379,6 +382,7 @@ CKEDITOR.lang['hr'] =
 		width		: 'Širina',
 		height	: 'Visina',
 		lockRatio	: 'Zaključaj odnos',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Obriši veličinu',
 		border	: 'Okvir',
 		hSpace	: 'HSpace',
@@ -391,7 +395,12 @@ CKEDITOR.lang['hr'] =
 		linkTab	: 'Link',
 		button2Img	: 'Želite li promijeniti odabrani gumb u jednostavnu sliku?',
 		img2Button	: 'Želite li promijeniti odabranu sliku u gumb?',
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['hr'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['hr'] =
 		cutError	: 'Sigurnosne postavke Vašeg pretraživača ne dozvoljavaju operacije automatskog izrezivanja. Molimo koristite kraticu na tipkovnici (Ctrl+X).',
 		copyError	: 'Sigurnosne postavke Vašeg pretraživača ne dozvoljavaju operacije automatskog kopiranja. Molimo koristite kraticu na tipkovnici (Ctrl+C).',
 		pasteMsg	: 'Molimo zaljepite unutar doljnjeg okvira koristeći tipkovnicu (<STRONG>Ctrl+V</STRONG>) i kliknite <STRONG>OK</STRONG>.',
-		securityMsg	: 'Zbog sigurnosnih postavki Vašeg pretraživača, editor nema direktan pristup Vašem međuspremniku. Potrebno je ponovno zalijepiti tekst u ovaj prozor.'
+		securityMsg	: 'Zbog sigurnosnih postavki Vašeg pretraživača, editor nema direktan pristup Vašem međuspremniku. Potrebno je ponovno zalijepiti tekst u ovaj prozor.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['hr'] =
 	stylesCombo :
 	{
 		label : 'Stil',
-		voiceLabel : 'Stilovi',
-		panelVoiceLabel : 'Odaberite stil',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Block stilovi',
 		panelTitle2 : 'Inline stilovi',
 		panelTitle3 : 'Object stilovi'
@@ -542,9 +552,7 @@ CKEDITOR.lang['hr'] =
 	format :
 	{
 		label : 'Format',
-		voiceLabel : 'Format',
 		panelTitle : 'Format',
-		panelVoiceLabel : 'Odaberite format paragrafa',
 
 		tag_p : 'Normal',
 		tag_pre : 'Formatirano',
@@ -579,22 +587,21 @@ CKEDITOR.lang['hr'] =
 	{
 		label : 'Font',
 		voiceLabel : 'Font',
-		panelTitle : 'Font',
-		panelVoiceLabel : 'Odaberite font'
+		panelTitle : 'Font'
 	},
 
 	fontSize :
 	{
 		label : 'Veličina',
 		voiceLabel : 'Veličina slova',
-		panelTitle : 'Veličina',
-		panelVoiceLabel : 'Odaberite veličinu slova'
+		panelTitle : 'Veličina'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Boja teksta',
 		bgColorTitle : 'Boja pozadine',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automatski',
 		more : 'Više boja...'
 	},

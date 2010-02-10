@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['no'] =
 		cssStyle		: 'Stil',
 		ok				: 'OK',
 		cancel			: 'Avbryt',
+		close : 'Close', // MISSING
 		generalTab		: 'Generelt',
 		advancedTab		: 'Avansert',
 		validateNumberFailed	: 'Denne verdien er ikke ett nummer',
 		confirmNewPage	: 'Alle endringer som er gjort i dette innholdet vil bli tapt. Er du sikker på at du vil laste en ny side?',
 		confirmCancel	: 'Noen av valgene har blitt endret. Er du sikker på at du vil lukke dialogen?',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, utilgjenglig</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['no'] =
 		width		: 'Bredde',
 		widthPx		: 'piksler',
 		widthPc		: 'prosent',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Høyde',
 		cellSpace	: 'Cellemarg',
 		cellPad		: 'Cellepolstring',
@@ -379,6 +382,7 @@ CKEDITOR.lang['no'] =
 		width		: 'Bredde',
 		height	: 'Høyde',
 		lockRatio	: 'Lås forhold',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Tilbakestill størrelse',
 		border	: 'Ramme',
 		hSpace	: 'HMarg',
@@ -391,7 +395,12 @@ CKEDITOR.lang['no'] =
 		linkTab	: 'Lenke',
 		button2Img	: 'Vil du endre den valgte bildeknappen til ett vanlig bilde?',
 		img2Button	: 'Vil du endre det valgte bildet til en bildeknapp?',
-		urlMissing : 'Bildets adresse mangler.'
+		urlMissing : 'Bildets adresse mangler.',
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['no'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['no'] =
 		cutError	: 'Din nettlesers sikkerhetsinstillinger tillater ikke automatisk klipping av tekst. Vennligst bruk snareveien (Ctrl+X).',
 		copyError	: 'Din nettlesers sikkerhetsinstillinger tillater ikke automatisk kopiering av tekst. Vennligst bruk snareveien (Ctrl+C).',
 		pasteMsg	: 'Vennligst lim inn i den følgende boksen med tastaturet (<STRONG>Ctrl+V</STRONG>) og trykk <STRONG>OK</STRONG>.',
-		securityMsg	: 'Din nettlesers sikkerhetsinstillinger gir ikke redigeringsverktøyet direkte tilgang til utklippstavlen. Du må lime det igjen i dette vinduet.'
+		securityMsg	: 'Din nettlesers sikkerhetsinstillinger gir ikke redigeringsverktøyet direkte tilgang til utklippstavlen. Du må lime det igjen i dette vinduet.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['no'] =
 	stylesCombo :
 	{
 		label : 'Stil',
-		voiceLabel : 'Stiler',
-		panelVoiceLabel : 'Velg en stil',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Blokkstiler',
 		panelTitle2 : 'Inlinestiler',
 		panelTitle3 : 'Objektstiler'
@@ -542,9 +552,7 @@ CKEDITOR.lang['no'] =
 	format :
 	{
 		label : 'Format',
-		voiceLabel : 'Format',
 		panelTitle : 'Format',
-		panelVoiceLabel : 'Vel ett paragrafformat',
 
 		tag_p : 'Normal',
 		tag_pre : 'Formatert',
@@ -579,22 +587,21 @@ CKEDITOR.lang['no'] =
 	{
 		label : 'Skrift',
 		voiceLabel : 'Font',
-		panelTitle : 'Skrift',
-		panelVoiceLabel : 'Velg en font'
+		panelTitle : 'Skrift'
 	},
 
 	fontSize :
 	{
 		label : 'Størrelse',
 		voiceLabel : 'Font Størrelse',
-		panelTitle : 'Størrelse',
-		panelVoiceLabel : 'Velg en fontstørrelse'
+		panelTitle : 'Størrelse'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Tekstfarge',
 		bgColorTitle : 'Bakgrunnsfarge',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automatisk',
 		more : 'Flere farger...'
 	},

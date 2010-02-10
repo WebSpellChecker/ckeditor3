@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['ja'] =
 		cssStyle		: 'スタイルシート',
 		ok				: 'OK',
 		cancel			: 'キャンセル',
+		close : 'Close', // MISSING
 		generalTab		: '全般',
 		advancedTab		: '高度な設定',
 		validateNumberFailed	: '値が数ではありません',
 		confirmNewPage	: '変更内容を保存せず、 新しいページを開いてもよろしいでしょうか？',
 		confirmCancel	: 'オプション設定を変更しました。ダイアログを閉じてもよろしいでしょうか？',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, 利用不可能</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['ja'] =
 		width		: '幅',
 		widthPx		: 'ピクセル',
 		widthPc		: 'パーセント',
+		widthUnit	: 'width unit', // MISSING
 		height		: '高さ',
 		cellSpace	: 'セル内余白',
 		cellPad		: 'セル内間隔',
@@ -379,6 +382,7 @@ CKEDITOR.lang['ja'] =
 		width		: '幅',
 		height	: '高さ',
 		lockRatio	: 'ロック比率',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'サイズリセット',
 		border	: 'ボーダー',
 		hSpace	: '横間隔',
@@ -391,7 +395,12 @@ CKEDITOR.lang['ja'] =
 		linkTab	: 'リンク',
 		button2Img	: '選択したボタンを画像に置き換えますか？',
 		img2Button	: '選択した画像をボタンに置き換えますか？',
-		urlMissing : 'イメージのURLを入力してください。'
+		urlMissing : 'イメージのURLを入力してください。',
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['ja'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 エレメント'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['ja'] =
 		cutError	: 'ブラウザーのセキュリティ設定によりエディタの切り取り操作が自動で実行することができません。実行するには手動でキーボードの(Ctrl+X)を使用してください。',
 		copyError	: 'ブラウザーのセキュリティ設定によりエディタのコピー操作が自動で実行することができません。実行するには手動でキーボードの(Ctrl+C)を使用してください。',
 		pasteMsg	: 'キーボード(<STRONG>Ctrl+V</STRONG>)を使用して、次の入力エリア内で貼って、<STRONG>OK</STRONG>を押してください。',
-		securityMsg	: 'ブラウザのセキュリティ設定により、エディタはクリップボード・データに直接アクセスすることができません。このウィンドウは貼り付け操作を行う度に表示されます。'
+		securityMsg	: 'ブラウザのセキュリティ設定により、エディタはクリップボード・データに直接アクセスすることができません。このウィンドウは貼り付け操作を行う度に表示されます。',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['ja'] =
 	stylesCombo :
 	{
 		label : 'スタイル',
-		voiceLabel : 'スタイル',
-		panelVoiceLabel : 'スタイルを選択してください',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'ブロックスタイル',
 		panelTitle2 : 'インラインスタイル',
 		panelTitle3 : 'オブジェクトスタイル'
@@ -542,9 +552,7 @@ CKEDITOR.lang['ja'] =
 	format :
 	{
 		label : 'フォーマット',
-		voiceLabel : 'フォーマット',
 		panelTitle : 'フォーマット',
-		panelVoiceLabel : 'パラグラフ形式を選択してください。',
 
 		tag_p : '標準',
 		tag_pre : '書式付き',
@@ -579,22 +587,21 @@ CKEDITOR.lang['ja'] =
 	{
 		label : 'フォント',
 		voiceLabel : 'フォント',
-		panelTitle : 'フォント',
-		panelVoiceLabel : 'フォントを選択してください'
+		panelTitle : 'フォント'
 	},
 
 	fontSize :
 	{
 		label : 'サイズ',
 		voiceLabel : 'フォントサイズ',
-		panelTitle : 'サイズ',
-		panelVoiceLabel : 'フォントサイズを選択してください'
+		panelTitle : 'サイズ'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'テキスト色',
 		bgColorTitle : '背景色',
+		panelTitle : 'Colors', // MISSING
 		auto : '自動',
 		more : 'その他の色...'
 	},

@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -86,19 +86,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if ( env.gecko )
 							extra += ' onblur="this.style.cssText = this.style.cssText;"';
 
+						var label = editor.lang.elementsPath.eleTitle.replace( /%1/, name );
 						html.unshift(
 							'<a' +
 								' id="', idBase, index, '"' +
 								' href="javascript:void(\'', name, '\')"' +
 								' tabindex="-1"' +
-								' title="', editor.lang.elementsPath.eleTitle.replace( /%1/, name ), '"' +
+								' title="', label, '"' +
 								( ( CKEDITOR.env.gecko && CKEDITOR.env.version < 10900 ) ?
 								' onfocus="event.preventBubble();"' : '' ) +
 								' hidefocus="true" ' +
 								' onkeydown="return CKEDITOR._.elementsPath.keydown(\'', this.name, '\',', index, ', event);"' +
 								extra ,
-								' onclick="return CKEDITOR._.elementsPath.click(\'', this.name, '\',', index, ');">',
+								' onclick="return CKEDITOR._.elementsPath.click(\'', this.name, '\',', index, ');"',
+								' role="button" aria-labelledby="' + idBase + index + '_label">',
 									name,
+									'<span id="', idBase, index, '_label" class="cke_label">' + label + '</span>',
 							'</a>' );
 
 						if ( name == 'body' )

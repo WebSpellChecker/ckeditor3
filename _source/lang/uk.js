@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['uk'] =
 		cssStyle		: 'Стиль CSS',
 		ok				: 'ОК',
 		cancel			: 'Скасувати',
+		close : 'Close', // MISSING
 		generalTab		: 'Загальна',
 		advancedTab		: 'Розширений',
 		validateNumberFailed	: 'Значення не є числом.',
 		confirmNewPage	: 'Всі не збережені зміни будуть втрачені. Ви впевнені, що хочете завантажити нову сторінку?',
 		confirmCancel	: 'Деякі опції були змінені. Закрити вікно?',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, не доступне</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['uk'] =
 		width		: 'Ширина',
 		widthPx		: 'пікселів',
 		widthPc		: 'відсотків',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Висота',
 		cellSpace	: 'Проміжок (spacing)',
 		cellPad		: 'Відступ (padding)',
@@ -379,6 +382,7 @@ CKEDITOR.lang['uk'] =
 		width		: 'Ширина',
 		height	: 'Висота',
 		lockRatio	: 'Зберегти пропорції',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Скинути розмір',
 		border	: 'Бордюр',
 		hSpace	: 'Горизонтальний відступ',
@@ -391,7 +395,12 @@ CKEDITOR.lang['uk'] =
 		linkTab	: 'Посилання',
 		button2Img	: 'Ви хочете перетворити обрану кнопку-зображення на просте зображення?',
 		img2Button	: 'Ви хочете перетворити обране зображення на кнопку-зображення?',
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['uk'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 елемент'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['uk'] =
 		cutError	: 'Настройки безпеки вашого браузера не дозволяють редактору автоматично виконувати операції вирізування. Будь ласка, використовуйте клавіатуру для цього (Ctrl+X).',
 		copyError	: 'Настройки безпеки вашого браузера не дозволяють редактору автоматично виконувати операції копіювання. Будь ласка, використовуйте клавіатуру для цього (Ctrl+C).',
 		pasteMsg	: 'Будь ласка, вставте з буфера обміну в цю область, користуючись комбінацією клавіш (<STRONG>Ctrl+V</STRONG>) та натисніть <STRONG>OK</STRONG>.',
-		securityMsg	: 'Редактор не може отримати прямий доступ до буферу обміну у зв\'язку з налаштуваннями вашого браузера. Вам потрібно вставити інформацію повторно в це вікно.'
+		securityMsg	: 'Редактор не може отримати прямий доступ до буферу обміну у зв\'язку з налаштуваннями вашого браузера. Вам потрібно вставити інформацію повторно в це вікно.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['uk'] =
 	stylesCombo :
 	{
 		label : 'Стиль',
-		voiceLabel : 'Стилі',
-		panelVoiceLabel : 'Оберіть стиль',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Block стилі',
 		panelTitle2 : 'Inline стилі',
 		panelTitle3 : 'Object стилі'
@@ -542,9 +552,7 @@ CKEDITOR.lang['uk'] =
 	format :
 	{
 		label : 'Форматування',
-		voiceLabel : 'Формат',
 		panelTitle : 'Форматування',
-		panelVoiceLabel : 'Оберіть формат абзацу',
 
 		tag_p : 'Нормальний',
 		tag_pre : 'Форматований',
@@ -579,22 +587,21 @@ CKEDITOR.lang['uk'] =
 	{
 		label : 'Шрифт',
 		voiceLabel : 'Шрифт',
-		panelTitle : 'Шрифт',
-		panelVoiceLabel : 'Оберіть шрифт'
+		panelTitle : 'Шрифт'
 	},
 
 	fontSize :
 	{
 		label : 'Розмір',
 		voiceLabel : 'Розмір шрифта',
-		panelTitle : 'Розмір',
-		panelVoiceLabel : 'Оберіть розмір шрифта'
+		panelTitle : 'Розмір'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Колір тексту',
 		bgColorTitle : 'Колір фону',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Автоматичний',
 		more : 'Кольори...'
 	},

@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['en-ca'] =
 		cssStyle		: 'Style',
 		ok				: 'OK',
 		cancel			: 'Cancel',
+		close : 'Close', // MISSING
 		generalTab		: 'General',
 		advancedTab		: 'Advanced',
 		validateNumberFailed	: 'This value is not a number.',
 		confirmNewPage	: 'Any unsaved changes to this content will be lost. Are you sure you want to load new page?',
 		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -210,6 +212,7 @@ CKEDITOR.lang['en-ca'] =
 		width		: 'Width',
 		widthPx		: 'pixels',
 		widthPc		: 'percent',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Height',
 		cellSpace	: 'Cell spacing',
 		cellPad		: 'Cell padding',
@@ -379,6 +382,7 @@ CKEDITOR.lang['en-ca'] =
 		width		: 'Width',
 		height	: 'Height',
 		lockRatio	: 'Lock Ratio',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Reset Size',
 		border	: 'Border',
 		hSpace	: 'HSpace',
@@ -391,7 +395,12 @@ CKEDITOR.lang['en-ca'] =
 		linkTab	: 'Link',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?',
 		img2Button	: 'Do you want to transform the selected image on a image button?',
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['en-ca'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element'
 	},
 
@@ -493,7 +503,7 @@ CKEDITOR.lang['en-ca'] =
 		block : 'Block Justify'
 	},
 
-	blockquote : 'Blockquote',
+	blockquote : 'Block Quote',
 
 	clipboard :
 	{
@@ -501,7 +511,8 @@ CKEDITOR.lang['en-ca'] =
 		cutError	: 'Your browser security settings don\'t permit the editor to automatically execute cutting operations. Please use the keyboard for that (Ctrl+X).',
 		copyError	: 'Your browser security settings don\'t permit the editor to automatically execute copying operations. Please use the keyboard for that (Ctrl+C).',
 		pasteMsg	: 'Please paste inside the following box using the keyboard (<strong>Ctrl+V</strong>) and hit OK',
-		securityMsg	: 'Because of your browser security settings, the editor is not able to access your clipboard data directly. You are required to paste it again in this window.'
+		securityMsg	: 'Because of your browser security settings, the editor is not able to access your clipboard data directly. You are required to paste it again in this window.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['en-ca'] =
 	stylesCombo :
 	{
 		label : 'Styles',
-		voiceLabel : 'Styles', // MISSING
-		panelVoiceLabel : 'Select a style', // MISSING
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Block Styles',
 		panelTitle2 : 'Inline Styles',
 		panelTitle3 : 'Object Styles'
@@ -542,9 +552,7 @@ CKEDITOR.lang['en-ca'] =
 	format :
 	{
 		label : 'Format',
-		voiceLabel : 'Format', // MISSING
 		panelTitle : 'Paragraph Format',
-		panelVoiceLabel : 'Select a paragraph format', // MISSING
 
 		tag_p : 'Normal',
 		tag_pre : 'Formatted',
@@ -579,22 +587,21 @@ CKEDITOR.lang['en-ca'] =
 	{
 		label : 'Font',
 		voiceLabel : 'Font', // MISSING
-		panelTitle : 'Font Name',
-		panelVoiceLabel : 'Select a font' // MISSING
+		panelTitle : 'Font Name'
 	},
 
 	fontSize :
 	{
 		label : 'Size',
 		voiceLabel : 'Font Size', // MISSING
-		panelTitle : 'Font Size',
-		panelVoiceLabel : 'Select a font size' // MISSING
+		panelTitle : 'Font Size'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Text Colour',
 		bgColorTitle : 'Background Colour',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automatic',
 		more : 'More Colours...'
 	},

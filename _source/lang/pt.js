@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -31,7 +31,7 @@ CKEDITOR.lang['pt'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle		: 'Rich text editor, %1', // MISSING
+	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
 	// Toolbar buttons without dialogs.
 	source			: 'Fonte',
@@ -88,11 +88,13 @@ CKEDITOR.lang['pt'] =
 		cssStyle		: 'Estilo',
 		ok				: 'OK',
 		cancel			: 'Cancelar',
+		close : 'Close', // MISSING
 		generalTab		: 'General', // MISSING
 		advancedTab		: 'Avançado',
 		validateNumberFailed	: 'This value is not a number.', // MISSING
 		confirmNewPage	: 'Any unsaved changes to this content will be lost. Are you sure you want to load new page?', // MISSING
 		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -210,6 +212,7 @@ CKEDITOR.lang['pt'] =
 		width		: 'Largura',
 		widthPx		: 'pixeis',
 		widthPc		: 'percentagem',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Altura',
 		cellSpace	: 'Esp. e/células',
 		cellPad		: 'Esp. interior',
@@ -379,6 +382,7 @@ CKEDITOR.lang['pt'] =
 		width		: 'Largura',
 		height	: 'Altura',
 		lockRatio	: 'Proporcional',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Tamanho Original',
 		border	: 'Limite',
 		hSpace	: 'Esp.Horiz',
@@ -391,7 +395,12 @@ CKEDITOR.lang['pt'] =
 		linkTab	: 'Hiperligação',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['pt'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element' // MISSING
 	},
 
@@ -493,7 +503,7 @@ CKEDITOR.lang['pt'] =
 		block : 'Justificado'
 	},
 
-	blockquote : 'Blockquote', // MISSING
+	blockquote : 'Block Quote', // MISSING
 
 	clipboard :
 	{
@@ -501,7 +511,8 @@ CKEDITOR.lang['pt'] =
 		cutError	: 'A configuração de segurança do navegador não permite a execução automática de operações de cortar. Por favor use o teclado (Ctrl+X).',
 		copyError	: 'A configuração de segurança do navegador não permite a execução automática de operações de copiar. Por favor use o teclado (Ctrl+C).',
 		pasteMsg	: 'Por favor, cole dentro da seguinte caixa usando o teclado (<STRONG>Ctrl+V</STRONG>) e prima <STRONG>OK</STRONG>.',
-		securityMsg	: 'Because of your browser security settings, the editor is not able to access your clipboard data directly. You are required to paste it again in this window.' // MISSING
+		securityMsg	: 'Because of your browser security settings, the editor is not able to access your clipboard data directly. You are required to paste it again in this window.', // MISSING
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['pt'] =
 	stylesCombo :
 	{
 		label : 'Estilo',
-		voiceLabel : 'Styles', // MISSING
-		panelVoiceLabel : 'Select a style', // MISSING
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Block Styles', // MISSING
 		panelTitle2 : 'Inline Styles', // MISSING
 		panelTitle3 : 'Object Styles' // MISSING
@@ -542,9 +552,7 @@ CKEDITOR.lang['pt'] =
 	format :
 	{
 		label : 'Formato',
-		voiceLabel : 'Format', // MISSING
 		panelTitle : 'Formato',
-		panelVoiceLabel : 'Select a paragraph format', // MISSING
 
 		tag_p : 'Normal',
 		tag_pre : 'Formatado',
@@ -579,22 +587,21 @@ CKEDITOR.lang['pt'] =
 	{
 		label : 'Tipo de Letra',
 		voiceLabel : 'Font', // MISSING
-		panelTitle : 'Tipo de Letra',
-		panelVoiceLabel : 'Select a font' // MISSING
+		panelTitle : 'Tipo de Letra'
 	},
 
 	fontSize :
 	{
 		label : 'Tamanho',
 		voiceLabel : 'Font Size', // MISSING
-		panelTitle : 'Tamanho',
-		panelVoiceLabel : 'Select a font size' // MISSING
+		panelTitle : 'Tamanho'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Cor do Texto',
 		bgColorTitle : 'Cor de Fundo',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automático',
 		more : 'Mais Cores...'
 	},

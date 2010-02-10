@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['pt-br'] =
 		cssStyle		: 'Estilos',
 		ok				: 'OK',
 		cancel			: 'Cancelar',
+		close : 'Close', // MISSING
 		generalTab		: 'Geral',
 		advancedTab		: 'Avançado',
 		validateNumberFailed	: 'Este valor não é um número.',
 		confirmNewPage	: 'Todas as mudanças não salvas serão perdidas. Tem certeza de que quer carregar outra página?',
 		confirmCancel	: 'Algumas opções foram alteradas. Tem certeza de que quer fechar a caixa de diálogo?',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, indisponível</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['pt-br'] =
 		width		: 'Largura',
 		widthPx		: 'pixels',
 		widthPc		: '%',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Altura',
 		cellSpace	: 'Espaçamento',
 		cellPad		: 'Enchimento',
@@ -379,6 +382,7 @@ CKEDITOR.lang['pt-br'] =
 		width		: 'Largura',
 		height	: 'Altura',
 		lockRatio	: 'Manter proporções',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Redefinir para o Tamanho Original',
 		border	: 'Borda',
 		hSpace	: 'Horizontal',
@@ -391,7 +395,12 @@ CKEDITOR.lang['pt-br'] =
 		linkTab	: 'Hiperlink',
 		button2Img	: 'Você deseja transformar o botão de imagem selecionado em uma imagem comum?',
 		img2Button	: 'Você deseja transformar a imagem selecionada em um botão de imagem?',
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['pt-br'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : 'Elemento %1'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['pt-br'] =
 		cutError	: 'As configurações de segurança do seu navegador não permitem que o editor execute operações de recortar automaticamente. Por favor, utilize o teclado para recortar (Ctrl+X).',
 		copyError	: 'As configurações de segurança do seu navegador não permitem que o editor execute operações de copiar automaticamente. Por favor, utilize o teclado para copiar (Ctrl+C).',
 		pasteMsg	: 'Transfira o link usado no box usando o teclado com (<STRONG>Ctrl+V</STRONG>) e <STRONG>OK</STRONG>.',
-		securityMsg	: 'As configurações de segurança do seu navegador não permitem que o editor acesse os dados da área de transferência diretamente. Por favor cole o conteúdo novamente nesta janela.'
+		securityMsg	: 'As configurações de segurança do seu navegador não permitem que o editor acesse os dados da área de transferência diretamente. Por favor cole o conteúdo novamente nesta janela.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['pt-br'] =
 	stylesCombo :
 	{
 		label : 'Estilo',
-		voiceLabel : 'Estilo',
-		panelVoiceLabel : 'Selecione um estilo',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Estilos de bloco',
 		panelTitle2 : 'Estilos em texto corrido',
 		panelTitle3 : 'Estilos de objeto'
@@ -542,9 +552,7 @@ CKEDITOR.lang['pt-br'] =
 	format :
 	{
 		label : 'Formatação',
-		voiceLabel : 'Formatação',
 		panelTitle : 'Formatação',
-		panelVoiceLabel : 'Selecione uma formatação de parágrafo',
 
 		tag_p : 'Normal',
 		tag_pre : 'Formatado',
@@ -579,22 +587,21 @@ CKEDITOR.lang['pt-br'] =
 	{
 		label : 'Fonte',
 		voiceLabel : 'Fonte',
-		panelTitle : 'Fonte',
-		panelVoiceLabel : 'Selecione uma fonte'
+		panelTitle : 'Fonte'
 	},
 
 	fontSize :
 	{
 		label : 'Tamanho',
 		voiceLabel : 'Tamanho da fonte',
-		panelTitle : 'Tamanho',
-		panelVoiceLabel : 'Selecione um tamanho de fonte'
+		panelTitle : 'Tamanho'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Cor do Texto',
 		bgColorTitle : 'Cor do Plano de Fundo',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automático',
 		more : 'Mais Cores...'
 	},

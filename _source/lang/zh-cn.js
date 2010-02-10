@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['zh-cn'] =
 		cssStyle		: '行内样式',
 		ok				: '确定',
 		cancel			: '取消',
+		close : 'Close', // MISSING
 		generalTab		: '常规',
 		advancedTab		: '高级',
 		validateNumberFailed	: '需要输入数字格式',
 		confirmNewPage	: '当前文档内容未保存,是否确认新建文档？',
 		confirmCancel	: '部分选项尚未保存，是否确认关闭对话框？',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, 不可用</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['zh-cn'] =
 		width		: '宽度',
 		widthPx		: '像素',
 		widthPc		: '百分比',
+		widthUnit	: 'width unit', // MISSING
 		height		: '高度',
 		cellSpace	: '间距',
 		cellPad		: '边距',
@@ -379,6 +382,7 @@ CKEDITOR.lang['zh-cn'] =
 		width		: '宽度',
 		height	: '高度',
 		lockRatio	: '锁定比例',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: '恢复尺寸',
 		border	: '边框大小',
 		hSpace	: '水平间距',
@@ -391,7 +395,12 @@ CKEDITOR.lang['zh-cn'] =
 		linkTab	: '链接',
 		button2Img	: '确定要把当前按钮改变为图像吗?',
 		img2Button	: '确定要把当前图像改变为按钮吗?',
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['zh-cn'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 元素'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['zh-cn'] =
 		cutError	: '您的浏览器安全设置不允许编辑器自动执行剪切操作，请使用键盘快捷键(Ctrl+X)来完成',
 		copyError	: '您的浏览器安全设置不允许编辑器自动执行复制操作，请使用键盘快捷键(Ctrl+C)来完成',
 		pasteMsg	: '请使用键盘快捷键(<STRONG>Ctrl+V</STRONG>)把内容粘贴到下面的方框里，再按 <STRONG>确定</STRONG>',
-		securityMsg	: '因为你的浏览器的安全设置原因，本编辑器不能直接访问你的剪贴板内容，你需要在本窗口重新粘贴一次'
+		securityMsg	: '因为你的浏览器的安全设置原因，本编辑器不能直接访问你的剪贴板内容，你需要在本窗口重新粘贴一次',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['zh-cn'] =
 	stylesCombo :
 	{
 		label : '样式',
-		voiceLabel : '样式',
-		panelVoiceLabel : '选择样式',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : '块级元素样式',
 		panelTitle2 : '内联元素样式',
 		panelTitle3 : '对象元素样式'
@@ -542,9 +552,7 @@ CKEDITOR.lang['zh-cn'] =
 	format :
 	{
 		label : '格式',
-		voiceLabel : '格式',
 		panelTitle : '格式',
-		panelVoiceLabel : '选择格式',
 
 		tag_p : '普通',
 		tag_pre : '已编排格式',
@@ -579,22 +587,21 @@ CKEDITOR.lang['zh-cn'] =
 	{
 		label : '字体',
 		voiceLabel : '字体',
-		panelTitle : '字体',
-		panelVoiceLabel : '选择字体'
+		panelTitle : '字体'
 	},
 
 	fontSize :
 	{
 		label : '大小',
 		voiceLabel : '文字大小',
-		panelTitle : '大小',
-		panelVoiceLabel : '选择文字大小'
+		panelTitle : '大小'
 	},
 
 	colorButton :
 	{
 		textColorTitle : '文本颜色',
 		bgColorTitle : '背景颜色',
+		panelTitle : 'Colors', // MISSING
 		auto : '自动',
 		more : '其它颜色...'
 	},

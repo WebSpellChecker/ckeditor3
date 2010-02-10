@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -31,7 +31,7 @@ CKEDITOR.lang['et'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle		: 'Rich text editor, %1', // MISSING
+	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
 	// Toolbar buttons without dialogs.
 	source			: 'Lähtekood',
@@ -88,11 +88,13 @@ CKEDITOR.lang['et'] =
 		cssStyle		: 'Laad',
 		ok				: 'OK',
 		cancel			: 'Loobu',
+		close : 'Close', // MISSING
 		generalTab		: 'General', // MISSING
 		advancedTab		: 'Täpsemalt',
 		validateNumberFailed	: 'This value is not a number.', // MISSING
 		confirmNewPage	: 'Any unsaved changes to this content will be lost. Are you sure you want to load new page?', // MISSING
 		confirmCancel	: 'Some of the options have been changed. Are you sure to close the dialog?', // MISSING
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -210,6 +212,7 @@ CKEDITOR.lang['et'] =
 		width		: 'Laius',
 		widthPx		: 'pikslit',
 		widthPc		: 'protsenti',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Kõrgus',
 		cellSpace	: 'Lahtri vahe',
 		cellPad		: 'Lahtri täidis',
@@ -379,6 +382,7 @@ CKEDITOR.lang['et'] =
 		width		: 'Laius',
 		height	: 'Kõrgus',
 		lockRatio	: 'Lukusta kuvasuhe',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Lähtesta suurus',
 		border	: 'Joon',
 		hSpace	: 'H. vaheruum',
@@ -391,7 +395,12 @@ CKEDITOR.lang['et'] =
 		linkTab	: 'Link',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['et'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element' // MISSING
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['et'] =
 		cutError	: 'Sinu veebisirvija turvaseaded ei luba redaktoril automaatselt lõigata. Palun kasutage selleks klaviatuuri klahvikombinatsiooni (Ctrl+X).',
 		copyError	: 'Sinu veebisirvija turvaseaded ei luba redaktoril automaatselt kopeerida. Palun kasutage selleks klaviatuuri klahvikombinatsiooni (Ctrl+C).',
 		pasteMsg	: 'Palun kleebi järgnevasse kasti kasutades klaviatuuri klahvikombinatsiooni (<STRONG>Ctrl+V</STRONG>) ja vajuta seejärel <STRONG>OK</STRONG>.',
-		securityMsg	: 'Sinu veebisirvija turvaseadete tõttu, ei oma redaktor otsest ligipääsu lõikelaua andmetele. Sa pead kleepima need uuesti siia aknasse.'
+		securityMsg	: 'Sinu veebisirvija turvaseadete tõttu, ei oma redaktor otsest ligipääsu lõikelaua andmetele. Sa pead kleepima need uuesti siia aknasse.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['et'] =
 	stylesCombo :
 	{
 		label : 'Laad',
-		voiceLabel : 'Styles', // MISSING
-		panelVoiceLabel : 'Select a style', // MISSING
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Block Styles', // MISSING
 		panelTitle2 : 'Inline Styles', // MISSING
 		panelTitle3 : 'Object Styles' // MISSING
@@ -542,9 +552,7 @@ CKEDITOR.lang['et'] =
 	format :
 	{
 		label : 'Vorming',
-		voiceLabel : 'Format', // MISSING
 		panelTitle : 'Vorming',
-		panelVoiceLabel : 'Select a paragraph format', // MISSING
 
 		tag_p : 'Tavaline',
 		tag_pre : 'Vormindatud',
@@ -579,22 +587,21 @@ CKEDITOR.lang['et'] =
 	{
 		label : 'Kiri',
 		voiceLabel : 'Font', // MISSING
-		panelTitle : 'Kiri',
-		panelVoiceLabel : 'Select a font' // MISSING
+		panelTitle : 'Kiri'
 	},
 
 	fontSize :
 	{
 		label : 'Suurus',
 		voiceLabel : 'Font Size', // MISSING
-		panelTitle : 'Suurus',
-		panelVoiceLabel : 'Select a font size' // MISSING
+		panelTitle : 'Suurus'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Teksti värv',
 		bgColorTitle : 'Tausta värv',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automaatne',
 		more : 'Rohkem värve...'
 	},

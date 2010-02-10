@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['cs'] =
 		cssStyle		: 'Styl',
 		ok				: 'OK',
 		cancel			: 'Storno',
+		close : 'Close', // MISSING
 		generalTab		: 'Obecné',
 		advancedTab		: 'Rozšířené',
 		validateNumberFailed	: 'Zadaná hodnota není číselná.',
 		confirmNewPage	: 'Jakékoliv neuložené změny obsahu budou ztraceny. Skutečně chete otevrít novou stránku?',
 		confirmCancel	: 'Některá z nastavení byla změněna. Skutečně chete zavřít dialogové okno?',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, nedostupné</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['cs'] =
 		width		: 'Šířka',
 		widthPx		: 'bodů',
 		widthPc		: 'procent',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Výška',
 		cellSpace	: 'Vzdálenost buněk',
 		cellPad		: 'Odsazení obsahu v buňce',
@@ -379,6 +382,7 @@ CKEDITOR.lang['cs'] =
 		width		: 'Šířka',
 		height	: 'Výška',
 		lockRatio	: 'Zámek',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Původní velikost',
 		border	: 'Okraje',
 		hSpace	: 'H-mezera',
@@ -391,7 +395,12 @@ CKEDITOR.lang['cs'] =
 		linkTab	: 'Odkaz',
 		button2Img	: 'Skutečně chcete převést zvolené obrázkové tlačítko na obyčejný obrázek?',
 		img2Button	: 'Skutečně chcete převést zvolený obrázek na obrázkové tlačítko?',
-		urlMissing : 'Zadané URL zdroje obrázku nebylo nalezeno.'
+		urlMissing : 'Zadané URL zdroje obrázku nebylo nalezeno.',
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['cs'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 objekt'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['cs'] =
 		cutError	: 'Bezpečnostní nastavení Vašeho prohlížeče nedovolují editoru spustit funkci pro vyjmutí zvoleného textu do schránky. Prosím vyjměte zvolený text do schránky pomocí klávesnice (Ctrl+X).',
 		copyError	: 'Bezpečnostní nastavení Vašeho prohlížeče nedovolují editoru spustit funkci pro kopírování zvoleného textu do schránky. Prosím zkopírujte zvolený text do schránky pomocí klávesnice (Ctrl+C).',
 		pasteMsg	: 'Do následujícího pole vložte požadovaný obsah pomocí klávesnice (<STRONG>Ctrl+V</STRONG>) a stiskněte <STRONG>OK</STRONG>.',
-		securityMsg	: 'Z důvodů nastavení bezpečnosti Vašeho prohlížeče nemůže editor přistupovat přímo do schránky. Obsah schránky prosím vložte znovu do tohoto okna.'
+		securityMsg	: 'Z důvodů nastavení bezpečnosti Vašeho prohlížeče nemůže editor přistupovat přímo do schránky. Obsah schránky prosím vložte znovu do tohoto okna.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['cs'] =
 	stylesCombo :
 	{
 		label : 'Styl',
-		voiceLabel : 'Styly',
-		panelVoiceLabel : 'Výběr stylu',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Blokové styly',
 		panelTitle2 : 'Řádkové styly',
 		panelTitle3 : 'Objektové styly'
@@ -542,9 +552,7 @@ CKEDITOR.lang['cs'] =
 	format :
 	{
 		label : 'Formát',
-		voiceLabel : 'Formátování',
 		panelTitle : 'Formát',
-		panelVoiceLabel : 'Volba formátu odstavce',
 
 		tag_p : 'Normální',
 		tag_pre : 'Naformátováno',
@@ -579,22 +587,21 @@ CKEDITOR.lang['cs'] =
 	{
 		label : 'Písmo',
 		voiceLabel : 'Písmo',
-		panelTitle : 'Písmo',
-		panelVoiceLabel : 'Volba písma'
+		panelTitle : 'Písmo'
 	},
 
 	fontSize :
 	{
 		label : 'Velikost',
 		voiceLabel : 'Velikost písma',
-		panelTitle : 'Velikost',
-		panelVoiceLabel : 'Volba velikosti písma'
+		panelTitle : 'Velikost'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Barva textu',
 		bgColorTitle : 'Barva pozadí',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automaticky',
 		more : 'Více barev...'
 	},

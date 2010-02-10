@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -88,11 +88,13 @@ CKEDITOR.lang['ca'] =
 		cssStyle		: 'Estil',
 		ok				: 'D\'acord',
 		cancel			: 'Cancel·la',
+		close : 'Close', // MISSING
 		generalTab		: 'General',
 		advancedTab		: 'Avançat',
 		validateNumberFailed	: 'Aquest valor no és un número.',
 		confirmNewPage	: 'Els canvis en aquest contingut que no es desin es perdran. Esteu segur que voleu carregar una pàgina nova?',
 		confirmCancel	: 'Algunes opcions s\'han canviat. Esteu segur que voleu tancar la finestra de diàleg?',
+		options : 'Options', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, no disponible</span>'
@@ -210,6 +212,7 @@ CKEDITOR.lang['ca'] =
 		width		: 'Amplada',
 		widthPx		: 'píxels',
 		widthPc		: 'percentatge',
+		widthUnit	: 'width unit', // MISSING
 		height		: 'Alçada',
 		cellSpace	: 'Espaiat de cel·les',
 		cellPad		: 'Encoixinament de cel·les',
@@ -379,6 +382,7 @@ CKEDITOR.lang['ca'] =
 		width		: 'Amplada',
 		height	: 'Alçada',
 		lockRatio	: 'Bloqueja les proporcions',
+		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Restaura la mida',
 		border	: 'Vora',
 		hSpace	: 'Espaiat horit.',
@@ -391,7 +395,12 @@ CKEDITOR.lang['ca'] =
 		linkTab	: 'Enllaç',
 		button2Img	: 'Voleu transformar el botó d\'imatge seleccionat en una simple imatge?',
 		img2Button	: 'Voleu transformar la imatge seleccionada en un botó d\'imatge?',
-		urlMissing : 'Image source URL is missing.' // MISSING
+		urlMissing : 'Image source URL is missing.', // MISSING
+		validateWidth : 'Width must be a whole number.', // MISSING
+		validateHeight : 'Height must be a whole number.', // MISSING
+		validateBorder : 'Border must be a whole number.', // MISSING
+		validateHSpace : 'HSpace must be a whole number.', // MISSING
+		validateVSpace : 'VSpace must be a whole number.' // MISSING
 	},
 
 	// Flash Dialog
@@ -477,6 +486,7 @@ CKEDITOR.lang['ca'] =
 
 	elementsPath :
 	{
+		eleLabel : 'Elements path',  // MISSING
 		eleTitle : '%1 element'
 	},
 
@@ -501,7 +511,8 @@ CKEDITOR.lang['ca'] =
 		cutError	: 'La seguretat del vostre navegador no permet executar automàticament les operacions de retallar. Si us plau, utilitzeu el teclat (Ctrl+X).',
 		copyError	: 'La seguretat del vostre navegador no permet executar automàticament les operacions de copiar. Si us plau, utilitzeu el teclat (Ctrl+C).',
 		pasteMsg	: 'Si us plau, enganxeu dins del següent camp utilitzant el teclat (<STRONG>Ctrl+V</STRONG>) i premeu <STRONG>OK</STRONG>.',
-		securityMsg	: 'A causa de la configuració de seguretat del vostre navegador, l\'editor no pot accedir al porta-retalls directament. Enganxeu-ho un altre cop en aquesta finestra.'
+		securityMsg	: 'A causa de la configuració de seguretat del vostre navegador, l\'editor no pot accedir al porta-retalls directament. Enganxeu-ho un altre cop en aquesta finestra.',
+		pasteArea	: 'Paste Area' // MISSING
 	},
 
 	pastefromword :
@@ -532,8 +543,7 @@ CKEDITOR.lang['ca'] =
 	stylesCombo :
 	{
 		label : 'Estil',
-		voiceLabel : 'Estils',
-		panelVoiceLabel : 'Seleccioneu un estil',
+		panelTitle : 'Formatting Styles', // MISSING
 		panelTitle1 : 'Estils de bloc',
 		panelTitle2 : 'Estils incrustats',
 		panelTitle3 : 'Estils d\'objecte'
@@ -542,9 +552,7 @@ CKEDITOR.lang['ca'] =
 	format :
 	{
 		label : 'Format',
-		voiceLabel : 'Format',
 		panelTitle : 'Format',
-		panelVoiceLabel : 'Seleccioneu un format de paràgraf',
 
 		tag_p : 'Normal',
 		tag_pre : 'Formatejat',
@@ -579,22 +587,21 @@ CKEDITOR.lang['ca'] =
 	{
 		label : 'Tipus de lletra',
 		voiceLabel : 'Tipus de lletra',
-		panelTitle : 'Tipus de lletra',
-		panelVoiceLabel : 'Seleccioneu un tipus de lletra'
+		panelTitle : 'Tipus de lletra'
 	},
 
 	fontSize :
 	{
 		label : 'Mida',
 		voiceLabel : 'Mida de la lletra',
-		panelTitle : 'Mida',
-		panelVoiceLabel : 'Seleccioneu una mida de lletra'
+		panelTitle : 'Mida'
 	},
 
 	colorButton :
 	{
 		textColorTitle : 'Color de Text',
 		bgColorTitle : 'Color de Fons',
+		panelTitle : 'Colors', // MISSING
 		auto : 'Automàtic',
 		more : 'Més colors...'
 	},

@@ -244,12 +244,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			editor.on( 'editingBlockReady', function()
 				{
 					var mainElement,
-						fieldset,
 						iframe,
 						isLoadingData,
 						isPendingFocus,
 						frameLoaded,
 						fireMode;
+
+					var frameLabel = editor.lang.editorTitle.replace( '%1', editor.name );
 
 					// Support for custom document.domain in IE.
 					var isCustomDomain = CKEDITOR.env.isCustomDomain();
@@ -259,8 +260,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						if ( iframe )
 							iframe.remove();
-						if ( fieldset )
-							fieldset.remove();
 
 						frameLoaded = 0;
 
@@ -276,6 +275,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								'})())"' : '' ) +
   							' tabIndex="-1"' +
   							' allowTransparency="true"' +
+							' role="region"' +
+							' aria-multiline="true"' +
+							' aria-label="' + frameLabel + '"' +
   							'></iframe>' );
 
 						// Register onLoad event for iframe element, which
@@ -294,47 +296,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						} );
 
-						var accTitle = editor.lang.editorTitle.replace( '%1', editor.name );
-
-						if ( CKEDITOR.env.gecko )
-						{
-							// Accessibility attributes for Firefox.
-							mainElement.setAttributes(
-								{
-									role : 'region',
-									title : accTitle
-								} );
-							iframe.setAttributes(
-								{
-									role : 'region',
-									title : ' '
-								} );
-						}
-						else if ( CKEDITOR.env.webkit )
-						{
-							iframe.setAttribute( 'title', accTitle );	// Safari 4
-							iframe.setAttribute( 'name', accTitle );	// Safari 3
-						}
-						else if ( CKEDITOR.env.ie )
-						{
-							// Accessibility label for IE.
-							fieldset = CKEDITOR.dom.element.createFromHtml(
-								'<fieldset style="height:100%' +
-								( CKEDITOR.env.ie && CKEDITOR.env.quirks ? ';position:relative' : '' ) +
-								'">' +
-									'<legend style="display:block;width:0;height:0;overflow:hidden;' +
-									( CKEDITOR.env.ie && CKEDITOR.env.quirks ? 'position:absolute' : '' ) +
-									'">' +
-										CKEDITOR.tools.htmlEncode( accTitle ) +
-									'</legend>' +
-								'</fieldset>'
-								, CKEDITOR.document );
-							iframe.appendTo( fieldset );
-							fieldset.appendTo( mainElement );
-						}
-
-						if ( !CKEDITOR.env.ie )
-							mainElement.append( iframe );
+						mainElement.append( iframe );
 					};
 
 					// The script that launches the bootstrap logic on 'domReady', so the document
@@ -349,8 +311,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						if ( frameLoaded )
 							return;
-
 						frameLoaded = 1;
+
+						editor.fire( 'ariaWidget', iframe );
 
 						var domDocument = domWindow.document,
 							body = domDocument.body;
@@ -663,6 +626,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									data =
 										config.docType +
 										'<html dir="' + config.contentsLangDirection + '">' +
+										'<title>' + frameLabel + '</title>' +
 										'<head>' +
 											baseTag +
 											headExtra +
@@ -765,7 +729,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				editor.on( 'uiReady', function()
 				{
 					ieFocusGrabber = editor.container.append( CKEDITOR.dom.element.createFromHtml(
-					'<input tabindex="-1" style="position:absolute; left:-10000">' ) );
+						// Use 'span' instead of anything else to fly under the screen-reader radar. (#5049)
+						'<span tabindex="-1" style="position:absolute; left:-10000"></span>' ) );
 
 					ieFocusGrabber.on( 'focus', function()
 						{

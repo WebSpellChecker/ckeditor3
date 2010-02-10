@@ -220,12 +220,22 @@ CKEDITOR.ui.panel.prototype =
 	{
 		var blocks = this._.blocks,
 			block = blocks[ name ],
-			current = this._.currentBlock;
+			current = this._.currentBlock,
+			holder = this.forceIFrame ?
+				this.document.getById( 'cke_' + this.id + '_frame' )
+				: this._.holder;
 
 		if ( current )
+		{
+			// Clean up the current block's effects on holder.
+			holder.removeAttributes( current.attributes );
 			current.hide();
+		}
 
 		this._.currentBlock = block;
+
+		holder.setAttributes( block.attributes );
+		CKEDITOR.fire( 'ariaWidget', holder );
 
 		// Reset the focus index, so it will always go into the first one.
 		block._.focusIndex = -1;
@@ -261,12 +271,10 @@ CKEDITOR.ui.panel.block = CKEDITOR.tools.createClass(
 					}
 				}) );
 
-		blockDefinition = blockDefinition || {};
+		// Copy all definition properties to this object.
+		if ( blockDefinition )
+			CKEDITOR.tools.extend( this, blockDefinition );
 
-		var attribs = blockDefinition.attributes;
-		attribs && this.element.setAttributes( attribs );
-
-		CKEDITOR.fire( 'ariaWidget', this.element );
 		this.keys = {};
 
 		this._.focusIndex = -1;

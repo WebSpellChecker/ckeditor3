@@ -125,13 +125,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						if ( ( ariaLabel = target.getAttribute( 'aria-label' ) ) )
 						{
-							var labelId = 'cke_label_' + CKEDITOR.tools.getNextNumber();
-							ariaLabel = CKEDITOR.dom.element.createFromHtml(
-									'<span class="cke_label" id="' + labelId + '">' + ariaLabel+ '</span>',
-									target.getDocument() );
-							ariaLabel.insertBefore( target );
+							var next = target.getNext(),
+									label;
+
+							if ( next && next.hasClass( 'cke_voice_label' ) )
+							{
+								label = next;
+								label.setText( ariaLabel );
+							}
+							else
+							{
+								var labelId = 'cke_label_' + CKEDITOR.tools.getNextNumber( );
+								label = CKEDITOR.dom.element.createFromHtml(
+										'<span class="cke_voice_label" id="' + labelId + '">' + ariaLabel + '</span>',
+										target.getDocument() );
+								label.insertAfter( target );
+							}
+							
+							target.setAttribute( 'aria-labelledby', label.getAttribute( 'id' ) );
 							target.removeAttribute( 'aria-label' );
-							target.setAttribute( 'aria-labelledby', labelId );
 						}
 					});
 			}

@@ -1,8 +1,3 @@
-
-
-
-
-
 /*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
@@ -324,7 +319,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 								},
 								onShow : function()
 								{
-									var firstChar = this.getElement().getChild( [ 0, 0, 0, 0, 0] );
+									var firstChar = this.getElement().getChild( [ 0, 0, 0, 0, 0 ] );
 									setTimeout( function()
 										{
 											firstChar.focus();

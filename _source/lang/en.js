@@ -566,10 +566,6 @@ CKEDITOR.lang['en'] =
 		tag_div : 'Normal (DIV)'
 	},
 
-	contextMenu :
-	{
-	},
-
 	div :
 	{
 		title				: 'Create Div Container',

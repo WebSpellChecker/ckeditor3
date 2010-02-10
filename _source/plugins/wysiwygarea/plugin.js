@@ -630,7 +630,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										'<head>' +
 											baseTag +
 											headExtra +
-										'</head>' +	
+										'</head>' +
 										'<body' + ( config.bodyId ? ' id="' + config.bodyId + '"' : '' ) +
 												  ( config.bodyClass ? ' class="' + config.bodyClass + '"' : '' ) +
 												  '>' +

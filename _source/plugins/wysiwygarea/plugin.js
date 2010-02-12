@@ -241,6 +241,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var fixForBody = ( editor.config.enterMode != CKEDITOR.ENTER_BR )
 				? editor.config.enterMode == CKEDITOR.ENTER_DIV ? 'div' : 'p' : false;
 
+			var frameLabel = editor.lang.editorTitle.replace( '%1', editor.name );
+
 			editor.on( 'editingBlockReady', function()
 				{
 					var mainElement,
@@ -250,7 +252,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						frameLoaded,
 						fireMode;
 
-					var frameLabel = editor.lang.editorTitle.replace( '%1', editor.name );
 
 					// Support for custom document.domain in IE.
 					var isCustomDomain = CKEDITOR.env.isCustomDomain();
@@ -275,7 +276,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								'})())"' : '' ) +
   							' tabIndex="-1"' +
   							' allowTransparency="true"' +
-							' role="region"' +
+							' role="editbox"' +
 							' aria-multiline="true"' +
 							' aria-label="' + frameLabel + '"' +
   							'></iframe>' );
@@ -721,6 +722,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// Auto fixing on some document structure weakness to enhance usabilities. (#3190 and #3189)
 					editor.on( 'selectionChange', onSelectionChangeFixBody, null, null, 1 );
 				});
+
+			var titleBackup;
+			// Setting voice label as window title, backup the original one
+			// and restore it before running into use.
+			editor.on( 'contentDom', function ()
+				{
+					var title = editor.document.getElementsByTag( 'title' ).getItem( 0 );
+					title.setAttribute( '_cke_title', editor.document.$.title );
+					editor.document.$.title = frameLabel;
+				});
+
 
 			// Create an invisible element to grab focus.
 			if( CKEDITOR.env.ie )

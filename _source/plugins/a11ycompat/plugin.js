@@ -22,8 +22,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	function lookupARIASupport( role, tagName )
 	{
 		return {
-				'dialog' :	 env.gecko && env.version >= 10900,
-				'region' : env.gecko && env.version >= 10900
+				'dialog' :	 env.gecko && env.version >= 10900
 			}[ role ];
 	}
 
@@ -71,17 +70,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				element = parent;
 			fieldset.insertBefore( element );
 			fieldset.append( element );
-		}
-		// The only reliable substitution of aria-label on an iframe
-		// is to use the content window title of that frame.
-		else if ( element.is( 'iframe' ) )
-		{
-			doc = element.$.contentWindow.document;
-			var title = doc.title;
-
-			// Backup the title and restore it before running into use.
-			title && editor.on( 'beforeModeUnload', function() { doc.title = title; } );
-			doc.title = allInOne;
 		}
 	}
 

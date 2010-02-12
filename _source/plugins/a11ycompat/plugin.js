@@ -103,37 +103,40 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					});
 			}
 
-			// IE doesn't support 'aria-label', use 'aria-labelledby' instead.
 			if ( CKEDITOR.env.ie )
 			{
-				CKEDITOR.on( 'ariaWidget', function( evt )
+				// IE doesn't support 'aria-label', use 'aria-labelledby' instead.
+				function relabel( evt )
+				{
+					var target = evt.data,
+						ariaLabel;
+
+					if ( ( ariaLabel = target.getAttribute( 'aria-label' ) ) )
 					{
-						var target = evt.data,
-							ariaLabel;
+						var next = target.getNext(),
+								label;
 
-						if ( ( ariaLabel = target.getAttribute( 'aria-label' ) ) )
+						if ( next && next.hasClass( 'cke_voice_label' ) )
 						{
-							var next = target.getNext(),
-									label;
-
-							if ( next && next.hasClass( 'cke_voice_label' ) )
-							{
-								label = next;
-								label.setText( ariaLabel );
-							}
-							else
-							{
-								var labelId = 'cke_label_' + CKEDITOR.tools.getNextNumber( );
-								label = CKEDITOR.dom.element.createFromHtml(
-										'<span class="cke_voice_label" id="' + labelId + '">' + ariaLabel + '</span>',
-										target.getDocument() );
-								label.insertAfter( target );
-							}
-							
-							target.setAttribute( 'aria-labelledby', label.getAttribute( 'id' ) );
-							target.removeAttribute( 'aria-label' );
+							label = next;
+							label.setText( ariaLabel );
 						}
-					});
+						else
+						{
+							var labelId = 'cke_label_' + CKEDITOR.tools.getNextNumber( );
+							label = CKEDITOR.dom.element.createFromHtml(
+									'<span class="cke_voice_label" id="' + labelId + '">' + ariaLabel + '</span>',
+									target.getDocument() );
+							label.insertAfter( target );
+						}
+
+						target.setAttribute( 'aria-labelledby', label.getAttribute( 'id' ) );
+						target.removeAttribute( 'aria-label' );
+					}
+				}
+
+				CKEDITOR.on( 'ariaWidget', relabel );
+				editor.on( 'ariaWidget', relabel );
 			}
 		}
 	});

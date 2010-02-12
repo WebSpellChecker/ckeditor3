@@ -90,6 +90,8 @@ CKEDITOR.plugins.add( 'sourcearea',
 							holderElement.append( textarea );
 							textarea.setStyles( styles );
 
+							editor.fire( 'ariaWidget', textarea );
+
 							textarea.on( 'blur', function()
 								{
 									editor.focusManager.blur();

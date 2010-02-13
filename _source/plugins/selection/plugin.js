@@ -141,9 +141,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 								// IE before version 8 will leave cursor blinking inside the document after
 								// editor blurred unless we clean up the selection. (#4716)
-								var env = CKEDITOR.env;
-								if( env.ie && env.version < 8 )
-									editor.document.$.selection.empty();
+								if ( CKEDITOR.env.ie && CKEDITOR.env.version < 8 )
+								{
+									// IE stack overflows when we're doing so inside table. (#5114)   
+									var parent =
+										savedRange
+										&& savedRange.parentElement
+										&& savedRange.parentElement();
+
+									if( !( parent && parent.tagName.toLowerCase() in CKEDITOR.dtd.$tableContent ) )
+										editor.document.$.selection.empty();
+								}
 							});
 
 						// IE fires the "selectionchange" event when clicking
@@ -475,10 +483,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									break;
 								// When selection stay at the side of certain self-closing elements, e.g. BR,
 								// our comparison will never shows an equality. (#4824)
-								else if ( comparisonStart == 0
+								else if ( !comparisonStart
 									|| comparisonEnd == 1 && comparisonStart == -1 )
 									return { container : parent, offset : i };
-								else if( comparisonEnd == 0 )
+								else if ( !comparisonEnd )
 									return { container : parent, offset : i + 1 };
 
 								testRange = null;
@@ -498,8 +506,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						// breaking character counting logic below. (#3949)
 						var distance = testRange.text.replace( /(\r\n|\r)/g, '\n' ).length;
 
-						while ( distance > 0 )
-							distance -= siblings[ --i ].nodeValue.length;
+						try
+						{
+							while ( distance > 0 )
+								distance -= siblings[ --i ].nodeValue.length;
+						}
+						// Measurement in IE could be somtimes wrong because of <select> element. (#4611)
+						catch( e )
+						{
+							distance = 0;
+						}
+
 
 						if ( distance === 0 )
 						{

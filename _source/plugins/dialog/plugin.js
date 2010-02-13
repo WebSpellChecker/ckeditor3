@@ -1031,7 +1031,8 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		 */
 		getContentElement : function( pageId, elementId )
 		{
-			return this._.contents[pageId][elementId];
+			var page = this._.contents[ pageId ];
+			return page && page[ elementId ];
 		},
 
 		/**

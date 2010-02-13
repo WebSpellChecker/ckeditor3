@@ -31,7 +31,7 @@ CKEDITOR.lang['ru'] =
 	 * Screenreader titles. Please note that screenreaders are not always capable
 	 * of reading non-English words. So be careful while translating it.
 	 */
-	editorTitle		: 'Редактор с «богатым» форматированием, %1',
+	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
 	// Toolbar buttons without dialogs.
 	source			: 'Источник',

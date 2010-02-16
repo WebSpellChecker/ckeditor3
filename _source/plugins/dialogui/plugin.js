@@ -153,7 +153,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 								' style="' + elementDefinition.labelStyle + '">',
 								elementDefinition.label,
 								'</label>',
-								'<div class="cke_dialog_ui_labeled_content">',
+								'<div class="cke_dialog_ui_labeled_content" role="presentation">',
 								contentHtml.call( this, dialog, elementDefinition ),
 								'</div>' );
 					else
@@ -185,7 +185,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 					}
 					return html.join( '' );
 				};
-				CKEDITOR.ui.dialog.uiElement.call( this, dialog, elementDefinition, htmlList, 'div', null, null, innerHTML );
+				CKEDITOR.ui.dialog.uiElement.call( this, dialog, elementDefinition, htmlList, 'div', null, { role : 'presentation' }, innerHTML );
 			},
 
 			/**
@@ -258,7 +258,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 				{
 					// IE BUG: Text input fields in IE at 100% would exceed a <td> or inline
 					// container's width, so need to wrap it inside a <div>.
-					var html = [ '<div class="cke_dialog_ui_input_', elementDefinition.type, '"' ];
+					var html = [ '<div class="cke_dialog_ui_input_', elementDefinition.type, '" role="presentation"' ];
 
 					if ( elementDefinition.width )
 						html.push( 'style="width:'+ elementDefinition.width +'" ' );
@@ -317,7 +317,7 @@ CKEDITOR.plugins.add( 'dialogui' );
 				{
 					attributes[ 'aria-labelledby' ] = this._.labelId;
 					this._.required && ( attributes[ 'aria-required' ] = this._.required );
-					var html = [ '<div class="cke_dialog_ui_input_textarea"><textarea class="cke_dialog_ui_input_textarea" id="', domId, '" ' ];
+					var html = [ '<div class="cke_dialog_ui_input_textarea" role="presentation"><textarea class="cke_dialog_ui_input_textarea" id="', domId, '" ' ];
 					for ( var i in attributes )
 						html.push( i + '="' + CKEDITOR.tools.htmlEncode( attributes[i] ) + '" ' );
 					html.push( '>', CKEDITOR.tools.htmlEncode( me._['default'] ), '</textarea></div>' );

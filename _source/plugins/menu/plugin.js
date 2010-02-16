@@ -222,7 +222,7 @@ CKEDITOR.plugins.add( 'menu',
 				sortItems( items );
 
 				// Build the HTML that composes the menu and its items.
-				var output = [ '<div class="cke_menu">' ];
+				var output = [ '<div class="cke_menu" role="presentation">' ];
 
 				var length = items.length,
 					lastGroup = length && items[ 0 ].group;
@@ -232,7 +232,7 @@ CKEDITOR.plugins.add( 'menu',
 					var item = items[ i ];
 					if ( lastGroup != item.group )
 					{
-						output.push( '<div class="cke_menuseparator"></div>' );
+						output.push( '<div class="cke_menuseparator" role="separator"></div>' );
 						lastGroup = item.group;
 					}
 

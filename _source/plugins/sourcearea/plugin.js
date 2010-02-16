@@ -34,7 +34,7 @@ CKEDITOR.plugins.add( 'sourcearea',
 							textarea.setAttributes(
 								{
 									dir : 'ltr',
-									tabIndex : -1,
+									tabIndex : editor.tabIndex,
 									'role' : 'textbox',
 									'aria-label' : editor.lang.editorTitle.replace( '%1', editor.name )
 								});

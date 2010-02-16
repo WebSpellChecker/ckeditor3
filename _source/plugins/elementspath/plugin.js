@@ -49,7 +49,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			editor.on( 'themeSpace', function( event )
 				{
 					if ( event.data.space == 'bottom' )
-						event.data.html += '<div id="' + spaceId + '" class="cke_path">' + emptyHtml + '</div>';
+					{
+						event.data.html += 
+							'<span id="' + spaceId + '_label" class="cke_voice_label">' + editor.lang.elementsPath.eleLabel + '</span>' +
+							'<div id="' + spaceId + '" class="cke_path" role="group" aria-labelledby="' + spaceId + '_label">' + emptyHtml + '</div>';
+					}
 				});
 
 			editor.on( 'selectionChange', function( ev )

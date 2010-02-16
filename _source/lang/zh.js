@@ -33,6 +33,10 @@ CKEDITOR.lang['zh'] =
 	 */
 	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
+	// ARIA descriptions.
+	toolbar : 'Toolbar', // MISSING
+	editor : 'Rich Text Editor', // MISSING
+
 	// Toolbar buttons without dialogs.
 	source			: '原始碼',
 	newPage			: '開新檔案',

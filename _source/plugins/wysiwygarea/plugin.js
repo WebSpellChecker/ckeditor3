@@ -275,28 +275,33 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									'document.domain=\'' + document.domain + '\';' : '' ) +
 								'document.close();' +
 								'})())"' : '' ) +
-  							' tabIndex="-1"' +
+  							' tabIndex="' + editor.tabIndex + '"' +
   							' allowTransparency="true"' +
-							' role="editbox"' +
-							' aria-multiline="true"' +
-							' aria-label="' + frameLabel + '"' +
   							'></iframe>' );
 
 						// Register onLoad event for iframe element, which
 						// will fill it with content and set custom domain.
 						iframe.on( 'load', function( e )
-						{
-							e.removeListener();
-							var doc = iframe.getFrameDocument().$;
+							{
+								e.removeListener();
+								var doc = iframe.getFrameDocument().$;
 
-							// Custom domain handling is needed after each document.open().
-							doc.open();
-							if ( isCustomDomain )
-								doc.domain = document.domain;
-							doc.write( data );
-							doc.close();
+								// Custom domain handling is needed after each document.open().
+								doc.open();
+								if ( isCustomDomain )
+									doc.domain = document.domain;
+								doc.write( data );
+								doc.close();
 
-						} );
+							});
+
+						// Firefox will not move the focus to the iframe, but
+						// to it's contents directly. We need to force it in
+						// other browsers instead.
+						iframe.on( 'focus', function()
+							{
+								editor.focus();
+							});
 
 						mainElement.append( iframe );
 					};
@@ -743,7 +748,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					ieFocusGrabber = editor.container.append( CKEDITOR.dom.element.createFromHtml(
 						// Use 'span' instead of anything else to fly under the screen-reader radar. (#5049)
-						'<span tabindex="-1" style="position:absolute; left:-10000"></span>' ) );
+						'<span tabindex="-1" style="position:absolute; left:-10000" role="presentation"></span>' ) );
 
 					ieFocusGrabber.on( 'focus', function()
 						{

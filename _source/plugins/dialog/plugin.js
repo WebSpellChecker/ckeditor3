@@ -127,31 +127,21 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 		this.parts = themeBuilt.parts;
 
-		var dialogPart = this.parts.dialog,
-			 titleId = this.parts.title.$.id;
-
-		dialogPart.setAttributes(
-			{
-				'role' : 'dialog',
-				'aria-labelledby' : titleId
-			});
-
 		CKEDITOR.tools.setTimeout( function()
 			{
 				editor.fire( 'ariaWidget', this.parts.contents );
-			}, 0, this );
+			},
+			0, this );
 		
 		// Set the startup styles for the dialog, avoiding it enlarging the
 		// page size on the dialog creation.
-		dialogPart.setStyles(
+		this.parts.dialog.setStyles(
 			{
 				position : CKEDITOR.env.ie6Compat ? 'absolute' : 'fixed',
 				top : 0,
 				left: 0,
 				visibility : 'hidden'
 			});
-
-		this.parts.tabs.setAttribute( 'role', 'tablist' );
 
 		// Call the CKEDITOR.event constructor to initialize this instance.
 		CKEDITOR.event.call( this );
@@ -896,13 +886,14 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 						env.gecko && env.version >= 10900 && !env.hc ? '' : ' href="javascript:void(0)"',
 						' tabIndex="-1"',
 						' hidefocus="true"',
+						' aria-labelledby="', tabId, '_arialbl"',
 						' role="tab">',
-							contents.label,
+							'<span id="', tabId, '_arialbl">',
+								contents.label,
+							'</span>',
 					'</a>'
 				].join( '' ) );
 			
-			page.setAttribute( 'aria-labelledby', tabId );
-
 			// If only a single page exist, a different style is used in the central pane.
 			if ( this._.pageCount === 0 )
 				this.parts.dialog.addClass( 'cke_single_page' );
@@ -2169,7 +2160,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 							className = 'cke_dialog_ui_hbox_first';
 						if ( i == childHtmlList.length - 1 )
 							className = 'cke_dialog_ui_hbox_last';
-						html.push( '<td class="', className, '" ' );
+						html.push( '<td class="', className, '" role="presentation" ' );
 						if ( widths )
 						{
 							if ( widths[i] )
@@ -2189,6 +2180,9 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 					return html.join( '' );
 				};
 
+				var attribs = { role : 'presentation' };
+				elementDefinition && elementDefinition.align && ( attribs.align = elementDefinition.align );
+
 				CKEDITOR.ui.dialog.uiElement.call(
 					this,
 					dialog,
@@ -2196,7 +2190,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 					htmlList,
 					'table',
 					styles,
-					elementDefinition && elementDefinition.align && { align : elementDefinition.align } || null,
+					attribs,
 					innerHTML );
 			},
 
@@ -2241,7 +2235,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				/** @ignore */
 				var innerHTML = function()
 				{
-					var html = [ '<table cellspacing="0" border="0" ' ];
+					var html = [ '<table role="presentation" cellspacing="0" border="0" ' ];
 					html.push( 'style="' );
 					if ( elementDefinition && elementDefinition.expand )
 						html.push( 'height:100%;' );
@@ -2254,7 +2248,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 					for ( var i = 0 ; i < childHtmlList.length ; i++ )
 					{
 						var styles = [];
-						html.push( '<tr><td ' );
+						html.push( '<tr><td role="presentation" ' );
 						if ( width )
 							styles.push( 'width:' + CKEDITOR.tools.cssLength( width || '100%' ) );
 						if ( heights )
@@ -2270,7 +2264,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 					html.push( '</tbody></table>' );
 					return html.join( '' );
 				};
-				CKEDITOR.ui.dialog.uiElement.call( this, dialog, elementDefinition || { type : 'vbox' }, htmlList, 'div', null, null, innerHTML );
+				CKEDITOR.ui.dialog.uiElement.call( this, dialog, elementDefinition || { type : 'vbox' }, htmlList, 'div', null, { role : 'presentation' }, innerHTML );
 			}
 		};
 	})();

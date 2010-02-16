@@ -156,11 +156,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						editor.toolbox = new toolbox();
 
-						var output = [ '<div class="cke_toolbox" role="toolbar"' ],
+						var labelId = 'cke_' + CKEDITOR.tools.getNextNumber();
+
+						var output = [ '<div class="cke_toolbox" role="toolbar" aria-labelledby="', labelId, '"' ],
 							expanded =  editor.config.toolbarStartupExpanded !== false,
 							groupStarted;
 
 						output.push( expanded ? '>' : ' style="display:none">' );
+
+						// Sends the ARIA label.
+						output.push( '<span id="', labelId, '" class="cke_voice_label">', editor.lang.toolbar, '</span>' );
 
 						var toolbars = editor.toolbox.toolbars,
 							toolbar =
@@ -196,7 +201,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								continue;
 							}
 
-							output.push( '<span id="', toolbarId, '" class="cke_toolbar"><span class="cke_toolbar_start"></span>' );
+							output.push( '<span id="', toolbarId, '" class="cke_toolbar" role="presentation"><span class="cke_toolbar_start"></span>' );
 
 							// Add the toolbar to the "editor.toolbox.toolbars"
 							// array.
@@ -226,7 +231,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									{
 										if ( !groupStarted )
 										{
-											output.push( '<span class="cke_toolgroup">' );
+											output.push( '<span class="cke_toolgroup" role="presentation">' );
 											groupStarted = 1;
 										}
 									}

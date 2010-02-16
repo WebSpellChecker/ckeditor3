@@ -33,6 +33,10 @@ CKEDITOR.lang['ja'] =
 	 */
 	editorTitle		: 'Rich text editor, %1, press ALT 0 for help.', // MISSING
 
+	// ARIA descriptions.
+	toolbar : 'Toolbar', // MISSING
+	editor : 'Rich Text Editor', // MISSING
+
 	// Toolbar buttons without dialogs.
 	source			: 'ソース',
 	newPage			: '新しいページ',

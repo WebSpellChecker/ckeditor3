@@ -78,11 +78,13 @@ CKEDITOR.ui.panel.prototype =
 		output.push(
 			'<div class="', editor.skinClass ,'"' +
 				' lang="', editor.langCode, '"' +
+				' role="presentation"' +
 				// iframe loading need sometime, keep the panel hidden(#4186).
 				' style="display:none;z-index:' + ( editor.config.baseFloatZIndex + 1 ) + '">' +
 				'<div' +
 					' id=', id,
 					' dir=', editor.lang.dir,
+					' role="presentation"' +
 					' class="cke_panel cke_', editor.lang.dir );
 
 		if ( this.className )
@@ -263,7 +265,8 @@ CKEDITOR.ui.panel.block = CKEDITOR.tools.createClass(
 					attributes :
 					{
 						'tabIndex' : -1,
-						'class' : 'cke_panel_block'
+						'class' : 'cke_panel_block',
+						'role' : 'presentation'
 					},
 					styles :
 					{

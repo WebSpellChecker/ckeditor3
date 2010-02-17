@@ -280,7 +280,7 @@ CKEDITOR.editor.prototype.resize = function( width, height, isContentHeight, res
 
 	var container = this.container,
 		contents = CKEDITOR.document.getById( 'cke_contents_' + this.name ),
-		outer = resizeInner ? container.getChild( 0 ) : container;
+		outer = resizeInner ? container.getChild( 1 ) : container;
 
 	// Resize the width first.
 	// WEBKIT BUG: Webkit requires that we put the editor off from display when we
@@ -304,7 +304,7 @@ CKEDITOR.editor.prototype.resize = function( width, height, isContentHeight, res
 
 CKEDITOR.editor.prototype.getResizable = function()
 {
-	return this.container.getChild( 0 );
+	return this.container.getChild( 1 );
 };
 
 /**

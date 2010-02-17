@@ -2641,9 +2641,12 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		{
 			editor.openDialog( this.dialogName );
 		},
+
 		// Dialog commands just open a dialog ui, thus require no undo logic,
 		// undo support should dedicate to specific dialog implementation.
-		canUndo: false
+		canUndo: false,
+
+		editorFocus : CKEDITOR.env.ie
 	};
 
 	(function()

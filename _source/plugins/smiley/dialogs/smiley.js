@@ -135,7 +135,7 @@ CKEDITOR.dialog.add( 'smiley', function( editor )
 	var html =
 	[
 		'<div>' +
-		'<span id="smiley_emtions_label" class="cke_voice_label">' + lang.smileyEmotionsLabel +'</span>',
+		'<span id="smiley_emtions_label" class="cke_voice_label">' + editor.lang.common.options +'</span>',
 		'<table role="listbox" aria-labelledby="smiley_emtions_label" style="width:100%;height:100%" cellspacing="2" cellpadding="2"',
 		CKEDITOR.env.ie && CKEDITOR.env.quirks ? ' style="position:absolute;"' : '',
 		'><tbody>'

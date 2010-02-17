@@ -178,7 +178,7 @@ CKEDITOR.themes.add( 'default', (function()
 							'<div class="%body" role="presentation">' +
 								'<div id="%title#" class="%title" role="presentation"></div>' +
 								'<a id="%close_button#" class="%close_button" href="javascript:void(0)" title="' +  editor.lang.common.close+'" role="button"><span class="cke_label">X</span></a>' +
-								'<div id="%tabs#" class="%tabs" role="tablist" aria-labelledby="%tabs#_arialbl"><span id="%tabs#_arialbl" class="cke_voice_label">Dialog Tabs</span></div>' +
+								'<div id="%tabs#" class="%tabs" role="tablist"></div>' +
 								'<table class="%contents" role="presentation"><tr>' +
 								  '<td id="%contents#" class="%contents" role="presentation"></td>' +
 								'</tr></table>' +

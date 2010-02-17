@@ -886,14 +886,13 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 						env.gecko && env.version >= 10900 && !env.hc ? '' : ' href="javascript:void(0)"',
 						' tabIndex="-1"',
 						' hidefocus="true"',
-						' aria-labelledby="', tabId, '_arialbl"',
 						' role="tab">',
-							'<span id="', tabId, '_arialbl">',
-								contents.label,
-							'</span>',
+							contents.label,
 					'</a>'
 				].join( '' ) );
-			
+
+			page.setAttribute( 'aria-labelledby', tabId ); 
+
 			// If only a single page exist, a different style is used in the central pane.
 			if ( this._.pageCount === 0 )
 				this.parts.dialog.addClass( 'cke_single_page' );

@@ -257,7 +257,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			focusList.sort( function( a, b )
 				{
 					// Mimics browser tab order logics;
-					if( a.tabIndex != b.tabIndex )
+					if ( a.tabIndex != b.tabIndex )
 						return b.tabIndex - a.tabIndex;
 					//  Sort is not stable in some browsers,
 					// fall-back the comparator to 'focusIndex';
@@ -406,7 +406,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				// to allow dynamic tab order happen in dialog definition.
 				setupFocus();
 
-				if( editor.config.dialog_startupFocusTab
+				if ( editor.config.dialog_startupFocusTab
 					&& me._.tabIdList.length > 1 )
 				{
 					me._.tabBarMode = true;

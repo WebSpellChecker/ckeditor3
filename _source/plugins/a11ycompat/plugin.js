@@ -66,7 +66,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					'</fieldset>', doc );
 
 			var parent;
-			while( ( parent = element.getParent() ) && !parent.getDtd()[ fieldset.getName() ] )
+			while ( ( parent = element.getParent() ) && !parent.getDtd()[ fieldset.getName() ] )
 				element = parent;
 			fieldset.insertBefore( element );
 			fieldset.append( element );

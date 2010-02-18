@@ -70,19 +70,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// Look for the previous item in the toolbar.
 							next = item.next;
 
-							if( !next )
+							if ( !next )
 							{
 								nextToolGroup = item.toolbar.next;
 								groupItemsCount = nextToolGroup && nextToolGroup.items.length;
 
 								// Bypass the empty toolgroups.
-								while( groupItemsCount === 0 )
+								while ( groupItemsCount === 0 )
 								{
 									nextToolGroup = nextToolGroup.next;
 									groupItemsCount = nextToolGroup && nextToolGroup.items.length;
 								}
 
-								if( nextToolGroup )
+								if ( nextToolGroup )
 									next = nextToolGroup.items[ 0 ];
 							}
 
@@ -106,19 +106,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// Look for the previous item in the toolbar.
 							next = item.previous;
 
-							if( !next )
+							if ( !next )
 							{
 								nextToolGroup = item.toolbar.previous;
 								groupItemsCount = nextToolGroup && nextToolGroup.items.length;
 
 								// Bypass the empty toolgroups.
-								while( groupItemsCount === 0 )
+								while ( groupItemsCount === 0 )
 								{
 									nextToolGroup = nextToolGroup.previous;
 									groupItemsCount = nextToolGroup && nextToolGroup.items.length;
 								}
 								
-								if( nextToolGroup )
+								if ( nextToolGroup )
 									next = nextToolGroup.items[ groupItemsCount - 1 ];
 							}
 

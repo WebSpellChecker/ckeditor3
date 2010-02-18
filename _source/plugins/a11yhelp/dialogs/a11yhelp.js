@@ -115,7 +115,7 @@ CKEDITOR.dialog.add( 'a11yHelp', function( editor )
 		for ( var i = 0; i < length; i++ )
 		{
 			definition = keystrokes[ i ];
-			if( definition[ 1 ] == name )
+			if ( definition[ 1 ] == name )
 				break;
 		}
 		return representKeyStroke( definition[ 0 ] );

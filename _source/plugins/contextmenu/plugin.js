@@ -81,7 +81,7 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 					// 1. If it's sub-menu, restore the last focused item
 					// of upper level menu.
 					// 2. In case of a top-menu, close it.
-					if( parent )
+					if ( parent )
 					{
 						parent._.panel.hideChild();
 						// Restore parent block item focus.

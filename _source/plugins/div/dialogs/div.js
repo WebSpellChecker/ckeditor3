@@ -441,7 +441,7 @@
 					 customStylesConfig =  editor.config.stylesCombo_stylesSet,
 					 stylesSetName = customStylesConfig && customStylesConfig.split( ':' )[ 0 ];
 				
-				if( stylesSetName )
+				if ( stylesSetName )
 				{
 					CKEDITOR.stylesSet.load( stylesSetName,
 						function( stylesSet )
@@ -455,7 +455,7 @@
 								for ( var i = 0 ; i < stylesDefinitions.length ; i++ )
 								{
 									var styleDefinition = stylesDefinitions[ i ];
-									if( styleDefinition.element && styleDefinition.element == 'div' )
+									if ( styleDefinition.element && styleDefinition.element == 'div' )
 									{
 										styleName = styleDefinition.name;
 										styles[ styleName ] = new CKEDITOR.style( styleDefinition );

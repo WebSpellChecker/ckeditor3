@@ -117,7 +117,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			{
 				href.replace( functionCallProtectedEmailLinkRegex, function( match, funcName, funcArgs )
 				{
-					if( funcName == compiledProtectionFunction.name )
+					if ( funcName == compiledProtectionFunction.name )
 					{
 						retval.type = 'email';
 						var email = retval.email = {};
@@ -141,7 +141,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			}
 		}
 
-		if( !retval.type )
+		if ( !retval.type )
 		{
 			if ( ( anchorMatch = href.match( anchorRegex ) ) )
 			{
@@ -238,7 +238,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			realAnchors = new CKEDITOR.dom.nodeList( editor.document.$.anchors ),
 			anchors = retval.anchors = [];
 
-		for( var i = 0; i < elements.count() ; i++ )
+		for ( var i = 0; i < elements.count() ; i++ )
 		{
 			var item = elements.getItem( i );
 			if ( item.getAttribute( '_cke_realelement' ) && item.getAttribute( '_cke_real_element_type' ) == 'anchor' )
@@ -309,7 +309,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 	var emailProtection = editor.config.emailProtection || '';
 
 	// Compile the protection function pattern.
-	if( emailProtection && emailProtection != 'encode' )
+	if ( emailProtection && emailProtection != 'encode' )
 	{
 		var compiledProtectionFunction = {};
 

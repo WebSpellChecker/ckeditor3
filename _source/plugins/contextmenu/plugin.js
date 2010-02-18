@@ -159,7 +159,7 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 				element.on( 'mousedown', function( evt )
 				{
 					evt = evt.data;
-					if( evt.$.button != 2 )
+					if ( evt.$.button != 2 )
 					{
 						if ( evt.getKeystroke() == CKEDITOR.CTRL + 1 )
 							element.fire( 'contextmenu', evt );
@@ -172,7 +172,7 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 
 					var target = evt.getTarget();
 
-					if( !contextMenuOverrideButton )
+					if ( !contextMenuOverrideButton )
 					{
 						var ownerDoc =  target.getDocument();
 						contextMenuOverrideButton = ownerDoc.createElement( 'input' ) ;
@@ -231,7 +231,7 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 				},
 				this );
 
-			if( CKEDITOR.env.webkit )
+			if ( CKEDITOR.env.webkit )
 			{
 				var holdCtrlKey,
 					onKeyDown = function( event )

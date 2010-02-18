@@ -665,7 +665,7 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 			{
 				var data = this.getData();
 
-				if( this.config.htmlEncodeOutput )
+				if ( this.config.htmlEncodeOutput )
 					data = CKEDITOR.tools.htmlEncode( data );
 
 				if ( element.is( 'textarea' ) )

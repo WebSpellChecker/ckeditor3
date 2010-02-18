@@ -85,14 +85,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	// size change should alter inline-style text as well.
 	function commitInternally( targetFields )
 	{
-		if( incommit )
+		if ( incommit )
 			return;
 
 		incommit = 1;
 
 		var dialog = this.getDialog(),
 			element = dialog.imageElement;
-		if( element )
+		if ( element )
 		{
 			// Commit this field and broadcast to target fields.
 			this.commit( IMAGE, element );
@@ -391,7 +391,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				this.commitContent( LINK, this.linkElement );
 
 				// Remove empty style attribute.
-				if( !this.imageElement.getAttribute( 'style' ) )
+				if ( !this.imageElement.getAttribute( 'style' ) )
 					this.imageElement.removeAttribute( 'style' );
 
 				// Insert a new Image.
@@ -688,7 +688,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 																	else if ( !value && this.isChanged( ) )
 																		element.removeStyle( 'height' );
 
-																	if( !internalCommit && type == IMAGE )
+																	if ( !internalCommit && type == IMAGE )
 																		element.removeAttribute( 'height' );
 																}
 																else if ( type == PREVIEW )
@@ -825,7 +825,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 																element.removeStyle( 'border-color' );
 															}
 
-															if( !internalCommit && type == IMAGE )
+															if ( !internalCommit && type == IMAGE )
 																element.removeAttribute( 'border' );
 														}
 														else if ( type == CLEANUP )
@@ -890,7 +890,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 																element.removeStyle( 'margin-right' );
 															}
 
-															if( !internalCommit && type == IMAGE )
+															if ( !internalCommit && type == IMAGE )
 																element.removeAttribute( 'hspace' );
 														}
 														else if ( type == CLEANUP )
@@ -953,7 +953,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 																element.removeStyle( 'margin-bottom' );
 															}
 
-															if( !internalCommit && type == IMAGE )
+															if ( !internalCommit && type == IMAGE )
 																element.removeAttribute( 'vspace' );
 														}
 														else if ( type == CLEANUP )
@@ -1019,7 +1019,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															else
 																element.removeStyle( 'float' );
 
-															if( !internalCommit && type == IMAGE )
+															if ( !internalCommit && type == IMAGE )
 															{
 																value = ( element.getAttribute( 'align' ) || '' ).toLowerCase();
 																switch( value )

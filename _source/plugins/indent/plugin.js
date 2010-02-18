@@ -159,7 +159,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				for ( i = count - 1 ; i >= 0 ; i-- )
 				{
-					if( ( child = children.getItem( i ) ) && child.is && child.is( 'li' )  )
+					if ( ( child = children.getItem( i ) ) && child.is && child.is( 'li' )  )
 						pendingLis.push( child );
 				}
 			}
@@ -177,7 +177,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					followingList = li;
 
 				// Nest preceding <ul>/<ol> inside current <li> if any.
-				while( ( followingList = followingList.getNext() ) &&
+				while ( ( followingList = followingList.getNext() ) &&
 					   followingList.is &&
 					   followingList.getName() in listNodeNames )
 				{

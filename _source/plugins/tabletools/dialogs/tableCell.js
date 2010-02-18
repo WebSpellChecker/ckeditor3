@@ -364,7 +364,7 @@ CKEDITOR.dialog.add( 'cellProperties', function( editor )
 											setup : function( selectedCell )
 											{
 												var attrVal = parseInt( selectedCell.getAttribute( 'rowSpan' ), 10 );
-												if( attrVal && attrVal  != 1 )
+												if ( attrVal && attrVal  != 1 )
 												 	this.setValue(  attrVal );
 											},
 											commit : function( selectedCell )
@@ -387,7 +387,7 @@ CKEDITOR.dialog.add( 'cellProperties', function( editor )
 											setup : function( element )
 											{
 												var attrVal = parseInt( element.getAttribute( 'colSpan' ), 10 );
-												if( attrVal && attrVal  != 1 )
+												if ( attrVal && attrVal  != 1 )
 												 	this.setValue(  attrVal );
 											},
 											commit : function( selectedCell )

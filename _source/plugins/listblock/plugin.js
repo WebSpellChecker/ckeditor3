@@ -230,7 +230,7 @@ CKEDITOR.plugins.add( 'listblock',
 								link,
 								i = -1;
 
-							while( ( link = links.getItem( ++i ) ) )
+							while ( ( link = links.getItem( ++i ) ) )
 							{
 								if ( link.equals( selected ) )
 								{

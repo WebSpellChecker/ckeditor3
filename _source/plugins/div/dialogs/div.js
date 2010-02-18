@@ -329,8 +329,8 @@
 								commit: function( element )
 								{
 									var styleName;
-									if ( styleName = this.getValue() )
-										styles[ styleName ].applyToObject( element )
+									if ( ( styleName = this.getValue() ) )
+										styles[ styleName ].applyToObject( element );
 								}
 							},
 							{

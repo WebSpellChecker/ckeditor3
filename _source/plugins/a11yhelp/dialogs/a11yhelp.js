@@ -80,7 +80,7 @@ CKEDITOR.dialog.add( 'a11yHelp', function( editor )
 	keyMap[ CKEDITOR.CTRL ] = 'CTRL';
 
 	// Sort in desc.
-	var modifiers = [ CKEDITOR.ALT, CKEDITOR.SHIFT, CKEDITOR.CTRL ]
+	var modifiers = [ CKEDITOR.ALT, CKEDITOR.SHIFT, CKEDITOR.CTRL ];
 
 	function representKeyStroke( keystroke )
 	{

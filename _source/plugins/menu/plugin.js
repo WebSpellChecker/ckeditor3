@@ -359,7 +359,13 @@ CKEDITOR.menuItem = CKEDITOR.tools.createClass(
 			if ( hasSubMenu )
 			{
 				output.push(
-							'<span class="cke_menuarrow"></span>' );
+							'<span class="cke_menuarrow">',
+								'<span>&#',
+									( this.editor.lang.dir == 'rtl' ?
+										'9668' :	// BLACK LEFT-POINTING POINTER
+										'9658' ),	// BLACK RIGHT-POINTING POINTER
+								';</span>',
+							'</span>' );
 			}
 
 			output.push(

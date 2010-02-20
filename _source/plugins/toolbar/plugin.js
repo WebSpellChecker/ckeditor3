@@ -326,7 +326,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								} );
 
 							output.push( '<a title="' + ( expanded ? editor.lang.toolbarCollapse : editor.lang.toolbarExpand )
-													  + '" id="' + collapserId + '" class="cke_toolbox_collapser' );
+													  + '" id="' + collapserId + '" tabIndex="-1" class="cke_toolbox_collapser' );
 
 							if ( !expanded )
 								output.push( ' cke_toolbox_collapser_min' );

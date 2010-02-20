@@ -87,7 +87,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.dom.element.prototype.focusNext = function( ignoreChildren, indexToUse )
 {
 	var $ = this.$,
-		curTabIndex = indexToUse || this.getTabIndex(),
+		curTabIndex = ( indexToUse === undefined ? this.getTabIndex() : indexToUse ),
 		passedCurrent, enteredCurrent,
 		elected, electedTabIndex,
 		element, elementTabIndex;
@@ -175,7 +175,7 @@ CKEDITOR.dom.element.prototype.focusNext = function( ignoreChildren, indexToUse 
 CKEDITOR.dom.element.prototype.focusPrevious = function( ignoreChildren, indexToUse )
 {
 	var $ = this.$,
-		curTabIndex = indexToUse || this.getTabIndex(),
+		curTabIndex = ( indexToUse === undefined ? this.getTabIndex() : indexToUse ),
 		passedCurrent, enteredCurrent,
 		elected,
 		electedTabIndex = 0,

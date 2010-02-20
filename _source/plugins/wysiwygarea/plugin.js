@@ -305,14 +305,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								doc.close();
 							});
 
-						// Firefox will not move the focus to the iframe, but
-						// to it's contents directly. We need to force it in
-						// other browsers instead.
-						iframe.on( 'focus', function()
-							{
-								editor.focus();
-							});
-
 						mainElement.append( iframe );
 					};
 

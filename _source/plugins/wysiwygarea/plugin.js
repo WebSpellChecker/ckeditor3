@@ -263,36 +263,46 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							iframe.remove();
 
 						frameLoaded = 0;
+						
+						var setDataFn = !CKEDITOR.env.gecko && CKEDITOR.tools.addFunction( function( doc )
+							{
+								CKEDITOR.tools.removeFunction( setDataFn );
+								doc.write( data );
+							});
+
+						var srcScript =
+							'document.open();' +
+
+							// The document domain must be set any time we
+							// call document.open().
+							( isCustomDomain ? ( 'document.domain="' + document.domain + '";' ) : '' ) +
+
+							// With FF, it's better to load the data on
+							// iframe.load. (#3894,#4058)
+							// But in FF, we still need the open()-close() call
+							// to avoid HTTPS warnings.
+							( CKEDITOR.env.gecko ? '' : ( 'parent.CKEDITOR.tools.callFunction(' + setDataFn + ',document);' ) ) +
+
+							'document.close();';
 
 						iframe = CKEDITOR.dom.element.createFromHtml( '<iframe' +
   							' style="width:100%;height:100%"' +
   							' frameBorder="0"' +
-							( !CKEDITOR.env.webkit ?
-								// Support for custom document.domain in IE.
-								' src="javascript:void((function(){' +
-								'document.open();' +		// To avoid HTTPS warnings.
-								( isCustomDomain ?
-									'document.domain=\'' + document.domain + '\';' : '' ) +
-								'document.close();' +
-								'})())"' : '' ) +
+  							' src="javascript:void(function(){' + encodeURIComponent( srcScript ) + '}())"' +
   							' tabIndex="' + editor.tabIndex + '"' +
   							' allowTransparency="true"' +
   							'></iframe>' );
 
-						// Register onLoad event for iframe element, which
-						// will fill it with content and set custom domain.
-						iframe.on( 'load', function( e )
+						// With FF, it's better to load the data on iframe.load. (#3894,#4058)
+						CKEDITOR.env.gecko && iframe.on( 'load', function( ev )
 							{
-								e.removeListener();
+								ev.removeListener();
+
 								var doc = iframe.getFrameDocument().$;
 
-								// Custom domain handling is needed after each document.open().
 								doc.open();
-								if ( isCustomDomain )
-									doc.domain = document.domain;
 								doc.write( data );
 								doc.close();
-
 							});
 
 						// Firefox will not move the focus to the iframe, but
@@ -310,7 +320,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// is fully editable even before the editing iframe is fully loaded (#4455).
 					var activationScript =
 						'<script id="cke_actscrpt" type="text/javascript" cke_temp="1">' +
-							'window.parent.CKEDITOR._["contentDomReady' + editor.name + '"]( window );' +
+							( isCustomDomain ? ( 'document.domain="' + document.domain + '";' ) : '' ) +
+							'parent.CKEDITOR._["contentDomReady' + editor.name + '"]( window );' +
 						'</script>';
 
 					// Editing area bootstrap code.

@@ -403,14 +403,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	cursor: default;
 }
 
-.cke_skin_kama .cke_browser_ie7 .cke_toolbox
+.cke_skin_kama .cke_browser_ie .cke_toolbox
 {
-	margin-bottom: 2px;
+	padding-bottom: 5px;
+	_padding-bottom: 6px;
 }
 
-.cke_shared .cke_skin_kama .cke_browser_ie7 .cke_toolbox
+.cke_shared .cke_skin_kama .cke_browser_ie .cke_toolbox
 {
-	margin-bottom: 0;
+	padding-bottom: 0;
 }
 
 .cke_skin_kama .cke_browser_gecko .cke_toolbox

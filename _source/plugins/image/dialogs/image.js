@@ -474,7 +474,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										{
 											id : 'txtUrl',
 											type : 'text',
-											label : editor.lang.image.url,
+											label : editor.lang.common.url,
 											required: true,
 											onChange : function()
 											{
@@ -1049,7 +1049,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										{
 											type : 'html',
 											style : 'width:95%;',
-											html : '<div>' + CKEDITOR.tools.htmlEncode( editor.lang.image.preview ) +'<br>'+
+											html : '<div>' + CKEDITOR.tools.htmlEncode( editor.lang.common.preview ) +'<br>'+
 											'<div id="ImagePreviewLoader" style="display:none"><div class="loading">&nbsp;</div></div>'+
 											'<div id="ImagePreviewBox">'+
 											'<a href="javascript:void(0)" target="_blank" onclick="return false;" id="previewLink">'+
@@ -1073,7 +1073,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						{
 							id : 'txtUrl',
 							type : 'text',
-							label : editor.lang.image.url,
+							label : editor.lang.common.url,
 							style : 'width: 100%',
 							'default' : '',
 							setup : function( type, element )
@@ -1118,15 +1118,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						{
 							id : 'cmbTarget',
 							type : 'select',
-							label : editor.lang.link.target,
+							label : editor.lang.common.target,
 							'default' : '',
 							items :
 							[
-								[ editor.lang.link.targetNotSet , ''],
-								[ editor.lang.link.targetNew , '_blank'],
-								[ editor.lang.link.targetTop , '_top'],
-								[ editor.lang.link.targetSelf , '_self'],
-								[ editor.lang.link.targetParent , '_parent']
+								[ editor.lang.common.notSet , ''],
+								[ editor.lang.common.targetNew , '_blank'],
+								[ editor.lang.common.targetTop , '_top'],
+								[ editor.lang.common.targetSelf , '_self'],
+								[ editor.lang.common.targetParent , '_parent']
 							],
 							setup : function( type, element )
 							{

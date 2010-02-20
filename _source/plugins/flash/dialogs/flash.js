@@ -174,7 +174,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			makeEmbedTag = editor.config.flashAddEmbedTag || editor.config.flashEmbedTagOnly;
 
 		var previewPreloader,
-			previewAreaHtml = '<div>' + CKEDITOR.tools.htmlEncode( editor.lang.image.preview ) +'<br>' +
+			previewAreaHtml = '<div>' + CKEDITOR.tools.htmlEncode( editor.lang.common.preview ) +'<br>' +
 			'<div id="FlashPreviewLoader" style="display:none"><div class="loading">&nbsp;</div></div>' +
 			'<div id="FlashPreviewBox"></div></div>';
 
@@ -308,7 +308,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										{
 											id : 'src',
 											type : 'text',
-											label : editor.lang.image.url,
+											label : editor.lang.common.url,
 											required : true,
 											validate : CKEDITOR.dialog.validate.notEmpty( editor.lang.flash.validateSrc ),
 											setup : loadValue,

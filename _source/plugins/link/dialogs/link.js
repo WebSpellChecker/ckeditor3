@@ -380,7 +380,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 						'default' : 'url',
 						items :
 						[
-							[ editor.lang.common.url, 'url' ],
+							[ editor.lang.link.toUrl, 'url' ],
 							[ editor.lang.link.toAnchor, 'anchor' ],
 							[ editor.lang.link.toEmail, 'email' ]
 						],
@@ -739,18 +739,18 @@ CKEDITOR.dialog.add( 'link', function( editor )
 							{
 								type : 'select',
 								id : 'linkTargetType',
-								label : editor.lang.link.target,
+								label : editor.lang.common.target,
 								'default' : 'notSet',
 								style : 'width : 100%;',
 								'items' :
 								[
-									[ editor.lang.link.targetNotSet, 'notSet' ],
+									[ editor.lang.common.notSet, 'notSet' ],
 									[ editor.lang.link.targetFrame, 'frame' ],
 									[ editor.lang.link.targetPopup, 'popup' ],
-									[ editor.lang.link.targetNew, '_blank' ],
-									[ editor.lang.link.targetTop, '_top' ],
-									[ editor.lang.link.targetSelf, '_self' ],
-									[ editor.lang.link.targetParent, '_parent' ]
+									[ editor.lang.common.targetNew, '_blank' ],
+									[ editor.lang.common.targetTop, '_top' ],
+									[ editor.lang.common.targetSelf, '_self' ],
+									[ editor.lang.common.targetParent, '_parent' ]
 								],
 								onChange : targetChanged,
 								setup : function( data )
@@ -999,7 +999,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 										style : 'width:110px',
 										items :
 										[
-											[ editor.lang.link.langDirNotSet, '' ],
+											[ editor.lang.common.notSet, '' ],
 											[ editor.lang.link.langDirLTR, 'ltr' ],
 											[ editor.lang.link.langDirRTL, 'rtl' ]
 										],

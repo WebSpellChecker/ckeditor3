@@ -339,7 +339,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											label : editor.lang.table.align,
 											items :
 											[
-												[ editor.lang.table.alignNotSet , ''],
+												[ editor.lang.common.notSet , ''],
 												[ editor.lang.table.alignLeft , 'left'],
 												[ editor.lang.table.alignCenter , 'center'],
 												[ editor.lang.table.alignRight , 'right']

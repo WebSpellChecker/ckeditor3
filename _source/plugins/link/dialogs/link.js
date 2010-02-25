@@ -17,18 +17,26 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			return;
 
 		popupFeatures = popupFeatures.getElement();
+		popupFeatures.hide();
+		targetName.setValue( '' );
 
-		if ( value == 'popup' )
-		{
-			popupFeatures.show();
-			targetName.setLabel( editor.lang.link.targetPopupName );
-		}
-		else
-		{
-			popupFeatures.hide();
-			targetName.setLabel( editor.lang.link.targetFrameName );
-			this.getDialog().setValueOf( 'target', 'linkTargetName', value.charAt( 0 ) == '_' ? value : '' );
-		}
+		switch ( value )
+ 		{
+			case 'frame' :
+				targetName.setLabel( editor.lang.link.targetFrameName );
+				targetName.getElement().show();
+				break;
+			case 'popup' :
+				popupFeatures.show();
+				targetName.setLabel( editor.lang.link.targetPopupName );
+				targetName.getElement().show();
+				break;
+			default :
+				targetName.setValue( value );
+				targetName.getElement().hide();
+				break;
+ 		}
+
 	};
 
 	// Handles the event when the "Type" selection box is changed.
@@ -69,11 +77,12 @@ CKEDITOR.dialog.add( 'link', function( editor )
 	};
 
 	// Loads the parameters in a selected link to the link dialog fields.
-	var emailRegex = /^mailto:([^?]+)(?:\?(.+))?$/,
+	var javascriptProtocolRegex = /^javascript:/,
+		emailRegex = /^mailto:([^?]+)(?:\?(.+))?$/,
 		emailSubjectRegex = /subject=([^;?:@&=$,\/]*)/,
 		emailBodyRegex = /body=([^;?:@&=$,\/]*)/,
 		anchorRegex = /^#(.*)$/,
-		urlRegex = /^(?!javascript)((?:http|https|ftp|news):\/\/)?(.*)$/,
+		urlRegex = /^((?:http|https|ftp|news):\/\/)?(.*)$/,
 		selectableTargets = /^(_(?:self|top|parent|blank))$/,
 		encodedEmailLinkRegex = /^javascript:void\(location\.href='mailto:'\+String\.fromCharCode\(([^)]+)\)(?:\+'(.*)')?\)$/,
 		functionCallProtectedEmailLinkRegex = /^javascript:([^(]+)\(([^)]+)\)$/;
@@ -85,29 +94,15 @@ CKEDITOR.dialog.add( 'link', function( editor )
 	var parseLink = function( editor, element )
 	{
 		var href = element ? ( element.getAttribute( '_cke_saved_href' ) || element.getAttribute( 'href' ) ) : '',
+		 	javascriptMatch,
 			emailMatch,
 			anchorMatch,
 			urlMatch,
 			retval = {};
 
-		if ( ( anchorMatch = href.match( anchorRegex ) ) )
+		if ( ( javascriptMatch = href.match( javascriptProtocolRegex ) ) )
 		{
-			retval.type = 'anchor';
-			retval.anchor = {};
-			retval.anchor.name = retval.anchor.id = anchorMatch[1];
-		}
-		// urlRegex matches empty strings, so need to check for href as well.
-		else if ( href && ( urlMatch = href.match( urlRegex ) ) )
-		{
-			retval.type = 'url';
-			retval.url = {};
-			retval.url.protocol = urlMatch[1];
-			retval.url.url = urlMatch[2];
-		}
-		// Protected email link as encoded string.
-		else if ( !emailProtection || emailProtection == 'encode' )
-		{
-			if( emailProtection == 'encode' )
+			if ( emailProtection == 'encode' )
 			{
 				href = href.replace( encodedEmailLinkRegex,
 						function ( match, protectedAddress, rest )
@@ -115,12 +110,47 @@ CKEDITOR.dialog.add( 'link', function( editor )
 							return 'mailto:' +
 							       String.fromCharCode.apply( String, protectedAddress.split( ',' ) ) +
 							       ( rest && unescapeSingleQuote( rest ) );
-						} );
+						});
 			}
+			// Protected email link as function call.
+			else if ( emailProtection )
+			{
+				href.replace( functionCallProtectedEmailLinkRegex, function( match, funcName, funcArgs )
+				{
+					if ( funcName == compiledProtectionFunction.name )
+					{
+						retval.type = 'email';
+						var email = retval.email = {};
 
-			emailMatch = href.match( emailRegex );
+						var paramRegex = /[^,\s]+/g,
+							paramQuoteRegex = /(^')|('$)/g,
+							paramsMatch = funcArgs.match( paramRegex ),
+							paramsMatchLength = paramsMatch.length,
+							paramName,
+							paramVal;
 
-			if( emailMatch )
+						for ( var i = 0; i < paramsMatchLength; i++ )
+						{
+							paramVal = decodeURIComponent( unescapeSingleQuote( paramsMatch[ i ].replace( paramQuoteRegex, '' ) ) );
+							paramName = compiledProtectionFunction.params[ i ].toLowerCase();
+							email[ paramName ] = paramVal;
+						}
+						email.address = [ email.name, email.domain ].join( '@' );
+					}
+				} );
+			}
+		}
+
+		if ( !retval.type )
+		{
+			if ( ( anchorMatch = href.match( anchorRegex ) ) )
+			{
+				retval.type = 'anchor';
+				retval.anchor = {};
+				retval.anchor.name = retval.anchor.id = anchorMatch[1];
+			}
+			// Protected email link as encoded string.
+			else if ( ( emailMatch = href.match( emailRegex ) ) )
 			{
 				var subjectMatch = href.match( emailSubjectRegex ),
 					bodyMatch = href.match( emailBodyRegex );
@@ -131,36 +161,17 @@ CKEDITOR.dialog.add( 'link', function( editor )
 				subjectMatch && ( email.subject = decodeURIComponent( subjectMatch[ 1 ] ) );
 				bodyMatch && ( email.body = decodeURIComponent( bodyMatch[ 1 ] ) );
 			}
-		}
-		// Protected email link as function call.
-		else if( emailProtection )
-		{
-			href.replace( functionCallProtectedEmailLinkRegex, function( match, funcName, funcArgs )
+			// urlRegex matches empty strings, so need to check for href as well.
+			else if (  href && ( urlMatch = href.match( urlRegex ) ) )
 			{
-				if( funcName == compiledProtectionFunction.name )
-				{
-					retval.type = 'email';
-					var email = retval.email = {};
-
-					var paramRegex = /[^,\s]+/g,
-						paramQuoteRegex = /(^')|('$)/g,
-						paramsMatch = funcArgs.match( paramRegex ),
-						paramsMatchLength = paramsMatch.length,
-						paramName,
-						paramVal;
-
-					for ( var i = 0; i < paramsMatchLength; i++ )
-					{
-						paramVal = decodeURIComponent( unescapeSingleQuote( paramsMatch[ i ].replace( paramQuoteRegex, '' ) ) );
-						paramName = compiledProtectionFunction.params[ i ].toLowerCase();
-						email[ paramName ] = paramVal;
-					}
-					email.address = [ email.name, email.domain ].join( '@' );
-				}
-			} );
+				retval.type = 'url';
+				retval.url = {};
+				retval.url.protocol = urlMatch[1];
+				retval.url.url = urlMatch[2];
+			}
+			else
+				retval.type = 'url';
 		}
-		else
-			retval.type = 'url';
 
 		// Load target and popup settings.
 		if ( element )
@@ -227,7 +238,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			realAnchors = new CKEDITOR.dom.nodeList( editor.document.$.anchors ),
 			anchors = retval.anchors = [];
 
-		for( var i = 0; i < elements.count() ; i++ )
+		for ( var i = 0; i < elements.count() ; i++ )
 		{
 			var item = elements.getItem( i );
 			if ( item.getAttribute( '_cke_realelement' ) && item.getAttribute( '_cke_real_element_type' ) == 'anchor' )
@@ -298,7 +309,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 	var emailProtection = editor.config.emailProtection || '';
 
 	// Compile the protection function pattern.
-	if( emailProtection && emailProtection != 'encode' )
+	if ( emailProtection && emailProtection != 'encode' )
 	{
 		var compiledProtectionFunction = {};
 
@@ -481,6 +492,10 @@ CKEDITOR.dialog.add( 'link', function( editor )
 										},
 										commit : function( data )
 										{
+											// IE will not trigger the onChange event if the mouse has been used
+											// to carry all the operations #4724
+											this.onChange();
+
 											if ( !data.url )
 												data.url = {};
 
@@ -1312,7 +1327,9 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			else
 			{
 				// We're only editing an existing link, so just overwrite the attributes.
-				var element = this._.selectedElement;
+				var element = this._.selectedElement,
+					href = element.getAttribute( '_cke_saved_href' ),
+					textView = element.getHtml();
 
 				// IE BUG: Setting the name attribute to an existing link doesn't work.
 				// Must re-create the link from weired syntax to workaround.
@@ -1333,7 +1350,9 @@ CKEDITOR.dialog.add( 'link', function( editor )
 
 				element.setAttributes( attributes );
 				element.removeAttributes( removeAttributes );
-
+				// Update text view when user changes protocol #4612.
+				if (href == textView)
+					element.setHtml( attributes._cke_saved_href );
 				// Make the element display as an anchor if a name has been set.
 				if ( element.getAttribute( 'name' ) )
 					element.addClass( 'cke_anchor' );
@@ -1359,21 +1378,27 @@ CKEDITOR.dialog.add( 'link', function( editor )
 });
 
 /**
- * The e-mail address anti-spam protection option.
+ * The e-mail address anti-spam protection option. The protection will be
+ * applied when creating or modifying e-mail links through the editor interface.<br>
+ * Two methods of protection can be choosed:
+ * <ol>	<li>The e-mail parts (name, domain and any other query string) are
+ *			assembled into a function call pattern. Such function must be
+ *			provided by the developer in the pages that will use the contents.
+ *		<li>Only the e-mail address is obfuscated into a special string that
+ *			has no meaning for humans or spam bots, but which is properly
+ *			rendered and accepted by the browser.</li></ol>
+ * Both approaches require JavaScript to be enabled.
  * @name CKEDITOR.config.emailProtection
- * @type {String}
- * Two forms of protection could be choosed from :
- * 1. The whole address parts ( name, domain with any other query string ) are assembled into a
- *   function call pattern which invoke you own provided function, with the specified arguments.
- * 2. Only the e-mail address is obfuscated into unicode code point sequences, replacement are
- *   done by a String.fromCharCode() call.
- * Note: Both approaches require JavaScript to be enabled.
- * @default ''
+ * @since 3.1
+ * @type String
+ * @default '' (empty string = disabled)
  * @example
- *  config.emailProtection = '';
- *  // href="mailto:tester@ckeditor.com?subject=subject&body=body"
- *  config.emailProtection = 'encode';
- *  // href="<a href=\"javascript:void(location.href=\'mailto:\'+String.fromCharCode(116,101,115,116,101,114,64,99,107,101,100,105,116,111,114,46,99,111,109)+\'?subject=subject&body=body\')\">e-mail</a>"
- *  config.emailProtection = 'mt(NAME,DOMAIN,SUBJECT,BODY)';
- *  // href="javascript:mt('tester','ckeditor.com','subject','body')"
+ * // href="mailto:tester@ckeditor.com?subject=subject&body=body"
+ * config.emailProtection = '';
+ * @example
+ * // href="<a href=\"javascript:void(location.href=\'mailto:\'+String.fromCharCode(116,101,115,116,101,114,64,99,107,101,100,105,116,111,114,46,99,111,109)+\'?subject=subject&body=body\')\">e-mail</a>"
+ * config.emailProtection = 'encode';
+ * @example
+ * // href="javascript:mt('tester','ckeditor.com','subject','body')"
+ * config.emailProtection = 'mt(NAME,DOMAIN,SUBJECT,BODY)';
  */

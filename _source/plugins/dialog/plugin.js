@@ -92,14 +92,6 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		// functions.
 		definition = new definitionObject( this, definition );
 
-		// Fire the "dialogDefinition" event, making it possible to customize
-		// the dialog definition.
-		this.definition = definition = CKEDITOR.fire( 'dialogDefinition',
-			{
-				name : dialogName,
-				definition : definition
-			}
-			, editor ).definition;
 
 		var doc = CKEDITOR.document;
 
@@ -148,6 +140,14 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		// Call the CKEDITOR.event constructor to initialize this instance.
 		CKEDITOR.event.call( this );
 
+		// Fire the "dialogDefinition" event, making it possible to customize
+		// the dialog definition.
+		this.definition = definition = CKEDITOR.fire( 'dialogDefinition',
+			{
+				name : dialogName,
+				definition : definition
+			}
+			, editor ).definition;
 		// Initialize load, show, hide, ok and cancel events.
 		if ( definition.onLoad )
 			this.on( 'load', definition.onLoad );
@@ -805,7 +805,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 							children : contents.elements,
 							expand : !!contents.expand,
 							padding : contents.padding,
-							style : contents.style || 'width: 100%;'
+							style : contents.style || 'width: 100%; height: 100%;'
 						}, pageHtml );
 
 			// Create the HTML for the tab and the content block.
@@ -949,7 +949,8 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		 */
 		getContentElement : function( pageId, elementId )
 		{
-			return this._.contents[pageId][elementId];
+			var page = this._.contents[ pageId ];
+			return page && page[ elementId ];
 		},
 
 		/**
@@ -1746,7 +1747,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			{
 				var dialogPos = cursor.getPosition();
 				cursor.move( dialogPos.x, dialogPos.y );
-			} while( ( cursor = cursor._.parentDialog ) );
+			} while ( ( cursor = cursor._.parentDialog ) );
 		};
 
 		resizeCover = resizeFunc;
@@ -2776,4 +2777,19 @@ CKEDITOR.plugins.add( 'dialog',
  * @default 20
  * @example
  * config.dialog_magnetDistance = 30;
+ */
+
+/**
+ * Fired when a dialog definition is about to be used to create a dialog into
+ * an editor instance. This event makes it possible to customize the definition
+ * before creating it.
+ * <p>Note that this event is called only the first time a specific dialog is
+ * opened. Successive openings will use the cached dialog, and this event will
+ * not get fired.</p>
+ * @name CKEDITOR#dialogDefinition
+ * @event
+ * @param {CKEDITOR.dialog.dialogDefinition} data The dialog defination that
+ *		is being loaded.
+ * @param {CKEDITOR.editor} editor The editor instance that will use the
+ *		dialog.
  */

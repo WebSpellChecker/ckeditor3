@@ -234,3 +234,10 @@ CKEDITOR.config.startupFocus = false;
  * config.editingBlock = false;
  */
 CKEDITOR.config.editingBlock = true;
+
+/**
+ * Fired when a CKEDITOR instance is created, fully initialized and ready for interaction.
+ * @name CKEDITOR#instanceReady
+ * @event
+ * @param {CKEDITOR.editor} editor The editor instance that has been created.
+ */

@@ -272,3 +272,8 @@
 {
 	float: none;
 }
+
+.cke_skin_v2 .cke_browser_iequirks .cke_rcombo .cke_openbutton
+{
+	height: 22px;
+}

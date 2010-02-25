@@ -8,43 +8,38 @@ CKEDITOR.plugins.add( 'menu',
 	beforeInit : function( editor )
 	{
 		var groups = editor.config.menu_groups.split( ',' ),
-			groupsOrder = {};
+			groupsOrder = editor._.menuGroups = {},
+			menuItems = editor._.menuItems = {};
 
 		for ( var i = 0 ; i < groups.length ; i++ )
 			groupsOrder[ groups[ i ] ] = i + 1;
 
-		editor._.menuGroups = groupsOrder;
-		editor._.menuItems = {};
+		editor.addMenuGroup = function( name, order )
+			{
+				groupsOrder[ name ] = order || 100;
+			};
+
+		editor.addMenuItem = function( name, definition )
+			{
+				if ( groupsOrder[ definition.group ] )
+					menuItems[ name ] = new CKEDITOR.menuItem( this, name, definition );
+			};
+
+		editor.addMenuItems = function( definitions )
+			{
+				for ( var itemName in definitions )
+				{
+					this.addMenuItem( itemName, definitions[ itemName ] );
+				}
+			};
+
+		editor.getMenuItem = function( name )
+			{
+				return menuItems[ name ];
+			};
 	},
 
 	requires : [ 'floatpanel' ]
-});
-
-CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
-{
-	addMenuGroup : function( name, order )
-	{
-		this._.menuGroups[ name ] = order || 100;
-	},
-
-	addMenuItem : function( name, definition )
-	{
-		if ( this._.menuGroups[ definition.group ] )
-			this._.menuItems[ name ] = new CKEDITOR.menuItem( this, name, definition );
-	},
-
-	addMenuItems : function( definitions )
-	{
-		for ( var itemName in definitions )
-		{
-			this.addMenuItem( itemName, definitions[ itemName ] );
-		}
-	},
-
-	getMenuItem : function( name )
-	{
-		return this._.menuItems[ name ];
-	}
 });
 
 (function()
@@ -343,7 +338,13 @@ CKEDITOR.menuItem = CKEDITOR.tools.createClass(
 			if ( this.getItems )
 			{
 				output.push(
-							'<span class="cke_menuarrow"></span>' );
+							'<span class="cke_menuarrow">',
+								'<span>&#',
+									( this.editor.lang.dir == 'rtl' ?
+										'9668' :	// BLACK LEFT-POINTING POINTER
+										'9658' ),	// BLACK RIGHT-POINTING POINTER
+								';</span>',
+							'</span>' );
 			}
 
 			output.push(

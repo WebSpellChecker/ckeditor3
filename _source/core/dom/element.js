@@ -243,10 +243,13 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 				lastChild = lastChild.getPrevious();
 			if ( !lastChild || !lastChild.is || !lastChild.is( 'br' ) )
 			{
-				this.append(
-					CKEDITOR.env.opera ?
+				var bogus = CKEDITOR.env.opera ?
 						this.getDocument().createText('') :
-						this.getDocument().createElement( 'br' ) );
+						this.getDocument().createElement( 'br' );
+
+				CKEDITOR.env.gecko && bogus.setAttribute( 'type', '_moz' );
+
+				this.append( bogus );
 			}
 		},
 
@@ -618,7 +621,6 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			}
 
 			return (
-			/** @ignore */
 			this.getName = function()
 				{
 					return nodeName;
@@ -1346,7 +1348,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 				if ( attrName in skipAttributes )
 					continue;
 
-				if( attrName == 'checked' && ( attrValue = this.getAttribute( attrName ) ) )
+				if ( attrName == 'checked' && ( attrValue = this.getAttribute( attrName ) ) )
 					dest.setAttribute( attrName, attrValue );
 				// IE BUG: value attribute is never specified even if it exists.
 				else if ( attribute.specified ||

@@ -54,26 +54,18 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 				menu = this._.menu = new CKEDITOR.menu( editor );
 				menu.onClick = CKEDITOR.tools.bind( function( item )
 				{
-					var noUnlock = true;
 					menu.hide();
-
-					if ( CKEDITOR.env.ie )
-						menu.onEscape();
 
 					if ( item.onClick )
 						item.onClick();
 					else if ( item.command )
 						editor.execCommand( item.command );
 
-					noUnlock = false;
 				}, this );
 
 				menu.onEscape = function()
 				{
 					editor.focus();
-
-					if ( CKEDITOR.env.ie )
-						editor.getSelection().unlock( true );
 				};
 			}
 
@@ -138,7 +130,7 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 				element.on( 'mousedown', function( evt )
 				{
 					evt = evt.data;
-					if( evt.$.button != 2 )
+					if ( evt.$.button != 2 )
 					{
 						if ( evt.getKeystroke() == CKEDITOR.CTRL + 1 )
 							element.fire( 'contextmenu', evt );
@@ -151,7 +143,7 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 
 					var target = evt.getTarget();
 
-					if( !contextMenuOverrideButton )
+					if ( !contextMenuOverrideButton )
 					{
 						var ownerDoc =  target.getDocument();
 						contextMenuOverrideButton = ownerDoc.createElement( 'input' ) ;
@@ -210,7 +202,7 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 				},
 				this );
 
-			if( CKEDITOR.env.webkit )
+			if ( CKEDITOR.env.webkit )
 			{
 				var holdCtrlKey,
 					onKeyDown = function( event )

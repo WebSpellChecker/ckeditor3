@@ -816,7 +816,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				// Establish initial searching start position.
 				finder.searchRange = getSearchRange();
 
-				this.selectPage( startupPage )
+				this.selectPage( startupPage );
 			},
 			onHide : function()
 			{

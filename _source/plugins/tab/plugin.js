@@ -62,7 +62,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							ev.cancel();
 							editor.execCommand( 'blur' );
 						}
-						
+
 						if ( keyCode == ( CKEDITOR.SHIFT + 9 ) )	// SHIFT+TAB
 						{
 							editor.execCommand( 'blurBack' );

@@ -255,7 +255,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 								charDesc = desc;
 								return '';
 							} );
-						
+
 						// Use character in case description unavailable.
 						charDesc = charDesc || character;
 

@@ -132,7 +132,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				editor.fire( 'ariaWidget', this.parts.contents );
 			},
 			0, this );
-		
+
 		// Set the startup styles for the dialog, avoiding it enlarging the
 		// page size on the dialog creation.
 		this.parts.dialog.setStyles(
@@ -301,7 +301,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			if ( focusList[ currentIndex ].type == 'text' )
 				focusList[ currentIndex ].select();
 		}
-		
+
 		this.changeFocus = changeFocus;
 
 		var processed;
@@ -891,7 +891,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 					'</a>'
 				].join( '' ) );
 
-			page.setAttribute( 'aria-labelledby', tabId ); 
+			page.setAttribute( 'aria-labelledby', tabId );
 
 			// If only a single page exist, a different style is used in the central pane.
 			if ( this._.pageCount === 0 )

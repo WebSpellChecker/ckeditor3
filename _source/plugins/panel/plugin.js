@@ -287,9 +287,9 @@ CKEDITOR.ui.panel.block = CKEDITOR.tools.createClass(
 	},
 
 	_ : {
-		
+
 		/**
-		 * Mark the item specified by the index as current activated. 
+		 * Mark the item specified by the index as current activated.
 		 */
 		markItem: function( index )
 		{

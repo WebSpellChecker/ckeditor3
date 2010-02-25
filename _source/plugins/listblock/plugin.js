@@ -27,7 +27,7 @@ CKEDITOR.plugins.add( 'listblock',
 						( attribs[ 'aria-multiselectable' ] = true );
 					// Provide default role of 'listbox'.
 					!attribs.role && ( attribs.role = 'listbox' );
-					
+
 					// Call the base contructor.
 					this.base.apply( this, arguments );
 

@@ -624,7 +624,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 								id : 'noAnchors',
 								style : 'text-align: center;',
 								html : '<div role="label" tabIndex="-1">' + CKEDITOR.tools.htmlEncode( editor.lang.link.noAnchors ) + '</div>',
-								// Focus the first element defined in above html. 
+								// Focus the first element defined in above html.
 								focus : true,
 								setup : function( data )
 								{

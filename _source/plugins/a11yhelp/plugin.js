@@ -12,7 +12,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 {
 	var pluginName = 'a11yhelp',
 		commandName = 'a11yHelp';
-	
+
 	CKEDITOR.plugins.add( pluginName,
 	{
 		// List of available localizations.
@@ -44,4 +44,3 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	});
 })();
-

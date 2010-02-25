@@ -117,7 +117,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									nextToolGroup = nextToolGroup.previous;
 									groupItemsCount = nextToolGroup && nextToolGroup.items.length;
 								}
-								
+
 								if ( nextToolGroup )
 									next = nextToolGroup.items[ groupItemsCount - 1 ];
 							}
@@ -125,7 +125,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							item = next;
 						}
 						while ( item && !item.focus )
-						
+
 						// If available, just focus it, otherwise focus the
 						// last one.
 						if ( item )
@@ -311,7 +311,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											collapser.setAttribute( 'title', editor.lang.toolbarCollapse );
 										}
 
-										// Update collapser symbol. 
+										// Update collapser symbol.
 										collapser.getFirst().setText( collapsed ?
 											'\u25B2' :		// BLACK UP-POINTING TRIANGLE
 											'\u25C0' );		// BLACK LEFT-POINTING TRIANGLE

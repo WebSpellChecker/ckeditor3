@@ -213,7 +213,7 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 		{
 			if ( this._.panel )
 				return;
-			
+
 			var panelDefinition = this._.panelDefinition,
 				panelBlockDefinition = this._.panelDefinition.block,
 				panelParentElement = panelDefinition.parent || CKEDITOR.document.getBody(),

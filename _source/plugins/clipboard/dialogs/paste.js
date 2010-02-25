@@ -45,7 +45,7 @@ CKEDITOR.dialog.add( 'paste', function( editor )
 
 			processed && domEvent.preventDefault();
 		}, this );
-		
+
 		editor.fire( 'ariaWidget', new CKEDITOR.dom.element( win.frameElement ) );
 	}
 
@@ -64,7 +64,7 @@ CKEDITOR.dialog.add( 'paste', function( editor )
 							 '<script id="cke_actscrpt" type="text/javascript">' +
 							 'window.parent.CKEDITOR.tools.callFunction( ' + CKEDITOR.tools.addFunction( onPasteFrameLoad, this ) + ', this );' +
 							 '</script></body></html>';
-			
+
 			var iframe = CKEDITOR.dom.element.createFromHtml(
 						'<iframe' +
 						' frameborder="0" ' +

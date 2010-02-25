@@ -440,7 +440,7 @@
 					 // Reuse the 'stylescombo' plugin's styles definition.
 					 customStylesConfig =  editor.config.stylesCombo_stylesSet,
 					 stylesSetName = customStylesConfig && customStylesConfig.split( ':' )[ 0 ];
-				
+
 				if ( stylesSetName )
 				{
 					CKEDITOR.stylesSet.load( stylesSetName,

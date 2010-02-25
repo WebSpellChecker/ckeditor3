@@ -263,7 +263,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							iframe.remove();
 
 						frameLoaded = 0;
-						
+
 						var setDataFn = !CKEDITOR.env.gecko && CKEDITOR.tools.addFunction( function( doc )
 							{
 								CKEDITOR.tools.removeFunction( setDataFn );

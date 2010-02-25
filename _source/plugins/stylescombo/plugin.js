@@ -30,7 +30,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						CKEDITOR.stylesSet.load( name, callback );
 					};
 			}
-			
+
 			var comboStylesSet = config.stylesCombo_stylesSet.split( ':' ),
 				styleSetName = comboStylesSet[ 0 ],
 				externalPath = comboStylesSet[ 1 ];

@@ -147,7 +147,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 								' title="', lang.more, '"' +
 								' onclick="CKEDITOR.tools.callFunction(', clickFn, ',\'?\',\'', type, '\');return false;"' +
 								' href="javascript:void(\'', lang.more, '\')"',
-								' role="option" aria-posinset="', total, '" aria-setsize="', total, '">', 
+								' role="option" aria-posinset="', total, '" aria-setsize="', total, '">',
 								lang.more,
 							'</a>' +
 						'</td>' );	// It is later in the code.

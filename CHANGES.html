@@ -39,20 +39,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	<p>
 		New features:</p>
 	<ul>
-		<li><a href="http://dev.fckeditor.net/ticket/4502">#4502</a> : Full ARIA supports in editor.</li>
-		<li><a href="http://dev.fckeditor.net/ticket/5015">#5015</a> : Adding accessibility help dialog plugin.</li>
-		<li><a href="http://dev.fckeditor.net/ticket/5004">#5004</a> : Adding accessibility compatibility plugin.</li>
-		<li><a href="http://dev.fckeditor.net/ticket/5014">#5014</a> : Navigation keystrokes compliance with screen readers' suggested ones.</li>
-		<li><a href="http://dev.fckeditor.net/ticket/4595">#4595</a> : Templates dialog now has better accessibility.</li>
-		<li><a href="http://dev.fckeditor.net/ticket/3389">#3389</a> : Esc/Arrow Key now works for closing sub menu.</li>
-		<li><a href="http://dev.fckeditor.net/ticket/4399">#4399</a> : Improved support for external file browsers by allowing to execute a callback function.</li>
-		<li><a href="http://dev.fckeditor.net/ticket/4612">#4612</a> : Update text view when user changes protocol.</li>
-		<li></li>
+		<li>Several accessibility enhancements:<ul>
+			<li><a href="http://dev.fckeditor.net/ticket/4502">#4502</a> : The editor accessibility is now totally based on <a href="http://www.w3.org/WAI/intro/aria">WAI-ARIA</a>.</li>
+			<li><a href="http://dev.fckeditor.net/ticket/5015">#5015</a> : Adding accessibility help dialog plugin.</li>
+			<li><a href="http://dev.fckeditor.net/ticket/5014">#5014</a> : Keyboard navigation compliance with screen reader suggested keys.</li>
+			<li><a href="http://dev.fckeditor.net/ticket/4595">#4595</a> : Better accessibility in the Templates dialog.</li>
+			<li><a href="http://dev.fckeditor.net/ticket/3389">#3389</a> : Esc/Arrow Key now works for closing sub menu.</li>
+		</ul></li>
+		<li><a href="http://dev.fckeditor.net/ticket/4973">#4973</a> : The Style field in the Div Container dialog is now loading the styles defined in the default styleset used by the Styles toolbar combo.</li>
 	</ul>
 	<p>
 		Fixed issues:</p>
 	<ul>
-		<li></li>
+		<li><a href="http://dev.fckeditor.net/ticket/5049">#5049</a> : Form Field list command in JAWS incorrectly lists extra fields.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5008">#5008</a> : Lock/Unlock ratio buttons in the Image dialog was poorly designed in High Contrast mode.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/3980">#3980</a> : All labels in dialogs now use &lt;label&gt; instead of &lt;div&gt;.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5213">#5213</a> : Reorganization of some entries in the language files to make it more consistent.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5199">#5199</a> : In IE, single row toolbars didn't have the bottom padding.</li>
 	</ul>
 	<h3>
 		CKEditor 3.1.1 (SVN)</h3>
@@ -62,7 +65,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		<li><a href="http://dev.fckeditor.net/ticket/4399">#4399</a> : Improved support for external file browsers by allowing executing a callback function.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/4612">#4612</a> : The text of links is now updated if it matches the URL to which it points to.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/4936">#4936</a> : New localization support for the Welsh language.</li>
-		<li><a href="http://dev.fckeditor.net/ticket/4973">#4973</a> : The style combo in Div dialog is now utilizing the default styleset defined by Styles Combo.</li>
 	</ul>
 	<p>
 		Fixed issues:</p>
@@ -105,9 +107,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		<li><a href="http://dev.fckeditor.net/ticket/4763">#4763</a> : Pressing ENTER key with text selected was not deleting the text in some situations.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/5096">#5096</a> : Simple ampersand attribute value doesn't work for more than one occurrence.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/3494">#3494</a> : Context menu is too narrow in some translations.</li>
-		<li><a href="http://dev.fckeditor.net/ticket/5049">#5049</a> : Form Field list command in JAWS incorrectly lists extra fields.</li>
-		<li><a href="http://dev.fckeditor.net/ticket/5008">#5008</a> : Lock/Unlock ratio buttons in Image dialog has poor perception in HC mode.</li>
-		<li><a href="http://dev.fckeditor.net/ticket/3980">#3980</a> : All labels in dialog now use &lt;label&gt; instead of &lt;div&gt;.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/5005">#5005</a> : Fixed HTML errors in PHP samples.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/5123">#5123</a> : Fixed broken XHTML in User Interface Languages sample.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/4893">#4893</a> : Editor now understands table cell inline styles.</li>
@@ -124,8 +123,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		<li><a href="http://dev.fckeditor.net/ticket/5163">#5163</a> : The undo system was not working on some specific cases.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/5162">#5162</a> : The ajax sample was throwing errors when loading data.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/4999">#4999</a> : The Template dialog was not generating an undo snapshot.</li>
-		<li><a href="http://dev.fckeditor.net/ticket/5213">#5213</a> : Reorganization of some entries in the language files to make it more consistent.</li>
-		<li><a href="http://dev.fckeditor.net/ticket/5199">#5199</a> : In IE, single row toolbars didn't have the bottom padding.</li>
 		<li>Updated the following language files:<ul>
 			<li><a href="http://dev.fckeditor.net/ticket/5006">#5006</a> : Dutch;</li>
 			<li><a href="http://dev.fckeditor.net/ticket/5039">#5039</a> : Finnish;</li>

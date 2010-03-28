@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -244,6 +244,16 @@ CKEDITOR.ui.panel.prototype =
 
 		this._.onKeyDown = block.onKeyDown && CKEDITOR.tools.bind( block.onKeyDown, block );
 
+		block.onMark = function( item )
+		{
+			holder.setAttribute( 'aria-activedescendant', item.getId() + '_option' );
+		};
+
+		block.onUnmark = function()
+		{
+			holder.removeAttribute( 'aria-activedescendant' );
+		};
+
 		block.show();
 
 		return block;
@@ -278,6 +288,9 @@ CKEDITOR.ui.panel.block = CKEDITOR.tools.createClass(
 		if ( blockDefinition )
 			CKEDITOR.tools.extend( this, blockDefinition );
 
+		if ( !this.attributes.title )
+			this.attributes.title = this.attributes[ 'aria-label' ];
+
 		this.keys = {};
 
 		this._.focusIndex = -1;
@@ -303,6 +316,8 @@ CKEDITOR.ui.panel.block = CKEDITOR.tools.createClass(
 			if ( CKEDITOR.env.webkit )
 				item.getDocument().getWindow().focus();
 			item.focus();
+
+			this.onMark && this.onMark( item );
 		}
 	},
 

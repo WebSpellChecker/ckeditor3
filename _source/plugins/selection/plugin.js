@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -72,6 +72,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	var selectAllCmd =
 	{
+		modes : { wysiwyg : 1, source : 1 },
 		exec : function( editor )
 		{
 			switch ( editor.mode )
@@ -80,7 +81,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					editor.document.$.execCommand( 'SelectAll', false, null );
 					break;
 				case 'source' :
-					// TODO
+					// Select the contents of the textarea
+					var textarea = editor.textarea.$ ;
+					if ( CKEDITOR.env.ie )
+					{
+						textarea.createTextRange().execCommand( 'SelectAll' ) ;
+					}
+					else
+					{
+						textarea.selectionStart = 0 ;
+						textarea.selectionEnd = textarea.value.length ;
+					}
+					textarea.focus() ;
 			}
 		},
 		canUndo : false
@@ -108,8 +120,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						// "onfocusin" is fired before "onfocus". It makes it
 						// possible to restore the selection before click
 						// events get executed.
-						body.on( 'focusin', function()
+						body.on( 'focusin', function( evt )
 							{
+								// If there are elements with layout they fire this event but
+								// it must be ignored to allow edit its contents #4682
+								if ( evt.data.$.srcElement.nodeName != 'BODY' )
+									return;
+
 								// If we have saved a range, restore it at this
 								// point.
 								if ( savedRange )
@@ -126,7 +143,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								}
 							});
 
-						editor.window.on( 'focus', function()
+						body.on( 'focus', function()
 							{
 								// Enable selections to be saved.
 								saveEnabled = true;
@@ -134,8 +151,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								saveSelection();
 							});
 
-						body.on( 'beforedeactivate', function()
+						body.on( 'beforedeactivate', function( evt )
 							{
+								// Ignore this event if it's caused by focus switch between
+								// internal editable control type elements, e.g. layouted paragraph. (#4682)
+								if ( evt.data.$.toElement )
+									return;
+
 								// Disable selections from being saved.
 								saveEnabled = false;
 							});
@@ -708,27 +730,30 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if ( cache.selectedElement !== undefined )
 				return cache.selectedElement;
 
-			var node;
+			var self = this;
 
-			if ( this.getType() == CKEDITOR.SELECTION_ELEMENT )
-			{
-				var sel = this.getNative();
-
-				if ( CKEDITOR.env.ie )
+			var node = CKEDITOR.tools.tryThese(
+				// Is it native IE control type selection?
+				function()
 				{
-					try
+					return self.getNative().createRange().item( 0 );
+				},
+				// Figure it out by checking if there's a single enclosed
+				// node of the range.
+				function()
+				{
+					var range  = self.getRanges()[ 0 ];
+					range.shrink( CKEDITOR.SHRINK_ELEMENT );
+
+					var enclosed;
+					if ( range.startContainer.equals( range.endContainer )
+						&& ( range.endOffset - range.startOffset ) == 1
+						&& styleObjectElements[ ( enclosed = range.startContainer.getChild( range.startOffset ) ).getName() ] )
 					{
-						node = sel.createRange().item(0);
+						return enclosed.$;
 					}
-					catch(e) {}
-				}
-				else
-				{
-					var range = sel.getRangeAt( 0 );
-					node = range.startContainer.childNodes[ range.startOffset ];
-				}
-			}
-
+				});
+			
 			return cache.selectedElement = ( node ? new CKEDITOR.dom.element( node ) : null );
 		},
 
@@ -819,6 +844,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					range = this.document.$.body.createTextRange();
 					range.moveToElementText( element.$ );
 					range.select();
+				}
+				finally
+				{
+					this.document.fire( 'selectionchange' );
 				}
 
 				this.reset();
@@ -1064,6 +1093,8 @@ CKEDITOR.dom.range.prototype.select =
 				endNode.remove();
 				ieRange.select();
 			}
+			
+			this.document.fire( 'selectionchange' );
 		}
 	:
 		function()

@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -217,11 +217,13 @@ CKEDITOR.STYLE_OBJECT = 3;
 			{
 				case CKEDITOR.STYLE_INLINE :
 				case CKEDITOR.STYLE_BLOCK :
-					return true;
+					break;
 
 				case CKEDITOR.STYLE_OBJECT :
 					return elementPath.lastElement.getAscendant( this.element, true );
 			}
+
+			return true;
 		},
 
 		// Checks if an element, or any of its attributes, is removable by the

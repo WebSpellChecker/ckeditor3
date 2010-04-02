@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -170,8 +170,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	}
 
-	var isNotWhitespace = CKEDITOR.dom.walker.whitespaces( true );
-
 	/**
 	 *  Auto-fixing block-less content by wrapping paragraph (#3190), prevent
 	 *  non-exitable-block by padding extra br.(#3189)
@@ -223,7 +221,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					fixedBlock.remove();
 				}
 			}
-			
+
 			range.select();
 			// Notify non-IE that selection has changed.
 			if ( !CKEDITOR.env.ie )

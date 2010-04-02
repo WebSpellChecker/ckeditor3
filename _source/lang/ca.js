@@ -110,17 +110,24 @@ CKEDITOR.lang['ca'] =
 		unavailable		: '%1<span class="cke_accessibility">, no disponible</span>'
 	},
 
+	contextmenu :
+	{
+		options : 'Context Menu Options' // MISSING
+	},
+
 	// Special char dialog.
 	specialChar		:
 	{
 		toolbar		: 'Insereix caràcter especial',
-		title		: 'Selecciona el caràcter especial'
+		title		: 'Selecciona el caràcter especial',
+		options : 'Special Character Options' // MISSING
 	},
 
 	// Link dialog.
 	link :
 	{
 		toolbar		: 'Insereix/Edita enllaç',
+		other 		: '<altre>',
 		menu		: 'Edita l\'enllaç',
 		title		: 'Enllaç',
 		info		: 'Informació de l\'enllaç',
@@ -476,12 +483,13 @@ CKEDITOR.lang['ca'] =
 	smiley :
 	{
 		toolbar	: 'Icona',
-		title	: 'Insereix una icona'
+		title	: 'Insereix una icona',
+		options : 'Smiley Options' // MISSING
 	},
 
 	elementsPath :
 	{
-		eleLabel : 'Elements path',  // MISSING
+		eleLabel : 'Elements path', // MISSING
 		eleTitle : '%1 element'
 	},
 
@@ -503,9 +511,9 @@ CKEDITOR.lang['ca'] =
 	clipboard :
 	{
 		title		: 'Enganxa',
-		cutError	: 'La seguretat del vostre navegador no permet executar automàticament les operacions de retallar. Si us plau, utilitzeu el teclat (Ctrl+X).',
-		copyError	: 'La seguretat del vostre navegador no permet executar automàticament les operacions de copiar. Si us plau, utilitzeu el teclat (Ctrl+C).',
-		pasteMsg	: 'Si us plau, enganxeu dins del següent camp utilitzant el teclat (<STRONG>Ctrl+V</STRONG>) i premeu <STRONG>OK</STRONG>.',
+		cutError	: 'La seguretat del vostre navegador no permet executar automàticament les operacions de retallar. Si us plau, utilitzeu el teclat (Ctrl/Cmd+X).',
+		copyError	: 'La seguretat del vostre navegador no permet executar automàticament les operacions de copiar. Si us plau, utilitzeu el teclat (Ctrl/Cmd+C).',
+		pasteMsg	: 'Si us plau, enganxeu dins del següent camp utilitzant el teclat (<STRONG>Ctrl/Cmd+V</STRONG>) i premeu <STRONG>OK</STRONG>.',
 		securityMsg	: 'A causa de la configuració de seguretat del vostre navegador, l\'editor no pot accedir al porta-retalls directament. Enganxeu-ho un altre cop en aquesta finestra.',
 		pasteArea	: 'Paste Area' // MISSING
 	},
@@ -528,6 +536,7 @@ CKEDITOR.lang['ca'] =
 	{
 		button			: 'Plantilles',
 		title			: 'Contingut plantilles',
+		options : 'Template Options', // MISSING
 		insertOption	: 'Reemplaça el contingut actual',
 		selectPromptMsg	: 'Si us plau, seleccioneu la plantilla per obrir a l\'editor<br>(el contingut actual no serà enregistrat):',
 		emptyListMsg	: '(No hi ha plantilles definides)'

@@ -10,4 +10,4 @@ ECHO.
 
 :: rmdir /S /Q release
 
-java -jar ckreleaser/ckreleaser.jar ckreleaser.release ../.. release "3.2.1 SVN" ckeditor_3.2.1_svn --run-before-release=langtool.bat
+java -jar ckreleaser/ckreleaser.jar ckreleaser.release ../.. release "3.2.1" ckeditor_3.2.1 --run-before-release=langtool.bat

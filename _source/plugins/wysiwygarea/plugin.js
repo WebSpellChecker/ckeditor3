@@ -384,6 +384,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						domWindow	= editor.window		= new CKEDITOR.dom.window( domWindow );
 						domDocument	= editor.document	= new CKEDITOR.dom.document( domDocument );
 
+						domDocument.on( 'dblclick', function( evt )
+						{
+							var element = evt.data.getTarget(),
+								data = { element : element, dialog : '' };
+							editor.fire( 'doubleclick', data );
+							data.dialog && editor.openDialog( data.dialog );
+						});
+						
 						// Gecko/Webkit need some help when selecting control type elements. (#3448)
 						if ( !( CKEDITOR.env.ie || CKEDITOR.env.opera) )
 						{

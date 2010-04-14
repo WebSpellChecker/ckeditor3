@@ -25,7 +25,15 @@ CKEDITOR.plugins.add( 'image',
 				label : editor.lang.common.image,
 				command : pluginName
 			});
-
+		
+		editor.on( 'doubleclick', function( evt )
+			{
+				var element = evt.data.element;
+				
+				if ( element.is( 'img' ) && !element.getAttribute( '_cke_realelement' ) )
+					evt.data.dialog = 'image';
+			});
+			
 		// If the "menu" plugin is loaded, register the menu items.
 		if ( editor.addMenuItems )
 		{

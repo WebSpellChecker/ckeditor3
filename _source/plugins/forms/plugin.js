@@ -172,6 +172,43 @@ CKEDITOR.plugins.add( 'forms',
 					}
 				});
 		}
+
+		editor.on( 'doubleclick', function( evt )
+			{
+				var element = evt.data.element;
+				
+				if ( element.is( 'form' ) )
+					evt.data.dialog = 'form';
+				else if ( element.is( 'select' ) ) 
+					evt.data.dialog = 'select';	
+				else if ( element.is( 'textarea' ) ) 
+					evt.data.dialog = 'textarea';
+				else if ( element.is( 'img' ) && element.getAttribute( '_cke_real_element_type' ) == 'hiddenfield' )
+					evt.data.dialog = 'hiddenfield';
+				else if ( element.is( 'input' ) )
+				{
+					var type = element.getAttribute( 'type' );
+					
+					switch ( type )
+					{
+						case 'text' : case 'password':
+							evt.data.dialog = 'textfield';
+							break;
+						case 'button' : case 'submit' : case 'reset' :
+							evt.data.dialog = 'button';
+							break;
+						case 'checkbox' :
+							evt.data.dialog = 'checkbox';
+							break;
+						case 'radio' :
+							evt.data.dialog = 'radio';
+							break;
+						case 'image' :
+							evt.data.dialog = 'imagebutton';
+							break;
+					}
+				}
+			});
 	},
 
 	afterInit : function( editor )

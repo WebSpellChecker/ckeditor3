@@ -162,6 +162,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								saveEnabled = false;
 							});
 
+						// IE before version 8 will leave cursor blinking inside the document after
+						// editor blurred unless we clean up the selection. (#4716)
+						if ( CKEDITOR.env.ie && CKEDITOR.env.version < 8 )
+						{
+							doc.getWindow().on( 'blur', function( evt )
+							{
+								editor.document.$.selection.empty();
+							});
+						}
+
 						// IE fires the "selectionchange" event when clicking
 						// inside a selection. We don't want to capture that.
 						body.on( 'mousedown', disableSave );
@@ -753,7 +763,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						return enclosed.$;
 					}
 				});
-			
+
 			return cache.selectedElement = ( node ? new CKEDITOR.dom.element( node ) : null );
 		},
 
@@ -1085,6 +1095,7 @@ CKEDITOR.dom.range.prototype.select =
 				else
 					ieRange.select();
 
+				this.moveToPosition( dummySpan, CKEDITOR.POSITION_BEFORE_START );
 				dummySpan.remove();
 			}
 			else
@@ -1093,7 +1104,7 @@ CKEDITOR.dom.range.prototype.select =
 				endNode.remove();
 				ieRange.select();
 			}
-			
+
 			this.document.fire( 'selectionchange' );
 		}
 	:

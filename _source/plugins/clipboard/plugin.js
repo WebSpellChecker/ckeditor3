@@ -28,7 +28,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// the command to execute.
 		body.on( command, onExec );
 
-		doc.$.execCommand( command );
+		// IE6/7: document.execCommand has problem to paste into positioned element.
+		( CKEDITOR.env.version > 7 ? doc.$ : doc.$.selection.createRange() ) [ 'execCommand' ]( command );
 
 		body.removeListener( command, onExec );
 
@@ -67,6 +68,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		exec : function( editor, data )
 		{
+			this.type == 'cut' && fixCut( editor );
+
 			var success = tryToCutCopy( editor, this.type );
 
 			if ( !success )
@@ -181,7 +184,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			range = new CKEDITOR.dom.range( doc );
 
 		// Create container to paste into
-		var pastebin = new CKEDITOR.dom.element( mode == 'text' ? 'textarea' : 'div', doc );
+		var pastebin = new CKEDITOR.dom.element( mode == 'text' ? 'textarea' : CKEDITOR.env.webkit ? 'body' : 'div', doc );
 		pastebin.setAttribute( 'id', 'cke_pastebin' );
 		// Safari requires a filler node inside the div to have the content pasted into it. (#4882)
 		CKEDITOR.env.webkit && pastebin.append( doc.createText( '\xa0' ) );
@@ -247,6 +250,36 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}, 0 );
 	}
 
+	// Cutting off control type element in IE standards breaks the selection entirely. (#4881)
+	function fixCut( editor )
+	{
+		if ( !CKEDITOR.env.ie || editor.document.$.compatMode == 'BackCompat' )
+			return;
+
+		var sel = editor.getSelection();
+		var control;
+		if( ( sel.getType() == CKEDITOR.SELECTION_ELEMENT ) && ( control = sel.getSelectedElement() ) )
+		{
+			var range = sel.getRanges()[ 0 ];
+			var dummy = editor.document.createText( '' );
+			dummy.insertBefore( control );
+			range.setStartBefore( dummy );
+			range.setEndAfter( control );
+			sel.selectRanges( [ range ] );
+
+			// Clear up the fix if the paste wasn't succeeded.
+			setTimeout( function()
+			{
+				// Element still online?
+				if ( control.getParent() )
+				{
+					dummy.remove();
+					sel.selectElement( control );
+				}
+			}, 0 );
+		}
+	}
+	
 	// Register the plugin.
 	CKEDITOR.plugins.add( 'clipboard',
 		{
@@ -317,7 +350,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					body.on( ( (mode == 'text' && CKEDITOR.env.ie) || CKEDITOR.env.webkit ) ? 'paste' : 'beforepaste',
 						function( evt )
 						{
-							if ( depressBeforePasteEvent )
+							if ( depressBeforeEvent )
 								return;
 
 							getClipboardData.call( editor, evt, mode, function ( data )
@@ -333,21 +366,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							} );
 						});
 
+					body.on( 'beforecut', function() { !depressBeforeEvent && fixCut( editor ); } );
 				});
 
 				// If the "contextmenu" plugin is loaded, register the listeners.
 				if ( editor.contextMenu )
 				{
-					var depressBeforePasteEvent;
+					var depressBeforeEvent;
 					function stateFromNamedCommand( command )
 					{
-						// IE Bug: queryCommandEnabled('paste') fires also 'beforepaste',
+						// IE Bug: queryCommandEnabled('paste') fires also 'beforepaste(copy/cut)',
 						// guard to distinguish from the ordinary sources( either
 						// keyboard paste or execCommand ) (#4874).
-						CKEDITOR.env.ie && command == 'Paste'&& ( depressBeforePasteEvent = 1 );
+						CKEDITOR.env.ie && ( depressBeforeEvent = 1 );
 
 						var retval = editor.document.$.queryCommandEnabled( command ) ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED;
-						depressBeforePasteEvent = 0;
+						depressBeforeEvent = 0;
 						return retval;
 					}
 

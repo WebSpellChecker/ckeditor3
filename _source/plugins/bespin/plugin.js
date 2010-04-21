@@ -216,11 +216,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										'<script> window.onBespinLoad = function() { document.body.style.visibility = "inherit"; }; ' +
 										'</' + 'script>' +
 										'<style type="text/css">' +
-											'.bespin { visibility: hidden; overflow: hidden; margin: 0px; ' +
-											' height: ' + editor.config.height + 'px; }' +
+											'html, body { height: 100% }' +
+											'.bespin { visibility: hidden; overflow: hidden; margin: 0px; }' +
 										'</style>'+
 									'</head>' +
-									'<body id="editor" class="bespin">' +
+									'<body id="editor" class="bespin"' +
+									' data-bespinoptions=\'{ "settings": { "tabstop": 4 },"stealFocus": true, "syntax": "html" }\'>' +
 										data +
 									'</body>' +
 									'</html>';
@@ -241,12 +242,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 							getData : function()
 							{
-								return bespin.getContent();
+								return bespin.value;
 							},
 
 							getSnapshotData : function()
 							{
-								return bespin.getContent();
+								return bespin.value;
 							},
 
 							unload : function( holderElement )

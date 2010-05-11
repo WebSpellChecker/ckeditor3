@@ -489,6 +489,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						if ( CKEDITOR.env.ie )
 						{
+							domDocument.getDocumentElement().addClass( domDocument.$.compatMode );
 							// Override keystrokes which should have deletion behavior
 							//  on control types in IE . (#4047)
 							domDocument.on( 'keydown', function( evt )
@@ -785,6 +786,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					title.setAttribute( '_cke_title', editor.document.$.title );
 					editor.document.$.title = frameLabel;
 				});
+
+			// IE8 stricts mode doesn't have 'contentEditable' in effect
+			// on element unless it has layout. (#5562)
+			if ( CKEDITOR.env.ie8 )
+				editor.addCss( 'html.CSS1Compat [contenteditable=false]{ min-height:0 !important;}' );
 
 			// Switch on design mode for a short while and close it after then.
 			function blinkCursor()

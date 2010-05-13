@@ -373,9 +373,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							setTimeout( function()
 							{
 								// Prefer 'contentEditable' instead of 'designMode'. (#3593)
-								if ( CKEDITOR.env.gecko && CKEDITOR.env.version >= 10900 )
+								if ( CKEDITOR.env.gecko && CKEDITOR.env.version >= 10900
+										|| CKEDITOR.env.opera )
 									domDocument.$.body.contentEditable = true;
-								else if ( CKEDITOR.env.webkit || CKEDITOR.env.opera )
+								else if ( CKEDITOR.env.webkit )
 									domDocument.$.body.parentNode.contentEditable = true;
 								else
 									domDocument.$.designMode = 'on';
@@ -454,7 +455,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						// clicking outside actual content, manually apply the focus. (#1659)
 						if ( CKEDITOR.env.ie
 							&& domDocument.$.compatMode == 'CSS1Compat'
-								|| CKEDITOR.env.gecko )
+								|| CKEDITOR.env.gecko
+								|| CKEDITOR.env.opera )
 						{
 							var htmlElement = domDocument.getDocumentElement();
 							htmlElement.on( 'mousedown', function( evt )
@@ -480,6 +482,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						focusTarget.on( 'focus', function()
 							{
+								// Force the cursor blinking. (#5622
+								CKEDITOR.env.gecko && blinkCursor();
 								editor.focusManager.focus();
 							});
 
@@ -765,7 +769,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									isPendingFocus = true;
 								else if ( editor.window )
 								{
-									editor.window.focus();
+									// [Webkit] Force the cursor blinking
+									// when setting focus manually. (#5622)
+									CKEDITOR.env.webkit && blinkCursor();
+
+									if ( CKEDITOR.env.opera )
+										editor.document.getBody().focus();
+									else
+										editor.window.focus();
+
 									editor.selectionChange();
 								}
 							}
@@ -803,7 +815,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 
 			// Create an invisible element to grab focus.
-			if ( CKEDITOR.env.gecko || CKEDITOR.env.ie )
+			if ( CKEDITOR.env.gecko || CKEDITOR.env.ie || CKEDITOR.env.opera )
 			{
 				var focusGrabber;
 				editor.on( 'uiReady', function()

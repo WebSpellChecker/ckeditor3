@@ -80,6 +80,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	function refreshCursor( editor )
 	{
+		// Refresh 'contentEditable' otherwise
+		// DOM lifting breaks design mode. (#5560) 
+		var body = editor.document.getBody();
+		body.setAttribute( 'contentEditable', false );
+		body.setAttribute( 'contentEditable', true );
+
 		if ( editor.focusManager.hasFocus )
 		{
 			var focusGrabber = editor.container.append( CKEDITOR.dom.element.createFromHtml(

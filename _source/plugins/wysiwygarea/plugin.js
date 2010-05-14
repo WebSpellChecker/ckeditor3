@@ -484,18 +484,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							} );
 						}
 
-						var focusTarget = ( CKEDITOR.env.ie || CKEDITOR.env.webkit ) ?
-								domWindow : domDocument;
-
-						focusTarget.on( 'blur', function()
+						domWindow.on( 'blur', function()
 							{
 								editor.focusManager.blur();
 							});
 
-						focusTarget.on( 'focus', function()
+						domWindow.on( 'focus', function()
 							{
-								// Force the cursor blinking. (#5622
-								CKEDITOR.env.gecko && blinkCursor();
+								var doc = editor.document;
+								if ( CKEDITOR.env.gecko || CKEDITOR.env.opera )
+									doc.getBody().focus();
+								else if ( CKEDITOR.env.webkit )
+									doc.getDocumentElement().focus();
+
 								editor.focusManager.focus();
 							});
 
@@ -780,14 +781,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									isPendingFocus = true;
 								else if ( editor.window )
 								{
-									// [Webkit] Force the cursor blinking
-									// when setting focus manually. (#5622)
-									CKEDITOR.env.webkit && blinkCursor();
-
-									if ( CKEDITOR.env.opera )
-										editor.document.getBody().focus();
-									else
-										editor.window.focus();
+									editor.window.focus();
 
 									editor.selectionChange();
 								}

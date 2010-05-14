@@ -209,7 +209,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							if ( saveEnabled )
 							{
 								var doc = editor.document,
-									sel = doc && doc.$.selection;
+									sel = editor.getSelection(),
+									nativeSel = sel && sel.getNative();
 
 								// There is a very specific case, when clicking
 								// inside a text selection. In that case, the
@@ -219,7 +220,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								// range at the very start of the document. In
 								// such situation we have to test the range, to
 								// be sure it's valid.
-								if ( testIt && sel && sel.type == 'None' )
+								if ( testIt && nativeSel && nativeSel.type == 'None' )
 								{
 									// The "InsertImage" command can be used to
 									// test whether the selection is good or not.
@@ -232,7 +233,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									}
 								}
 
-								savedRange = sel && sel.createRange();
+								savedRange = nativeSel && sel.getRanges()[ 0 ];
 
 								checkSelectionChangeTimeout.call( editor );
 							}
@@ -1009,6 +1010,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 {
 var notWhitespaces = CKEDITOR.dom.walker.whitespaces( true );
 var fillerTextRegex = /\ufeff|\u00a0/;
+var nonCells = { table:1,tbody:1,tr:1 };
 
 CKEDITOR.dom.range.prototype.select =
 	CKEDITOR.env.ie ?
@@ -1018,6 +1020,14 @@ CKEDITOR.dom.range.prototype.select =
 			var collapsed = this.collapsed;
 			var isStartMarkerAlone;
 			var dummySpan;
+
+			// IE doesn't support selecting the entire table row/cell, move the selection into cells, e.g.
+			// <table><tbody><tr>[<td>cell</b></td>... => <table><tbody><tr><td>[cell</td>...
+			if ( this.startContainer.type == CKEDITOR.NODE_ELEMENT && this.startContainer.getName() in nonCells
+				|| this.endContainer.type == CKEDITOR.NODE_ELEMENT && this.endContainer.getName() in nonCells )
+			{
+				this.shrink( CKEDITOR.NODE_ELEMENT, true );
+			}
 
 			var bookmark = this.createBookmark();
 

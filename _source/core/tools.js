@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -11,6 +11,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 (function()
 {
 	var functions = [];
+
+	CKEDITOR.on( 'reset', function()
+		{
+			functions = [];
+		});
 
 	/**
 	 * Utility functions.
@@ -691,6 +696,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				catch (e) {}
 			}
 			return returnValue;
+		},
+
+		/**
+		 * Generate a combined key from a series of params.
+		 * @param {String} subKey One or more string used as sub keys.
+		 * @example
+		 * var key = CKEDITOR.tools.genKey( 'key1', 'key2', 'key3' );
+		 * alert( key );		// "key1-key2-key3".
+		 */
+		genKey : function()
+		{
+			return Array.prototype.slice.call( arguments ).join( '-' );
 		}
 	};
 })();

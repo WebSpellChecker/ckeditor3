@@ -46,13 +46,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			oParams.customDictionaryIds = editor.config.scayt_customDictionaryIds || '';
 			oParams.userDictionaryName = editor.config.scayt_userDictionaryName || '';
 			oParams.sLang = editor.config.scayt_sLang || 'en_US';
+			
+			// Introduce SCAYT onLoad callback. (#5632)
+			oParams.onLoad = function()
+				{
+					// Draw down word marker to avoid being covered by background-color style.(#5466)
+					if ( !( CKEDITOR.env.ie && CKEDITOR.env.version < 8 ) )
+						this.addStyle( this.selectorCss(), 'padding-bottom: 2px !important;' );
+				};
 
 			oParams.onBeforeChange = function()
 			{
 				if ( !editor.checkDirty() )
 					setTimeout( function(){ editor.resetDirty(); } );
 			};
-
+			
 			var scayt_custom_params = window.scayt_custom_params;
 			if ( typeof scayt_custom_params == 'object')
 			{
@@ -267,29 +275,34 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var scaytUrl  =  editor.config.scayt_srcUrl || ( protocol + '//' + baseUrl );
 			var scaytConfigBaseUrl =  plugin.parseUrl( scaytUrl ).path +  '/';
 
-			CKEDITOR._djScaytConfig =
+			if( window.scayt == undefined )
 			{
-				baseUrl: scaytConfigBaseUrl,
-				addOnLoad:
-				[
-					function()
-					{
-						CKEDITOR.fireOnce( 'scaytReady' );
-					}
-				],
-				isDebug: false
-			};
-			// Append javascript code.
-			CKEDITOR.document.getHead().append(
-				CKEDITOR.document.createElement( 'script',
-					{
-						attributes :
-							{
-								type : 'text/javascript',
-								src : scaytUrl
-							}
-					})
-			);
+				CKEDITOR._djScaytConfig =
+				{
+					baseUrl: scaytConfigBaseUrl,
+					addOnLoad:
+					[
+						function()
+						{
+							CKEDITOR.fireOnce( 'scaytReady' );
+						}
+					],
+					isDebug: false
+				};
+				// Append javascript code.
+				CKEDITOR.document.getHead().append(
+					CKEDITOR.document.createElement( 'script',
+						{
+							attributes :
+								{
+									type : 'text/javascript',
+									src : scaytUrl
+								}
+						})
+				);
+			}
+			else
+				CKEDITOR.fireOnce( 'scaytReady' );
 
 			return null;
 		},
@@ -636,16 +649,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		afterInit : function( editor )
 		{
-			// Prevent word marker line from displaying in elements path. (#3570)
-			var elementsPathFilters;
+			// Prevent word marker line from displaying in elements path and been removed when cleaning format. (#3570) (#4125)
+			var elementsPathFilters,
+					scaytFilter = function( element )
+					{
+						if ( element.hasAttribute( 'scaytid' ) )
+							return false;
+					};
+
 			if ( editor._.elementsPath && ( elementsPathFilters = editor._.elementsPath.filters ) )
-			{
-				elementsPathFilters.push( function( element )
-				{
-					if ( element.hasAttribute( 'scaytid' ) )
-						return false;
-				} );
-			}
+				elementsPathFilters.push( scaytFilter );
+
+			editor.addRemoveFormatFilter && editor.addRemoveFormatFilter( scaytFilter );
 
 		}
 	});

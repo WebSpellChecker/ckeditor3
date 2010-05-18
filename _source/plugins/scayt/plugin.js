@@ -53,11 +53,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// Draw down word marker to avoid being covered by background-color style.(#5466)
 					if ( !( CKEDITOR.env.ie && CKEDITOR.env.version < 8 ) )
 						this.addStyle( this.selectorCss(), 'padding-bottom: 2px !important;' );
+
+					// Call scayt_control.focus when SCAYT loaded
+					// and only if editor has focus
+					if ( editor.focusManager.hasFocus )
+						this.focus();
+
 				};
 
 			oParams.onBeforeChange = function()
 			{
-				if ( !editor.checkDirty() )
+				if ( plugin.getScayt( editor ) && !editor.checkDirty() )
 					setTimeout( function(){ editor.resetDirty(); } );
 			};
 			
@@ -142,21 +148,34 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 			});
 
+		editor.on( 'afterCommandExec', function( ev )
+			{
+				if ( !plugin.isScaytEnabled( editor ) )
+					return;
+
+				if ( editor.mode == 'wysiwyg' && ( ev.data.name == 'undo' || ev.data.name == 'redo' ) )
+					window.setTimeout( function() { plugin.getScayt( editor ).refresh(); }, 10 );
+			});
+
 		editor.on( 'destroy', function( ev )
 			{
 				var editor = ev.editor,
 					scayt_instance = plugin.getScayt( editor );
+				delete plugin.instances[ editor.name ];
 				// store a control id for restore a specific scayt control settings
 				scayt_control_id = scayt_instance.id;
 				scayt_instance.destroy( true );
-				delete plugin.instances[ editor.name ];
 			});
 
 		// Listen to data manipulation to reflect scayt markup.
 		editor.on( 'afterSetData', function()
 			{
 				if ( plugin.isScaytEnabled( editor ) ) {
-					window.setTimeout( function(){ plugin.getScayt( editor ).refresh(); }, 10 );
+					window.setTimeout( function()
+						{
+							var instance = plugin.getScayt( editor );
+							instance && instance.refresh();
+						}, 10 );
 				}
 			});
 
@@ -171,8 +190,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					if ( CKEDITOR.env.ie )
 						editor.getSelection().unlock( true );
 
-					// Swallow any SCAYT engine errors.
-					window.setTimeout( function(){ scayt_instance.refresh(); }, 10 );
+					// Return focus to the editor and refresh SCAYT markup (#5573).
+					window.setTimeout( function()
+					{
+						scayt_instance.focus();
+						scayt_instance.refresh();
+					}, 10 );
 				}
 			}, this, null, 50 );
 
@@ -186,8 +209,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					if ( CKEDITOR.env.ie )
 						editor.getSelection().unlock( true );
 
-					// Swallow any SCAYT engine errors.
-					window.setTimeout( function(){ scayt_instance.refresh(); },10 );
+					// Return focus to the editor (#5573)
+					// Refresh SCAYT markup
+					window.setTimeout( function()
+					{
+						scayt_instance.focus();
+						scayt_instance.refresh();
+					}, 10 );
 				}
 			}, this, null, 50 );
 
@@ -221,6 +249,30 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			);
 		}
 
+		// Override Image.equals method avoid CK snapshot module to add SCAYT markup to snapshots. (#5546)
+		var undoImagePrototype = CKEDITOR.plugins.undo.Image.prototype;
+		undoImagePrototype.equals =	 CKEDITOR.tools.override( undoImagePrototype.equals, function( org )
+		{
+			return function( otherImage )
+			{
+				var thisContents = this.contents,
+					otherContents = otherImage.contents;
+				var scayt_instance = plugin.getScayt( this.editor );
+				// Making the comparison based on content without SCAYT word markers.
+				if ( scayt_instance && plugin.isScaytReady( this.editor ) )
+				{
+					this.contents = scayt_instance.reset( thisContents );
+					otherImage.contents = scayt_instance.reset( otherContents );
+				}
+				
+				var retval = org.apply( this, arguments );
+
+				this.contents = thisContents;
+				otherImage.contents = otherContents;
+				return retval;
+			}
+		});
+		
 		if ( editor.document )
 			createInstance();
 	};
@@ -340,6 +392,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		exec: function( editor )
 		{
+			var autoStartup = editor.config.scayt_autoStartup;
+			autoStartup = ( autoStartup == undefined ) || autoStartup;
+
 			if ( plugin.isScaytReady( editor ) )
 			{
 				var isEnabled = plugin.isScaytEnabled( editor );
@@ -347,9 +402,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				this.setState( isEnabled ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_ON );
 
 				var scayt_control = plugin.getScayt( editor );
+				// the place where the status of editor focus should be restored
+				// after there will be ability to store its state before SCAYT button click
+				// if (storedFocusState is focused )
+				//   scayt_control.focus();
+				//
+				// now focus is set certainly
+				scayt_control.focus( );
 				scayt_control.setDisabled( isEnabled );
 			}
-			else if ( !editor.config.scayt_autoStartup && plugin.engineLoaded >= 0 )	// Load first time
+			else if ( !autoStartup && plugin.engineLoaded >= 0 )	// Load first time
 			{
 				this.setState( CKEDITOR.TRISTATE_DISABLED );
 				plugin.loadEngine( editor );
@@ -364,8 +426,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		beforeInit : function( editor )
 		{
-			// Register own rbc menu group.
-			editor.config.menu_groups = 'scayt_suggest,scayt_moresuggest,scayt_control,' + editor.config.menu_groups;
+			var items_order = editor.config.scayt_contextMenuItemsOrder
+					|| 'suggest|moresuggest|control',
+				items_order_str = "";
+
+			items_order = items_order.split( '|' );
+
+			if ( items_order && items_order.length )
+				for ( var pos in items_order )
+					items_order_str += 'scayt_' + items_order[ pos ] + ( items_order.length != parseInt( pos ) + 1 ? ',' : '' );
+
+			// Register scayt rbc menu group.
+			if ( editor.config.scayt_contextMenuOntop )
+				// Put it on top of all context menu items
+				editor.config.menu_groups =  items_order_str + ',' + editor.config.menu_groups;
+			else
+				// Put it down
+				editor.config.menu_groups = editor.config.menu_groups + ',' +items_order_str;
 		},
 
 		init : function( editor )
@@ -638,7 +715,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 
 			// Start plugin
-			if ( editor.config.scayt_autoStartup )
+			var autoStartup = editor.config.scayt_autoStartup;
+			if ( ( autoStartup == undefined ) || autoStartup )
 			{
 				editor.on( 'instanceReady', function()
 				{
@@ -670,9 +748,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * If enabled (true), turns on SCAYT automatically after loading the editor.
  * @name CKEDITOR.config.scayt_autoStartup
  * @type Boolean
- * @default false
+ * @default true
  * @example
- * config.scayt_autoStartup = true;
+ * config.scayt_autoStartup = false;
  */
 
 /**
@@ -791,3 +869,33 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @example
  * config.scayt_userDictionaryName = 'MyDictionary';
  */
+
+/**
+ * Makes it possible to place the SCAYT context menu items above others.
+ * @name CKEDITOR.config.scayt_contextMenuOntop
+ * @type Boolean
+ * @default false
+ * @example
+ * config.scayt_contextMenuOntop = true;
+ */
+
+/**
+ * Define order of placing of SCAYT context menu items by groups.
+ * It must be a string with one or more of the following
+ * words separated by a pipe ("|"):
+ * <ul>
+ *     <li>'suggest'     - main suggestion word list,</li>
+ *     <li>'moresuggest' - more suggestions word list,</li>
+ *     <li>'control'     - SCAYT commands, such as 'Ignore' and 'Add Word'</li>
+ * </ul>
+ * 
+ * @name CKEDITOR.config.scayt_contextMenuItemsOrder
+ * @type String
+ * @default 'suggest|moresuggest|control'
+ * @example
+ * config.scayt_contextMenuItemsOrder = 'moresuggest|control|suggest';
+ */
+
+ 
+
+

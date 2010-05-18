@@ -138,10 +138,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	});
 
-	// Gets a snapshot image which represent the current document status.
-	function Image( editor )
+	CKEDITOR.plugins.undo = {};
+
+	/**
+	 * Undo snapshot which represents the current document status.
+	 * @name CKEDITOR.plugins.undo.Image
+	 * @param editor The editor instance on which the image is created.
+	 */
+	var Image = CKEDITOR.plugins.undo.Image = function( editor )
 	{
-		var contents	= editor.getSnapshot(),
+		this.editor = editor;
+		var contents = editor.getSnapshot(),
 			selection	= contents && editor.getSelection();
 
 		// In IE, we need to remove the expando attributes.
@@ -149,7 +156,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		this.contents	= contents;
 		this.bookmarks	= selection && selection.createBookmarks2( true );
-	}
+	};
 
 	// Attributes that browser may changing them when setting via innerHTML.
 	var protectedAttrs = /\b(?:href|src|name)="[^"]*?"/gi;
@@ -158,6 +165,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		equals : function( otherImage, contentOnly )
 		{
+
 			var thisContents = this.contents,
 				otherContents = otherImage.contents;
 

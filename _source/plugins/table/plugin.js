@@ -50,7 +50,7 @@ CKEDITOR.plugins.add( 'table',
 				var element = evt.data.element;
 				
 				if ( element.is( 'table' ) )
-					evt.data.dialog = 'table';
+					evt.data.dialog = 'tableProperties';
 			});
 			
 		// If the "contextmenu" plugin is loaded, register the listeners.

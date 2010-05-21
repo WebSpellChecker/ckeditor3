@@ -319,7 +319,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// for other browers, the 'src' attribute should be left empty to
 							// trigger iframe's 'load' event.
   							' src="' + ( CKEDITOR.env.ie ? 'javascript:void(function(){' + encodeURIComponent( srcScript ) + '}())' : '' ) + '"' +
-							' tabIndex="' + editor.tabIndex + '"' +
+							' tabIndex="' + ( CKEDITOR.env.webkit? -1 : editor.tabIndex ) + '"' +
   							' allowTransparency="true"' +
   							'></iframe>' );
 
@@ -495,7 +495,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								if ( CKEDITOR.env.gecko || CKEDITOR.env.opera )
 									doc.getBody().focus();
 								else if ( CKEDITOR.env.webkit )
+								{
+									// Selection will get lost after move focus 
+									// to document element, save it first.
+									var sel = editor.getSelection(),
+											type = sel.getType(),
+											range = ( type != CKEDITOR.SELECTION_NONE ) && sel.getRanges()[ 0 ];
+
 									doc.getDocumentElement().focus();
+									range && range.select();
+								}
 
 								editor.focusManager.focus();
 							});

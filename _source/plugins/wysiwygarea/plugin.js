@@ -849,6 +849,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					focusGrabber.clearCustomData();
 				} );
 			}
+
+			// Disable form elements editing mode provided by some browers. (#5746)
+			editor.on( 'insertElement', function ( evt )
+			{
+				var element = evt.data;
+				if ( element.type = CKEDITOR.NODE_ELEMENT
+						&& ( element.is( 'input' ) || element.is( 'textarea' ) ) )
+				{
+					element.setAttribute( 'contentEditable', false );
+				}
+			});
+
 		}
 	});
 

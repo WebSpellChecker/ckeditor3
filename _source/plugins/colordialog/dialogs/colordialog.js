@@ -245,7 +245,7 @@ CKEDITOR.dialog.add( 'colordialog', function( editor )
 			{
 				return id + CKEDITOR.tools.getNextNumber();
 			},
-			hicolorId = numbering( 'hicolor' ),	
+			hicolorId = numbering( 'hicolor' ),
 			hicolorTextId = numbering( 'hicolortext' ),
 			selHiColorId = numbering( 'selhicolor' );
 

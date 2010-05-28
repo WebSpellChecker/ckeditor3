@@ -16,7 +16,7 @@ CKEDITOR.dialog.add( 'hiddenfield', function( editor )
 			var editor = this.getParentEditor(),
 				selection = editor.getSelection(),
 				element = selection.getSelectedElement();
-				
+
 			if ( element && element.getAttribute( '_cke_real_element_type' ) && element.getAttribute( '_cke_real_element_type' ) == 'hiddenfield' )
 			{
 				this.hiddenField = element;

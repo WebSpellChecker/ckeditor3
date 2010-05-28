@@ -433,7 +433,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							editor.fire( 'doubleclick', data );
 							data.dialog && editor.openDialog( data.dialog );
 						});
-						
+
 						// Gecko/Webkit need some help when selecting control type elements. (#3448)
 						if ( !( CKEDITOR.env.ie || CKEDITOR.env.opera) )
 						{
@@ -496,7 +496,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									doc.getBody().focus();
 								else if ( CKEDITOR.env.webkit )
 								{
-									// Selection will get lost after move focus 
+									// Selection will get lost after move focus
 									// to document element, save it first.
 									var sel = editor.getSelection(),
 											type = sel.getType(),

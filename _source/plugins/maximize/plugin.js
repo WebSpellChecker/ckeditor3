@@ -80,7 +80,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	function refreshCursor( editor )
 	{
-		// Refresh all editor instances on the page (#5724). 
+		// Refresh all editor instances on the page (#5724).
 		var all = CKEDITOR.instances;
 		for ( var i in all )
 		{

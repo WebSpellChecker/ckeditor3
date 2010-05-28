@@ -110,7 +110,7 @@ CKEDITOR.dom.elementPath.prototype =
 			if ( elements[ i ].getName() in tagNames )
 				return elements[ i ];
 		}
-		
+
 		return null;
 	}
 };

@@ -1657,7 +1657,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 			if ( CKEDITOR.env.ie6Compat )
 			{
-				var coverDoc = coverElement.getChild( 0 ).getFrameDocument();
+				var coverDoc = currentCover.getChild( 0 ).getFrameDocument();
 				coverDoc.on( 'mousemove', mouseMoveHandler, dialog, { part : partName } );
 				coverDoc.on( 'mouseup', mouseUpHandler, dialog, { part : partName } );
 			}
@@ -1728,7 +1728,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 			if ( CKEDITOR.env.ie6Compat )
 			{
-				var coverDoc = coverElement.getChild( 0 ).getFrameDocument();
+				var coverDoc = currentCover.getChild( 0 ).getFrameDocument();
 				coverDoc.removeListener( 'mouseup', mouseUpHandler );
 				coverDoc.removeListener( 'mousemove', mouseMoveHandler );
 			}
@@ -1869,7 +1869,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				}, 0 );
 			scrollFunc();
 		}
-	};
+	}
 
 	function hideCover()
 	{
@@ -1889,7 +1889,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				}, 0 );
 		}
 		resizeCover = null;
-	};
+	}
 	
 	function removeCovers()
 	{
@@ -2803,7 +2803,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		if ( CKEDITOR.tools.isEmpty( CKEDITOR.instances ) )
 		{
 			var currentTopDialog;
-			while ( currentTopDialog = CKEDITOR.dialog._.currentTop )
+			while ( ( currentTopDialog = CKEDITOR.dialog._.currentTop ) )
 				currentTopDialog.hide();
 			removeCovers();
 		}

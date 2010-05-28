@@ -614,7 +614,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								}
 							},
 							0 );
-					};
+					}
 
 					editor.addMode( 'wysiwyg',
 						{

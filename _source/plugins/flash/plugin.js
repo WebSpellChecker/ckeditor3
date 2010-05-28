@@ -79,7 +79,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			
 			editor.on( 'doubleclick', function( evt )
 				{
-					var element = evt.data.element;;
+					var element = evt.data.element;
 					
 					if ( element.is( 'img' ) && element.getAttribute( '_cke_real_element_type' ) == 'flash' ) 
 						evt.data.dialog = 'flash';

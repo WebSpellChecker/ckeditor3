@@ -259,7 +259,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		this.startDisabled = name == 'outdent';
 	}
 
-	function isListItem( node ){ return node.type = CKEDITOR.NODE_ELEMENT && node.is( 'li' ) };
+	function isListItem( node )
+	{
+		return node.type = CKEDITOR.NODE_ELEMENT && node.is( 'li' );
+	}
 
 	indentCommand.prototype = {
 		exec : function( editor )
@@ -289,7 +292,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if ( nearestListBlock && endContainer.type == CKEDITOR.NODE_ELEMENT
 				&& endContainer.getName() in listNodeNames )
 			{
-				var walker = new CKEDITOR.dom.walker( range );
+				walker = new CKEDITOR.dom.walker( range );
 				walker.evaluator = isListItem;
 				range.endContainer = walker.previous();
 			}

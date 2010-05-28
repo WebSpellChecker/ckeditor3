@@ -53,7 +53,7 @@ CKEDITOR.dialog.add( 'colordialog', function( editor )
 				$doc.getById( hicolorId ).setStyle( 'background-color', color );
 				$doc.getById( hicolorTextId ).setHtml( color );
 			}
-		};
+		}
 
 		function clearHighlight()
 		{

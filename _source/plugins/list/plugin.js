@@ -385,7 +385,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			var doc = editor.document,
 				selection = editor.getSelection(),
-				ranges = selection && selection.getRanges();
+				ranges = selection && selection.getRanges( true );
 
 			// There should be at least one selected range.
 			if ( !ranges || ranges.length < 1 )
@@ -437,7 +437,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			while ( ranges.length > 0 )
 			{
-				range = ranges.shift();
+				range = ranges.pop();
 
 				var boundaryNodes = range.getBoundaryNodes(),
 					startNode = boundaryNodes.startNode,

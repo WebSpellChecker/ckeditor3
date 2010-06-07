@@ -475,8 +475,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					return ( cache.type = type );
 				},
 
-		getRanges :
-			CKEDITOR.env.ie ?
+		getRanges : (function ()
+		{
+			var func = CKEDITOR.env.ie ?
 				( function()
 				{
 					// Finds the container and offset for a specific boundary
@@ -564,10 +565,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					return function()
 					{
-						var cache = this._.cache;
-						if ( cache.ranges )
-							return cache.ranges;
-
 						// IE doesn't have range support (in the W3C way), so we
 						// need to do some magic to transform selections into
 						// CKEDITOR.dom.range instances.
@@ -590,11 +587,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							boundaryInfo = getBoundaryInformation( nativeRange );
 							range.setEnd( new CKEDITOR.dom.node( boundaryInfo.container ), boundaryInfo.offset );
 
-							return ( cache.ranges = [ range ] );
+							return [ range ];
 						}
 						else if ( type == CKEDITOR.SELECTION_ELEMENT )
 						{
-							var retval = this._.cache.ranges = [];
+							var retval = [];
 
 							for ( var i = 0 ; i < nativeRange.length ; i++ )
 							{
@@ -615,15 +612,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							return retval;
 						}
 
-						return ( cache.ranges = [] );
+						return [];
 					};
 				})()
 			:
 				function()
 				{
-					var cache = this._.cache;
-					if ( cache.ranges )
-						return cache.ranges;
 
 					// On browsers implementing the W3C range, we simply
 					// tranform the native ranges in CKEDITOR.dom.range
@@ -644,9 +638,66 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						range.setEnd( new CKEDITOR.dom.node( nativeRange.endContainer ), nativeRange.endOffset );
 						ranges.push( range );
 					}
+					return ranges;
+				};
 
-					return ( cache.ranges = ranges );
-				},
+			return function( writeMode )
+			{
+				var cache = this._.cache;
+				if ( cache.ranges && !writeMode )
+					return cache.ranges;
+				else if ( !cache.ranges )
+					cache.ranges = func.call( this );
+
+				// Split range into multiple by read-only nodes.
+				if ( writeMode )
+				{
+					var ranges = cache.ranges;
+					for ( var i = 0; i < ranges.length; i++ )
+					{
+						var range = ranges[ i ];
+
+						// Drop range spans inside one ready-only node.
+						var parent = range.getCommonAncestor();
+						if ( parent.isReadOnly())
+							ranges.splice( i, 1 );
+
+						if ( range.collapsed )
+							continue;
+
+						var start = range.getTouchedStartNode(),
+							end = range.getTouchedEndNode(),
+							next = start;
+
+						while( next )
+						{
+							// End of range.
+							if ( end.getPosition( next ) &&
+									!( end.getPosition( next )
+										& ( CKEDITOR.POSITION_FOLLOWING | CKEDITOR.POSITION_CONTAINS ) ) )
+							{
+								break;
+							}
+
+							// Encompass read-only node, split up range around it.
+							if ( next.type == CKEDITOR.NODE_ELEMENT
+								&& next.getAttribute( 'contenteditable' ) == 'false' )
+							{
+								var newRange = range.clone();
+								range.setEndBefore( next );
+								newRange.setStartAfter( next );
+								ranges.splice( i + 1, 0, newRange );
+								break;
+							}
+
+							next = next.getNextSourceNode( false, CKEDITOR.NODE_ELEMENT );
+						}
+					}
+				}
+
+				return cache.ranges;
+			}
+		})(),
 
 		/**
 		 * Gets the DOM element in which the selection starts.
@@ -906,8 +957,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			if ( CKEDITOR.env.ie )
 			{
-				// IE doesn't accept multiple ranges selection, so we just
-				// select the first one.
+				if ( ranges.length > 1 )
+				{
+					// IE doesn't accept multiple ranges selection, so we join all into one.
+					var last = ranges[ ranges.length -1 ] ;
+					ranges[ 0 ].setEnd( last.endContainer, last.endOffset );
+					ranges.length = 1;
+				}
+
 				if ( ranges[ 0 ] )
 					ranges[ 0 ].select();
 
@@ -916,10 +973,31 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			else
 			{
 				var sel = this.getNative();
-				sel.removeAllRanges();
+
+				if ( ranges.length )
+					sel.removeAllRanges();
 
 				for ( var i = 0 ; i < ranges.length ; i++ )
 				{
+					if ( i < ranges.length -1 )
+					{
+						var left = ranges[ i  ], right = ranges[ i +1 ];
+						var between = left.clone();
+						between.setStart( left.endContainer, left.endOffset );
+						between.setEnd( right.startContainer, left.startOffset );
+
+						if ( !between.collapsed )
+						{
+							between.shrink( CKEDITOR.NODE_ELEMENT, true );
+							var parent = between.getCommonAncestor();
+							if ( parent.isReadOnly())
+							{
+								left.setEnd( right.endContainer, right.endOffset );
+								ranges.splice( i + 1, 1 );
+							}
+						}
+					}
+
 					var range = ranges[ i ];
 					var nativeRange = this.document.$.createRange();
 					var startContainer = range.startContainer;

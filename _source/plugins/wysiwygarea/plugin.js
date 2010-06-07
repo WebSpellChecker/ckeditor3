@@ -66,7 +66,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				isBlock = CKEDITOR.dtd.$block[ elementName ];
 
 			var selection = this.getSelection(),
-				ranges = selection.getRanges();
+				ranges = selection.getRanges( true );
+
+			if ( !ranges.length )
+				return;
 
 			var selIsLocked = selection.isLocked;
 

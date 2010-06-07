@@ -1263,11 +1263,12 @@ CKEDITOR.STYLE_OBJECT = 3;
 	{
 		// Get all ranges from the selection.
 		var selection = document.getSelection();
-		var ranges = selection.getRanges();
+		var ranges = selection.getRanges( true );
+
 		var func = remove ? this.removeFromRange : this.applyToRange;
 
 		// Apply the style to the ranges.
-		for ( var i = 0 ; i < ranges.length ; i++ )
+		for ( var i = ranges.length -1 ; i >= 0 ; i-- )
 			func.call( this, ranges[ i ] );
 
 		// Select the ranges again.

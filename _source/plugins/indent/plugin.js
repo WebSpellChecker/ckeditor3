@@ -268,7 +268,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		exec : function( editor )
 		{
 			var selection = editor.getSelection(),
-				range = selection && selection.getRanges()[0];
+				range = selection && selection.getRanges( true )[0];
+
+			if ( !range )
+				return;
 
 			var startContainer = range.startContainer,
 				endContainer = range.endContainer,

@@ -657,6 +657,27 @@ CKEDITOR.tools.extend( CKEDITOR.dom.node.prototype,
 					child.parentNode.removeChild( child ) ;
 				}
 			}
+		},
+
+		isReadOnly : function()
+		{
+			var current = this;
+			while( current )
+			{
+				if ( current.type == CKEDITOR.NODE_ELEMENT )
+				{
+					if ( current.is ( 'body' ) )
+						break;
+
+					if ( current.getAttribute( 'contentEditable' ) == 'false' )
+						return true;
+					else if ( current.getAttribute( 'contentEditable' ) == 'false' )
+						break;
+				}
+				current = current.getParent();
+			}
+
+			return false;
 		}
 	}
 );

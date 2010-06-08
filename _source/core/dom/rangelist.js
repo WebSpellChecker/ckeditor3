@@ -6,10 +6,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 {
 	/**
 	 * Representation of multiple ranges within a selection.
-	 * @param {CKEDITOR.dom.range | Array<{CKEDITOR.dom.range> | undefined } ranges
+	 * @constructor
+	 * @param {CKEDITOR.dom.range|Array|undefined} ranges
 	 *  The ranges consist of this list, note that if an array of ranges is specified,
 	 *  the range sequence should compliant with the selection order, this class is
 	 *  will not help to sort them.
+	 *
+	 * @borrows CKEDITOR.dom.selection#createBookmarks as this.createBookmarks
+	 * @borrows CKEDITOR.dom.selection#createBookmarks2 as this.createBookmarks2
 	 */
 	CKEDITOR.dom.rangeList = function( ranges )
 	{
@@ -60,10 +64,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		return dirtyRange;
 	}
 
+	/**
+	 * (Virtual Class) Do not call this constructor. This class is not really part
+	 *	of the API. It just describes the return type of {@link CKEDITOR.dom.rangeList#createIterator}.
+	 * @name CKEDITOR.dom.rangeListIterator
+	 * @constructor
+	 * @example
+	 */
+
 	CKEDITOR.dom.rangeList.prototype = {
 		/**
-		 * Appending the specified range object to end of current list.
-		 * @param { CKEDITOR.dom.range} range
+		 * Inserting the specified range object at the end/specified position.
+		 * @param {CKEDITOR.dom.range} range
 		 * @example
 		 * var rangeList = new CKEDITOR.dom.rangeList();
 		 * var range = new CKEDITOR.dom.range();
@@ -88,6 +100,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			this._.ranges.splice( index, 1, newRange );
 		},
 
+		/**
+		 * Retrieve range at the specified position.
+		 * @param index
+		 */
 		getItem : function( index )
 		{
 			return this._.ranges[ index ] || null;
@@ -99,37 +115,45 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		},
 
 		/**
-		 * Create an instance of rangeList iterator, it should be only used while
-		 * the processing of each range is possibly polluting other this._.ranges, e.g. destroy
-		 * the following range's start container OR change others' offset value;
-		 * Otherwise, simply iterating with {@link CKEDITOR.dom.rangeList::getItem}
+		 * Create an instance of rangeList iterator, it should be only used when
+		 * the processing of range is DOM destructive, which means it will possibly
+		 * pollute other ranges in this list.
+		 * Otherwise, it's enough to iterate with {@link #getItem}
 		 * in a for loop.
+		 * @returns {CKEDITOR.dom.rangeListIterator}
 		 */
 		createIterator : function()
 		{
 			var rangeList = this,
-				bookmarks,
+				bookmarks = [],
 				current;
 
 			return {
 
+				/**
+				 * Iterate over the next range in this list.
+				 * @memberOf  CKEDITOR.dom.rangeListIterator.prototype
+				 */
 				getNextRange : function()
 				{
-					if ( !rangeList.count() || current === rangeList.count() - 1 )
-						return null;
-					else
-						current =  current == undefined ? 0 : current + 1;
+					current = current == undefined ? 0 : current + 1;
 
 					var range = rangeList.getItem( current );
 
 					// Multiple ranges might be mangled by each other.
-					if ( rangeList.count() > 1 )
+					if ( range && rangeList.count() > 1 )
 					{
-						// Bookmarking all other ranges on the first iteration.
+						// Bookmarking all other ranges on the first iteration,
+						// the range correctness after it doesn't matter since we'll
+						// restore them before the next iteration.
 						if ( current == 0 )
-							bookmarks = rangeList.createBookmarks();
-
-						bookmarks.length && range.moveToBookmark( bookmarks.shift() );
+						{
+							// Make sure bookmark correctness by reverse processing.
+							for ( var i = rangeList.count() - 1 ; i > 0 ; i-- )
+								bookmarks.unshift( rangeList.getItem( i ).createBookmark() );
+						}
+						else
+							range.moveToBookmark( bookmarks.shift() );
 					}
 
 					return range;
@@ -137,6 +161,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			};
 		},
 
+		/**
+		 * @param serializable
+		 */
 		createBookmarks : function( serializable )
 		{
 			var retval = [], bookmark;
@@ -156,15 +183,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		},
 
 		/**
-		 * Apply each of the supplied bookmarks to the corresponding range at the index.
-		 * @param bookmarks
+		 * @param normalized
 		 */
-		moveToBookmarks :  function( bookmarks )
-		{
-			for ( var i = 0 ; i < this._.ranges.length ; i++ )
-				this._.ranges[ i ].moveToBookmark( bookmarks[ i ] );
-		},
-
 		createBookmarks2 : function( normalized )
 		{
 			var bookmarks = [];
@@ -173,8 +193,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				bookmarks.push( this._.ranges[ i ].createBookmark2( normalized ) );
 
 			return bookmarks;
-		}
+		},
 
+		/**
+		 * Apply each of the supplied bookmarks to the corresponding range at the index.
+		 * @param bookmarks
+		 */
+		moveToBookmarks :  function( bookmarks )
+		{
+			for ( var i = 0 ; i < this._.ranges.length ; i++ )
+				this._.ranges[ i ].moveToBookmark( bookmarks[ i ] );
+		}
 	};
 
 

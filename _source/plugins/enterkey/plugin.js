@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -346,12 +346,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		var ranges = editor.getSelection().getRanges( true );
 
 		// Delete the contents of all ranges except the first one.
-		for ( var i = ranges.length - 1 ; i > 0 ; i-- )
+		for ( var i = ranges.count() - 1 ; i > 0 ; i-- )
 		{
-			ranges[ i ].deleteContents();
+			ranges.getItem( i ).deleteContents();
 		}
 
 		// Return the first range.
-		return ranges[ 0 ];
+		return ranges.getItem( 0 );
 	}
 })();

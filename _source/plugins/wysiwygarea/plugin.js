@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -68,7 +68,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var selection = this.getSelection(),
 				ranges = selection.getRanges( true );
 
-			if ( !ranges.length )
+			if ( !ranges.count() )
 				return;
 
 			var selIsLocked = selection.isLocked;
@@ -78,10 +78,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			var range, clone, lastElement, bookmark;
 
-			for ( var i = ranges.length - 1 ; i >= 0 ; i-- )
+			for ( var i = ranges.count() - 1 ; i >= 0 ; i-- )
 			{
-				range = ranges[ i ];
-
+				range = ranges.getItem( i );
 				// Remove the original contents.
 				range.deleteContents();
 
@@ -128,7 +127,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if ( next && next.type == CKEDITOR.NODE_ELEMENT )
 				range.moveToElementEditStart( next );
 
-			selection.selectRanges( [ range ] );
+			selection.selectRanges( new CKEDITOR.dom.rangeList( range ) );
 
 			if ( selIsLocked )
 				this.getSelection().lock();
@@ -190,7 +189,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			path = evt.data.path,
 			blockLimit = path.blockLimit,
 			selection = evt.data.selection,
-			range = selection.getRanges()[0],
+			range = selection.getRanges().getItem( 0 ),
 			body = editor.document.getBody(),
 			enterMode = editor.config.enterMode;
 

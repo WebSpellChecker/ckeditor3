@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -41,9 +41,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 		}
 
-		for ( var i = 0 ; i < ranges.length ; i++ )
+		for ( var i = 0 ; i < ranges.count() ; i++ )
 		{
-			var range = ranges[ i ];
+			var range = ranges.getItem( i );
 
 			if ( range.collapsed )
 			{
@@ -768,9 +768,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						// Maintain the selection point at where the table was deleted.
 						selection.selectElement( table );
-						var range = selection.getRanges()[0];
-						range.collapse();
-						selection.selectRanges( [ range ] );
+						var ranges = selection.getRanges();
+						ranges.getItem( 0 ).collapse();
+						selection.selectRanges( ranges );
 
 						// If the table's parent has only one child, remove it,except body,as well.( #5416 )
 						var parent = table.getParent();

@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -177,7 +177,7 @@ CKEDITOR.plugins.link =
 	getSelectedLink : function( editor )
 	{
 		var range;
-		try { range  = editor.getSelection().getRanges()[ 0 ]; }
+		try { range  = editor.getSelection().getRanges().getItem( 0 ); }
 		catch( e ) { return null; }
 
 		range.shrink( CKEDITOR.SHRINK_TEXT );
@@ -205,13 +205,14 @@ CKEDITOR.unlinkCommand.prototype =
 			rangeRoot,
 			element;
 
-		for ( var i = 0 ; i < ranges.length ; i++ )
+		for ( var range, i = 0 ; i < ranges.count() ; i++ )
 		{
-			rangeRoot = ranges[i].getCommonAncestor( true );
+			range = ranges.getItem( i );
+			rangeRoot = range.getCommonAncestor( true );
 			element = rangeRoot.getAscendant( 'a', true );
 			if ( !element )
 				continue;
-			ranges[i].selectNodeContents( element );
+			range.selectNodeContents( element );
 		}
 
 		selection.selectRanges( ranges );

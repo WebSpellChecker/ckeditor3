@@ -242,7 +242,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									return;
 								}
 
-								savedRange = nativeSel && sel.getRanges()[ 0 ];
+								savedRange = nativeSel && sel.getRanges().getItem( 0 );
 
 								checkSelectionChangeTimeout.call( editor );
 							}
@@ -647,20 +647,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				if ( cache.ranges && !writeMode )
 					return cache.ranges;
 				else if ( !cache.ranges )
-					cache.ranges = func.call( this );
+					cache.ranges = new CKEDITOR.dom.rangeList( func.call( this ) );
 
 				// Split range into multiple by read-only nodes.
 				if ( writeMode )
 				{
 					var ranges = cache.ranges;
-					for ( var i = 0; i < ranges.length; i++ )
+					for ( var i = 0; i < ranges.count(); i++ )
 					{
-						var range = ranges[ i ];
+						var range = ranges.getItem( i );
 
 						// Drop range spans inside one ready-only node.
 						var parent = range.getCommonAncestor();
 						if ( parent.isReadOnly())
-							ranges.splice( i, 1 );
+							ranges.remove( i );
 
 						if ( range.collapsed )
 							continue;
@@ -686,7 +686,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								var newRange = range.clone();
 								range.setEndBefore( next );
 								newRange.setStartAfter( next );
-								ranges.splice( i + 1, 0, newRange );
+								ranges.add( newRange, i + 1 );
 								break;
 							}
 
@@ -723,7 +723,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				case CKEDITOR.SELECTION_TEXT :
 
-					var range = this.getRanges()[0];
+					var range = this.getRanges().getItem( 0 );
 
 					if ( range )
 					{
@@ -897,7 +897,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				this._.cache.selectedElement = element;
 				this._.cache.startElement = element;
-				this._.cache.ranges = [ range ];
+				this._.cache.ranges = new CKEDITOR.dom.rangeList( range );
 				this._.cache.type = CKEDITOR.SELECTION_ELEMENT;
 
 				return;
@@ -943,13 +943,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 		},
 
-		selectRanges : function( ranges )
+		selectRanges : function( rangeList )
 		{
 			if ( this.isLocked )
 			{
 				this._.cache.selectedElement = null;
-				this._.cache.startElement = ranges[ 0 ].getTouchedStartNode();
-				this._.cache.ranges = ranges;
+				this._.cache.startElement = rangeList.getItem( 0 ).getTouchedStartNode();
+				this._.cache.ranges = rangeList;
 				this._.cache.type = CKEDITOR.SELECTION_TEXT;
 
 				return;
@@ -957,34 +957,33 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			if ( CKEDITOR.env.ie )
 			{
-				if ( ranges.length > 1 )
+				var first = rangeList.getItem( 0 );
+				if ( rangeList.count() > 1 )
 				{
 					// IE doesn't accept multiple ranges selection, so we join all into one.
-					var last = ranges[ ranges.length -1 ] ;
-					ranges[ 0 ].setEnd( last.endContainer, last.endOffset );
-					ranges.length = 1;
+					var last = rangeList.getItem( rangeList.count() - 1 );
+					first.setEnd( last.endContainer, last.endOffset );
 				}
 
-				if ( ranges[ 0 ] )
-					ranges[ 0 ].select();
-
+				first.select();
 				this.reset();
 			}
 			else
 			{
 				var sel = this.getNative();
 
-				if ( ranges.length )
+				if ( rangeList.count() )
 					sel.removeAllRanges();
 
-				for ( var i = 0 ; i < ranges.length ; i++ )
+				for ( var i = 0 ; i < rangeList.count() ; i++ )
 				{
-					if ( i < ranges.length -1 )
+					if ( i < rangeList.count() -1 )
 					{
-						var left = ranges[ i  ], right = ranges[ i +1 ];
-						var between = left.clone();
+						var left = rangeList.getItem( i ), right = rangeList.getItem( i + 1 ),
+								between = left.clone();
+
 						between.setStart( left.endContainer, left.endOffset );
-						between.setEnd( right.startContainer, left.startOffset );
+						between.setEnd( right.startContainer, right.startOffset );
 
 						if ( !between.collapsed )
 						{
@@ -993,14 +992,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							if ( parent.isReadOnly())
 							{
 								left.setEnd( right.endContainer, right.endOffset );
-								ranges.splice( i + 1, 1 );
+								rangeList.remove( i + 1 );
 							}
 						}
 					}
 
-					var range = ranges[ i ];
-					var nativeRange = this.document.$.createRange();
-					var startContainer = range.startContainer;
+					var range = rangeList.getItem( i ),
+						nativeRange = this.document.$.createRange(),
+						startContainer = range.startContainer;
 
 					// In FF2, if we have a collapsed range, inside an empty
 					// element, we must add something to it otherwise the caret
@@ -1026,55 +1025,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		createBookmarks : function( serializable )
 		{
-			var retval = [],
-				ranges = this.getRanges(),
-				length = ranges.length,
-				bookmark;
-			for ( var i = 0; i < length ; i++ )
-			{
-			    retval.push( bookmark = ranges[ i ].createBookmark( serializable, true ) );
-
-				serializable = bookmark.serializable;
-
-				var bookmarkStart = serializable ? this.document.getById( bookmark.startNode ) : bookmark.startNode,
-					bookmarkEnd = serializable ? this.document.getById( bookmark.endNode ) : bookmark.endNode;
-
-			    // Updating the offset values for rest of ranges which have been mangled(#3256).
-			    for ( var j = i + 1 ; j < length ; j++ )
-			    {
-			        var dirtyRange = ranges[ j ],
-			               rangeStart = dirtyRange.startContainer,
-			               rangeEnd = dirtyRange.endContainer;
-
-			       rangeStart.equals( bookmarkStart.getParent() ) && dirtyRange.startOffset++;
-			       rangeStart.equals( bookmarkEnd.getParent() ) && dirtyRange.startOffset++;
-			       rangeEnd.equals( bookmarkStart.getParent() ) && dirtyRange.endOffset++;
-			       rangeEnd.equals( bookmarkEnd.getParent() ) && dirtyRange.endOffset++;
-			    }
-			}
-
-			return retval;
+			return this.getRanges().createBookmarks( serializable );
 		},
 
 		createBookmarks2 : function( normalized )
 		{
-			var bookmarks = [],
-				ranges = this.getRanges();
-
-			for ( var i = 0 ; i < ranges.length ; i++ )
-				bookmarks.push( ranges[i].createBookmark2( normalized ) );
-
-			return bookmarks;
+			return this.getRanges().createBookmarks2( normalized );
 		},
 
 		selectBookmarks : function( bookmarks )
 		{
-			var ranges = [];
+			var ranges = new CKEDITOR.dom.rangeList();
 			for ( var i = 0 ; i < bookmarks.length ; i++ )
 			{
 				var range = new CKEDITOR.dom.range( this.document );
-				range.moveToBookmark( bookmarks[i] );
-				ranges.push( range );
+				range.moveToBookmark( bookmarks[ i ] );
+				ranges.add( range );
 			}
 			this.selectRanges( ranges );
 			return this;

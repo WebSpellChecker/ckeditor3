@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -251,8 +251,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					this.removeHighlight();
 
 				// Apply the highlight.
-				var range = this.toDomRange();
+				var range = this.toDomRange(),
+					bookmark = range.createBookmark();
 				highlightStyle.applyToRange( range );
+				range.moveToBookmark( bookmark );
 				this._.highlightRange = range;
 
 				// Scroll the editor to the highlighted area.
@@ -273,7 +275,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				if ( !this._.highlightRange )
 					return;
 
+				var bookmark = this._.highlightRange.createBookmark();
 				highlightStyle.removeFromRange( this._.highlightRange );
+				this._.highlightRange.moveToBookmark( bookmark );
 				this.updateFromDomRange( this._.highlightRange );
 				this._.highlightRange = null;
 			},
@@ -562,10 +566,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var searchRange,
 				sel = editor.getSelection(),
+				ranges,
 				body = editor.document.getBody();
-			if ( sel && !isDefault )
+
+			if ( !isDefault && sel
+				 && ( ranges = sel.getRanges() ) && ranges.count() )
 			{
-				searchRange = sel.getRanges()[ 0 ].clone();
+				searchRange = ranges.getItem( 0 ).clone();
 				searchRange.collapse( true );
 			}
 			else

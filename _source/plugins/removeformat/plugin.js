@@ -37,7 +37,7 @@ CKEDITOR.plugins.removeformat =
 				var filter = CKEDITOR.plugins.removeformat.filter;
 				var ranges = editor.getSelection().getRanges( true );
 
-				for ( var i = ranges.length - 1, range ; range = ranges[ i ] ; i-- )
+				for ( var range, i = 0 ; i < ranges.count() ; i++ )
 				{
 					if ( range.collapsed )
 						continue;

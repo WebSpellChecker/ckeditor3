@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -370,9 +370,6 @@ CKEDITOR.STYLE_OBJECT = 3;
 		// Get the DTD definition for the element. Defaults to "span".
 		var dtd = CKEDITOR.dtd[ elementName ] || ( isUnknownElement = true, CKEDITOR.dtd.span );
 
-		// Bookmark the range so we can re-select it after processing.
-		var bookmark = range.createBookmark();
-
 		// Expand the range.
 		range.enlarge( CKEDITOR.ENLARGE_ELEMENT );
 		range.trim();
@@ -540,7 +537,6 @@ CKEDITOR.STYLE_OBJECT = 3;
 
 		firstNode.remove();
 		lastNode.remove();
-		range.moveToBookmark( bookmark );
 		// Minimize the result range to exclude empty text nodes. (#5374)
 		range.shrink( CKEDITOR.SHRINK_TEXT );
 	}
@@ -1261,18 +1257,18 @@ CKEDITOR.STYLE_OBJECT = 3;
 
 	function applyStyle( document, remove )
 	{
-		// Get all ranges from the selection.
-		var selection = document.getSelection();
-		var ranges = selection.getRanges( true );
+		var selection = document.getSelection(),
+			// Bookmark the range so we can re-select it after processing.
+			bookmarks = selection.createBookmarks(),
+			ranges = selection.getRanges( true ),
+			func = remove ? this.removeFromRange : this.applyToRange,
+			range;
 
-		var func = remove ? this.removeFromRange : this.applyToRange;
+		var iterator = ranges.createIterator();
+		while ( range = iterator.getNextRange() )
+			func.call( this, range );
 
-		// Apply the style to the ranges.
-		for ( var i = ranges.length -1 ; i >= 0 ; i-- )
-			func.call( this, ranges[ i ] );
-
-		// Select the ranges again.
-		selection.selectRanges( ranges );
+		selection.selectBookmarks( bookmarks );
 	}
 })();
 

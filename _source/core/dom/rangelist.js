@@ -22,12 +22,143 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		else if ( ranges instanceof CKEDITOR.dom.range )
 			ranges = [ ranges ];
 
-		this._ =
-		{
-			ranges : ranges,
-			count : ranges.length
-		}
+		return CKEDITOR.tools.extend( ranges, methods );
+	};
 
+	var methods =
+	/** @lends CKEDITOR.dom.rangeList.prototype */
+	{
+			/**
+			 * Inserting the specified range object at the end/specified position.
+			 * @param {CKEDITOR.dom.range} range
+			 * @example
+			 * var rangeList = new CKEDITOR.dom.rangeList();
+			 * var range = new CKEDITOR.dom.range();
+			 * ...
+			 * rangeList.add( range );
+			 * alert( rangeList.getItem( 0 ) );
+			 */
+			add : function( range, index )
+			{
+				this.splice( index || 0, 0, range );
+			},
+
+			remove : function( index )
+			{
+				this.splice( index, 1 );
+			},
+
+			replace : function( index, newRange )
+			{
+				this.splice( index, 1, newRange );
+			},
+
+			/**
+			 * Retrieve range at the specified position.
+			 * @param index
+			 */
+			getItem : function( index )
+			{
+				return this[ index ] || null;
+			},
+
+			count : function()
+			{
+				return this.length;
+			},
+
+			/**
+			 * Create an instance of rangeList iterator, it should be only used when
+			 * the processing of range is DOM destructive, which means it will possibly
+			 * pollute other ranges in this list.
+			 * Otherwise, it's enough to iterate with {@link #getItem}
+			 * in a for loop.
+			 * @returns {CKEDITOR.dom.rangeListIterator}
+			 */
+			createIterator : function()
+			{
+				var rangeList = this,
+					bookmarks = [],
+					current;
+
+				/**
+				 * @lends CKEDITOR.dom.rangeListIterator.prototype
+				 */
+				return {
+
+					/**
+					 * Iterate over the next range in this list.
+					 */
+					getNextRange : function()
+					{
+						current = current == undefined ? 0 : current + 1;
+
+						var range = rangeList[ current ];
+
+						// Multiple ranges might be mangled by each other.
+						if ( range && rangeList.length > 1 )
+						{
+							// Bookmarking all other ranges on the first iteration,
+							// the range correctness after it doesn't matter since we'll
+							// restore them before the next iteration.
+							if ( current == 0 )
+							{
+								// Make sure bookmark correctness by reverse processing.
+								for ( var i = rangeList.length - 1 ; i > 0 ; i-- )
+									bookmarks.unshift( rangeList[ i ].createBookmark() );
+							}
+							else
+								range.moveToBookmark( bookmarks.shift() );
+						}
+
+						return range;
+					}
+				};
+			},
+
+			/**
+			 * @param serializable
+			 */
+			createBookmarks : function( serializable )
+			{
+				var retval = [], bookmark;
+				for ( var i = 0; i < this.length ; i++ )
+				{
+					retval.push( bookmark = this[ i ].createBookmark( serializable, true) );
+
+					// Updating the container & offset values for ranges
+					// that have been touched.
+					for ( var j = i + 1; j < this.length; j++ )
+					{
+						this[ j ] = updateDirtyRange( bookmark, this[ j ] );
+						this[ j ] = updateDirtyRange( bookmark, this[ j ], true );
+					}
+				}
+				return retval;
+			},
+
+			/**
+			 * @param normalized
+			 */
+			createBookmarks2 : function( normalized )
+			{
+				var bookmarks = [];
+
+				for ( var i = 0 ; i < this.length ; i++ )
+					bookmarks.push( this[ i ].createBookmark2( normalized ) );
+
+				return bookmarks;
+			},
+
+			/**
+			 * Apply each of the supplied bookmarks to the corresponding range at the index.
+			 * @param bookmarks
+			 */
+			moveToBookmarks :  function( bookmarks )
+			{
+				for ( var i = 0 ; i < this.length ; i++ )
+					this[ i ].moveToBookmark( bookmarks[ i ] );
+			}
 	};
 
 	// Update the specified range which has been mangled by previous insertion of
@@ -71,140 +202,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	 * @constructor
 	 * @example
 	 */
-
-	CKEDITOR.dom.rangeList.prototype = {
-		/**
-		 * Inserting the specified range object at the end/specified position.
-		 * @param {CKEDITOR.dom.range} range
-		 * @example
-		 * var rangeList = new CKEDITOR.dom.rangeList();
-		 * var range = new CKEDITOR.dom.range();
-		 * ...
-		 * rangeList.add( range );
-		 * alert( rangeList.getItem( 0 ) );
-		 */
-		add : function( range, index )
-		{
-			this._.ranges.splice( index || 0, 0, range );
-			this._.count++;
-		},
-		
-		remove : function( index )
-		{
-			this._.ranges.splice( index, 1 );
-			this._.count--;
-		},
-
-		replace : function( index, newRange )
-		{
-			this._.ranges.splice( index, 1, newRange );
-		},
-
-		/**
-		 * Retrieve range at the specified position.
-		 * @param index
-		 */
-		getItem : function( index )
-		{
-			return this._.ranges[ index ] || null;
-		},
-
-		count : function()
-		{
-			return this._.count;
-		},
-
-		/**
-		 * Create an instance of rangeList iterator, it should be only used when
-		 * the processing of range is DOM destructive, which means it will possibly
-		 * pollute other ranges in this list.
-		 * Otherwise, it's enough to iterate with {@link #getItem}
-		 * in a for loop.
-		 * @returns {CKEDITOR.dom.rangeListIterator}
-		 */
-		createIterator : function()
-		{
-			var rangeList = this,
-				bookmarks = [],
-				current;
-
-			return {
-
-				/**
-				 * Iterate over the next range in this list.
-				 * @memberOf  CKEDITOR.dom.rangeListIterator.prototype
-				 */
-				getNextRange : function()
-				{
-					current = current == undefined ? 0 : current + 1;
-
-					var range = rangeList.getItem( current );
-
-					// Multiple ranges might be mangled by each other.
-					if ( range && rangeList.count() > 1 )
-					{
-						// Bookmarking all other ranges on the first iteration,
-						// the range correctness after it doesn't matter since we'll
-						// restore them before the next iteration.
-						if ( current == 0 )
-						{
-							// Make sure bookmark correctness by reverse processing.
-							for ( var i = rangeList.count() - 1 ; i > 0 ; i-- )
-								bookmarks.unshift( rangeList.getItem( i ).createBookmark() );
-						}
-						else
-							range.moveToBookmark( bookmarks.shift() );
-					}
-
-					return range;
-				}
-			};
-		},
-
-		/**
-		 * @param serializable
-		 */
-		createBookmarks : function( serializable )
-		{
-			var retval = [], bookmark;
-			for ( var i = 0; i < this._.count ; i++ )
-			{
-				retval.push( bookmark = this._.ranges[ i ].createBookmark( serializable, true) );
-
-				// Updating the container & offset values for ranges
-				// that have been touched.
-				for ( var j = i + 1; j < this._.count; j++ )
-				{
-					this._.ranges[ j ] = updateDirtyRange( bookmark, this._.ranges[ j ] );
-					this._.ranges[ j ] = updateDirtyRange( bookmark, this._.ranges[ j ], true );
-				}
-			}
-			return retval;
-		},
-
-		/**
-		 * @param normalized
-		 */
-		createBookmarks2 : function( normalized )
-		{
-			var bookmarks = [];
-
-			for ( var i = 0 ; i < this._.ranges.length ; i++ )
-				bookmarks.push( this._.ranges[ i ].createBookmark2( normalized ) );
-
-			return bookmarks;
-		},
-
-		/**
-		 * Apply each of the supplied bookmarks to the corresponding range at the index.
-		 * @param bookmarks
-		 */
-		moveToBookmarks :  function( bookmarks )
-		{
-			for ( var i = 0 ; i < this._.ranges.length ; i++ )
-				this._.ranges[ i ].moveToBookmark( bookmarks[ i ] );
-		}
-	};
 
 
 } )();

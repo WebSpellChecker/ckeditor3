@@ -385,11 +385,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			var doc = editor.document,
 				selection = editor.getSelection(),
-				ranges = selection && selection.getRanges( true ),
-				range;
+				ranges = selection && selection.getRanges( true );
 
 			// There should be at least one selected range.
-			if ( !ranges.count() )
+			if ( !ranges || ranges.length < 1 )
 				return;
 
 			// Midas lists rule #1 says we can create a list even in an empty document.
@@ -404,24 +403,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					var paragraph = doc.createElement( editor.config.enterMode == CKEDITOR.ENTER_P ? 'p' :
 							( editor.config.enterMode == CKEDITOR.ENTER_DIV ? 'div' : 'br' ) );
 					paragraph.appendTo( body );
-					ranges = new CKEDITOR.dom.rangeList( new CKEDITOR.dom.range( doc ) );
+					ranges = [ new CKEDITOR.dom.range( doc ) ];
 					// IE exception on inserting anything when anchor inside <br>.
 					if ( paragraph.is( 'br' ) )
 					{
-						ranges.getItem( 0 ).setStartBefore( paragraph );
-						ranges.getItem( 0 ).setEndAfter( paragraph );
+						ranges[ 0 ].setStartBefore( paragraph );
+						ranges[ 0 ].setEndAfter( paragraph );
 					}
 					else
-						ranges.getItem( 0 ).selectNodeContents( paragraph );
-
+						ranges[ 0 ].selectNodeContents( paragraph );
 					selection.selectRanges( ranges );
 				}
 				// Maybe a single range there enclosing the whole list,
 				// turn on the list state manually(#4129).
 				else
 				{
-					range = ranges.count() == 1 && ranges.getItem( 0 );
-					var enclosedNode = range && range.getEnclosedNode();
+					var range = ranges.length == 1 && ranges[ 0 ],
+						enclosedNode = range && range.getEnclosedNode();
 					if ( enclosedNode && enclosedNode.is
 						&& this.type == enclosedNode.getName() )
 					{
@@ -437,9 +435,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var listGroups = [],
 				database = {};
 
-			for ( range, i = 0 ; i < ranges.count() ; i++ )
+			while ( ranges.length > 0 )
 			{
-				range = ranges.getItem( i );
+				range = ranges.pop();
 
 				var boundaryNodes = range.getBoundaryNodes(),
 					startNode = boundaryNodes.startNode,
@@ -467,7 +465,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						element;
 
 					// First, try to group by a list ancestor.
-					for ( var j = pathElementsCount - 1; j >= 0 && ( element = pathElements[ j ] ); j-- )
+					for ( var i = pathElementsCount - 1; i >= 0 && ( element = pathElements[ i ] ); i-- )
 					{
 						if ( listNodeNames[ element.getName() ]
 							 && blockLimit.contains( element ) )     // Don't leak outside block limit (#3940).

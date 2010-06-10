@@ -41,9 +41,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 		}
 
-		for ( var i = 0 ; i < ranges.count() ; i++ )
+		for ( var i = 0 ; i < ranges.length ; i++ )
 		{
-			var range = ranges.getItem( i );
+			var range = ranges[ i ];
 
 			if ( range.collapsed )
 			{
@@ -768,9 +768,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						// Maintain the selection point at where the table was deleted.
 						selection.selectElement( table );
-						var ranges = selection.getRanges();
-						ranges.getItem( 0 ).collapse();
-						selection.selectRanges( ranges );
+						var range = selection.getRanges()[0];
+						range.collapse();
+						selection.selectRanges( [ range ] );
 
 						// If the table's parent has only one child, remove it,except body,as well.( #5416 )
 						var parent = table.getParent();

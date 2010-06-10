@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -47,8 +47,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var state = editor.getCommand( 'blockquote' ).state,
 				selection = editor.getSelection(),
-				ranges = selection && selection.getRanges( true ),
-				range = ranges.count() && ranges.getItem( 0 );
+				range = selection && selection.getRanges( true )[0];
 
 			if ( !range )
 				return;

@@ -22,56 +22,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		else if ( ranges instanceof CKEDITOR.dom.range )
 			ranges = [ ranges ];
 
-		return CKEDITOR.tools.extend( ranges, methods );
+		return CKEDITOR.tools.extend( ranges, mixins );
 	};
 
-	var methods =
+	var mixins =
 	/** @lends CKEDITOR.dom.rangeList.prototype */
 	{
-			/**
-			 * Inserting the specified range object at the end/specified position.
-			 * @param {CKEDITOR.dom.range} range
-			 * @example
-			 * var rangeList = new CKEDITOR.dom.rangeList();
-			 * var range = new CKEDITOR.dom.range();
-			 * ...
-			 * rangeList.add( range );
-			 * alert( rangeList.getItem( 0 ) );
-			 */
-			add : function( range, index )
-			{
-				this.splice( index || 0, 0, range );
-			},
-
-			remove : function( index )
-			{
-				this.splice( index, 1 );
-			},
-
-			replace : function( index, newRange )
-			{
-				this.splice( index, 1, newRange );
-			},
-
-			/**
-			 * Retrieve range at the specified position.
-			 * @param index
-			 */
-			getItem : function( index )
-			{
-				return this[ index ] || null;
-			},
-
-			count : function()
-			{
-				return this.length;
-			},
-
 			/**
 			 * Create an instance of rangeList iterator, it should be only used when
 			 * the processing of range is DOM destructive, which means it will possibly
 			 * pollute other ranges in this list.
-			 * Otherwise, it's enough to iterate with {@link #getItem}
+			 * Otherwise, it's enough to just iterate over this array.
 			 * in a for loop.
 			 * @returns {CKEDITOR.dom.rangeListIterator}
 			 */

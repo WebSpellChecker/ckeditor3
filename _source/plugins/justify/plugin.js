@@ -79,9 +79,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var cssClassName = this.cssClassName,
 				iterator,
 				block;
-			for ( var i = ranges.count() - 1 ; i >= 0 ; i-- )
+			for ( var i = ranges.length - 1 ; i >= 0 ; i-- )
 			{
-				iterator = ranges.getItem( i ).createIterator();
+				iterator = ranges[ i ].createIterator();
 				iterator.enlargeBr = enterMode != CKEDITOR.ENTER_BR;
 
 				while ( ( block = iterator.getNextParagraph() ) )

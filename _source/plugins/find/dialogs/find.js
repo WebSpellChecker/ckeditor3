@@ -566,13 +566,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var searchRange,
 				sel = editor.getSelection(),
-				ranges,
 				body = editor.document.getBody();
-
-			if ( !isDefault && sel
-				 && ( ranges = sel.getRanges() ) && ranges.count() )
+			if ( sel && !isDefault )
 			{
-				searchRange = ranges.getItem( 0 ).clone();
+				searchRange = sel.getRanges()[ 0 ].clone();
 				searchRange.collapse( true );
 			}
 			else

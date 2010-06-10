@@ -242,7 +242,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									return;
 								}
 
-								savedRange = nativeSel && sel.getRanges().getItem( 0 );
+								savedRange = nativeSel && sel.getRanges()[ 0 ];
 
 								checkSelectionChangeTimeout.call( editor );
 							}
@@ -653,14 +653,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				if ( writeMode )
 				{
 					var ranges = cache.ranges;
-					for ( var i = 0; i < ranges.count(); i++ )
+					for ( var i = 0; i < ranges.length; i++ )
 					{
-						var range = ranges.getItem( i );
+						var range = ranges[ i ];
 
 						// Drop range spans inside one ready-only node.
 						var parent = range.getCommonAncestor();
 						if ( parent.isReadOnly())
-							ranges.remove( i );
+							ranges.splice( i, 1 );
 
 						if ( range.collapsed )
 							continue;
@@ -686,7 +686,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								var newRange = range.clone();
 								range.setEndBefore( next );
 								newRange.setStartAfter( next );
-								ranges.add( newRange, i + 1 );
+								ranges.splice( i + 1, 0, newRange );
 								break;
 							}
 
@@ -723,7 +723,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				case CKEDITOR.SELECTION_TEXT :
 
-					var range = this.getRanges().getItem( 0 );
+					var range = this.getRanges()[0];
 
 					if ( range )
 					{
@@ -943,13 +943,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 		},
 
-		selectRanges : function( rangeList )
+		selectRanges : function( ranges )
 		{
 			if ( this.isLocked )
 			{
 				this._.cache.selectedElement = null;
-				this._.cache.startElement = rangeList.getItem( 0 ).getTouchedStartNode();
-				this._.cache.ranges = rangeList;
+				this._.cache.startElement = ranges[ 0 ].getTouchedStartNode();
+				this._.cache.ranges = ranges;
 				this._.cache.type = CKEDITOR.SELECTION_TEXT;
 
 				return;
@@ -957,33 +957,34 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			if ( CKEDITOR.env.ie )
 			{
-				var first = rangeList.getItem( 0 );
-				if ( rangeList.count() > 1 )
+				if ( ranges.length > 1 )
 				{
 					// IE doesn't accept multiple ranges selection, so we join all into one.
-					var last = rangeList.getItem( rangeList.count() - 1 );
-					first.setEnd( last.endContainer, last.endOffset );
+					var last = ranges[ ranges.length -1 ] ;
+					ranges[ 0 ].setEnd( last.endContainer, last.endOffset );
+					ranges.length = 1;
 				}
 
-				first.select();
+				if ( ranges[ 0 ] )
+					ranges[ 0 ].select();
+
 				this.reset();
 			}
 			else
 			{
 				var sel = this.getNative();
 
-				if ( rangeList.count() )
+				if ( ranges.length )
 					sel.removeAllRanges();
 
-				for ( var i = 0 ; i < rangeList.count() ; i++ )
+				for ( var i = 0 ; i < ranges.length ; i++ )
 				{
-					if ( i < rangeList.count() -1 )
+					if ( i < ranges.length -1 )
 					{
-						var left = rangeList.getItem( i ), right = rangeList.getItem( i + 1 ),
-								between = left.clone();
-
+						var left = ranges[ i  ], right = ranges[ i +1 ];
+						var between = left.clone();
 						between.setStart( left.endContainer, left.endOffset );
-						between.setEnd( right.startContainer, right.startOffset );
+						between.setEnd( right.startContainer, left.startOffset );
 
 						if ( !between.collapsed )
 						{
@@ -992,14 +993,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							if ( parent.isReadOnly())
 							{
 								left.setEnd( right.endContainer, right.endOffset );
-								rangeList.remove( i + 1 );
+								ranges.splice( i + 1, 1 );
 							}
 						}
 					}
 
-					var range = rangeList.getItem( i ),
-						nativeRange = this.document.$.createRange(),
-						startContainer = range.startContainer;
+					var range = ranges[ i ];
+					var nativeRange = this.document.$.createRange();
+					var startContainer = range.startContainer;
 
 					// In FF2, if we have a collapsed range, inside an empty
 					// element, we must add something to it otherwise the caret
@@ -1035,12 +1036,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		selectBookmarks : function( bookmarks )
 		{
-			var ranges = new CKEDITOR.dom.rangeList();
+			var ranges = [];
 			for ( var i = 0 ; i < bookmarks.length ; i++ )
 			{
 				var range = new CKEDITOR.dom.range( this.document );
-				range.moveToBookmark( bookmarks[ i ] );
-				ranges.add( range );
+				range.moveToBookmark( bookmarks[i] );
+				ranges.push( range );
 			}
 			this.selectRanges( ranges );
 			return this;

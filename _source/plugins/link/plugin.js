@@ -177,7 +177,7 @@ CKEDITOR.plugins.link =
 	getSelectedLink : function( editor )
 	{
 		var range;
-		try { range  = editor.getSelection().getRanges().getItem( 0 ); }
+		try { range  = editor.getSelection().getRanges()[ 0 ]; }
 		catch( e ) { return null; }
 
 		range.shrink( CKEDITOR.SHRINK_TEXT );
@@ -205,14 +205,13 @@ CKEDITOR.unlinkCommand.prototype =
 			rangeRoot,
 			element;
 
-		for ( var range, i = 0 ; i < ranges.count() ; i++ )
+		for ( var i = 0 ; i < ranges.length ; i++ )
 		{
-			range = ranges.getItem( i );
-			rangeRoot = range.getCommonAncestor( true );
+			rangeRoot = ranges[i].getCommonAncestor( true );
 			element = rangeRoot.getAscendant( 'a', true );
 			if ( !element )
 				continue;
-			range.selectNodeContents( element );
+			ranges[i].selectNodeContents( element );
 		}
 
 		selection.selectRanges( ranges );

@@ -685,8 +685,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							{
 								var newRange = range.clone();
 								range.setEndBefore( next );
+
+								// Drop collapsed range around read-only elements,
+								// it make sure the range list empty when selecting
+								// only non-editable elements.
+								if ( range.collapsed )
+									ranges.splice( i--, 1 );
 								newRange.setStartAfter( next );
-								ranges.splice( i + 1, 0, newRange );
+
+								if ( !newRange.collapsed )
+									ranges.splice( i + 1, 0, newRange );
 								break;
 							}
 

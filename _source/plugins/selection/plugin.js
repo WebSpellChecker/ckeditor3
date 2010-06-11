@@ -475,6 +475,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					return ( cache.type = type );
 				},
 
+		/**
+		 * Retrieve the DOM ranges that present this selection..
+		 * @param {Boolean} onlyEditables Skip non-editable elements by splitting the range into multiple.  
+		 * @return {CKEDITOR.dom.ranges} ranges
+		 */
 		getRanges : (function ()
 		{
 			var func = CKEDITOR.env.ie ?
@@ -987,21 +992,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				for ( var i = 0 ; i < ranges.length ; i++ )
 				{
+					// Joining sequential ranges introduced by
+					// readonly elements protection.
 					if ( i < ranges.length -1 )
 					{
-						var left = ranges[ i  ], right = ranges[ i +1 ];
-						var between = left.clone();
+						var left = ranges[ i ], right = ranges[ i +1 ],
+								between = left.clone();
 						between.setStart( left.endContainer, left.endOffset );
-						between.setEnd( right.startContainer, left.startOffset );
+						between.setEnd( right.startContainer, right.startOffset );
 
+						// Don't confused by Firefox adjancent multi-ranges
+						// introduced by table cells selection.
 						if ( !between.collapsed )
 						{
 							between.shrink( CKEDITOR.NODE_ELEMENT, true );
-							var parent = between.getCommonAncestor();
-							if ( parent.isReadOnly())
+							if ( between.getCommonAncestor().isReadOnly())
 							{
-								left.setEnd( right.endContainer, right.endOffset );
-								ranges.splice( i + 1, 1 );
+								right.setStart( left.startContainer, left.startOffset );
+								ranges.splice( i--, 1 );
+								continue;
 							}
 						}
 					}

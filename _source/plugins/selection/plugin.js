@@ -641,16 +641,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					return ranges;
 				};
 
-			return function( writeMode )
+			return function( onlyEditables )
 			{
 				var cache = this._.cache;
-				if ( cache.ranges && !writeMode )
+				if ( cache.ranges && !onlyEditables )
 					return cache.ranges;
 				else if ( !cache.ranges )
 					cache.ranges = new CKEDITOR.dom.rangeList( func.call( this ) );
 
 				// Split range into multiple by read-only nodes.
-				if ( writeMode )
+				if ( onlyEditables )
 				{
 					var ranges = cache.ranges;
 					for ( var i = 0; i < ranges.length; i++ )

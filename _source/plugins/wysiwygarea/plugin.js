@@ -16,15 +16,24 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	// Matching an empty paragraph at the end of document.
 	var emptyParagraphRegexp = /\s*<(p|div|address|h\d|center)[^>]*>\s*(?:<br[^>]*>|&nbsp;|\u00A0|&#160;)?\s*(:?<\/\1>)?\s*(?=$|<\/body>)/gi;
 
+	function checkReadOnly( selection )
+	{
+		return selection.getCommonAncestor().isReadOnly();
+	}
+
 	function onInsertHtml( evt )
 	{
 		if ( this.mode == 'wysiwyg' )
 		{
 			this.focus();
+
+			var selection = this.getSelection();
+			if ( checkReadOnly( selection ) )
+				return;
+
+			var data = evt.data
 			this.fire( 'saveSnapshot' );
 
-			var selection = this.getSelection(),
-				data = evt.data;
 
 			if ( this.dataProcessor )
 				data = this.dataProcessor.toHtml( data );
@@ -59,17 +68,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		if ( this.mode == 'wysiwyg' )
 		{
 			this.focus();
+
+			var selection = this.getSelection();
+			if ( checkReadOnly( selection ) )
+				return;
+
 			this.fire( 'saveSnapshot' );
 
-			var element = evt.data,
+			var ranges = selection.getRanges(),
+				element = evt.data,
 				elementName = element.getName(),
 				isBlock = CKEDITOR.dtd.$block[ elementName ];
-
-			var selection = this.getSelection(),
-				ranges = selection.getRanges( true );
-
-			if ( !ranges.length )
-				return;
 
 			var selIsLocked = selection.isLocked;
 

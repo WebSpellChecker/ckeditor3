@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -14,8 +14,11 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 
 	var insertSpecialChar = function ( specialChar )
 	{
-		var selection = editor.getSelection(),
-			ranges = selection.getRanges( true ),
+		var selection = editor.getSelection();
+		if ( selection.getCommonAncestor().isReadOnly())
+				return;
+
+		var ranges = selection.getRanges(),
 			range, textNode;
 
 		editor.fire( 'saveSnapshot' );

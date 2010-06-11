@@ -456,6 +456,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				while ( ( block = iterator.getNextParagraph() ) )
 				{
+					// Avoid duplicate blocks get processed across ranges.
+					if( block.getCustomData( 'list_block' ) )
+						continue;
+					else
+						CKEDITOR.dom.element.setMarker( database, block, 'list_block', 1 );
+
 					var path = new CKEDITOR.dom.elementPath( block ),
 						pathElements = path.elements,
 						pathElementsCount = pathElements.length,
@@ -475,7 +481,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// no longer be valid. Since paragraphs after the list
 							// should belong to a different group of paragraphs before
 							// the list. (Bug #1309)
-							blockLimit.removeCustomData( 'list_group_object' + index );
+							blockLimit.removeCustomData( 'list_group_object_' + index );
 
 							var groupObj = element.getCustomData( 'list_group_object' );
 							if ( groupObj )
@@ -535,7 +541,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					var sibling = listNode[ rtl ?
 						'getPrevious' : 'getNext' ]( CKEDITOR.dom.walker.whitespaces( true ) );
 					if ( sibling && sibling.getName &&
-					     sibling.getName() == listCommand.type )
+						 sibling.getName() == listCommand.type )
 					{
 						sibling.remove();
 						// Move children order by merge direction.(#3820)

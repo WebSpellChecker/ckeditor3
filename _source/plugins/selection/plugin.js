@@ -670,41 +670,57 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if ( range.collapsed )
 							continue;
 
-						var start = range.getTouchedStartNode(),
-							end = range.getTouchedEndNode(),
-							next = start;
+						var startContainer = range.startContainer,
+							endContainer = range.endContainer,
+							startOffset = range.startOffset,
+							endOffset = range.endOffset,
+							walkerRange = range.clone();
 
-						while( next )
+						// Enlarge range start/end with text node to avoid walker
+						// being DOM destructive, it doesn't interfere our checking
+						// of elements below as well.
+						if ( startContainer && startContainer.type == CKEDITOR.NODE_TEXT )
 						{
-							// End of range.
-							if ( end.getPosition( next ) &&
-									!( end.getPosition( next )
-										& ( CKEDITOR.POSITION_FOLLOWING | CKEDITOR.POSITION_CONTAINS ) ) )
-							{
-								break;
-							}
+							if ( startOffset >= startContainer.getLength() )
+								walkerRange.setStartAfter( startContainer );
+							else
+								walkerRange.setStartBefore( startContainer );
+						}
 
-							// Encompass read-only node, split up range around it.
-							if ( next.type == CKEDITOR.NODE_ELEMENT
-								&& next.getAttribute( 'contenteditable' ) == 'false' )
+						if ( endContainer && endContainer.type == CKEDITOR.NODE_TEXT )
+						{
+							if ( !endOffset )
+								walkerRange.setEndBefore( endContainer );
+							else
+								walkerRange.setEndAfter( endContainer );
+						}
+
+						// Looking for non-editable element inside the range.
+						var walker = new CKEDITOR.dom.walker( walkerRange );
+						walker.evaluator = function( node )
+						{
+							if ( node.type == CKEDITOR.NODE_ELEMENT
+								&& node.getAttribute( 'contenteditable' ) == 'false' )
 							{
 								var newRange = range.clone();
-								range.setEndBefore( next );
+								range.setEndBefore( node );
 
 								// Drop collapsed range around read-only elements,
 								// it make sure the range list empty when selecting
 								// only non-editable elements.
 								if ( range.collapsed )
 									ranges.splice( i--, 1 );
-								newRange.setStartAfter( next );
+								newRange.setStartAfter( node );
 
 								if ( !newRange.collapsed )
 									ranges.splice( i + 1, 0, newRange );
-								break;
+								return true;
 							}
 
-							next = next.getNextSourceNode( false, CKEDITOR.NODE_ELEMENT );
-						}
+							return false;
+						};
+
+						walker.next();
 					}
 				}
 

@@ -671,7 +671,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.node.prototype,
 
 					if ( current.getAttribute( 'contentEditable' ) == 'false' )
 						return true;
-					else if ( current.getAttribute( 'contentEditable' ) == 'false' )
+					else if ( current.getAttribute( 'contentEditable' ) == 'true' )
 						break;
 				}
 				current = current.getParent();

@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -35,9 +35,11 @@ CKEDITOR.plugins.removeformat =
 					( editor._.removeAttributes = editor.config.removeFormatAttributes.split( ',' ) );
 
 				var filter = CKEDITOR.plugins.removeformat.filter;
-				var ranges = editor.getSelection().getRanges( true );
+				var ranges = editor.getSelection().getRanges( true ),
+					iterator = ranges.createIterator(),
+					range;
 
-				for ( var i = ranges.length - 1, range ; range = ranges[ i ] ; i-- )
+				while ( range = iterator.getNextRange() )
 				{
 					if ( range.collapsed )
 						continue;

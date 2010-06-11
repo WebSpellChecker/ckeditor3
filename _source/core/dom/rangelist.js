@@ -65,8 +65,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							if ( current == 0 )
 							{
 								// Make sure bookmark correctness by reverse processing.
-								for ( var i = rangeList.length - 1 ; i > 0 ; i-- )
-									bookmarks.unshift( rangeList[ i ].createBookmark() );
+								for ( var i = rangeList.length - 1; i > 0; i-- )
+									bookmarks.unshift( rangeList[ i ].createBookmark( true ) );
 							}
 							else
 								range.moveToBookmark( bookmarks.shift() );

@@ -432,13 +432,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			// Group the blocks up because there are many cases where multiple lists have to be created,
 			// or multiple lists have to be cancelled.
-			var listGroups = [],
-				database = {},
+			var database = {},
 				rangeIterator = ranges.createIterator(),
 				index = 0;
 
 			while ( ( range = rangeIterator.getNextRange() ) && ++index )
 			{
+				var listGroups = [];
 				var boundaryNodes = range.getBoundaryNodes(),
 					startNode = boundaryNodes.startNode,
 					endNode = boundaryNodes.endNode;
@@ -505,44 +505,45 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						listGroups.push( groupObj );
 					}
 				}
-			}
 
-			// Now we have two kinds of list groups, groups rooted at a list, and groups rooted at a block limit element.
-			// We either have to build lists or remove lists, for removing a list does not makes sense when we are looking
-			// at the group that's not rooted at lists. So we have three cases to handle.
-			var listsCreated = [];
-			while ( listGroups.length > 0 )
-			{
-				groupObj = listGroups.shift();
-				if ( this.state == CKEDITOR.TRISTATE_OFF )
+				// Now we have two kinds of list groups, groups rooted at a list, and groups rooted at a block limit element.
+				// We either have to build lists or remove lists, for removing a list does not makes sense when we are looking
+				// at the group that's not rooted at lists. So we have three cases to handle.
+				var listsCreated = [];
+				while ( listGroups.length > 0 )
 				{
-					if ( listNodeNames[ groupObj.root.getName() ] )
-						changeListType.call( this, editor, groupObj, database, listsCreated );
-					else
-						createList.call( this, editor, groupObj, listsCreated );
-				}
-				else if ( this.state == CKEDITOR.TRISTATE_ON && listNodeNames[ groupObj.root.getName() ] )
-					removeList.call( this, editor, groupObj, database );
-			}
-
-			// For all new lists created, merge adjacent, same type lists.
-			for ( i = 0 ; i < listsCreated.length ; i++ )
-			{
-				listNode = listsCreated[i];
-				var mergeSibling, listCommand = this;
-				( mergeSibling = function( rtl ){
-
-					var sibling = listNode[ rtl ?
-						'getPrevious' : 'getNext' ]( CKEDITOR.dom.walker.whitespaces( true ) );
-					if ( sibling && sibling.getName &&
-					     sibling.getName() == listCommand.type )
+					groupObj = listGroups.shift();
+					if ( this.state == CKEDITOR.TRISTATE_OFF )
 					{
-						sibling.remove();
-						// Move children order by merge direction.(#3820)
-						sibling.moveChildren( listNode, rtl ? true : false );
+						if ( listNodeNames[ groupObj.root.getName() ] )
+							changeListType.call( this, editor, groupObj, database, listsCreated );
+						else
+							createList.call( this, editor, groupObj, listsCreated );
 					}
-				} )();
-				mergeSibling( true );
+					else if ( this.state == CKEDITOR.TRISTATE_ON && listNodeNames[ groupObj.root.getName() ] )
+						removeList.call( this, editor, groupObj, database );
+				}
+
+				// For all new lists created, merge adjacent, same type lists.
+				for ( i = 0 ; i < listsCreated.length ; i++ )
+				{
+					listNode = listsCreated[i];
+					var mergeSibling, listCommand = this;
+					( mergeSibling = function( rtl ){
+
+						var sibling = listNode[ rtl ?
+							'getPrevious' : 'getNext' ]( CKEDITOR.dom.walker.whitespaces( true ) );
+						if ( sibling && sibling.getName &&
+							 sibling.getName() == listCommand.type )
+						{
+							sibling.remove();
+							// Move children order by merge direction.(#3820)
+							sibling.moveChildren( listNode, rtl ? true : false );
+						}
+					} )();
+					mergeSibling( true );
+				}
+
 			}
 
 			// Clean up, restore selection and update toolbar button states.

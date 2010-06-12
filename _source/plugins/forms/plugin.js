@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -131,13 +131,13 @@ CKEDITOR.plugins.add( 'forms',
 		{
 			editor.contextMenu.addListener( function( element )
 				{
-					if ( element && element.hasAscendant( 'form', true ) )
+					if ( element && element.hasAscendant( 'form', true ) && !element.isReadOnly() )
 						return { form : CKEDITOR.TRISTATE_OFF };
 				});
 
 			editor.contextMenu.addListener( function( element )
 				{
-					if ( element )
+					if ( element && !element.isReadOnly() )
 					{
 						var name = element.getName();
 

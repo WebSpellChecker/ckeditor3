@@ -1088,7 +1088,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				editor.contextMenu.addListener( function( element, selection )
 					{
-						if ( !element )
+						if ( !element || element.isReadOnly() )
 							return null;
 
 						while ( element )

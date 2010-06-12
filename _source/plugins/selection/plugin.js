@@ -710,10 +710,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								// only non-editable elements.
 								if ( range.collapsed )
 									ranges.splice( i--, 1 );
-								newRange.setStartAfter( node );
+								
+								// Avoid creating invalid range.
+								if ( !( node.getPosition( walkerRange.endContainer ) & CKEDITOR.POSITION_CONTAINS ) )
+								{
+									newRange.setStartAfter( node );
+									if ( !newRange.collapsed )
+										ranges.splice( i + 1, 0, newRange );
+								}
 
-								if ( !newRange.collapsed )
-									ranges.splice( i + 1, 0, newRange );
 								return true;
 							}
 

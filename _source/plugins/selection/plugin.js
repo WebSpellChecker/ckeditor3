@@ -676,6 +676,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							endOffset = range.endOffset,
 							walkerRange = range.clone();
 
+						// Range may start inside a non-editable element, restart range
+						// by the end of it.
+						var readOnly;
+						if ( readOnly = startContainer.isReadOnly() )
+							range.setStartAfter( readOnly );
+
 						// Enlarge range start/end with text node to avoid walker
 						// being DOM destructive, it doesn't interfere our checking
 						// of elements below as well.
@@ -699,13 +705,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						var walker = new CKEDITOR.dom.walker( walkerRange );
 						walker.evaluator = function( node )
 						{
-							// Whether range start with a non-editable node.
-							if ( node.getPosition( walkerRange.startContainer ) & CKEDITOR.POSITION_IS_CONTAINED
-									|| node.isReadOnly() )
-							{
-								range.setStartAfter( node );
-							}
-
 							if ( node.type == CKEDITOR.NODE_ELEMENT
 								&& node.getAttribute( 'contenteditable' ) == 'false' )
 							{

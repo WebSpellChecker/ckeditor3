@@ -233,14 +233,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				if ( previousElement && previousElement.getName
 					 && !( previousElement.getName() in nonExitableElementNames )
-					 && isBlankParagraph( previousElement )
-					 && range.moveToElementEditStart( previousElement )
 					 || nextElement && nextElement.getName
-						&& !( nextElement.getName() in nonExitableElementNames )
-						&& isBlankParagraph( nextElement )
-						&& range.moveToElementEditStart( nextElement ) )
+						&& !( nextElement.getName() in nonExitableElementNames ) )
 				{
-					fixedBlock.remove();
+					if ( isBlankParagraph( previousElement ) && range.moveToElementEditStart( previousElement )
+							|| isBlankParagraph( nextElement ) && range.moveToElementEditStart( nextElement ) )
+						fixedBlock.remove();
+
+					// Firefox prefer to anchor cursor after non-editable elements
+					// when navigate to them, leaving native behavior untouched. (#5834)
+					if ( CKEDITOR.env.gecko && ( previousElement.isReadOnly() || nextElement.isReadOnly() ) )
+					{
+						range.moveToPosition( fixedBlock, CKEDITOR.POSITION_BEFORE_START );
+						fixedBlock.remove();
+					}
 				}
 			}
 

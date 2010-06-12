@@ -699,6 +699,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						var walker = new CKEDITOR.dom.walker( walkerRange );
 						walker.evaluator = function( node )
 						{
+							// Whether range start with a non-editable node.
+							if ( node.getPosition( walkerRange.startContainer ) & CKEDITOR.POSITION_IS_CONTAINED
+									|| node.isReadOnly() )
+							{
+								range.setStartAfter( node );
+							}
+
 							if ( node.type == CKEDITOR.NODE_ELEMENT
 								&& node.getAttribute( 'contenteditable' ) == 'false' )
 							{

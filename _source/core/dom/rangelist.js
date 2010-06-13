@@ -17,6 +17,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	 */
 	CKEDITOR.dom.rangeList = function( ranges )
 	{
+		if ( ranges.createIterator )
+			return ranges;
 		if ( !ranges )
 			ranges = [];
 		else if ( ranges instanceof CKEDITOR.dom.range )

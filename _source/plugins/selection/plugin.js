@@ -989,7 +989,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				this._.cache.selectedElement = null;
 				this._.cache.startElement = ranges[ 0 ].getTouchedStartNode();
-				this._.cache.ranges = ranges;
+				this._.cache.ranges = new CKEDITOR.dom.rangeList( ranges );
 				this._.cache.type = CKEDITOR.SELECTION_TEXT;
 
 				return;

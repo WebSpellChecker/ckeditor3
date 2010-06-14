@@ -362,4 +362,4 @@ CKEDITOR.dom.element.prototype.focusPrevious = function( ignoreChildren, indexTo
 CKEDITOR.config.keystrokes.push(
 	[ CKEDITOR.ALT + 38 /*Arrow Up*/, 'selectPreviousCell' ],
 	[ CKEDITOR.ALT + 40 /*Arrow Down*/, 'selectNextCell' ]
-)
+);

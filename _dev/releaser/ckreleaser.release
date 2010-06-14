@@ -1,6 +1,6 @@
 header :
 	'/*'																			+ '\n' +
-	'Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.'	+ '\n' +
+	'Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.'	+ '\n' +
 	'For licensing, see LICENSE.html or http://ckeditor.com/license'				+ '\n' +
 	'*/'																			+ '\n' +
 	'\n',
@@ -10,8 +10,6 @@ fixLineEnds : true,
 ignore :
 [
 	'_dev',
-	'_samples',
-	'_source/adapters',
 	'.svn',
 	'.settings',
 	'.project'
@@ -26,9 +24,20 @@ copy :
 	},
 
 	{
+		source : '_source/adapters',
+		target : 'adapters',
+		minify : true
+	},
+
+	{
 		source : '_source/plugins',
 		target : 'plugins',
-		minify : true
+		minify : true,
+		ignore :
+		{
+			sourcePackage : 'ckeditor.pack',
+			files : 'packages[1].files'
+		}
 	},
 
 	{
@@ -46,13 +55,6 @@ packages :
 [
 	'ckeditor.pack'
 ],
-
-samples :
-{
-	source : '_samples',
-	target : '_samples',
-	template : '_samples/sample.html',
-},
 
 skins :
 {

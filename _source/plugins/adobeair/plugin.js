@@ -7,16 +7,11 @@ CKEDITOR.plugins.add( 'adobeair',
 {
 	init : function( editor )
 	{
+		if ( !CKEDITOR.env.air )
+			return;
 
 		// Body doesn't get default margin on AIR. 
 		editor.addCss( 'body { padding: 8px }' );
-
-
-		// document.querySelectAll() is not presented in AIR.
-		function eachChildWithAttribute( element, name, processor )
-		{
-		};
-
 
 		var eventNameList = [ 'click', 'keydown', 'mousedown', 'keypress' ];
 

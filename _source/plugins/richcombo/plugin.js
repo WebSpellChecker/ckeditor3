@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -44,6 +44,11 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 						|| CKEDITOR.document;
 
 		panelDefinition.className = ( panelDefinition.className || '' ) + ' cke_rcombopanel';
+		panelDefinition.block =
+		{
+			multiSelect : panelDefinition.multiSelect,
+			attributes : panelDefinition.attributes
+		};
 
 		this._ =
 		{
@@ -83,6 +88,8 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 		 */
 		render : function( editor, output )
 		{
+			var env = CKEDITOR.env;
+
 			var id = 'cke_' + this.id;
 			var clickFn = CKEDITOR.tools.addFunction( function( $element )
 				{
@@ -99,6 +106,13 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 						return;
 					}
 
+					this.commit();
+					var value = this.getValue();
+					if ( value )
+						_.list.mark( value );
+					else
+						_.list.unmarkAll();
+
 					_.panel.showBlock( this.id, new CKEDITOR.dom.element( $element ), 4 );
 				},
 				this );
@@ -111,7 +125,7 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 					var element = CKEDITOR.document.getById( id ).getChild( 1 );
 					element.focus();
 				},
-				execute : clickFn
+				clickFn : clickFn
 			};
 
 			editor.on( 'mode', function()
@@ -142,6 +156,9 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 					ev.preventDefault();
 				});
 
+			// For clean up
+			instance.keyDownFn = keyDownFn;
+
 			output.push(
 				'<span class="cke_rcombo">',
 				'<span id=', id );
@@ -150,9 +167,11 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 				output.push( ' class="', this.className, ' cke_off"');
 
 			output.push(
-				'>' +
-					'<span class=cke_label>', this.label, '</span>' +
-					'<a hidefocus=true title="', this.title, '" tabindex="-1" href="javascript:void(\'', this.label, '\')"' );
+				'>',
+					'<span id="' + id+ '_label" class=cke_label>', this.label, '</span>',
+					'<a hidefocus=true title="', this.title, '" tabindex="-1"',
+						env.gecko && env.version >= 10900 && !env.hc ? '' : ' href="javascript:void(\'' + this.label + '\')"',
+						' role="button" aria-labelledby="', id , '_label" aria-describedby="', id, '_text" aria-haspopup="true"' );
 
 			// Some browsers don't cancel key events in the keydown but in the
 			// keypress.
@@ -175,10 +194,9 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 					' onkeydown="CKEDITOR.tools.callFunction( ', keyDownFn, ', event, this );"' +
 					' onclick="CKEDITOR.tools.callFunction(', clickFn, ', this); return false;">' +
 						'<span>' +
-							'<span class="cke_accessibility">' + ( this.voiceLabel ? this.voiceLabel + ' ' : '' ) + '</span>' +
 							'<span id="' + id + '_text" class="cke_text cke_inline_label">' + this.label + '</span>' +
 						'</span>' +
-						'<span class=cke_openbutton></span>' +
+						'<span class=cke_openbutton>' + ( CKEDITOR.env.hc ? '<span>&#9660;</span>' : '' ) + '</span>' +	// BLACK DOWN-POINTING TRIANGLE
 					'</a>' +
 				'</span>' +
 				'</span>' );
@@ -195,19 +213,14 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 				return;
 
 			var panelDefinition = this._.panelDefinition,
+				panelBlockDefinition = this._.panelDefinition.block,
 				panelParentElement = panelDefinition.parent || CKEDITOR.document.getBody(),
 				panel = new CKEDITOR.ui.floatPanel( editor, panelParentElement, panelDefinition ),
-				list = panel.addListBlock( this.id, this.multiSelect ),
+				list = panel.addListBlock( this.id, panelBlockDefinition ),
 				me = this;
 
 			panel.onShow = function()
 				{
-					var value = me.getValue();
-					if ( value )
-						me._.list.mark( value );
-					else
-						me._.list.unmarkAll();
-
 					if ( me.className )
 						this.element.getFirst().addClass( me.className + '_panel' );
 
@@ -258,15 +271,17 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 					panel.hide();
 				};
 
+			this._.panel = panel;
+			this._.list = list;
+
 			panel.getBlock( this.id ).onHide = function()
 				{
 					me._.on = 0;
 					me.setState( CKEDITOR.TRISTATE_OFF );
 				};
 
-			this._.panel = panel;
-			this._.list = list;
-			this.init && this.init();
+			if ( this.init )
+				this.init();
 		},
 
 		setValue : function( value, text )
@@ -275,13 +290,14 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 
 			var textElement = this.document.getById( 'cke_' + this.id + '_text' );
 
-			if ( !value )
+			if ( !( value || text ) )
 			{
 				text = this.label;
 				textElement.addClass( 'cke_inline_label' );
 			}
 			else
 				textElement.removeClass( 'cke_inline_label' );
+
 			textElement.setHtml( typeof text != 'undefined' ? text : value );
 		},
 
@@ -328,8 +344,12 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 
 		commit : function()
 		{
-			this._.list.commit();
-			CKEDITOR.ui.richCombo.fire( 'uiReady', this );
+			if ( !this._.committed )
+			{
+				this._.list.commit();
+				this._.committed = 1;
+				CKEDITOR.ui.richCombo.fire( 'uiReady', this );
+			}
 		},
 
 		setState : function( state )

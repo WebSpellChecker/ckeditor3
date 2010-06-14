@@ -1,5 +1,5 @@
-/*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+﻿/*
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -40,7 +40,7 @@ CKEDITOR.config =
 	 * // Do not load any custom configuration file.
 	 * CKEDITOR.replace( 'myfiled', { customConfig : '' } );
 	 */
-	customConfig : CKEDITOR.getUrl( 'config.js' ),
+	customConfig : 'config.js',
 
 	/**
 	 * Whether the replaced element (usually a textarea) is to be updated
@@ -63,33 +63,48 @@ CKEDITOR.config =
 	baseHref : '',
 
 	/**
-	 * The CSS file to be used to apply style to the contents. It should
+	 * The CSS file(s) to be used to apply style to the contents. It should
 	 * reflect the CSS used in the final pages where the contents are to be
 	 * used.
-	 * @type String
+	 * @type String|Array
 	 * @default '&lt;CKEditor folder&gt;/contents.css'
 	 * @example
 	 * config.contentsCss = '/css/mysitestyles.css';
+	 * config.contentsCss = ['/css/mysitestyles.css', '/css/anotherfile.css'];
 	 */
 	contentsCss : CKEDITOR.basePath + 'contents.css',
 
 	/**
 	 * The writting direction of the language used to write the editor
-	 * contents. Allowed values are 'ltr' for Left-To-Right language (like
-	 * English), or 'rtl' for Right-To-Left languages (like Arabic).
-	 * @default 'ltr'
+	 * contents. Allowed values are:
+	 * <ul>
+	 *     <li>'ui' - which indicate content direction will be the same with the user interface language direction;</li>
+	 *     <li>'ltr' - for Left-To-Right language (like English);</li>
+	 *     <li>'rtl' - for Right-To-Left languages (like Arabic).</li>
+	 * </ul>
+	 * @default 'ui'
 	 * @type String
 	 * @example
 	 * config.contentsLangDirection = 'rtl';
 	 */
-	contentsLangDirection : 'ltr',
+	contentsLangDirection : 'ui',
+
+	/**
+	 * Language code of  the writting language which is used to author the editor
+	 * contents.
+	 * @default Same value with editor's UI language.
+	 * @type String
+	 * @example
+	 * config.contentsLanguage = 'fr';
+	 */
+	contentsLanguage : '',
 
 	/**
 	 * The user interface language localization to use. If empty, the editor
 	 * automatically localize the editor to the user language, if supported,
 	 * otherwise the {@link CKEDITOR.config.defaultLanguage} language is used.
-	 * @default true
-	 * @type Boolean
+	 * @default '' (empty)
+	 * @type String
 	 * @example
 	 * // Load the German interface.
 	 * config.language = 'de';
@@ -129,6 +144,18 @@ CKEDITOR.config =
 	enterMode : CKEDITOR.ENTER_P,
 
 	/**
+	 * Force the respect of {@link CKEDITOR.config.enterMode} as line break regardless of the context,
+	 * E.g. If {@link CKEDITOR.config.enterMode} is set to {@link CKEDITOR.ENTER_P},
+	 * press enter key inside a 'div' will create a new paragraph with 'p' instead of 'div'.
+	 * @since 3.2.1
+	 * @default false
+	 * @example
+	 * // Not recommended.
+	 * config.forceEnterMode = true;
+	 */
+	forceEnterMode : false,
+
+	/**
 	 * Just like the {@link CKEDITOR.config.enterMode} setting, it defines the behavior for the SHIFT+ENTER key.
 	 * The allowed values are the following constants, and their relative
 	 * behavior:
@@ -166,10 +193,29 @@ CKEDITOR.config =
 	docType : '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">',
 
 	/**
+	 * Sets the "id" attribute to be used on the body element of the editing
+	 * area.
+	 * @since 3.1
+	 * @type String
+	 * @default ''
+	 */
+	bodyId : '',
+
+	/**
+	 * Sets the "class" attribute to be used on the body element of the editing
+	 * area.
+	 * @since 3.1
+	 * @type String
+	 * @default ''
+	 */
+	bodyClass : '',
+
+	/**
 	 * Indicates whether the contents to be edited are being inputted as a full
 	 * HTML page. A full page includes the &lt;html&gt;, &lt;head&gt; and
 	 * &lt;body&gt; tags. The final output will also reflect this setting,
 	 * including the &lt;body&gt; contents only if this setting is disabled.
+	 * @since 3.1
 	 * @type Boolean
 	 * @default false
 	 * @example
@@ -178,7 +224,8 @@ CKEDITOR.config =
 	fullPage : false,
 
 	/**
-	 * The height of editing area( content ), in relative or pixel integer.
+	 * The height of editing area( content ), in relative or absolute, e.g. 30px, 5em.
+	 * Note: Percentage unit is not supported yet. e.g. 30%.
 	 * @type Number|String
 	 * @default '200'
 	 * @example
@@ -281,7 +328,6 @@ CKEDITOR.config =
 	 * config.baseFloatZIndex = 2000
 	 */
 	baseFloatZIndex : 10000
-
 };
 
 // PACKAGER_RENAME( CKEDITOR.config )

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -18,7 +18,7 @@ CKEDITOR.htmlParser = function()
 
 (function()
 {
-	var attribsRegex	= /([\w:]+)(?:(?:\s*=\s*(?:(?:"([^"]*)")|(?:'([^']*)')|([^\s>]+)))|(?=\s|$))/g,
+	var attribsRegex	= /([\w\-:.]+)(?:(?:\s*=\s*(?:(?:"([^"]*)")|(?:'([^']*)')|([^\s>]+)))|(?=\s|$))/g,
 		emptyAttribs	= {checked:1,compact:1,declare:1,defer:1,disabled:1,ismap:1,multiple:1,nohref:1,noresize:1,noshade:1,nowrap:1,readonly:1,selected:1};
 
 	CKEDITOR.htmlParser.prototype =
@@ -201,7 +201,7 @@ CKEDITOR.htmlParser = function()
 				}
 
 				// Comment
-				if( ( tagName = parts[ 2 ] ) )
+				if ( ( tagName = parts[ 2 ] ) )
 					this.onComment( tagName );
 			}
 

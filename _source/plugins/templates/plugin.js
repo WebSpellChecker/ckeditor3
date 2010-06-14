@@ -1,5 +1,5 @@
-/*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+﻿/*
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -85,7 +85,7 @@ CKEDITOR.config.templates = 'default';
 CKEDITOR.config.templates_files =
 	[
 		CKEDITOR.getUrl(
-			'_source/' + // %REMOVE_LINE%
+			'_source/' + // @Packager.RemoveLine
 			'plugins/templates/templates/default.js' )
 	];
 

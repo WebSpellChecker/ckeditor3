@@ -1,5 +1,5 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -25,7 +25,7 @@ CKEDITOR.dom.document = function( domDocument )
 
 CKEDITOR.dom.document.prototype = new CKEDITOR.dom.domObject();
 
-CKEDITOR.tools.extend(CKEDITOR.dom.document.prototype,
+CKEDITOR.tools.extend( CKEDITOR.dom.document.prototype,
 	/** @lends CKEDITOR.dom.document.prototype */
 {
 	/**
@@ -37,10 +37,10 @@ CKEDITOR.tools.extend(CKEDITOR.dom.document.prototype,
 	appendStyleSheet : function( cssFileUrl )
 	{
 		if ( this.$.createStyleSheet )
-			this.$.createStyleSheet(cssFileUrl);
+				this.$.createStyleSheet( cssFileUrl );
 		else
 		{
-			var link = new CKEDITOR.dom.element('link');
+				var link = new CKEDITOR.dom.element( 'link' );
 			link.setAttributes(
 			{
 				rel		:'stylesheet',
@@ -48,21 +48,36 @@ CKEDITOR.tools.extend(CKEDITOR.dom.document.prototype,
 				href	: cssFileUrl
 			});
 
-			this.getHead().append(link);
+				this.getHead().append( link );
+		}
+	},
+
+	appendStyleText : function( cssStyleText )
+	{
+		if ( this.$.createStyleSheet )
+		{
+			var styleSheet = this.$.createStyleSheet( "" );
+			styleSheet.cssText = cssStyleText ;
+		}
+		else
+		{
+			var style = new CKEDITOR.dom.element( 'style', this );
+			style.append( new CKEDITOR.dom.text( cssStyleText, this ) );
+			this.getHead().append( style );
 		}
 	},
 
 	createElement : function( name, attribsAndStyles )
 	{
-		var element = new CKEDITOR.dom.element(name, this);
+		var element = new CKEDITOR.dom.element( name, this );
 
 		if ( attribsAndStyles )
 		{
 			if ( attribsAndStyles.attributes )
-				element.setAttributes(attribsAndStyles.attributes);
+				element.setAttributes( attribsAndStyles.attributes );
 
 			if ( attribsAndStyles.styles )
-				element.setStyles(attribsAndStyles.styles);
+				element.setStyles( attribsAndStyles.styles );
 		}
 
 		return element;
@@ -70,7 +85,7 @@ CKEDITOR.tools.extend(CKEDITOR.dom.document.prototype,
 
 	createText : function( text )
 	{
-		return new CKEDITOR.dom.text(text, this);
+			return new CKEDITOR.dom.text( text, this );
 	},
 
 	focus : function()
@@ -88,15 +103,15 @@ CKEDITOR.tools.extend(CKEDITOR.dom.document.prototype,
 	 */
 	getById : function( elementId )
 	{
-		var $ = this.$.getElementById(elementId);
-		return $ ? new CKEDITOR.dom.element($) : null;
+			var $ = this.$.getElementById( elementId );
+			return $ ? new CKEDITOR.dom.element( $ ) : null;
 	},
 
 	getByAddress : function( address, normalized )
 	{
 		var $ = this.$.documentElement;
 
-		for ( var i = 0; $ && i < address.length; i++ )
+			for ( var i = 0 ; $ && i < address.length ; i++ )
 		{
 			var target = address[ i ];
 
@@ -108,7 +123,7 @@ CKEDITOR.tools.extend(CKEDITOR.dom.document.prototype,
 
 			var currentIndex = -1;
 
-			for ( var j = 0; j < $.childNodes.length; j++ )
+				for (var j = 0 ; j < $.childNodes.length ; j++ )
 			{
 				var candidate = $.childNodes[ j ];
 
@@ -130,14 +145,14 @@ CKEDITOR.tools.extend(CKEDITOR.dom.document.prototype,
 			}
 		}
 
-		return $ ? new CKEDITOR.dom.node($) : null;
+			return $ ? new CKEDITOR.dom.node( $ ) : null;
 	},
 
 	getElementsByTag : function( tagName, namespace )
 	{
 		if ( !CKEDITOR.env.ie && namespace )
 			tagName = namespace + ':' + tagName;
-		return new CKEDITOR.dom.nodeList(this.$.getElementsByTagName(tagName));
+			return new CKEDITOR.dom.nodeList( this.$.getElementsByTagName( tagName ) );
 	},
 
 	/**
@@ -149,11 +164,13 @@ CKEDITOR.tools.extend(CKEDITOR.dom.document.prototype,
 	 */
 	getHead : function()
 	{
-		var head = this.$.getElementsByTagName( 'head' )[ 0 ];
-		head = new CKEDITOR.dom.element( head );
+		var head = this.$.getElementsByTagName( 'head' )[0];
+		if ( !head )
+			head = this.getDocumentElement().append( new CKEDITOR.dom.element( 'head' ), true );
+		else
+			head = new CKEDITOR.dom.element( head );
 
 		return (
-			/** @ignore */
 				this.getHead = function()
 				{
 					return head;
@@ -169,49 +186,49 @@ CKEDITOR.tools.extend(CKEDITOR.dom.document.prototype,
 	 */
 	getBody : function()
 	{
-		var body = new CKEDITOR.dom.element(this.$.body);
-
+			var body = new CKEDITOR.dom.element( this.$.body );
+		
 		return (
-			/** @ignore */
 				this.getBody = function()
 				{
 					return body;
 				})();
 	},
 
-	getDocumentElement : function()
-	{
-		var documentElement = new CKEDITOR.dom.element(this.$.documentElement);
+		/**
+		 * Gets the DOM document element for this document.
+		 * @returns {CKEDITOR.dom.element} The DOM document element.
+		 */
+		getDocumentElement : function()
+		{
+			var documentElement = new CKEDITOR.dom.element( this.$.documentElement );
 
 		return (
-			/** @ignore */
 				this.getDocumentElement = function()
 				{
 					return documentElement;
 				})();
 	},
 
-	/**
-	 * Gets the window object that holds this document.
-	 * @returns {CKEDITOR.dom.window} The window object.
-	 * @example
-	 */
-	getWindow : function()
-	{
-		var win = new CKEDITOR.dom.window(this.$.parentWindow || this.$.defaultView);
+		/**
+		 * Gets the window object that holds this document.
+		 * @returns {CKEDITOR.dom.window} The window object.
+		 */
+		getWindow : function()
+		{
+			var win = new CKEDITOR.dom.window( this.$.parentWindow || this.$.defaultView );
 
 		return (
-			/** @ignore */
 				this.getWindow = function()
 				{
 					return win;
 				})();
 	},
 
-	write : function( html )
+	write : function( html, mode )
 	{
 		// document.write() or document.writeln() fail silently after
-		// the page load event has been handled in Adobe AIR.
+		// the page load event in Adobe AIR.
 		// DOM manipulation could be used instead.
 		if ( CKEDITOR.env.air && this.getBody() )
 		{
@@ -261,16 +278,17 @@ CKEDITOR.tools.extend(CKEDITOR.dom.document.prototype,
 					bodyAttrs = body.attributes,
 					docBody = doc.getBody();
 
-			if( bodyContent )
-			{
-				docBody.setHtml( bodyContent );
-				bodyAttrs && docBody.setAttributes( bodyAttrs );
-			}
+			bodyContent && docBody.setHtml( bodyContent );
+			bodyAttrs && docBody.setAttributes( bodyAttrs );
+			
 		}
 		else
 		{
-			this.$.open();
-			this.$.write(html);
+			this.$.open( "text/html", mode );
+			// Support for custom document.domain in IE.
+			if ( CKEDITOR.env.isCustomDomain() )
+				this.$.domain = document.domain;
+			this.$.write( html );
 			this.$.close();
 		}
 	}

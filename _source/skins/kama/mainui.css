@@ -19,7 +19,8 @@ span.cke_skin_kama
 }
 
 .cke_skin_kama span.cke_browser_webkit,
-.cke_skin_kama span.cke_browser_gecko18
+.cke_skin_kama span.cke_browser_gecko18,
+.cke_skin_kama span.cke_browser_air
 {
 	display: block;
 }

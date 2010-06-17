@@ -23,4 +23,4 @@
 
 :: adt -package SIGNING_OPTIONS air_file app_xml [file_or_dir | -C dir file_or_dir | -e file dir ...] ...
 
-adt -package -storetype pkcs12 -keystore sample01_cert.pfx -storepass 123abc FCKeditor.air application.xml -C ../../ .
+adt -package -storetype pkcs12 -keystore cert.pfx -storepass 123abc CKEditor.air application.xml -C ../../ .

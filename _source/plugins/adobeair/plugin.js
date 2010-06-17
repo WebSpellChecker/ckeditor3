@@ -13,6 +13,9 @@ CKEDITOR.plugins.add( 'adobeair',
 		// Body doesn't get default margin on AIR. 
 		editor.addCss( 'body { padding: 8px }' );
 
+		// Frame source from application sandbox to be consumed by 'wysiwyg' plugin. 
+		editor._.air_bootstrap_frame_url = this.path + '/assets/air_boostrap_frame.html?' + editor.name;
+
 		var eventNameList = [ 'click', 'keydown', 'mousedown', 'keypress' ];
 
 		// any inline event callbacks assigned via innerHTML/outerHTML such as

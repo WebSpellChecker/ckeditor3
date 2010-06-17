@@ -319,14 +319,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// With IE, the custom domain has to be taken care at first,
 							// for other browers, the 'src' attribute should be left empty to
 							// trigger iframe's 'load' event.
-  							' src="' + ( CKEDITOR.env.air ? CKEDITOR.basePath + 'air_sandbox_frame.html' : CKEDITOR.env.ie ? 'javascript:void(function(){' + encodeURIComponent( srcScript ) + '}())' : '' ) + '"' +
+  							' src="' + ( CKEDITOR.env.air ? editor._.air_bootstrap_frame_url : CKEDITOR.env.ie ? 'javascript:void(function(){' + encodeURIComponent( srcScript ) + '}())' : '' ) + '"' +
 							'" tabIndex="' + ( CKEDITOR.env.webkit? -1 : editor.tabIndex ) + '"' +
   							' allowTransparency="true"' +
   							'></iframe>' );
 
 						if ( CKEDITOR.env.air )
 						{
-							CKEDITOR._.air_sandbox_frame_data = data;
+							CKEDITOR._[ 'air_bootstrap_data' + editor.name ] = data;
 							frameLoaded = 1;
 						}
 						else

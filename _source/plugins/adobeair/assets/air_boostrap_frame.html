@@ -1,6 +1,5 @@
 <script id="cke_air_bootscript">
-	document.write( window.parent.CKEDITOR._.air_sandbox_frame_data || '' );
-
+	document.write( window.parent.CKEDITOR._[ 'air_bootstrap_data' + location.search.substring( 1 ) ] || '' );
 	var me = document.getElementById( "cke_air_bootscript" );
 		me.parentNode.removeChild( me );
 </script>

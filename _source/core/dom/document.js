@@ -225,6 +225,12 @@ CKEDITOR.tools.extend( CKEDITOR.dom.document.prototype,
 				})();
 	},
 
+	/**
+	 * Wrapper for document.write that works around certain security
+	 * limitation because of the closed stream when calling this method.
+	 * @param html
+	 * @param mode
+	 */
 	write : function( html, mode )
 	{
 		// document.write() or document.writeln() fail silently after
@@ -232,20 +238,23 @@ CKEDITOR.tools.extend( CKEDITOR.dom.document.prototype,
 		// DOM manipulation could be used instead.
 		if ( CKEDITOR.env.air && this.getBody() )
 		{
+			// We're taking the below extra work only because innerHTML
+			// on <html> element doesn't work as expected.
 			var doc = this;
 
-			// Grab all the <link>s and <style>s.
+			// Grab all the <link> and <style>.
 			var styleSheetLinks = [],
 					styleTexts = [];
+
 			html.replace( /<style[^>]*>([\s\S]*?)<\/style>/gi, function ( match, styleText )
 			{
 				styleTexts.push( styleText );
-			} );
+			});
 
 			html.replace( /<link[^>]*?>/gi, function( linkHtml )
 			{
 				styleSheetLinks.push( linkHtml );
-			} );
+			});
 
 			if ( styleSheetLinks.length )
 			{
@@ -260,27 +269,28 @@ CKEDITOR.tools.extend( CKEDITOR.dom.document.prototype,
 
 			// Create style nodes for inline css.
 			// ( <style> content doesn't applied when setting via innerHTML )
-			var nums = styleTexts.length;
-			if ( nums )
+			var count = styleTexts.length;
+			if ( count )
 			{
 				var head = this.getHead( doc );
-				for ( var i = 0; i < nums; i++ )
+				for ( var i = 0; i < count; i++ )
 				{
 					var node = head.append( 'style' );
 					node.setAttribute( "type", "text/css" );
 					node.append( doc.createText( styleTexts[ i ] ) );
 				}
 			}
-
-			var bodyHtml = html.match( /<body[^>]*>([\s\S]*)<\/body>/i ),
-					bodyContent = bodyHtml && bodyHtml[ 1 ],
-					body = bodyHtml && CKEDITOR.htmlParser.fragment.fromHtml( bodyHtml[ 0 ] ).children[ 0 ],
-					bodyAttrs = body.attributes,
-					docBody = doc.getBody();
-
-			bodyContent && docBody.setHtml( bodyContent );
-			bodyAttrs && docBody.setAttributes( bodyAttrs );
 			
+			// Copy the entire <body>.  
+			doc.getBody().setAttributes( CKEDITOR.htmlParser.fragment.fromHtml(
+				// Separate body content and attributes.
+				html.replace( /(<body[^>]*>)([\s\S]*)(?=<\/body>)/i,
+					function( match, startTag, innerHTML )
+					{
+						doc.getBody().setHtml( innerHTML );
+						return startTag;
+					})
+				).children[ 0 ].attributes );
 		}
 		else
 		{

@@ -1,24 +1,23 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
-( function()
+
+(function()
 {
 	/**
-	 * Representation of multiple ranges within a selection.
+	 * Represents a list os CKEDITOR.dom.range objects, which can be easily
+	 * iterated sequentially.
 	 * @constructor
-	 * @param {CKEDITOR.dom.range|Array|undefined} ranges
-	 *  The ranges consist of this list, note that if an array of ranges is specified,
-	 *  the range sequence should compliant with the selection order, this class is
-	 *  will not help to sort them.
-	 *
-	 * @borrows CKEDITOR.dom.selection#createBookmarks as this.createBookmarks
-	 * @borrows CKEDITOR.dom.selection#createBookmarks2 as this.createBookmarks2
+	 * @param {CKEDITOR.dom.range|Array} [ranges] The ranges contained on this list.
+	 *		Note that, if an array of ranges is specified, the range sequence
+	 *		should match its DOM order. This class will not help to sort them.
 	 */
 	CKEDITOR.dom.rangeList = function( ranges )
 	{
 		if ( ranges.createIterator )
 			return ranges;
+
 		if ( !ranges )
 			ranges = [];
 		else if ( ranges instanceof CKEDITOR.dom.range )
@@ -31,11 +30,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	/** @lends CKEDITOR.dom.rangeList.prototype */
 	{
 			/**
-			 * Create an instance of rangeList iterator, it should be only used when
-			 * the processing of range is DOM destructive, which means it will possibly
-			 * pollute other ranges in this list.
-			 * Otherwise, it's enough to just iterate over this array.
-			 * in a for loop.
+			 * Creates an instance of the rangeList iterator, it should be used
+			 * only when the ranges processing could be DOM intrusive, which
+			 * means it may pollute and break other ranges in this list.
+			 * Otherwise, it's enough to just iterate over this array in a for loop.
 			 * @returns {CKEDITOR.dom.rangeListIterator}
 			 */
 			createIterator : function()
@@ -50,7 +48,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				return {
 
 					/**
-					 * Iterate over the next range in this list.
+					 * Retrieves the next range in the list.
 					 */
 					getNextRange : function()
 					{
@@ -79,9 +77,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				};
 			},
 
-			/**
-			 * @param serializable
-			 */
 			createBookmarks : function( serializable )
 			{
 				var retval = [], bookmark;
@@ -100,9 +95,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				return retval;
 			},
 
-			/**
-			 * @param normalized
-			 */
 			createBookmarks2 : function( normalized )
 			{
 				var bookmarks = [];
@@ -114,8 +106,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			},
 
 			/**
-			 * Apply each of the supplied bookmarks to the corresponding range at the index.
-			 * @param bookmarks
+			 * Move each range in the list to the position specified by a list of bookmarks.
+			 * @param {Array} bookmarks The list of bookmarks, each one matching a range in the list.
 			 */
 			moveToBookmarks :  function( bookmarks )
 			{
@@ -160,14 +152,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		dirtyRange[ checkEnd ? 'endContainer' : 'startContainer' ] = container;
 		return dirtyRange;
 	}
+})();
 
-	/**
-	 * (Virtual Class) Do not call this constructor. This class is not really part
-	 *	of the API. It just describes the return type of {@link CKEDITOR.dom.rangeList#createIterator}.
-	 * @name CKEDITOR.dom.rangeListIterator
-	 * @constructor
-	 * @example
-	 */
-
-
-} )();
+/**
+ * (Virtual Class) Do not call this constructor. This class is not really part
+ *	of the API. It just describes the return type of {@link CKEDITOR.dom.rangeList#createIterator}.
+ * @name CKEDITOR.dom.rangeListIterator
+ * @constructor
+ * @example
+ */

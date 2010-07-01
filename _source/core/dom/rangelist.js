@@ -130,18 +130,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		var serializable = bookmark.serializable,
 			container = dirtyRange[ checkEnd ? 'endContainer' : 'startContainer' ],
-			offset = checkEnd ? 'endOffset' : 'startOffset',
-			bookmarkStart = serializable ?
+			offset = checkEnd ? 'endOffset' : 'startOffset';
+
+		var bookmarkStart = serializable ?
 				dirtyRange.document.getById( bookmark.startNode )
-				: bookmark.startNode,
-			bookmarkEnd = serializable ?
-			  dirtyRange.document.getById( bookmark.endNode )
-			  : bookmark.endNode;
+				: bookmark.startNode;
+
+		var bookmarkEnd = serializable ?
+				dirtyRange.document.getById( bookmark.endNode )
+				: bookmark.endNode;
 
 		if ( container.equals( bookmarkStart.getPrevious() ) )
 		{
 			dirtyRange.startOffset = dirtyRange.startOffset
-					- container.getLength() - bookmarkEnd.getPrevious().getLength();
+					- container.getLength()
+					- bookmarkEnd.getPrevious().getLength();
 			container = bookmarkEnd.getNext();
 		}
 		else if ( container.equals( bookmarkEnd.getPrevious() ) )

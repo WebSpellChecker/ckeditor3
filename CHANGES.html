@@ -40,9 +40,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			New features:</p>
 	<ul>
 		<li><a href="http://dev.fckeditor.net/ticket/5737">#5737</a> : Added support for the <a href="http://www.w3.org/TR/html5/editing.html#contenteditable">HTML5 contenteditable attribute</a>, making it possible to define read only regions into the editor contents.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5628">#5628</a> : Port 'DragResizeTable' plugin from FCKEditor 2.x.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/979">#979</a> : New configuration 'enableTabKeyTools' to allow using 'Tab' key to navigate through table cells.</li>
 	</ul>
 	<h3>
-			CKEditor 3.3.1 (SVN)</h3>
+			CKEditor 3.3.2 (SVN)</h3>
 	<p>
 			New features:</p>
 	<ul>
@@ -51,14 +53,35 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	<p>
 			Fixed issues:</p>
 	<ul>
-		<li><a href="http://dev.fckeditor.net/ticket/5780">#5780</a> : Text selection lost when open some of the dialogs.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/1644">#1644</a> : Removed references to cursor:hand in the stylesheets.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5411">#5411</a> : anchor, hidden, page-break objects (images) can't no longer be resized.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5456">#5456</a> : Initial focus incorect in api_dialog sample page.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5628">#5628</a> : Incorrect &lt;pre&gt; siblings merging.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5829">#5829</a> : Adding validation for start number field in list style dialog.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5845">#5845</a> : Context menu on empty list item loses selection.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5860">#5860</a> : [IE] &gt; in attribute values are incorrectly escaped.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5905">#5905</a> : SCAYT is not any more enabled by default.</li>
+	</ul>
+	<h3>
+			CKEditor 3.3.1</h3>
+	<p>
+			Fixed issues:</p>
+	<ul>
+		<li><a href="http://dev.fckeditor.net/ticket/5780">#5780</a> : Text selection lost when opening some of the dialogs.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/5787">#5787</a> : Liststyle plugin wasn't packaged into the core (CKEDITOR.resourceManager.load exception).</li>
 		<li><a href="http://dev.fckeditor.net/ticket/5637">#5637</a> : Fix wrong nesting that generated "&lt;head&gt; must be a child of &lt;html&gt;" warning in Webkit.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/5790">#5790</a> : Internal only attributes output on fullpage &lt;html&gt; tag.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/5761">#5761</a> : [IE] Color dialog matrix buttons are barely clickable in quirks mode.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/5759">#5759</a> : [IE] Clicking on the scrollbar and then on the host page causes error.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/5772">#5772</a> : List style dialog is missing tab page ids.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5782">#5782</a> : [FF] Wysiwyg mode is broken by 'display' style changes on editor's parent DOM tree.</li>
 		<li><a href="http://dev.fckeditor.net/ticket/5801">#5801</a> : [IE] contentEditable="false" doesn't apply in effect on inline-elements.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5794">#5794</a> : Empty find matching twice results in JavaScript error.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5732">#5732</a> : If it isn't possible to connect to the SCAYT servers the dialogs might hang in Firefox. Fix for Firefox>=3.6.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5807">#5807</a> : [FF2] New page command results in uneditable document.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5807">#5807</a> : [FF2] SCAYT plugin is disabled in Firefox2 due to selection interference.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5772">#5772</a> : [IE] Some numbered list style types are not supported by IE6/7 and causes JavaScript error.</li>
+		<li><a href="http://dev.fckeditor.net/ticket/5840">#5840</a> : Some dialog access keys are conflicting with "Ctrl + A", select all text behavior on text input.</li>
 	</ul>
 	<h3>
 		CKEditor 3.3</h3>

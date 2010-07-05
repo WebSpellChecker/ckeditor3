@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -357,8 +357,8 @@ CKEDITOR.plugins.scayt =
 		},
 		loadEngine : function( editor )
 		{
-			// SCAYT doesn't work with Opera.
-			if ( CKEDITOR.env.opera )
+			// SCAYT doesn't work with Firefox2, Opera.
+			if ( CKEDITOR.env.gecko && CKEDITOR.env.version < 10900 || CKEDITOR.env.opera )
 				return editor.fire( 'showScaytState' );
 
 			if ( this.engineLoaded === true )
@@ -382,7 +382,7 @@ CKEDITOR.plugins.scayt =
 			var protocol = document.location.protocol;
 			// Default to 'http' for unknown.
 			protocol = protocol.search( /https?:/) != -1? protocol : 'http:';
-			var baseUrl  = 'svc.spellchecker.net/spellcheck31/lf/scayt24/loader__base.js';
+			var baseUrl  = 'svc.spellchecker.net/scayt25/loader__base.js';
 
 			var scaytUrl  =  editor.config.scayt_srcUrl || ( protocol + '//' + baseUrl );
 			var scaytConfigBaseUrl =  plugin.parseUrl( scaytUrl ).path +  '/';
@@ -408,6 +408,7 @@ CKEDITOR.plugins.scayt =
 							attributes :
 								{
 									type : 'text/javascript',
+									async : 'true',
 									src : scaytUrl
 								}
 						})
@@ -452,9 +453,6 @@ CKEDITOR.plugins.scayt =
 
 		exec: function( editor )
 		{
-			var autoStartup = editor.config.scayt_autoStartup;
-			autoStartup = ( autoStartup == undefined ) || autoStartup;
-
 			if ( plugin.isScaytReady( editor ) )
 			{
 				var isEnabled = plugin.isScaytEnabled( editor );
@@ -471,7 +469,7 @@ CKEDITOR.plugins.scayt =
 				scayt_control.focus( );
 				scayt_control.setDisabled( isEnabled );
 			}
-			else if ( !autoStartup && plugin.engineLoaded >= 0 )	// Load first time
+			else if ( !editor.config.scayt_autoStartup && plugin.engineLoaded >= 0 )	// Load first time
 			{
 				this.setState( CKEDITOR.TRISTATE_DISABLED );
 				plugin.loadEngine( editor );
@@ -778,8 +776,7 @@ CKEDITOR.plugins.scayt =
 			}
 
 			// Start plugin
-			var autoStartup = editor.config.scayt_autoStartup;
-			if ( ( autoStartup == undefined ) || autoStartup )
+			if ( editor.config.scayt_autoStartup )
 			{
 				editor.on( 'instanceReady', function()
 				{
@@ -811,9 +808,9 @@ CKEDITOR.plugins.scayt =
  * If enabled (true), turns on SCAYT automatically after loading the editor.
  * @name CKEDITOR.config.scayt_autoStartup
  * @type Boolean
- * @default true
+ * @default false
  * @example
- * config.scayt_autoStartup = false;
+ * config.scayt_autoStartup = true;
  */
 
 /**

@@ -118,7 +118,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	// Update the specified range which has been mangled by previous insertion of
 	// range bookmark nodes.(#3256)
-	function updateDirtyRange( bookmark, dirtyRange , checkEnd )
+	function updateDirtyRange( bookmark, dirtyRange, checkEnd )
 	{
 		var serializable = bookmark.serializable,
 			container = dirtyRange[ checkEnd ? 'endContainer' : 'startContainer' ],

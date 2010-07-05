@@ -23,6 +23,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			// Get the range for the current selection.
 			range = range || getRange( editor );
+
+			// We may not have valid ranges to work on, like when inside a
+			// contenteditable=false element.
 			if ( !range )
 				return;
 
@@ -190,6 +193,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			// Get the range for the current selection.
 			range = range || getRange( editor );
+
+			// We may not have valid ranges to work on, like when inside a
+			// contenteditable=false element.
 			if ( !range )
 				return;
 

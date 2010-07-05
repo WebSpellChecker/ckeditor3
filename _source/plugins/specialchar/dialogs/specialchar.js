@@ -14,11 +14,8 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 
 	var insertSpecialChar = function ( specialChar )
 	{
-		var selection = editor.getSelection();
-		if ( selection.getCommonAncestor().isReadOnly())
-				return;
-
-		var ranges = selection.getRanges(),
+		var selection = editor.getSelection(),
+			ranges = selection.getRanges( true ),
 			range, textNode;
 
 		editor.fire( 'saveSnapshot' );

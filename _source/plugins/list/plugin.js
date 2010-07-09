@@ -67,7 +67,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		},
 
 		// Convert our internal representation of a list back to a DOM forest.
-		arrayToList : function( listArray, database, baseIndex, paragraphMode )
+		arrayToList : function( listArray, database, baseIndex, paragraphMode, dir )
 		{
 			if ( !baseIndex )
 				baseIndex = 0;
@@ -109,8 +109,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					else
 					{
 						// Create completely new blocks here, attributes are dropped.
-						if ( paragraphMode != CKEDITOR.ENTER_BR && item.grandparent.getName() != 'td' )
+						if ( dir || ( paragraphMode != CKEDITOR.ENTER_BR && item.grandparent.getName() != 'td' ) )
+						{
 							currentListItem = doc.createElement( paragraphName );
+							if ( dir )
+								currentListItem.setAttribute( 'dir', dir );
+						}
 						else
 							currentListItem = new CKEDITOR.dom.documentFragment( doc );
 					}
@@ -280,7 +284,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		// Insert the list to the DOM tree.
 		var insertAnchor = listContents[ listContents.length - 1 ].getNext(),
-			listNode = doc.createElement( this.type );
+			listNode = doc.createElement( this.type ),
+			dir;
 
 		listsCreated.push( listNode );
 		while ( listContents.length )
@@ -293,6 +298,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				contentBlock.appendTo( listItem );
 			else
 			{
+				if ( contentBlock.hasAttribute( 'dir' ) )
+				{
+					dir = dir || contentBlock.getAttribute( 'dir' ); 
+					contentBlock.removeAttribute( 'dir' );
+				}
 				contentBlock.copyAttributes( listItem );
 				contentBlock.moveChildren( listItem );
 				contentBlock.remove();
@@ -304,6 +314,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if ( !CKEDITOR.env.ie )
 				listItem.appendBogus();
 		}
+
+		if ( dir )
+			listNode.setAttribute( 'dir', dir );
+
 		if ( insertAnchor )
 			listNode.insertBefore( insertAnchor );
 		else
@@ -353,7 +367,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 		}
 
-		var newList = CKEDITOR.plugins.list.arrayToList( listArray, database, null, editor.config.enterMode );
+		var newList = CKEDITOR.plugins.list.arrayToList( listArray, database, null, editor.config.enterMode,
+			groupObj.root.getAttribute( 'dir' ) );
 
 		// Compensate <br> before/after the list node if the surrounds are non-blocks.(#3836)
 		var docFragment = newList.listNode, boundaryNode, siblingNode;

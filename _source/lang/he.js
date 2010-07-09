@@ -744,5 +744,11 @@ CKEDITOR.lang['he'] =
 	},
 
 	toolbarCollapse	: 'מזעור סרגל כלים',
-	toolbarExpand	: 'הרחבת סרגל כלים'
+	toolbarExpand	: 'הרחבת סרגל כלים',
+
+	bidi :
+	{
+		ltr :'כיוון טקסט משמאל לימין (LTR)',
+		rtl : 'כיוון טקסט מימין לשמאל (RTL)'
+	}
 };

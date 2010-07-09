@@ -744,5 +744,11 @@ CKEDITOR.lang['ca'] =
 	},
 
 	toolbarCollapse	: 'Redueix la barra d\'eines',
-	toolbarExpand	: 'Amplia la barra d\'eines'
+	toolbarExpand	: 'Amplia la barra d\'eines',
+
+	bidi :
+	{
+		ltr :"Text direction from left to right",
+		rtl : "Text direction from right to left"
+	}
 };

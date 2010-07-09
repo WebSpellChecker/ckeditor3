@@ -744,5 +744,11 @@ CKEDITOR.lang['ja'] =
 	},
 
 	toolbarCollapse	: 'ツールバーを閉じる',
-	toolbarExpand	: 'ツールバーを開く'
+	toolbarExpand	: 'ツールバーを開く',
+
+	bidi :
+	{
+		ltr :"Text direction from left to right",
+		rtl : "Text direction from right to left"
+	}
 };

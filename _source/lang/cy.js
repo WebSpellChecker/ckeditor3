@@ -744,5 +744,11 @@ CKEDITOR.lang['cy'] =
 	},
 
 	toolbarCollapse	: 'Cyfangu\'r Bar Offer',
-	toolbarExpand	: 'Ehangu\'r Bar Offer'
+	toolbarExpand	: 'Ehangu\'r Bar Offer',
+
+	bidi :
+	{
+		ltr :"Text direction from left to right",
+		rtl : "Text direction from right to left"
+	}
 };

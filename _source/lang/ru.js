@@ -744,5 +744,11 @@ CKEDITOR.lang['ru'] =
 	},
 
 	toolbarCollapse	: 'Свернуть панель инструментов',
-	toolbarExpand	: 'Развернуть панель инструментов'
+	toolbarExpand	: 'Развернуть панель инструментов',
+
+	bidi :
+	{
+		ltr :"Text direction from left to right",
+		rtl : "Text direction from right to left"
+	}
 };

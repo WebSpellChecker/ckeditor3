@@ -744,5 +744,11 @@ CKEDITOR.lang['da'] =
 	},
 
 	toolbarCollapse	: 'Collapse Toolbar', // MISSING
-	toolbarExpand	: 'Expand Toolbar' // MISSING
+	toolbarExpand	: 'Expand Toolbar', // MISSING
+
+	bidi :
+	{
+		ltr :"Text direction from left to right",
+		rtl : "Text direction from right to left"
+	}
 };

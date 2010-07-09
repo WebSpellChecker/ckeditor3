@@ -744,5 +744,11 @@ CKEDITOR.lang['tr'] =
 	},
 
 	toolbarCollapse	: 'Toolbar\'ı topla',
-	toolbarExpand	: 'Toolbar\'ı aç'
+	toolbarExpand	: 'Toolbar\'ı aç',
+
+	bidi :
+	{
+		ltr :"Text direction from left to right",
+		rtl : "Text direction from right to left"
+	}
 };

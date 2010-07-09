@@ -744,5 +744,11 @@ CKEDITOR.lang['nl'] =
 	},
 
 	toolbarCollapse	: 'Werkbalk inklappen',
-	toolbarExpand	: 'Werkbalk uitklappen'
+	toolbarExpand	: 'Werkbalk uitklappen',
+
+	bidi :
+	{
+		ltr :"Text direction from left to right",
+		rtl : "Text direction from right to left"
+	}
 };

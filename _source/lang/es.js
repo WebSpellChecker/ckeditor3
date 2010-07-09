@@ -744,5 +744,11 @@ CKEDITOR.lang['es'] =
 	},
 
 	toolbarCollapse	: 'Contraer barra de herramientas',
-	toolbarExpand	: 'Expandir barra de herramientas'
+	toolbarExpand	: 'Expandir barra de herramientas',
+
+	bidi :
+	{
+		ltr :"Text direction from left to right",
+		rtl : "Text direction from right to left"
+	}
 };

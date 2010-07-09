@@ -744,5 +744,11 @@ CKEDITOR.lang['no'] =
 	},
 
 	toolbarCollapse	: 'Slå sammen verktøylinje',
-	toolbarExpand	: 'Vis verktøylinje'
+	toolbarExpand	: 'Vis verktøylinje',
+
+	bidi :
+	{
+		ltr :"Text direction from left to right",
+		rtl : "Text direction from right to left"
+	}
 };

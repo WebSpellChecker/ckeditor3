@@ -744,5 +744,11 @@ CKEDITOR.lang['vi'] =
 	},
 
 	toolbarCollapse	: 'Thu gọn thanh công cụ',
-	toolbarExpand	: 'Mở rộng thnah công cụ'
+	toolbarExpand	: 'Mở rộng thnah công cụ',
+
+	bidi :
+	{
+		ltr :"Text direction from left to right",
+		rtl : "Text direction from right to left"
+	}
 };

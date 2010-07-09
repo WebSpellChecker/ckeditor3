@@ -43,7 +43,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	function switchDir( element, dir, editor )
 	{
 		if ( element.hasAttribute( 'dir' ) && element.getAttribute( 'dir' ).toLowerCase()  == dir )
+		{
+			dirSwitch = 1;
 			element.removeAttribute( 'dir' );
+		}
 		else
 			element.setAttribute( 'dir', dir );
 
@@ -131,9 +134,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							var _break = 0;
 
 							// Check if block have been already processed by the walker above.
-							for ( var ii = 0; ii < processedElements.length; ii++ )
+							for ( var ii = 0; ii < processedElements.length; ii )
 							{
-								var	parent = block.getParent();
+								var     parent = block.getParent();
 								
 								while( parent && parent.getName() != 'body' )
 								{

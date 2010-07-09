@@ -5,15 +5,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 (function()
 {
-	function nonEmptyText( node )
+	function findEvaluator( node )
 	{
-		return ( node.type == CKEDITOR.NODE_TEXT && node.getLength() > 0 );
+		return node.type == CKEDITOR.NODE_TEXT && node.getLength() > 0 && !node.isReadOnly();
 	}
 
 	/**
 	 * Elements which break characters been considered as sequence.
 	*/
-	function nonCharactersBoundary ( node )
+	function nonCharactersBoundary( node )
 	{
 		return !( node.type == CKEDITOR.NODE_ELEMENT && node.isBlockBoundary(
 			CKEDITOR.tools.extend( {}, CKEDITOR.dtd.$empty, CKEDITOR.dtd.$nonEditable ) ) );
@@ -84,7 +84,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var walker =
 				new CKEDITOR.dom.walker( range );
 			walker.guard = matchWord ? nonCharactersBoundary : null;
-			walker[ 'evaluator' ] = nonEmptyText;
+			walker[ 'evaluator' ] = findEvaluator;
 			walker.breakOnFalse = true;
 
 			this._ = {

@@ -58,7 +58,7 @@ CKEDITOR.plugins.add( 'link',
 				 * for this in Firefox. So we must detect the state by element paths.
 				 */
 				var command = editor.getCommand( 'unlink' ),
-					element = evt.data.path.lastElement.getAscendant( 'a', true );
+					element = evt.data.path.lastElement && evt.data.path.lastElement.getAscendant( 'a', true );
 				if ( element && element.getName() == 'a' && element.getAttribute( 'href' ) )
 					command.setState( CKEDITOR.TRISTATE_OFF );
 				else

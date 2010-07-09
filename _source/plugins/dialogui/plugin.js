@@ -1339,7 +1339,9 @@ CKEDITOR.plugins.add( 'dialogui' );
 					var frameElement = CKEDITOR.document.getById( this._.frameId ),
 						frameDocument = frameElement.getFrameDocument(),
 						elementDefinition = this._.definition,
-						buttons = this._.buttons;
+						buttons = this._.buttons,
+						langDir = this._.dialog._.editor.lang.dir,
+						langCode = this._.dialog._.editor.langCode;
 
 					function generateFormField()
 					{
@@ -1353,8 +1355,8 @@ CKEDITOR.plugins.add( 'dialogui' );
 						if ( elementDefinition.size )
 							size = elementDefinition.size - ( CKEDITOR.env.ie  ? 7 : 0 );	// "Browse" button is bigger in IE.
 
-						frameDocument.$.write( [ '<html><head><title></title></head><body style="margin: 0; overflow: hidden; background: transparent;">',
-								'<form enctype="multipart/form-data" method="POST" action="',
+						frameDocument.$.write( [ '<html dir="' + langDir + '" lang="' + langCode + '"><head><title></title></head><body style="margin: 0; overflow: hidden; background: transparent;">',
+								'<form enctype="multipart/form-data" method="POST" dir="' + langDir + '" lang="' + langCode + '" action="',
 								CKEDITOR.tools.htmlEncode( elementDefinition.action ),
 								'">',
 								'<input type="file" name="',

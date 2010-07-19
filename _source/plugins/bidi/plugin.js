@@ -188,8 +188,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			var lang = editor.lang.bidi;
 
-			addButtonCommand( 'BidiLtr', lang.rtl, 'bidiltr', bidiCommand( 'ltr' ) );
-			addButtonCommand( 'BidiRtl', lang.ltr, 'bidirtl', bidiCommand( 'rtl' ) );
+			addButtonCommand( 'BidiLtr', lang.ltr, 'bidiltr', bidiCommand( 'ltr' ) );
+			addButtonCommand( 'BidiRtl', lang.rtl, 'bidirtl', bidiCommand( 'rtl' ) );
 
 			editor.on( 'selectionChange', onSelectionChange );
 		}

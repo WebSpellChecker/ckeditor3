@@ -50,7 +50,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				elected = tr;
 			}
 		}
-		
+
 		tr = elected;
 		var columnIndex = -1, pillars = [];
 		var tbody = new CKEDITOR.dom.element( table.tBodies[ 0 ] ),
@@ -100,13 +100,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		evt.data.preventDefault();
 	}
-	
+
 	function columnResizer( editor )
 	{
 		var pillar, document, resizer, startOffset, currentShift;
-		
+
 		var leftSideCells, rightSideCells, leftShiftBoundary, rightShiftBoundary;
-		
+
 		function detach()
 		{
 			pillar = null;
@@ -117,11 +117,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			resizer.removeListener( 'mouseout', onMouseOut );
 			resizer.hide();
 		}
-		
+
 		function resizeStart()
 		{
 			// Before starting to resize, figure out which cells to change
-			// and the boundaries of this resizing shift. 
+			// and the boundaries of this resizing shift.
 			var columnIndex = pillar.index,
 					map = CKEDITOR.tools.buildTableMap( pillar.table ),
 					leftColumnCells = [],
@@ -148,7 +148,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			rightSideCells = rightColumnCells;
 			leftShiftBoundary =  pillar.x - leftMinSize;
 			rightShiftBoundary = pillar.x + rightMinSize;
-			
+
 			resizer.setOpacity( 0.5 );
 			startOffset = parseInt( resizer.getStyle( 'left' ), 10 );
 			currentShift = 0;
@@ -156,18 +156,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// Prevent the native drag behavior otherwise the above 'mousemove' won't fired.
 			document.on( 'dragstart', cancel, this );
 		}
-		
+
 		function resizeEnd()
 		{
 			resizer.setOpacity( 0 );
 			currentShift && resizeColumn();
-			
+
 			var table = pillar.table;
 			setTimeout( function () { table.removeCustomData( '_cke_table_pillars' ); }, 0 );
 
 			detach();
 		}
-		
+
 		function resizeColumn()
 		{
 			// Perform the actual resize to table cells, only for those by side of the pillar.
@@ -190,7 +190,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						rightCell, getCellWidth( rightCell ), currentShift );
 			}
 		}
-		
+
 		function onMouseMove( evt )
 		{
 			var mouseOffset = evt.data.$.clientX,
@@ -205,25 +205,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			cancel( evt );
 		}
-		
+
 		function onMouseDown( evt )
 		{
 			cancel( evt );
 			resizeStart();
 			document.on( 'mouseup', onMouseUp, this );
 		}
-		
+
 		function onMouseUp()
 		{
 			resizeEnd();
 		}
-		
+
 		function onMouseOut()
 		{
 			// Don't detach during resizing.
 			!currentShift && detach();
 		}
-		
+
 		document = editor.document;
 		resizer = CKEDITOR.dom.element.createFromHtml( '<div style="position: absolute; cursor: col-resize; ' +
 			'filter:alpha(opacity=0);opacity:0;padding:0;background-color:#004;background-image:none;border: 0px none;"></div>' );
@@ -251,7 +251,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// Display the resizer to receive events but don't show it,
 			// only change the cursor to resizable shape.
 			resizer.show();
-		}; 
+		};
 	}
 
 	function clearPillarsCache( evt )
@@ -270,7 +270,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if ( !dest || dest.equals( target ) )
 				return;
 		}
-		
+
 		target.getAscendant( 'table', true ).removeCustomData( '_cke_table_pillars' );
 		evt && evt.removeListener();
 	}

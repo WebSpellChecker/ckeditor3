@@ -1118,4 +1118,3 @@ CKEDITOR.tools.buildTableMap = function ( table )
 	}
 	return aMap ;
 };
-

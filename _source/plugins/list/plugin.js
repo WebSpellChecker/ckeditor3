@@ -300,7 +300,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				if ( contentBlock.hasAttribute( 'dir' ) )
 				{
-					dir = dir || contentBlock.getAttribute( 'dir' ); 
+					dir = dir || contentBlock.getAttribute( 'dir' );
 					contentBlock.removeAttribute( 'dir' );
 				}
 				contentBlock.copyAttributes( listItem );

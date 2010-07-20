@@ -49,25 +49,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	});
 })();
-/** 
+/**
  * The minimum height to which the editor can reach using AutoGrow.
  * @name CKEDITOR.config.autoGrow_minHeight
- * @type Number 
- * @default 200 
+ * @type Number
+ * @default 200
  * @since 3.4
- * @example 
+ * @example
  * config.autoGrow_minHeight = 300;
- */ 
+ */
 
-/** 
+/**
  * The maximum height to which the editor can reach using AutoGrow. Zero means unlimited.
  * @name CKEDITOR.config.autoGrow_maxHeight
- * @type Number 
+ * @type Number
  * @default 0
  * @since 3.4
- * @example 
+ * @example
  * config.autoGrow_maxHeight = 400;
- */ 
+ */
 
 /**
  * Fired when the AutoGrow plugin is about to change the size of the editor.

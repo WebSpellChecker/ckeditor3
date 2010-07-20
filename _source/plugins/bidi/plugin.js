@@ -13,7 +13,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		evt.editor.getCommand( 'bidirtl' ).setState( getState( evt.editor, evt.data.path, 'rtl' ) );
 		evt.editor.getCommand( 'bidiltr' ).setState( getState( evt.editor, evt.data.path, 'ltr' ) );
 	}
-	
+
 	function getState( editor, path, dir )
 	{
 		var selection = editor.getSelection(),
@@ -26,7 +26,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				&& !( selectedElement.type == CKEDITOR.NODE_ELEMENT && selectedElement.getName() in directSelectionGuardElements )
 			)
 			selectedElement = getFullySelected( selection, guardElements );
-		
+
 		selectedElement = selectedElement || path.block || path.blockLimit;
 
 		if ( !selectedElement || selectedElement.getName() == 'body' )
@@ -89,7 +89,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						&& !( selectedElement.type == CKEDITOR.NODE_ELEMENT && selectedElement.getName() in directSelectionGuardElements )
 					)
 					selectedElement = getFullySelected( selection, guardElements );
-				
+
 				if ( selectedElement )
 				{
 					switchDir( selectedElement, dir, editor );
@@ -134,7 +134,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							for ( var ii = 0; ii < processedElements.length; ii++ )
 							{
 								var parent = block.getParent();
-								
+
 								while( parent && parent.getName() != 'body' )
 								{
 									if ( ( parent.$.isSameNode && parent.$.isSameNode( processedElements[ ii ].$ ) )
@@ -156,7 +156,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							}
 						}
 					}
-					
+
 					editor.forceNextSelectionCheck();
 					// Restore selection position.
 					selection.selectBookmarks( bookmarks );
@@ -194,5 +194,5 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			editor.on( 'selectionChange', onSelectionChange );
 		}
 	});
-	
+
 })();

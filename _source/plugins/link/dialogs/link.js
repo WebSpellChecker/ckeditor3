@@ -1294,7 +1294,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			{
 				// Create element if current selection is collapsed.
 				var selection = editor.getSelection(),
-					ranges = selection.getRanges();
+					ranges = selection.getRanges( true );
 				if ( ranges.length == 1 && ranges[0].collapsed )
 				{
 					var text = new CKEDITOR.dom.text( attributes._cke_saved_href, editor.document );

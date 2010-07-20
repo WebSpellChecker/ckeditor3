@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -73,7 +73,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				return;
 
 			var bookmarks = selection.createBookmarks(),
-				ranges = selection.getRanges();
+				ranges = selection.getRanges( true );
 
 
 			var cssClassName = this.cssClassName,

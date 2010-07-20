@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -386,14 +386,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						return retval;
 					}
 
-					editor.contextMenu.addListener( function()
+					editor.contextMenu.addListener( function( element, selection )
 						{
+							var readOnly = selection.getCommonAncestor().isReadOnly();
 							return {
-								cut : stateFromNamedCommand( 'Cut' ),
+								cut : !readOnly && stateFromNamedCommand( 'Cut' ),
 
 								// Browser bug: 'Cut' has the correct states for both Copy and Cut.
 								copy : stateFromNamedCommand( 'Cut' ),
-								paste : CKEDITOR.env.webkit ? CKEDITOR.TRISTATE_OFF : stateFromNamedCommand( 'Paste' )
+								paste : !readOnly && ( CKEDITOR.env.webkit ? CKEDITOR.TRISTATE_OFF : stateFromNamedCommand( 'Paste' ) )
 							};
 						});
 				}

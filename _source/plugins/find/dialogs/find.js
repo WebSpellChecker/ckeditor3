@@ -1,19 +1,19 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 (function()
 {
-	function nonEmptyText( node )
+	function findEvaluator( node )
 	{
-		return ( node.type == CKEDITOR.NODE_TEXT && node.getLength() > 0 );
+		return node.type == CKEDITOR.NODE_TEXT && node.getLength() > 0 && !node.isReadOnly();
 	}
 
 	/**
 	 * Elements which break characters been considered as sequence.
 	*/
-	function nonCharactersBoundary ( node )
+	function nonCharactersBoundary( node )
 	{
 		return !( node.type == CKEDITOR.NODE_ELEMENT && node.isBlockBoundary(
 			CKEDITOR.tools.extend( {}, CKEDITOR.dtd.$empty, CKEDITOR.dtd.$nonEditable ) ) );
@@ -84,7 +84,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var walker =
 				new CKEDITOR.dom.walker( range );
 			walker.guard = matchWord ? nonCharactersBoundary : null;
-			walker[ 'evaluator' ] = nonEmptyText;
+			walker[ 'evaluator' ] = findEvaluator;
 			walker.breakOnFalse = true;
 
 			this._ = {
@@ -251,8 +251,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					this.removeHighlight();
 
 				// Apply the highlight.
-				var range = this.toDomRange();
+				var range = this.toDomRange(),
+					bookmark = range.createBookmark();
 				highlightStyle.applyToRange( range );
+				range.moveToBookmark( bookmark );
 				this._.highlightRange = range;
 
 				// Scroll the editor to the highlighted area.
@@ -273,7 +275,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				if ( !this._.highlightRange )
 					return;
 
+				var bookmark = this._.highlightRange.createBookmark();
 				highlightStyle.removeFromRange( this._.highlightRange );
+				this._.highlightRange.moveToBookmark( bookmark );
 				this.updateFromDomRange( this._.highlightRange );
 				this._.highlightRange = null;
 			},

@@ -16,15 +16,24 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	// Matching an empty paragraph at the end of document.
 	var emptyParagraphRegexp = /\s*<(p|div|address|h\d|center|li)[^>]*>\s*(?:<br[^>]*>|&nbsp;|\u00A0|&#160;)?\s*(:?<\/\1>)?\s*(?=$|<\/body>)/gi;
 
+	function checkReadOnly( selection )
+	{
+		return selection.getCommonAncestor().isReadOnly();
+	}
+
 	function onInsertHtml( evt )
 	{
 		if ( this.mode == 'wysiwyg' )
 		{
 			this.focus();
+
+			var selection = this.getSelection();
+			if ( checkReadOnly( selection ) )
+				return;
+
+			var data = evt.data
 			this.fire( 'saveSnapshot' );
 
-			var selection = this.getSelection(),
-				data = evt.data;
 
 			if ( this.dataProcessor )
 				data = this.dataProcessor.toHtml( data );
@@ -59,14 +68,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		if ( this.mode == 'wysiwyg' )
 		{
 			this.focus();
+
+			var selection = this.getSelection();
+			if ( checkReadOnly( selection ) )
+				return;
+
 			this.fire( 'saveSnapshot' );
 
-			var element = evt.data,
+			var ranges = selection.getRanges(),
+				element = evt.data,
 				elementName = element.getName(),
 				isBlock = CKEDITOR.dtd.$block[ elementName ];
-
-			var selection = this.getSelection(),
-				ranges = selection.getRanges();
 
 			var selIsLocked = selection.isLocked;
 
@@ -221,14 +233,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				if ( previousElement && previousElement.getName
 					 && !( previousElement.getName() in nonExitableElementNames )
-					 && isBlankParagraph( previousElement )
-					 && range.moveToElementEditStart( previousElement )
 					 || nextElement && nextElement.getName
-						&& !( nextElement.getName() in nonExitableElementNames )
-						&& isBlankParagraph( nextElement )
-						&& range.moveToElementEditStart( nextElement ) )
+						&& !( nextElement.getName() in nonExitableElementNames ) )
 				{
-					fixedBlock.remove();
+					if ( isBlankParagraph( previousElement ) && range.moveToElementEditStart( previousElement )
+							|| isBlankParagraph( nextElement ) && range.moveToElementEditStart( nextElement ) )
+						fixedBlock.remove();
+
+					// Firefox prefer to anchor cursor after non-editable elements
+					// when navigate to them, leaving native behavior untouched. (#5834)
+					if ( CKEDITOR.env.gecko && ( previousElement.isReadOnly() || nextElement.isReadOnly() ) )
+					{
+						range.moveToPosition( fixedBlock, CKEDITOR.POSITION_BEFORE_START );
+						fixedBlock.remove();
+					}
 				}
 			}
 

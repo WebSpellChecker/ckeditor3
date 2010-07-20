@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -110,7 +110,7 @@ CKEDITOR.plugins.add( 'link',
 		{
 			editor.contextMenu.addListener( function( element, selection )
 				{
-					if ( !element )
+					if ( !element || element.isReadOnly() )
 						return null;
 
 					var isAnchor = ( element.is( 'img' ) && element.getAttribute( '_cke_real_element_type' ) == 'anchor' );
@@ -177,12 +177,14 @@ CKEDITOR.plugins.link =
 	getSelectedLink : function( editor )
 	{
 		var range;
-		try { range  = editor.getSelection().getRanges()[ 0 ]; }
+		try
+		{
+			range  = editor.getSelection().getRanges( true )[ 0 ];
+			range.shrink( CKEDITOR.SHRINK_TEXT );
+			var root = range.getCommonAncestor();
+			return root.getAscendant( 'a', true );
+		}
 		catch( e ) { return null; }
-
-		range.shrink( CKEDITOR.SHRINK_TEXT );
-		var root = range.getCommonAncestor();
-		return root.getAscendant( 'a', true );
 	}
 };
 

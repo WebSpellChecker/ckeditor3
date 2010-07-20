@@ -31,9 +31,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if ( checkReadOnly( selection ) )
 				return;
 
-			var data = evt.data
+			var data = evt.data;
 			this.fire( 'saveSnapshot' );
-
 
 			if ( this.dataProcessor )
 				data = this.dataProcessor.toHtml( data );

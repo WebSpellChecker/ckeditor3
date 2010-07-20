@@ -62,7 +62,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// Bookmarking all other ranges on the first iteration,
 							// the range correctness after it doesn't matter since we'll
 							// restore them before the next iteration.
-							if ( current == 0 )
+							if ( !current )
 							{
 								// Make sure bookmark correctness by reverse processing.
 								for ( var i = rangeList.length - 1; i > 0; i-- )

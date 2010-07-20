@@ -39,7 +39,7 @@ CKEDITOR.plugins.removeformat =
 					iterator = ranges.createIterator(),
 					range;
 
-				while ( range = iterator.getNextRange() )
+				while ( ( range = iterator.getNextRange() ) )
 				{
 					if ( range.collapsed )
 						continue;

@@ -683,7 +683,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						// Range may start inside a non-editable element, restart range
 						// by the end of it.
 						var readOnly;
-						if ( readOnly = startContainer.isReadOnly() )
+						if ( ( readOnly = startContainer.isReadOnly() ) )
 							range.setStartAfter( readOnly );
 
 						// Enlarge range start/end with text node to avoid walker
@@ -740,7 +740,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 
 				return cache.ranges;
-			}
+			};
 		})(),
 
 		/**

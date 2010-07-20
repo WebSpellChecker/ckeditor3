@@ -117,7 +117,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								);
 						};
 
-						while ( block = walker.next() )
+						while ( ( block = walker.next() ) )
 						{
 							switchDir( block, dir, editor );
 							processedElements.push( block );

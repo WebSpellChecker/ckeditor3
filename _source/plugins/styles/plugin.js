@@ -1279,7 +1279,7 @@ CKEDITOR.STYLE_OBJECT = 3;
 			range;
 
 		var iterator = ranges.createIterator();
-		while ( range = iterator.getNextRange() )
+		while ( ( range = iterator.getNextRange() ) )
 			func.call( this, range );
 
 		selection.selectBookmarks( bookmarks );

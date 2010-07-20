@@ -41,7 +41,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							ancestor = sel.getCommonAncestor(),
 							cell;
 
-					if ( cell = ( ancestor.getAscendant( 'td', true ) || ancestor.getAscendant( 'th', true ) ) )
+					if ( ( cell = ( ancestor.getAscendant( 'td', true ) || ancestor.getAscendant( 'th', true ) ) ) )
 					{
 						var resultRange = new CKEDITOR.dom.range( editor.document ),
 								next = CKEDITOR.tools.tryThese( function()

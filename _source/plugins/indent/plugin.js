@@ -217,7 +217,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			function indentElement( element )
 			{
 				if ( element.getCustomData( 'indent_processed' ) )
-					return;
+					return false;
 
 				if ( self.useIndentClasses )
 				{
@@ -275,7 +275,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				range;
 
 			var iterator = ranges.createIterator();
-			while ( range = iterator.getNextRange() )
+			while ( ( range = iterator.getNextRange() ) )
 			{
 				var startContainer = range.startContainer,
 					endContainer = range.endContainer,
@@ -315,7 +315,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					// Indent the entire list if  cursor is inside the first list item. (#3893)
 					if ( !( indentWholeList && indentElement( nearestListBlock ) ) )
-					indentList( nearestListBlock );
+						indentList( nearestListBlock );
 				}
 				else
 					indentBlock();

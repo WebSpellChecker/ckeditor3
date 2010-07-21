@@ -32,7 +32,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		if ( !selectedElement || selectedElement.getName() == 'body' )
 			return CKEDITOR.TRISTATE_OFF;
 
-		return ( selectedElement.getAttribute( 'dir' ) == dir ) ?
+		return ( selectedElement.getComputedStyle( 'direction' ) == dir ) ?
 			CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF;
 	}
 
@@ -42,7 +42,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	 */
 	function switchDir( element, dir, editor )
 	{
-		if ( element.hasAttribute( 'dir' ) && element.getAttribute( 'dir' ).toLowerCase()  == dir )
+		if ( element.hasAttribute( 'dir' ) && element.getAttribute( 'dir' ).toLowerCase() == dir )
 			element.removeAttribute( 'dir' );
 		else
 			element.setAttribute( 'dir', dir );

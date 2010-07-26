@@ -391,9 +391,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							var readOnly = selection.getCommonAncestor().isReadOnly();
 							return {
 								cut : !readOnly && stateFromNamedCommand( 'Cut' ),
-
-								// Browser bug: 'Cut' has the correct states for both Copy and Cut.
-								copy : stateFromNamedCommand( 'Cut' ),
+								copy : stateFromNamedCommand( 'Copy' ),
 								paste : !readOnly && ( CKEDITOR.env.webkit ? CKEDITOR.TRISTATE_OFF : stateFromNamedCommand( 'Paste' ) )
 							};
 						});

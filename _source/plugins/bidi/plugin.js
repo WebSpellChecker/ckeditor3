@@ -2,8 +2,9 @@
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
-(function(){
 
+(function()
+{
 	var guardElements = { table:1, ul:1, ol:1, blockquote:1, div:1 };
 	var directSelectionGuardElements = {};
 	CKEDITOR.tools.extend( directSelectionGuardElements, guardElements, { tr:1, p:1, div:1, li:1 } );
@@ -36,10 +37,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF;
 	}
 
-	/**
-	 *
-	 * @param {!CKEDITOR.dom.element} element
-	 */
 	function switchDir( element, dir, editor )
 	{
 		if ( element.hasAttribute( 'dir' ) && element.getAttribute( 'dir' ).toLowerCase() == dir )
@@ -50,13 +47,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		editor.forceNextSelectionCheck();
 	}
 
-	/**
-	 *
-	 * @param {CKEDITOR.dom.selection} selection
-	 * @param {Object<name,int>} elements
-	 *
-	 * @return {?CKEDITOR.dom.element} Fully selected element.
-	 */
 	function getFullySelected( selection, elements )
 	{
 		var selectedElement = selection.getCommonAncestor();

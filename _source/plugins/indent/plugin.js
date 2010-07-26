@@ -53,7 +53,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 		else
 		{
-			var indent = parseInt( firstBlock.getStyle( this.indentCssProperty ), 10 );
+			var indent = parseInt( firstBlock.getStyle( getIndentCssProperty( firstBlock ) ), 10 );
 			if ( isNaN( indent ) )
 				indent = 0;
 			if ( indent <= 0 )
@@ -73,9 +73,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			for ( var i = 0 ; i < editor.config.indentClasses.length ; i++ )
 				this.indentClassMap[ editor.config.indentClasses[i] ] = i + 1;
 		}
-		else
-			this.indentCssProperty = editor.config.contentsLangDirection == 'ltr' ? 'margin-left' : 'margin-right';
+
 		this.startDisabled = name == 'outdent';
+	}
+
+	// Returns the CSS property to be used for identing a given element.
+	function getIndentCssProperty( element )
+	{
+		return element.getComputedStyle( 'direction' ) == 'ltr' ? 'margin-left' : 'margin-right';
 	}
 
 	function isListItem( node )
@@ -250,7 +255,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 				else
 				{
-					var currentOffset = parseInt( element.getStyle( self.indentCssProperty ), 10 );
+					var indentCssProperty = getIndentCssProperty( element );
+					var currentOffset = parseInt( element.getStyle( indentCssProperty ), 10 );
 					if ( isNaN( currentOffset ) )
 						currentOffset = 0;
 					currentOffset += ( self.name == 'indent' ? 1 : -1 ) * editor.config.indentOffset;
@@ -260,7 +266,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					currentOffset = Math.max( currentOffset, 0 );
 					currentOffset = Math.ceil( currentOffset / editor.config.indentOffset ) * editor.config.indentOffset;
-					element.setStyle( self.indentCssProperty, currentOffset ? currentOffset + editor.config.indentUnit : '' );
+					element.setStyle( indentCssProperty, currentOffset ? currentOffset + editor.config.indentUnit : '' );
 					if ( element.getAttribute( 'style' ) === '' )
 						element.removeAttribute( 'style' );
 				}

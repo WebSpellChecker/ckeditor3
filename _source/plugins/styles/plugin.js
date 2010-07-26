@@ -541,8 +541,8 @@ CKEDITOR.STYLE_OBJECT = 3;
 			}
 		}
 
-		firstNode.remove();
-		lastNode.remove();
+		// Remove the bookmark nodes.
+		range.moveToBookmark( boundaryNodes );
 
 		// Minimize the result range to exclude empty text nodes. (#5374)
 		range.shrink( CKEDITOR.SHRINK_TEXT );

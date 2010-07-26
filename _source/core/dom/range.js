@@ -397,6 +397,7 @@ CKEDITOR.dom.range = function( document )
 			var startNode, endNode;
 			var baseId;
 			var clone;
+			var collapsed = this.collapsed;
 
 			startNode = this.document.createElement( 'span' );
 			startNode.setAttribute( '_fck_bookmark', 1 );
@@ -413,7 +414,7 @@ CKEDITOR.dom.range = function( document )
 			}
 
 			// If collapsed, the endNode will not be created.
-			if ( !this.collapsed )
+			if ( !collapsed )
 			{
 				endNode = startNode.clone();
 				endNode.setHtml( '&nbsp;' );
@@ -442,7 +443,8 @@ CKEDITOR.dom.range = function( document )
 			return {
 				startNode : serializable ? baseId + 'S' : startNode,
 				endNode : serializable ? baseId + 'E' : endNode,
-				serializable : serializable
+				serializable : serializable,
+				collapsed : collapsed
 			};
 		},
 
@@ -464,6 +466,8 @@ CKEDITOR.dom.range = function( document )
 
 			var startOffset	= this.startOffset,
 				endOffset	= this.endOffset;
+
+			var collapsed = this.collapsed;
 
 			var child, previous;
 
@@ -501,7 +505,7 @@ CKEDITOR.dom.range = function( document )
 				}
 
 				// Process the end only if not normalized.
-				if ( !this.isCollapsed )
+				if ( !collapsed )
 				{
 					// Find out if the start is pointing to a text node that
 					// will be normalized.
@@ -532,10 +536,11 @@ CKEDITOR.dom.range = function( document )
 
 			return {
 				start		: startContainer.getAddress( normalized ),
-				end			: this.isCollapsed ? null : endContainer.getAddress( normalized ),
+				end			: collapsed ? null : endContainer.getAddress( normalized ),
 				startOffset	: startOffset,
 				endOffset	: endOffset,
 				normalized	: normalized,
+				collapsed	: collapsed,
 				is2			: true		// It's a createBookmark2 bookmark.
 			};
 		},

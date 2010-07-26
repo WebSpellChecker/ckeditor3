@@ -1282,7 +1282,13 @@ CKEDITOR.STYLE_OBJECT = 3;
 		while ( ( range = iterator.getNextRange() ) )
 			func.call( this, range );
 
-		selection.selectBookmarks( bookmarks );
+		if ( bookmarks.length == 1 && bookmarks[0].collapsed )
+		{
+			selection.selectRanges( ranges );
+			bookmarks[0].startNode.remove();
+		}
+		else
+			selection.selectBookmarks( bookmarks );
 	}
 })();
 

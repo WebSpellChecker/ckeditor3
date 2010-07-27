@@ -45,8 +45,29 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					selection.unlock();
 
 				var $sel = selection.getNative();
+
+				// Delete control selections to avoid IE bugs on pasteHTML.
 				if ( $sel.type == 'Control' )
 					$sel.clear();
+				else if  ( selection.getType() == CKEDITOR.SELECTION_TEXT )
+				{
+					// Due to IE bugs on handling contenteditable=false blocks
+					// (#6005), we need to make some checks and eventually
+					// delete the selection first.
+
+					var range = selection.getRanges()[0],
+						endContainer = range && range.endContainer;
+					
+					if ( endContainer &&
+ 						 endContainer.type == CKEDITOR.NODE_ELEMENT &&
+ 						 endContainer.getAttribute( 'contenteditable' ) == 'false' &&
+						 range.checkBoundaryOfElement( endContainer, CKEDITOR.END ) )
+					{
+						range.setEndAfter( range.endContainer );
+						range.deleteContents();
+					}
+				}
+
 				$sel.createRange().pasteHTML( data );
 
 				if ( selIsLocked )

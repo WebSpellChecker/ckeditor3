@@ -1637,24 +1637,34 @@ CKEDITOR.dom.range = function( document )
 		},
 
 		/**
-		 * Check whether current range is on the inner edge of the specified element.
-		 * @param {Number} checkType ( CKEDITOR.START | CKEDITOR.END ) The checking side.
+		 * Check whether a range boundary is at the inner boundary of a given
+		 * element.
 		 * @param {CKEDITOR.dom.element} element The target element to check.
+		 * @param {Number} checkType The boundary to check for both the range
+		 *		and the element. It can be CKEDITOR.START or CKEDITOR.END.
+		 * @returns {Boolean} "true" if the range boundary is at the inner
+		 *		boundary of the element.
 		 */
 		checkBoundaryOfElement : function( element, checkType )
 		{
-			var walkerRange = this.clone();
-			// Expand the range to element boundary.
-			walkerRange[ checkType == CKEDITOR.START ?
-			 'setStartAt' : 'setEndAt' ]
-			 ( element, checkType == CKEDITOR.START ?
-			   CKEDITOR.POSITION_AFTER_START
-			   : CKEDITOR.POSITION_BEFORE_END );
+			var checkStart = ( checkType == CKEDITOR.START );
 
+			// Create a copy of this range, so we can manipulate it for our checks.
+			var walkerRange = this.clone();
+
+			// Collapse the range at the proper size.
+			walkerRange.collapse( checkStart );
+
+			// Expand the range to element boundary.
+			walkerRange[ checkStart ? 'setStartAt' : 'setEndAt' ]
+			 ( element, checkStart ? CKEDITOR.POSITION_AFTER_START : CKEDITOR.POSITION_BEFORE_END );
+
+			// Create the walker, which will check if we have anything useful
+			// in the range.
 			var walker = new CKEDITOR.dom.walker( walkerRange );
 			walker.evaluator = elementBoundaryEval;
-			return walker[ checkType == CKEDITOR.START ?
-				'checkBackward' : 'checkForward' ]();
+
+			return walker[ checkStart ? 'checkBackward' : 'checkForward' ]();
 		},
 
 		// Calls to this function may produce changes to the DOM. The range may

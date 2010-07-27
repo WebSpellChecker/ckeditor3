@@ -105,6 +105,11 @@ CKEDITOR.lang['he'] =
 		targetTop		: 'החלון העליון ביותר (_top)',
 		targetSelf		: 'אותו חלון (_self)',
 		targetParent	: 'חלון האב (_parent)',
+		advanced		: 'Advanced', // MISSING
+		langDirLTR		: 'Left to Right (LTR)', // MISSING
+		langDirRTL		: 'Right to Left (RTL)', // MISSING
+		styles			: 'Style', // MISSING
+		cssClasses		: 'Stylesheet Classes', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, לא זמין</span>'
@@ -748,7 +753,7 @@ CKEDITOR.lang['he'] =
 
 	bidi :
 	{
-		ltr :'כיוון טקסט משמאל לימין (LTR)',
-		rtl : 'כיוון טקסט מימין לשמאל (RTL)'
+		ltr :"Text direction from left to right",
+		rtl : "Text direction from right to left"
 	}
 };

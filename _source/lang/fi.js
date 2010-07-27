@@ -105,6 +105,11 @@ CKEDITOR.lang['fi'] =
 		targetTop		: 'Päällimmäinen ikkuna (_top)',
 		targetSelf		: 'Sama ikkuna (_self)',
 		targetParent	: 'Ylemmän tason ikkuna (_parent)',
+		advanced		: 'Advanced', // MISSING
+		langDirLTR		: 'Left to Right (LTR)', // MISSING
+		langDirRTL		: 'Right to Left (RTL)', // MISSING
+		styles			: 'Style', // MISSING
+		cssClasses		: 'Stylesheet Classes', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, ei saatavissa</span>'

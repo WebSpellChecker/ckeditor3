@@ -104,6 +104,11 @@ CKEDITOR.lang['pt-br'] =
 		targetTop		: 'Janela de Cima (_top)',
 		targetSelf		: 'Mesma Janela (_self)',
 		targetParent	: 'Janela Pai (_parent)',
+		advanced		: 'Advanced', // MISSING
+		langDirLTR		: 'Left to Right (LTR)', // MISSING
+		langDirRTL		: 'Right to Left (RTL)', // MISSING
+		styles			: 'Style', // MISSING
+		cssClasses		: 'Stylesheet Classes', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, indisponível</span>'

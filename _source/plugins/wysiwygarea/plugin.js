@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -15,6 +15,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	// Matching an empty paragraph at the end of document.
 	var emptyParagraphRegexp = /\s*<(p|div|address|h\d|center|li)[^>]*>\s*(?:<br[^>]*>|&nbsp;|\u00A0|&#160;)?\s*(:?<\/\1>)?\s*(?=$|<\/body>)/gi;
+
+	var notWhitespaceEval = CKEDITOR.dom.walker.whitespaces( true );
 
 	function checkReadOnly( selection )
 	{
@@ -75,6 +77,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 			else
 				this.document.$.execCommand( 'inserthtml', false, data );
+
+			// Webkit does not scroll to the cursor position after pasting (#5558)
+			if ( CKEDITOR.env.webkit )
+			{
+				this.document.$.execCommand( 'inserthtml', false, '<span id="cke_paste_marker" cke_temp="1"></span>' );
+				var marker = this.document.getById( 'cke_paste_marker' );
+				marker.scrollIntoView();
+				marker.remove();
+			}
 
 			CKEDITOR.tools.setTimeout( function()
 				{
@@ -153,10 +164,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			range.moveToPosition( lastElement, CKEDITOR.POSITION_AFTER_END );
 
-			var next = lastElement.getNextSourceNode( true );
-			var lastElementIsInline = CKEDITOR.dtd.$inline[ lastElement.getName() ];
-			if ( !lastElementIsInline && next && next.type == CKEDITOR.NODE_ELEMENT )
-				range.moveToElementEditStart( next );
+			// If we're inserting a block element immediatelly followed by
+			// another block element, the selection must move there. (#3100,#5436)
+			if ( isBlock )
+			{
+				var next = lastElement.getNext( notWhitespaceEval ),
+					nextName = next && next.type == CKEDITOR.NODE_ELEMENT && next.getName();
+
+				// Check if it's a block element that accepts text.
+				if ( nextName && CKEDITOR.dtd.$block[ nextName ] && CKEDITOR.dtd[ nextName ]['#'] )
+					range.moveToElementEditStart( next );
+			}
 
 			selection.selectRanges( [ range ] );
 
@@ -210,6 +228,34 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	isNotWhitespace = CKEDITOR.dom.walker.whitespaces( true );
 
+	// Gecko need a key event to 'wake up' the editing
+	// ability when document is empty.(#3864, #5781)
+	function activateEditing( editor )
+	{
+		var win = editor.window,
+			doc = editor.document,
+			body = editor.document.getBody(),
+			bodyChildsNum = body.getChildren().count();
+
+		if ( !bodyChildsNum || ( bodyChildsNum == 1&& body.getFirst().hasAttribute( '_moz_editor_bogus_node' ) ) )
+		{
+			restoreDirty( editor );
+
+			// Simulating keyboard character input by dispatching a keydown of white-space text.
+			var keyEventSimulate = doc.$.createEvent( "KeyEvents" );
+			keyEventSimulate.initKeyEvent( 'keypress', true, true, win.$, false,
+				false, false, false, 0, 32 );
+			doc.$.dispatchEvent( keyEventSimulate );
+
+			// Restore the original document status by placing the cursor before a bogus br created (#5021).
+			bodyChildsNum && body.getFirst().remove();
+			doc.getBody().appendBogus();
+			var nativeRange = new CKEDITOR.dom.range( doc );
+			nativeRange.setStartAt( body , CKEDITOR.POSITION_AFTER_START );
+			nativeRange.select();
+		}
+	}
+
 	/**
 	 *  Auto-fixing block-less content by wrapping paragraph (#3190), prevent
 	 *  non-exitable-block by padding extra br.(#3189)
@@ -223,6 +269,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			range = selection.getRanges()[0],
 			body = editor.document.getBody(),
 			enterMode = editor.config.enterMode;
+
+		CKEDITOR.env.gecko && activateEditing( editor );
 
 		// When enterMode set to block, we'll establing new paragraph only if we're
 		// selecting inline contents right under body. (#3657)
@@ -249,23 +297,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// block, we should revert the fix and move into the existed one. (#3684)
 			if ( isBlankParagraph( fixedBlock ) )
 			{
-				var previousElement = fixedBlock.getPrevious( isNotWhitespace ),
-					nextElement = fixedBlock.getNext( isNotWhitespace );
-
-				if ( previousElement && previousElement.getName
-					 && !( previousElement.getName() in nonExitableElementNames )
-					 || nextElement && nextElement.getName
-						&& !( nextElement.getName() in nonExitableElementNames ) )
+				var element = fixedBlock.getNext( isNotWhitespace );
+				if ( element && 
+					 element.type == CKEDITOR.NODE_ELEMENT && 
+					 !nonExitableElementNames[ element.getName() ] )
 				{
-					if ( isBlankParagraph( previousElement ) && range.moveToElementEditStart( previousElement )
-							|| isBlankParagraph( nextElement ) && range.moveToElementEditStart( nextElement ) )
-						fixedBlock.remove();
-
-					// Firefox prefer to anchor cursor after non-editable elements
-					// when navigate to them, leaving native behavior untouched. (#5834)
-					if ( CKEDITOR.env.gecko && ( previousElement.isReadOnly() || nextElement.isReadOnly() ) )
+					range.moveToElementEditStart( element );
+					fixedBlock.remove();
+				}
+				else
+				{
+					element = fixedBlock.getPrevious( isNotWhitespace );
+					if ( element && 
+						 element.type == CKEDITOR.NODE_ELEMENT && 
+						 !nonExitableElementNames[ element.getName() ] )
 					{
-						range.moveToPosition( fixedBlock, CKEDITOR.POSITION_BEFORE_START );
+						range.moveToElementEditEnd( element );
 						fixedBlock.remove();
 					}
 				}
@@ -442,33 +489,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							}, 0 );
 						}
 
-						// Gecko need a key event to 'wake up' the editing
-						// ability when document is empty.(#3864)
-						if ( CKEDITOR.env.gecko && !body.childNodes.length )
-						{
-							setTimeout( function()
-							{
-								restoreDirty( editor );
-
-								// Simulating keyboard character input by dispatching a keydown of white-space text.
-								var keyEventSimulate = domDocument.$.createEvent( "KeyEvents" );
-								keyEventSimulate.initKeyEvent( 'keypress', true, true, domWindow.$, false,
-									false, false, false, 0, 32 );
-								domDocument.$.dispatchEvent( keyEventSimulate );
-
-								// Restore the original document status by placing the cursor before a bogus br created (#5021).
-								domDocument.createElement( 'br', { attributes: { '_moz_editor_bogus_node' : 'TRUE', '_moz_dirty' : "" } } )
-									.replace( domDocument.getBody().getFirst() );
-								var nativeRange = new CKEDITOR.dom.range( domDocument );
-								nativeRange.setStartAt( new CKEDITOR.dom.element( body ) , CKEDITOR.POSITION_AFTER_START );
-								nativeRange.select();
-							}, 0 );
-						}
-
-						// IE, Opera and Safari may not support it and throw
-						// errors.
-						try { domDocument.execCommand( 'enableObjectResizing', false, !editor.config.disableObjectResizing ) ; } catch(e) {}
-						try { domDocument.execCommand( 'enableInlineTableEditing', false, !editor.config.disableNativeTableHandles ) ; } catch(e) {}
+						CKEDITOR.env.gecko && CKEDITOR.tools.setTimeout( activateEditing, 0, null, editor );
 
 						domWindow	= editor.window		= new CKEDITOR.dom.window( domWindow );
 						domDocument	= editor.document	= new CKEDITOR.dom.document( domDocument );
@@ -670,6 +691,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								{
 									editor.fire( 'dataReady' );
 								}, 0 );
+
+								// IE, Opera and Safari may not support it and throw errors.
+								try { editor.document.$.execCommand( 'enableObjectResizing', false, !editor.config.disableObjectResizing ) ; } catch(e) {}
+								try { editor.document.$.execCommand( 'enableInlineTableEditing', false, !editor.config.disableNativeTableHandles ) ; } catch(e) {}
 
 								/*
 								 * IE BUG: IE might have rendered the iframe with invisible contents.
@@ -951,6 +976,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					focusGrabber.on( 'focus', function()
 						{
 							editor.focus();
+
+							// In IE7 the blinking cursor appears, but contents are not editable. (#5634)
+							if ( CKEDITOR.env.ie7Compat )
+								editor.getSelection().getRanges()[ 0 ].select();
 						} );
 				} );
 				editor.on( 'destroy', function()

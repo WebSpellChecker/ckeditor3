@@ -262,7 +262,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 			var columns = this.definition.charColumns,
 				chars = this.definition.chars;
 
-			var charsTableLabel =  'specialchar_table_label' + CKEDITOR.tools.getNextNumber();
+			var charsTableLabel =  CKEDITOR.tools.getNextId() + '_specialchar_table_label';
 			var html = [ '<table role="listbox" aria-labelledby="' + charsTableLabel + '"' +
 						 			' style="width: 320px; height: 100%; border-collapse: separate;"' +
 						 			' align="center" cellspacing="2" cellpadding="2" border="0">' ];

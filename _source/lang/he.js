@@ -105,11 +105,11 @@ CKEDITOR.lang['he'] =
 		targetTop		: 'החלון העליון ביותר (_top)',
 		targetSelf		: 'אותו חלון (_self)',
 		targetParent	: 'חלון האב (_parent)',
-		advanced		: 'Advanced', // MISSING
-		langDirLTR		: 'Left to Right (LTR)', // MISSING
-		langDirRTL		: 'Right to Left (RTL)', // MISSING
-		styles			: 'Style', // MISSING
-		cssClasses		: 'Stylesheet Classes', // MISSING
+		advanced		: 'מתקדם',
+		langDirLTR		: 'שמאל לימין (LTR)',
+		langDirRTL		: 'ימין לשמאל (RTL)',
+		styles			: 'סגנון',
+		cssClasses		: 'מחלקות גליונות סגנון',
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, לא זמין</span>'

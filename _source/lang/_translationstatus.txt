@@ -26,7 +26,7 @@ fr-ca.js   Found: 301 Missing: 229
 fr.js      Found: 403 Missing: 127
 gl.js      Found: 283 Missing: 247
 gu.js      Found: 300 Missing: 230
-he.js      Found: 525 Missing: 5
+he.js      Found: 530 Missing: 0
 hi.js      Found: 302 Missing: 228
 hr.js      Found: 404 Missing: 126
 hu.js      Found: 445 Missing: 85

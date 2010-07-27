@@ -50,8 +50,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// Synchronize width value.
 							var width = this.getStyle( 'width', '' ),
 								txtWidth = dialog.getContentElement( 'info', 'txtWidth' ),
-								cmbWidthType = dialog.getContentElement( 'info', 'cmbWidthType' );
-
+								cmbWidthType = dialog.getContentElement( 'info', 'cmbWidthType' ),
 								isPx = 1;
 
 							if ( width )

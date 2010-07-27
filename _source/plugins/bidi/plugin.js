@@ -59,7 +59,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var walker = new CKEDITOR.dom.walker( range );
 			
 			var node;
-			while ( node = walker.next() )
+			while ( ( node = walker.next() ) )
 			{
 				if ( node.type == CKEDITOR.NODE_ELEMENT )
 				{

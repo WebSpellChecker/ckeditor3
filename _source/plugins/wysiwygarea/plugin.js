@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -362,6 +362,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
   							' allowTransparency="true"' +
   							'></iframe>' );
 
+						// #5689 Running inside of Firefox chrome the load event doesn't bubble like in a normal page
+						if (document.location.protocol == 'chrome:')
+							CKEDITOR.event.useCapture = true;
+
 						// With FF, it's better to load the data on iframe.load. (#3894,#4058)
 						iframe.on( 'load', function( ev )
 							{
@@ -375,6 +379,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								doc.write( data );
 								doc.close();
 							});
+
+						// #5689 Reset adjustment back to default
+						if (document.location.protocol == 'chrome:')
+							CKEDITOR.event.useCapture = false;
 
 						mainElement.append( iframe );
 					};

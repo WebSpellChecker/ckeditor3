@@ -75,10 +75,13 @@ if ( !CKEDITOR.env )
 
 			isCustomDomain : function()
 			{
+				if ( !this.ie )
+					return false;
+
 				var domain = document.domain,
 					hostname = window.location.hostname;
 
-				return this.ie &&
+				return
 					domain != hostname &&
 					domain != ( '[' + hostname + ']' );	// IPv6 IP support (#5434)
 			}

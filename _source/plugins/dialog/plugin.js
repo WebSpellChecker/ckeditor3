@@ -472,7 +472,10 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 		// Insert the tabs and contents.
 		for ( var i = 0 ; i < definition.contents.length ; i++ )
-			this.addPage( definition.contents[i] );
+		{
+			var page = definition.contents[i];
+			page && this.addPage( page );
+		}
 
 		this.parts['tabs'].on( 'click', function( evt )
 				{
@@ -1386,7 +1389,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		// Transform the contents entries in contentObjects.
 		var contents = dialogDefinition.contents;
 		for ( var i = 0, content ; ( content = contents[i] ) ; i++ )
-			contents[ i ] = new contentObject( dialog, content );
+			contents[ i ] = content && new contentObject( dialog, content );
 
 		CKEDITOR.tools.extend( this, dialogDefinition );
 	};

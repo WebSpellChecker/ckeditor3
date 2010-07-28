@@ -181,7 +181,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						return function( data, element )
 							{
 								originalCommit.apply( this, arguments );
-								
+
 								if ( !parseInt( element.getAttribute( 'border' ), 10 ) )
 									element.addClass( 'cke_show_border' );
 							};

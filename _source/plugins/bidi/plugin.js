@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -57,7 +57,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			range.setEndAfter( element );
 
 			var walker = new CKEDITOR.dom.walker( range );
-			
+
 			var node;
 			while ( ( node = walker.next() ) )
 			{
@@ -74,7 +74,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// Switch the margins.
 					var marginLeft = node.getStyle( 'margin-right' ),
 						marginRight = node.getStyle( 'margin-left' );
-					
+
 					marginLeft ? node.setStyle( 'margin-left', marginLeft ) : node.removeStyle( 'margin-left' );
 					marginRight ? node.setStyle( 'margin-right', marginRight ) : node.removeStyle( 'margin-right' );
 				}

@@ -59,7 +59,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					var range = selection.getRanges()[0],
 						endContainer = range && range.endContainer;
-					
+
 					if ( endContainer &&
  						 endContainer.type == CKEDITOR.NODE_ELEMENT &&
  						 endContainer.getAttribute( 'contenteditable' ) == 'false' &&

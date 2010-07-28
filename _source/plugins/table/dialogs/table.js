@@ -34,7 +34,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				var dialog = this,
 					isUpdating;
-					
+
 				var styles = dialog.getContentElement( 'advanced', 'advStyles' );
 
 				if ( styles )
@@ -43,10 +43,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						{
 							if ( isUpdating )
 								return;
-							
+
 							// Flag to avoid recursion.
 							isUpdating = 1;
-							
+
 							// Synchronize width value.
 							var width = this.getStyle( 'width', '' ),
 								txtWidth = dialog.getContentElement( 'info', 'txtWidth' ),
@@ -61,7 +61,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 							txtWidth && txtWidth.setValue( width );
 							cmbWidthType && cmbWidthType.setValue( isPx ? 'pixels' : 'percents' );
-							
+
 							// Synchronize height value.
 							var height = this.getStyle( 'height', '' ),
 								txtHeight = dialog.getContentElement( 'info', 'txtHeight' );
@@ -458,7 +458,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 														if ( styles )
 														{
 															var value = this.getValue();
-															
+
 															if ( value )
 																value += this.getDialog().getContentElement( 'info', 'cmbWidthType' ).getValue() == 'percents' ? '%' : 'px';
 
@@ -528,7 +528,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 													onChange : function()
 													{
 														var styles = this.getDialog().getContentElement( 'advanced', 'advStyles' );
-														
+
 														if ( styles )
 														{
 															var value = this.getValue();

@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -34,7 +34,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		return parseInt( computed, 10 );
 	}
-	
+
 	// Gets the table row that contains the most columns.
 	function getMasterPillarRow( table )
 	{
@@ -53,7 +53,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				$elected = $tr;
 			}
 		}
-		
+
 		return $elected;
 	}
 
@@ -62,7 +62,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		var pillars = [],
 			pillarIndex = -1,
 			rtl = ( table.getComputedStyle( 'direction' ) == 'rtl' );
-		
+
 		// Get the raw row element that cointains the most columns.
 		var $tr = getMasterPillarRow( table );
 
@@ -80,7 +80,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				nextTd = $tr.cells[ i + 1 ] && new CKEDITOR.dom.element( $tr.cells[ i + 1 ] );
 
 			pillarIndex += td.$.colSpan || 1;
-			
+
 			// Calculate the pillar boundary positions.
 			var pillarLeft, pillarRight, pillarWidth, pillarPadding;
 
@@ -91,7 +91,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				pillarRight = x + getBorderWidth( td, 'left' ) :
 				pillarLeft  = x + td.$.offsetWidth - getBorderWidth( td, 'right' );
 
-			// Calculate positions based on the next cell, if available.			
+			// Calculate positions based on the next cell, if available.
 			if ( nextTd )
 			{
 				x =  nextTd.getDocumentPosition().x;
@@ -111,7 +111,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 
 			pillarWidth = Math.max( pillarRight - pillarLeft, 3 );
-			
+
 			// Make the pillar touch area at least 14 pixels wide, for easy to use.
 			pillarPadding = Math.max( Math.round( 7 - ( pillarWidth / 2 ) ), 0 );
 
@@ -137,7 +137,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var pillar = pillars[ i ],
 				pad = pillar.padding;
-			
+
 			if ( positionX >= pillar.x - pad && positionX <= ( pillar.x + pillar.width + pad ) )
 				return pillar;
 		}
@@ -152,11 +152,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	function columnResizer( editor )
 	{
-		var pillar, 
-			document, 
-			resizer, 
+		var pillar,
+			document,
+			resizer,
 			isResizing,
-			startOffset, 
+			startOffset,
 			currentShift;
 
 		var leftSideCells, rightSideCells, leftShiftBoundary, rightShiftBoundary;
@@ -174,7 +174,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			document.getBody().setStyle( 'cursor', 'auto' );
 
 			// Hide the resizer (remove it on IE7 - #5890).
-			needsIEHacks ? resizer.remove() : resizer.hide();			
+			needsIEHacks ? resizer.remove() : resizer.hide();
 		}
 
 		function resizeStart()
@@ -195,7 +195,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				var row			= map[ i ],
 					leftCell	= row[ columnIndex + ( rtl ? 1 : 0 ) ],
 					rightCell	= row[ columnIndex + ( rtl ? 0 : 1 ) ];
-					
+
 				leftCell	= leftCell && new CKEDITOR.dom.element( leftCell );
 				rightCell	= rightCell && new CKEDITOR.dom.element( rightCell );
 
@@ -203,7 +203,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					leftCell && ( leftMinSize = Math.min( leftMinSize, getWidth( leftCell ) ) );
 					rightCell && ( rightMinSize = Math.min( rightMinSize, getWidth( rightCell ) ) );
-					
+
 					leftColumnCells.push( leftCell );
 					rightColumnCells.push( rightCell );
 				}
@@ -221,9 +221,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			startOffset = parseInt( resizer.getStyle( 'left' ), 10 );
 			currentShift = 0;
 			isResizing = 1;
-			
+
 			resizer.on( 'mousemove', onMouseMove );
-			
+
 			// Prevent the native drag behavior otherwise 'mousemove' won't fire.
 			document.on( 'dragstart', cancel );
 		}
@@ -233,7 +233,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			isResizing = 0;
 
 			resizer.setOpacity( 0 );
-			
+
 			currentShift && resizeColumn();
 
 			var table = pillar.table;
@@ -253,14 +253,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				var leftCell = leftSideCells[ i ],
 					rightCell = rightSideCells[ i ],
 					table = pillar.table;
-				
+
 				// Defer the resizing to avoid any interference among cells.
 				CKEDITOR.tools.setTimeout(
 					function( leftCell, leftOldWidth, rightCell, rightOldWidth, tableWidth, sizeShift )
 					{
 						leftCell && leftCell.setStyle( 'width', pxUnit( Math.max( leftOldWidth + sizeShift, 0 ) ) );
 						rightCell && rightCell.setStyle( 'width', pxUnit( Math.max( rightOldWidth - sizeShift, 0 ) ) );
-						
+
 						// If we're in the last cell, we need to resize the table as well
 						if ( tableWidth )
 							table.setStyle( 'width', pxUnit( tableWidth + sizeShift * ( rtl ? -1 : 1 ) ) );
@@ -289,7 +289,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			resizeEnd();
 		}
-		
+
 		function onMouseMove( evt )
 		{
 			move( evt.data.$.clientX );
@@ -334,21 +334,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// elements in an editable document. Show the resizer in that case,
 			// to give the user a visual clue.
 			needsIEHacks && resizer.setOpacity( 0.25 );
-			
+
 			resizer.on( 'mousedown', onMouseDown, this );
 
 			document.getBody().setStyle( 'cursor', 'col-resize' );
-			
+
 			// Display the resizer to receive events but don't show it,
 			// only change the cursor to resizable shape.
 			resizer.show();
 		};
-		
+
 		var move = this.move = function( posX )
 		{
 			if ( !pillar )
 				return 0;
-			
+
 			var pad = pillar.padding;
 
 			if ( !isResizing && ( posX < pillar.x - pad || posX > ( pillar.x + pillar.width + pad ) ) )
@@ -358,15 +358,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 
 			var resizerNewPosition = posX - Math.round( resizer.$.offsetWidth / 2 );
-			
+
 			if ( isResizing )
 			{
 				if ( resizerNewPosition == leftShiftBoundary || resizerNewPosition == rightShiftBoundary )
 					return 1;
-				
+
 				resizerNewPosition = Math.max( resizerNewPosition, leftShiftBoundary );
 				resizerNewPosition = Math.min( resizerNewPosition, rightShiftBoundary );
-			
+
 				currentShift = resizerNewPosition - startOffset;
 			}
 
@@ -409,7 +409,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				editor.document.getBody().on( 'mousemove', function( evt )
 					{
 						evt = evt.data;
-						
+
 						// If we're already attached to a pillar, simply move the
 						// resizer.
 						if ( resizer && resizer.move( evt.$.clientX ) )

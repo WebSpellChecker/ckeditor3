@@ -1,11 +1,11 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 (function()
 {
-	
+
 function setupAdvParams( element )
 {
 	var attrName = this.att;
@@ -21,7 +21,7 @@ function commitAdvParams()
 	// Dialogs may use different parameters in the commit list, so, by
 	// definition, we take the first CKEDITOR.dom.element available.
 	var element;
-	
+
 	for ( var i = 0 ; i < arguments.length ; i++ )
 	{
 		if ( arguments[ i ] instanceof CKEDITOR.dom.element )
@@ -133,7 +133,7 @@ CKEDITOR.plugins.add( 'dialogadvtab',
 						type : 'text',
 						label : lang.styles,
 						'default' : '',
-						
+
 						onChange : function(){},
 
 						getStyle : function( name, defaultValue )
@@ -141,12 +141,12 @@ CKEDITOR.plugins.add( 'dialogadvtab',
 							var match = this.getValue().match( new RegExp( name + '\\s*:\s*([^;]*)', 'i') );
 							return match ? match[ 1 ] : defaultValue;
 						},
-						
+
 						updateStyle : function( name, value )
 						{
 							if ( isUpdating )
 								return;
-							
+
 							// Flag to avoid recursion.
 							isUpdating = 1;
 
@@ -166,9 +166,9 @@ CKEDITOR.plugins.add( 'dialogadvtab',
 								styles && !(/;\s*$/).test( styles ) && ( styles += '; ' );
 								styles += name + ': ' + value;
 							}
-							
+
 							this.setValue( styles );
-							
+
 							isUpdating = 0;
 						},
 

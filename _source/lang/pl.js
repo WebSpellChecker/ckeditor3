@@ -753,7 +753,7 @@ CKEDITOR.lang['pl'] =
 
 	bidi :
 	{
-		ltr :"Text direction from left to right",
-		rtl : "Text direction from right to left"
+		ltr : 'Text direction from left to right', // MISSING
+		rtl : 'Text direction from right to left' // MISSING
 	}
 };

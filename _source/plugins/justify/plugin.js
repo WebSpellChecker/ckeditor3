@@ -19,7 +19,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			return CKEDITOR.TRISTATE_OFF;
 
 		var currentAlign = firstBlock.getComputedStyle( 'text-align' ).replace( alignRemoveRegex, '' );
-		if ( ( !currentAlign && this.isDefaultAlign ) || currentAlign == this.value )
+		if ( ( !currentAlign && isDefaultAlign( this, firstBlock ) ) || currentAlign == this.value )
 			return CKEDITOR.TRISTATE_ON;
 		return CKEDITOR.TRISTATE_OFF;
 	}
@@ -31,14 +31,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		command.fire( 'state' );
 	}
 
+	function isDefaultAlign( command, element )
+	{
+		var direction = element.getComputedStyle( 'direction' ),
+			val = command.value;
+		return ( direction == 'rtl' && val == 'right' ) || ( direction == 'ltr' && val == 'left' );
+		
+	}
+
 	function justifyCommand( editor, name, value )
 	{
 		this.name = name;
 		this.value = value;
-
-		var contentDir = editor.config.contentsLangDirection;
-		this.isDefaultAlign = ( value == 'left' && contentDir == 'ltr' ) ||
-			( value == 'right' && contentDir == 'rtl' );
 
 		var classes = editor.config.justifyClasses;
 		if ( classes )
@@ -88,6 +92,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					block.removeAttribute( 'align' );
 
+					var isDefault = isDefaultAlign( this, block );
+
 					if ( cssClassName )
 					{
 						// Remove any of the alignment classes from the className.
@@ -95,14 +101,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							CKEDITOR.tools.ltrim( block.$.className.replace( this.cssClassRegex, '' ) );
 
 						// Append the desired class name.
-						if ( this.state == CKEDITOR.TRISTATE_OFF && !this.isDefaultAlign )
+						if ( this.state == CKEDITOR.TRISTATE_OFF && !isDefault )
 							block.addClass( cssClassName );
 						else if ( !className )
 							block.removeAttribute( 'class' );
 					}
 					else
 					{
-						if ( this.state == CKEDITOR.TRISTATE_OFF && !this.isDefaultAlign )
+						if ( this.state == CKEDITOR.TRISTATE_OFF && !isDefault )
 							block.setStyle( 'text-align', this.value );
 						else
 							block.removeStyle( 'text-align' );

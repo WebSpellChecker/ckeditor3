@@ -10,14 +10,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	var resizeEditor = function( editor )
 	{
 		var doc = editor.document,
-			documentElement = doc.getDocumentElement().$,
 			currentHeight = editor.window.getViewPaneSize().height,
 			newHeight;
 
+		// We can not use documentElement to calculate the height for IE (#6061).
 		if ( CKEDITOR.env.ie )
-			newHeight = documentElement.scrollHeight;
+			newHeight = doc.getBody().$.scrollHeight + 24;
 		else
-			newHeight = documentElement.offsetHeight;
+			newHeight = doc.getDocumentElement().$.offsetHeight;
 
 		var min = editor.config.autoGrow_minHeight,
 			max = editor.config.autoGrow_maxHeight;

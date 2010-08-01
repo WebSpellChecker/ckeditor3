@@ -29,8 +29,11 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 			range.insertNode( textNode );
 		}
 
-		range.moveToPosition( textNode, CKEDITOR.POSITION_AFTER_END );
-		range.select();
+		if ( range )
+		{
+			range.moveToPosition( textNode, CKEDITOR.POSITION_AFTER_END );
+			range.select();
+		}
 
 		editor.fire( 'saveSnapshot' );
 	};

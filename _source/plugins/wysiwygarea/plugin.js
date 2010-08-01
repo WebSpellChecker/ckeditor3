@@ -20,7 +20,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	function checkReadOnly( selection )
 	{
-		return selection.getCommonAncestor().isReadOnly();
+		if ( selection.getType() == CKEDITOR.SELECTION_ELEMENT )
+			return selection.getSelectedElement().isReadOnly();
+		else
+			return selection.getCommonAncestor().isReadOnly();
 	}
 
 	function onInsertHtml( evt )

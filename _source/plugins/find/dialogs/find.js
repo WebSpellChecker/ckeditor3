@@ -5,9 +5,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 (function()
 {
+	var isReplace;
+
 	function findEvaluator( node )
 	{
-		return node.type == CKEDITOR.NODE_TEXT && node.getLength() > 0 && !node.isReadOnly();
+		return node.type == CKEDITOR.NODE_TEXT && node.getLength() > 0 && ( !isReplace || !node.isReadOnly() );
 	}
 
 	/**
@@ -282,6 +284,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				this._.highlightRange = null;
 			},
 
+			isReadOnly : function()
+			{
+				if ( !this._.highlightRange )
+					return 0;
+
+				return this._.highlightRange.startContainer.isReadOnly();
+			},
+
 			moveBack : function()
 			{
 				var retval = this._.walker.back(),
@@ -518,13 +528,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			replace : function( dialog, pattern, newString, matchCase, matchWord,
 				matchCyclic , isReplaceAll )
 			{
+				isReplace = 1;
+
 				// Successiveness of current replace/find.
 				var result = false;
 
 				// 1. Perform the replace when there's already a match here.
 				// 2. Otherwise perform the find but don't replace it immediately.
 				if ( this.matchRange && this.matchRange.isMatched()
-						&& !this.matchRange._.isReplaced )
+						&& !this.matchRange._.isReplaced && !this.matchRange.isReadOnly() )
 				{
 					// Turn off highlight for a while when saving snapshots.
 					this.matchRange.removeHighlight();
@@ -553,6 +565,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 				else
 					result = this.find( pattern, matchCase, matchWord, matchCyclic, !isReplaceAll );
+
+				isReplace = 0;
 
 				return result;
 			}

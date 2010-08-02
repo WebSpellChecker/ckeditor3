@@ -330,4 +330,20 @@ CKEDITOR.config =
 	baseFloatZIndex : 10000
 };
 
+/**
+ * Indicates that some of the editor features, like alignement and text
+ * direction, should used the "computed value" of the feature to indicate it's
+ * on/off state, instead of using the "real value".
+ *
+ * If enabled, in a left to right written document, the "Left Justify"
+ * alignment button will show as active, even if the aligment style is not
+ * explicitly applied to the current paragraph in the editor.
+ * @name CKEDITOR.config.useComputedState
+ * @type Boolean
+ * @default true
+ * @since 3.4
+ * @example
+ * config.useComputedState = false;
+ */
+
 // PACKAGER_RENAME( CKEDITOR.config )

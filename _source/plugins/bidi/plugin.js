@@ -17,31 +17,46 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	function getState( editor, path, dir )
 	{
-		var selection = editor.getSelection(),
-			ranges = selection.getRanges();
+		var useComputedState = editor.config.useComputedState,
+			selectedElement;
 
-		var selectedElement = ranges && ranges[ 0 ].getEnclosedNode();
+		useComputedState = useComputedState === undefined || useComputedState;
 
-		// If this is not our element of interest, apply to fully selected elements from guardElements.
-		if ( !selectedElement || selectedElement
-				&& !( selectedElement.type == CKEDITOR.NODE_ELEMENT && selectedElement.getName() in directSelectionGuardElements )
-			)
-			selectedElement = getFullySelected( selection, guardElements );
+		if ( useComputedState )
+		{
+			var selection = editor.getSelection(),
+				ranges = selection.getRanges();
+
+			selectedElement = ranges && ranges[ 0 ].getEnclosedNode();
+
+			// If this is not our element of interest, apply to fully selected elements from guardElements.
+			if ( !selectedElement || selectedElement
+					&& !( selectedElement.type == CKEDITOR.NODE_ELEMENT && selectedElement.getName() in directSelectionGuardElements )
+				)
+				selectedElement = getFullySelected( selection, guardElements );
+		}
 
 		selectedElement = selectedElement || path.block || path.blockLimit;
 
 		if ( !selectedElement || selectedElement.getName() == 'body' )
 			return CKEDITOR.TRISTATE_OFF;
 
-		return ( selectedElement.getComputedStyle( 'direction' ) == dir ) ?
+		selectedElement = useComputedState ?
+			selectedElement.getComputedStyle( 'direction' ) :
+			selectedElement.getStyle( 'direction' ) || selectedElement.getAttribute( 'dir' );
+
+		return ( selectedElement == dir ) ?
 			CKEDITOR.TRISTATE_ON : CKEDITOR.TRISTATE_OFF;
 	}
 
 	function switchDir( element, dir, editor )
 	{
-		var dirBefore = element.getComputedStyle( 'direction' );
+		var dirBefore = element.getComputedStyle( 'direction' ),
+			currentDir = element.getStyle( 'direction' ) || element.getAttribute( 'dir' ) || '';
 
-		if ( element.hasAttribute( 'dir' ) && element.getAttribute( 'dir' ).toLowerCase() == dir )
+		element.removeStyle( 'direction' );
+
+		if ( currentDir.toLowerCase() == dir )
 			element.removeAttribute( 'dir' );
 		else
 			element.setAttribute( 'dir', dir );

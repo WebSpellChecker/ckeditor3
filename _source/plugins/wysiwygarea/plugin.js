@@ -995,7 +995,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				if ( element.type == CKEDITOR.NODE_ELEMENT
 						&& ( element.is( 'input' ) || element.is( 'textarea' ) ) )
 				{
-					element.setAttribute( 'contentEditable', false );
+					if ( !element.isReadOnly() )
+					{
+						element.setAttribute( 'contentEditable', false );
+						// We should flag that the element was locked by our code so
+						// it'll be editable by the editor functions (#6046).
+						element.setCustomData( '_cke_notReadOnly', 1 );
+					}
 				}
 			});
 

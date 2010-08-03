@@ -16,8 +16,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		if ( !firstBlock || firstBlock.getName() == 'body' )
 			return CKEDITOR.TRISTATE_OFF;
 
-		return ( getAlignment( firstBlock, editor.config.useComputedState ) == this.value ) ? 
-			CKEDITOR.TRISTATE_ON : 
+		return ( getAlignment( firstBlock, editor.config.useComputedState ) == this.value ) ?
+			CKEDITOR.TRISTATE_ON :
 			CKEDITOR.TRISTATE_OFF;
 	}
 

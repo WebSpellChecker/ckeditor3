@@ -121,7 +121,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				enterMode = editor.config.enterMode,
 				ranges = selection.getRanges();
 
-			if ( ranges )
+			if ( ranges && ranges.length )
 			{
 				// Apply do directly selected elements from guardElements.
 				var selectedElement = ranges[ 0 ].getEnclosedNode();
@@ -134,7 +134,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				if ( selectedElement )
 				{
-					switchDir( selectedElement, dir, editor );
+					if ( !selectedElement.isReadOnly() )
+						switchDir( selectedElement, dir, editor );
 				}
 				else
 				{
@@ -170,6 +171,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						while ( ( block = iterator.getNextParagraph( enterMode == CKEDITOR.ENTER_P ? 'p' : 'div' ) ) )
 						{
+							if ( block.isReadOnly() )
+								continue;
+
 							var _break = 0;
 
 							// Check if block have been already processed by the walker above.

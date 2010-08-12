@@ -108,19 +108,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					this._.selectedElement = selectedTable;
 				}
 
-				// Enable, disable and select the row, cols, width fields.
+				// Enable or disable the row, cols, width fields.
 				if ( selectedTable )
 				{
 					this.setupContent( selectedTable );
 					rowsInput && rowsInput.disable();
 					colsInput && colsInput.disable();
-					widthInput && widthInput.select();
 				}
 				else
 				{
 					rowsInput && rowsInput.enable();
 					colsInput && colsInput.enable();
-					rowsInput && rowsInput.select();
 				}
 
 				// Call the onChange method for the widht and height fields so

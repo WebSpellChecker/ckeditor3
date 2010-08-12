@@ -62,8 +62,8 @@ CKEDITOR.plugins.add( 'dialogadvtab',
 		var result =
 		{
 			id : 'advanced',
-			label : lang.advanced,
-			title : lang.advanced,
+			label : lang.advancedTab,
+			title : lang.advancedTab,
 			elements :
 				[
 					{

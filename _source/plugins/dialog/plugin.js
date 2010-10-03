@@ -80,10 +80,19 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 	CKEDITOR.dialog = function( editor, dialogName )
 	{
 		// Load the dialog definition.
-		var definition = CKEDITOR.dialog._.dialogDefinitions[ dialogName ];
+		var definition = CKEDITOR.dialog._.dialogDefinitions[ dialogName ],
+			defaultDefinition = CKEDITOR.tools.clone( defaultDialogDefinition ),
+			buttonsOrder = editor.config.dialog_buttonsOrder || 'OS',
+			dir = editor.lang.dir;
+
+			if ( ( buttonsOrder == 'OS' && CKEDITOR.env.mac ) ||    // The buttons in MacOS Apps are in reverse order (#4750)  
+				( buttonsOrder == 'rtl' && dir == 'ltr' ) ||  
+				( buttonsOrder == 'ltr' && dir == 'rtl' ) )  
+					defaultDefinition.buttons.reverse();  
+
 
 		// Completes the definition with the default values.
-		definition = CKEDITOR.tools.extend( definition( editor ), defaultDialogDefinition );
+		definition = CKEDITOR.tools.extend( definition( editor ), defaultDefinition );
 
 		// Clone a functionally independent copy for this dialog.
 		definition = CKEDITOR.tools.clone( definition );
@@ -1301,9 +1310,6 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		minHeight : 400,
 		buttons : [ CKEDITOR.dialog.okButton, CKEDITOR.dialog.cancelButton ]
 	};
-
-	// The buttons in MacOS Apps are in reverse order #4750
-	CKEDITOR.env.mac && defaultDialogDefinition.buttons.reverse();
 
 	// Tool function used to return an item from an array based on its id
 	// property.
@@ -2949,6 +2955,21 @@ CKEDITOR.plugins.add( 'dialog',
  * @example
  * config.dialog_magnetDistance = 30;
  */
+
+/**
+ * The guildeline to follow when generating the dialog buttons. There are 3 possible options:
+ * <ul>
+ *     <li>'OS' - the buttons will be displayed in the default order of the user's OS;</li>
+ *     <li>'ltr' - for Left-To-Right order;</li>
+ *     <li>'rtl' - for Right-To-Left order.</li>
+ * </ul>
+ * @name CKEDITOR.config.dialog_buttonsOrder
+ * @type String
+ * @default 'OS'
+ * @since 3.5
+ * @example
+ * config.dialog_buttonsOrder = 'rtl';
+*/
 
 /**
  * Fired when a dialog definition is about to be used to create a dialog into

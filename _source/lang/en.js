@@ -615,6 +615,25 @@ CKEDITOR.lang['en'] =
 		remove				: 'Remove Div'
   	},
 
+	iframe :
+	{
+		title		: 'Iframe Properties',
+		toolbar		: 'Iframe',
+		height		: 'Height',
+		width		: 'Width',
+		invalidHeight	: 'Iframe height must be a number.',
+		invalidWidth	: 'Iframe width must be a number.',
+		noUrl		: 'Please type the iframe URL',
+		scrolling		: 'Enable scrollbars',
+		border		: 'Show frame border',
+		align		: 'Alignment',
+		alignLeft		: 'Left',
+		alignRight	: 'Right',
+		alignTop		: 'Top',
+		alignMiddle	: 'Middle',
+		alignBottom	: 'Bottom'
+	},
+
 	font :
 	{
 		label		: 'Font',

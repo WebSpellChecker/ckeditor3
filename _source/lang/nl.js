@@ -615,6 +615,25 @@ CKEDITOR.lang['nl'] =
 		remove				: 'Div verwijderen'
   	},
 
+	iframe :
+	{
+		title		: 'Iframe Properties', // MISSING
+		toolbar		: 'Iframe', // MISSING
+		height		: 'Height', // MISSING
+		width		: 'Width', // MISSING
+		invalidHeight	: 'Iframe height must be a number.', // MISSING
+		invalidWidth	: 'Iframe width must be a number.', // MISSING
+		noUrl		: 'Please type the iframe URL', // MISSING
+		scrolling		: 'Enable scrollbars', // MISSING
+		border		: 'Show frame border', // MISSING
+		align		: 'Alignment', // MISSING
+		alignLeft		: 'Left', // MISSING
+		alignRight	: 'Right', // MISSING
+		alignTop		: 'Top', // MISSING
+		alignMiddle	: 'Middle', // MISSING
+		alignBottom	: 'Bottom' // MISSING
+	},
+
 	font :
 	{
 		label		: 'Lettertype',

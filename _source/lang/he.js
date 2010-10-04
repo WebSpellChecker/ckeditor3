@@ -617,21 +617,21 @@ CKEDITOR.lang['he'] =
 
 	iframe :
 	{
-		title		: 'Iframe Properties', // MISSING
-		toolbar		: 'Iframe', // MISSING
-		height		: 'Height', // MISSING
-		width		: 'Width', // MISSING
-		invalidHeight	: 'Iframe height must be a number.', // MISSING
-		invalidWidth	: 'Iframe width must be a number.', // MISSING
-		noUrl		: 'Please type the iframe URL', // MISSING
-		scrolling		: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border', // MISSING
-		align		: 'Alignment', // MISSING
-		alignLeft		: 'Left', // MISSING
-		alignRight	: 'Right', // MISSING
-		alignTop		: 'Top', // MISSING
-		alignMiddle	: 'Middle', // MISSING
-		alignBottom	: 'Bottom' // MISSING
+		title		: 'מאפייני חלון פנימי (Iframe)',
+		toolbar		: 'חלון פנימי (Iframe)',
+		height		: 'גובה',
+		width		: 'רוחב',
+		invalidHeight	: 'גובה החלון חייב להיות מספרי.',
+		invalidWidth	: 'רוחב החלון חייב להיות מספרי.',
+		noUrl		: 'יש להכניס כתובת לחלון.',
+		scrolling		: 'אפשר פסי גלילה',
+		border		: 'הראה מסגרת לחלון',
+		align		: 'יישור',
+		alignLeft		: 'שמאל',
+		alignRight	: 'ימין',
+		alignTop		: 'למעלה',
+		alignMiddle	: 'מרכז',
+		alignBottom	: 'למטה'
 	},
 
 	font :

@@ -29,6 +29,9 @@ If they are set correctly it's possible to edit the contents of the extension an
 pick up the changes without reloading Firefox. A useful extension about this is https://addons.mozilla.org/en-US/firefox/addon/7434/ 
 that provides an option to reload all the chrome.
 
+Ultimately, a solution to force Firefox to reload the extension is to remove the proxy file, start and close firefox, put it again and so 
+on next launch it will install the extension again.
+
 The CKEditor folder under content\ points to the SVN trunk, it doesn't have anything special.
 The editor.html file in content\ is loaded as an iframe in the dialog, and in fact it can be launched as a standalone page.
 

@@ -9,8 +9,7 @@
     
 	<em:version>0.1</em:version>
 	<em:creator>Alfonso</em:creator>
-	<em:iconURL>chrome://writearea/skin/writearea.png</em:iconURL>
-	<em:optionsURL>chrome://writearea/content/options.xul</em:optionsURL>
+	<em:iconURL>chrome://mozeditor/skin/mozeditor.png</em:iconURL>
 
 	<!-- Firefox -->
 	<em:targetApplication>

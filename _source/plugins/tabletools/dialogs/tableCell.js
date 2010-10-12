@@ -12,7 +12,8 @@ CKEDITOR.dialog.add( 'cellProperties', function( editor )
 			widthPattern = /^(\d+(?:\.\d+)?)(px|%)$/,
 			heightPattern = /^(\d+(?:\.\d+)?)px$/,
 			bind = CKEDITOR.tools.bind,
-			spacer = { type : 'html', html : '&nbsp;' };
+			spacer = { type : 'html', html : '&nbsp;' },
+			rtl = editor.lang.dir == 'rtl';
 
 		/**
 		 *
@@ -243,9 +244,7 @@ CKEDITOR.dialog.add( 'cellProperties', function( editor )
 										{
 											type : 'select',
 											id : 'hAlign',
-											labelLayout : 'horizontal',
 											label : langCell.hAlign,
-											widths : [ '50%', '50%' ],
 											'default' : '',
 											items :
 											[
@@ -276,9 +275,7 @@ CKEDITOR.dialog.add( 'cellProperties', function( editor )
 										{
 											type : 'select',
 											id : 'vAlign',
-											labelLayout : 'horizontal',
 											label : langCell.vAlign,
-											widths : [ '50%', '50%' ],
 											'default' : '',
 											items :
 											[
@@ -399,15 +396,13 @@ CKEDITOR.dialog.add( 'cellProperties', function( editor )
 										{
 											type : 'hbox',
 											padding : 0,
-											widths : [ '80%', '20%' ],
+											widths : [ '70%', '30%' ],
 											children :
 											[
 												{
 													type : 'text',
 													id : 'bgColor',
 													label : langCell.bgColor,
-													labelLayout : 'horizontal',
-													widths : [ '70%', '30%' ],
 													'default' : '',
 													setup : function( element )
 													{
@@ -432,7 +427,12 @@ CKEDITOR.dialog.add( 'cellProperties', function( editor )
 													type : 'button',
 													id : 'bgColorChoose',
 													label : langCell.chooseColor,
-													style : 'margin-left: 10px',
+													style : ( rtl ? 'margin-right' : 'margin-left' ) + ': 10px',
+													onLoad : function()
+													{
+														// Stick the element to the bottom (#5587)
+														this.getElement().getParent().setStyle( 'vertical-align', 'bottom' );
+													},
 													onClick : function()
 													{
 														var self = this;
@@ -450,15 +450,13 @@ CKEDITOR.dialog.add( 'cellProperties', function( editor )
 										{
 											type : 'hbox',
 											padding : 0,
-											widths : [ '80%', '20%' ],
+											widths : [ '70%', '30%' ],
 											children :
 											[
 												{
 													type : 'text',
 													id : 'borderColor',
 													label : langCell.borderColor,
-													labelLayout : 'horizontal',
-													widths : [ '70%', '30%' ],
 													'default' : '',
 													setup : function( element )
 													{
@@ -482,7 +480,12 @@ CKEDITOR.dialog.add( 'cellProperties', function( editor )
 													type : 'button',
 													id : 'borderColorChoose',
 													label : langCell.chooseColor,
-													style : 'margin-left: 10px',
+													style : ( rtl ? 'margin-right' : 'margin-left' ) + ': 10px',
+													onLoad : function()
+													{
+														// Stick the element to the bottom (#5587)
+														this.getElement().getParent().setStyle( 'vertical-align', 'bottom' );
+													},
 													onClick : function()
 													{
 														var self = this;

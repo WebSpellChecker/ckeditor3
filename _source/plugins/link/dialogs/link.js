@@ -789,7 +789,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 					},
 					{
 						type : 'vbox',
-						width : 260,
+						width : '100%',
 						align : 'center',
 						padding : 2,
 						id : 'popupFeatures',
@@ -893,7 +893,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 										[
 											{
 												type :  'text',
-												widths : [ '30%', '70%' ],
+												widths : [ '50%', '50%' ],
 												labelLayout : 'horizontal',
 												label : editor.lang.link.popupWidth,
 												id : 'width',
@@ -904,7 +904,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 											{
 												type :  'text',
 												labelLayout : 'horizontal',
-												widths : [ '55%', '45%' ],
+												widths : [ '50%', '50%' ],
 												label : editor.lang.link.popupLeft,
 												id : 'left',
 												setup : setupPopupParams,
@@ -920,7 +920,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 											{
 												type :  'text',
 												labelLayout : 'horizontal',
-												widths : [ '30%', '70%' ],
+												widths : [ '50%', '50%' ],
 												label : editor.lang.link.popupHeight,
 												id : 'height',
 												setup : setupPopupParams,
@@ -931,7 +931,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 												type :  'text',
 												labelLayout : 'horizontal',
 												label : editor.lang.link.popupTop,
-												widths : [ '55%', '45%' ],
+												widths : [ '50%', '50%' ],
 												id : 'top',
 												setup : setupPopupParams,
 												commit : commitPopupParams

@@ -801,7 +801,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 													type : 'text',
 													id : 'txtBorder',
 													width: '60px',
-													labelLayout : 'horizontal',
 													label : editor.lang.image.border,
 													'default' : '',
 													onKeyUp : function()
@@ -858,7 +857,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 													type : 'text',
 													id : 'txtHSpace',
 													width: '60px',
-													labelLayout : 'horizontal',
 													label : editor.lang.image.hSpace,
 													'default' : '',
 													onKeyUp : function()
@@ -922,7 +920,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 													type : 'text',
 													id : 'txtVSpace',
 													width : '60px',
-													labelLayout : 'horizontal',
 													label : editor.lang.image.vSpace,
 													'default' : '',
 													onKeyUp : function()
@@ -984,7 +981,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 												{
 													id : 'cmbAlign',
 													type : 'select',
-													labelLayout : 'horizontal',
 													widths : [ '35%','65%' ],
 													style : 'width:90px',
 													label : editor.lang.image.align,

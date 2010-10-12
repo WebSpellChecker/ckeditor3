@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<overlay id="mozeditor-overlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<!-- Our code -->
+	<script type="application/x-javascript" src="firefoxOverlay.js"/>
+
+	<popup id="contentAreaContextMenu">
+		<menuseparator id="sep_mozeditor" insertbefore="context-sep-paste"/>
+		<menuitem id="context-mozeditor" label="Edit in MozEditor"
+			accesskey="E"
+			insertbefore="context-sep-paste"
+			oncommand="mozeditor.onMenuItemCommand(event)"/>
+	</popup>
+<!-- /Our code -->
+
+</overlay>

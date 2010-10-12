@@ -1,0 +1,4 @@
+content	mozeditor	content/	
+locale	mozeditor	en-US	locale/en-US/
+skin	mozeditor	classic/1.0	skin/
+overlay	chrome://browser/content/browser.xul	chrome://mozeditor/content/firefoxOverlay.xul 

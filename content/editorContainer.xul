@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+ <window 
+     title="MozEditor"
+     xmlns:html="http://www.w3.org/1999/xhtml"
+     xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+     style="min-width:100px;min-height:100px;background-color:white;">
+
+	<iframe id="browser1" src="chrome://mozeditor/content/editor.html" tooltip="aHTMLTooltip" flex="1" />
+	<tooltip id="aHTMLTooltip" onpopupshowing="return FillInHTMLTooltip(document.tooltipNode);"/>
+	<script type="application/x-javascript" src="editorContainer.js"/>
+ </window>

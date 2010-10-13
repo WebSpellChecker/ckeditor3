@@ -22,6 +22,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 
 		function addButton( name, type, title )
 		{
+			var colorBoxId = CKEDITOR.tools.getNextId() + '_colorBox';
 			editor.ui.add( name, CKEDITOR.UI_PANELBUTTON,
 				{
 					label : title,
@@ -39,7 +40,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 					{
 						block.autoSize = true;
 						block.element.addClass( 'cke_colorblock' );
-						block.element.setHtml( renderColors( panel, type ) );
+						block.element.setHtml( renderColors( panel, type, colorBoxId ) );
 						// The block should not have scrollbars (#5933, #6056)
 						block.element.getDocument().getBody().setStyle( 'overflow', 'hidden' );
 
@@ -52,12 +53,37 @@ CKEDITOR.plugins.add( 'colorbutton',
 						keys[ 38 ]	= 'prev';					// ARROW-UP
 						keys[ CKEDITOR.SHIFT + 9 ]	= 'prev';	// SHIFT + TAB
 						keys[ 32 ]	= 'click';					// SPACE
+					},
+
+					// The automatic colorbox should represent the real color (#6010)
+					onOpen : function()
+					{
+						var selection = editor.getSelection(),
+							block = selection && selection.getStartElement(),
+							path = new CKEDITOR.dom.elementPath( block ),
+							color;
+
+						// Find the closest block element.
+						block = path.block || path.blockLimit;
+
+						// The background color might be transparent. In that case, look up the color in the DOM tree.
+						do
+						{
+							color = block && block.getComputedStyle( type == 'back' ? 'background-color' : 'color' ) || 'transparent';
+						}
+						while ( type == 'back' && color == 'transparent' && ( block = block.getParent() ) );
+
+						// The box should never be transparent.
+						if ( !color || color == 'transparent' )
+							color = '#ffffff';
+
+						this._.panel._.iframe.getFrameDocument().getById( colorBoxId ).setStyle( 'background-color', color );
 					}
 				});
 		}
 
 
-		function renderColors( panel, type )
+		function renderColors( panel, type, colorBoxId )
 		{
 			var output = [],
 				colors = config.colorButton_colors.split( ',' ),
@@ -121,7 +147,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 					'<table role="presentation" cellspacing=0 cellpadding=0 width="100%">' +
 						'<tr>' +
 							'<td>' +
-								'<span class="cke_colorbox" style="background-color:#000"></span>' +
+								'<span class="cke_colorbox" id="', colorBoxId, '"></span>' +
 							'</td>' +
 							'<td colspan=7 align=center>',
 								lang.auto,

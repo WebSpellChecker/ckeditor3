@@ -1429,7 +1429,7 @@ CKEDITOR.dom.range = function( document )
 			// Fixing invalid range end inside dtd empty elements.
 			if( endNode.type == CKEDITOR.NODE_ELEMENT
 				&& CKEDITOR.dtd.$empty[ endNode.getName() ] )
-				endNode = endNode.getParent(), endOffset = endNode.getIndex() + 1;
+				endOffset = endNode.getIndex() + 1, endNode = endNode.getParent();
 
 			this.endContainer	= endNode;
 			this.endOffset		= endOffset;
@@ -1864,17 +1864,13 @@ CKEDITOR.ENLARGE_ELEMENT = 1;
 CKEDITOR.ENLARGE_BLOCK_CONTENTS = 2;
 CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS = 3;
 
-/**
- * Check boundary types.
- * @see CKEDITOR.dom.range.prototype.checkBoundaryOfElement
- */
+// Check boundary types.
+// @see CKEDITOR.dom.range.prototype.checkBoundaryOfElement
 CKEDITOR.START = 1;
 CKEDITOR.END = 2;
 CKEDITOR.STARTEND = 3;
 
-/**
- * Shrink range types.
- * @see CKEDITOR.dom.range.prototype.shrink
- */
+// Shrink range types.
+// @see CKEDITOR.dom.range.prototype.shrink
 CKEDITOR.SHRINK_ELEMENT = 1;
 CKEDITOR.SHRINK_TEXT = 2;

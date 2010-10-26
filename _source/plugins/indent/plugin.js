@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -256,35 +256,33 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 				else
 				{
-					var indentCssProperty = getIndentCssProperty( element );
-					var currentOffset = parseInt( element.getStyle( indentCssProperty ), 10 );
+					var indentCssProperty = getIndentCssProperty( element ),
+						currentOffset = parseInt( element.getStyle( indentCssProperty ), 10 );
 					if ( isNaN( currentOffset ) )
 						currentOffset = 0;
-					currentOffset += ( self.name == 'indent' ? 1 : -1 ) * editor.config.indentOffset;
+					var indentOffset = editor.config.indentOffset || 40;
+					currentOffset += ( self.name == 'indent' ? 1 : -1 ) * indentOffset;
 
 					if ( currentOffset < 0 )
 						return false;
 
 					currentOffset = Math.max( currentOffset, 0 );
-					currentOffset = Math.ceil( currentOffset / editor.config.indentOffset ) * editor.config.indentOffset;
-					element.setStyle( indentCssProperty, currentOffset ? currentOffset + editor.config.indentUnit : '' );
+					currentOffset = Math.ceil( currentOffset / indentOffset ) * indentOffset;
+					element.setStyle( indentCssProperty, currentOffset ? currentOffset + ( editor.config.indentUnit || 'px' ) : '' );
 					if ( element.getAttribute( 'style' ) === '' )
 						element.removeAttribute( 'style' );
 				}
 
-				CKEDITOR.dom.element.setMarker( database, element, 'indent_processed', true );
+				CKEDITOR.dom.element.setMarker( database, element, 'indent_processed', 1 );
 				return true;
 			}
 
 			var selection = editor.getSelection(),
-				bookmarks = selection.createBookmarks( true ),
-				ranges = selection && selection.getRanges( true ),
+				bookmarks = selection.createBookmarks( 1 ),
+				ranges = selection && selection.getRanges( 1 ),
 				range;
 
-			var skipBookmarks = function( node )
-			{
-				return ! node.hasAttribute( '_cke_bookmark' );
-			};
+			var skipBookmarks = CKEDITOR.dom.walker.bookmark( 0, 1 );
 
 			var iterator = ranges.createIterator();
 			while ( ( range = iterator.getNextRange() ) )
@@ -321,7 +319,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					range.endContainer = walker.previous();
 				}
 
-				if ( nearestListBlock  )
+				if ( nearestListBlock )
 				{
 					var firstListItem = nearestListBlock.getFirst( function( node )
 						{
@@ -330,9 +328,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						rangeStart = range.startContainer,
 						indentWholeList = firstListItem.equals( rangeStart ) || firstListItem.contains( rangeStart );
 
-					// Indent the entire list if  cursor is inside the first list item. (#3893)
-					if ( !( indentWholeList && indentElement( nearestListBlock ) ) )
-						indentList( nearestListBlock );
+					// Indent the entire list if cursor is inside the first list item. (#3893)
+					// Only do that for indenting or when using indent classes or when there is something to outdent. (#6141)
+					if ( !( indentWholeList &&
+						( self.name == 'indent' || self.useIndentClasses || parseInt( nearestListBlock.getStyle( getIndentCssProperty( nearestListBlock ) ), 10 ) ) &&
+							indentElement( nearestListBlock ) ) )
+								indentList( nearestListBlock );
 				}
 				else
 					indentBlock();
@@ -382,43 +383,43 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					"	padding-left: 40px;" +
 					"}" );
 			}
+
+			// Register dirChanged listener.
+			editor.on( 'dirChanged', function( e )
+			{
+				var range = new CKEDITOR.dom.range( editor.document );
+				range.setStartBefore( e.data );
+				range.setEndAfter( e.data );
+				
+				var walker = new CKEDITOR.dom.walker( range ),
+					node;
+
+				while ( ( node = walker.next() ) )
+				{
+					if ( node.type == CKEDITOR.NODE_ELEMENT )
+					{
+						// A child with the defined dir is to be ignored.
+						if ( !node.equals( e.data ) && node.getDirection() )
+						{
+							range.setStartAfter( node );
+							walker = new CKEDITOR.dom.walker( range );
+							continue;
+						}
+
+						// Switch the margins.
+						var marginLeft = node.getStyle( 'margin-right' ),
+							marginRight = node.getStyle( 'margin-left' );
+
+						marginLeft ? node.setStyle( 'margin-left', marginLeft ) : node.removeStyle( 'margin-left' );
+						marginRight ? node.setStyle( 'margin-right', marginRight ) : node.removeStyle( 'margin-right' );
+					}
+				}
+			});
 		},
 
 		requires : [ 'domiterator', 'list' ]
 	} );
 })();
-
-CKEDITOR.tools.extend( CKEDITOR.config,
-	{
-		indentOffset : 40,
-		indentUnit : 'px',
-		indentClasses : null
-	});
-
-/**
- * Size of each indentation step
- * @type Number
- * @example
- * config.indentOffset = 40;
- */
-
- /**
- * Unit for the indentation style
- * @type String
- * @example
- * config.indentUnit = 'px';
- */
-
- /**
- * List of classes to use for indenting the contents.
- * @type Array
- * @example
- * // Don't use classes for indenting. (this is the default value)
- * config.indentClasses = null;
- * @example
- * // Use the classes 'Indent1', 'Indent2', 'Indent3'
- * config.indentClasses = ['Indent1', 'Indent2', 'Indent3'];
- */
 
 /**
  * Size of each indentation step

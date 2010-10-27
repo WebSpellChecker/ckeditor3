@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -109,7 +109,7 @@ CKEDITOR.ui.button._ =
 		render : function( editor, output )
 		{
 			var env = CKEDITOR.env,
-				id = this._.id = 'cke_' + CKEDITOR.tools.getNextNumber(),
+				id = this._.id = CKEDITOR.tools.getNextId(),
 				classes = '',
 				command = this.command, // Get the command name.
 				clickFn,

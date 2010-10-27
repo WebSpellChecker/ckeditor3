@@ -75,11 +75,13 @@ if ( !CKEDITOR.env )
 
 			isCustomDomain : function()
 			{
+				if ( !this.ie )
+					return false;
+
 				var domain = document.domain,
 					hostname = window.location.hostname;
 
-				return this.ie &&
-					domain != hostname &&
+				return domain != hostname &&
 					domain != ( '[' + hostname + ']' );	// IPv6 IP support (#5434)
 			}
 		};
@@ -209,7 +211,7 @@ if ( !CKEDITOR.env )
 		{
 			env.cssClass += ' cke_browser_ie' + (
 				env.version < 7 ? '6' :
-				env.version >= 8 ? '8' :
+				env.version >= 8 ? document.documentMode:
 				'7' );
 
 			if ( env.quirks )

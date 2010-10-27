@@ -33,6 +33,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 (function()
 {
+	var cssLength = CKEDITOR.tools.cssLength;
 	function isTabVisible( tabId )
 	{
 		return !!this._.tabs[ tabId ][ 0 ].$.offsetHeight;
@@ -66,6 +67,30 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		}
 
 		return null;
+	}
+
+
+	function clearOrRecoverTextInputValue( container, isRecover )
+	{
+		var inputs = container.$.getElementsByTagName( 'input' );
+		for ( var i = 0, length = inputs.length; i < length ; i++ )
+		{
+			var item = new CKEDITOR.dom.element( inputs[ i ] );
+
+			if ( item.getAttribute( 'type' ).toLowerCase() == 'text' )
+			{
+				if ( isRecover )
+				{
+					item.setAttribute( 'value', item.getCustomData( 'fake_value' ) || '' );
+					item.removeCustomData( 'fake_value' );
+				}
+				else
+				{
+					item.setCustomData( 'fake_value', item.getAttribute( 'value' ) );
+					item.setAttribute( 'value', '' );
+				}
+			}
+		}
 	}
 
 	/**
@@ -168,6 +193,9 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		{
 			this.on( 'ok', function( evt )
 				{
+					// Dialog confirm might probably introduce content changes (#5415).
+					editor.fire( 'saveSnapshot' );
+					setTimeout( function () { editor.fire( 'saveSnapshot' ); }, 0 );
 					if ( definition.onOk.call( this, evt ) === false )
 						evt.data.hide = false;
 				});
@@ -404,7 +432,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				setupFocus();
 
 				if ( editor.config.dialog_startupFocusTab
-					&& me._.tabIdList.length > 1 )
+					&& me._.pageCount > 1 )
 				{
 					me._.tabBarMode = true;
 					me._.tabs[ me._.currentTabId ][ 0 ].focus();
@@ -469,16 +497,21 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 		// Insert the tabs and contents.
 		for ( var i = 0 ; i < definition.contents.length ; i++ )
-			this.addPage( definition.contents[i] );
+		{
+			var page = definition.contents[i];
+			page && this.addPage( page );
+		}
 
-		this.parts['tabs'].on( 'click', function( evt )
+		this.parts[ 'tabs' ].on( 'click', function( evt )
 				{
 					var target = evt.data.getTarget();
 					// If we aren't inside a tab, bail out.
 					if ( target.hasClass( 'cke_dialog_tab' ) )
 					{
+						// Get the ID of the tab, without the 'cke_' prefix and the unique number suffix.
 						var id = target.$.id;
-						this.selectPage( id.substr( 0, id.lastIndexOf( '_' ) ) );
+						this.selectPage( id.substring( 4, id.lastIndexOf( '_' ) ) );
+
 						if ( this._.tabBarMode )
 						{
 							this._.tabBarMode = false;
@@ -679,11 +712,11 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			// First, set the dialog to an appropriate size.
 			this.resize( definition.minWidth, definition.minHeight );
 
-			// Select the first tab by default.
-			this.selectPage( this.definition.contents[0].id );
-
 			// Reset all inputs back to their default value.
 			this.reset();
+
+			// Select the first tab by default.
+			this.selectPage( this.definition.contents[0].id );
 
 			// Set z-index.
 			if ( CKEDITOR.dialog._.currentZIndex === null )
@@ -756,7 +789,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			for ( var i in this._.contents )
 			{
 				for ( var j in this._.contents[i] )
-					fn( this._.contents[i][j]);
+					fn( this._.contents[i][j] );
 			}
 			return this;
 		},
@@ -769,7 +802,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		 */
 		reset : (function()
 		{
-			var fn = function( widget ){ if ( widget.reset ) widget.reset(); };
+			var fn = function( widget ){ if ( widget.reset ) widget.reset( 1 ); };
 			return function(){ this.foreach( fn ); return this; };
 		})(),
 
@@ -880,7 +913,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			page.setAttribute( 'role', 'tabpanel' );
 
 			var env = CKEDITOR.env;
-			var tabId = contents.id + '_' + CKEDITOR.tools.getNextNumber(),
+			var tabId = 'cke_' + contents.id + '_' + CKEDITOR.tools.getNextNumber(),
 				 tab = CKEDITOR.dom.element.createFromHtml( [
 					'<a class="cke_dialog_tab"',
 						( this._.pageCount > 0 ? ' cke_last' : 'cke_first' ),
@@ -940,6 +973,13 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		 */
 		selectPage : function( id )
 		{
+			if ( this._.currentTabId == id )
+				return;
+
+			// Returning true means that the event has been canceled
+			if ( this.fire( 'selectPage', { page : id, currentPage : this._.currentTabId } ) === true )
+				return;
+
 			// Hide the non-selected tabs and pages.
 			for ( var i in this._.tabs )
 			{
@@ -953,9 +993,24 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				page.setAttribute( 'aria-hidden', i != id );
 			}
 
-			var selected = this._.tabs[id];
-			selected[0].addClass( 'cke_dialog_tab_selected' );
-			selected[1].show();
+			var selected = this._.tabs[ id ];
+			selected[ 0 ].addClass( 'cke_dialog_tab_selected' );
+			
+			// [IE] an invisible input[type='text'] will enlarge it's width 
+			// if it's value is long when it shows, so we clear it's value
+			// before it shows and then recover it (#5649)
+			if ( CKEDITOR.env.ie6Compat || CKEDITOR.env.ie7Compat )
+			{
+				clearOrRecoverTextInputValue( selected[ 1 ] );
+				selected[ 1 ].show();
+				setTimeout( function()
+				{
+					clearOrRecoverTextInputValue( selected[ 1 ], 1 );
+				}, 0 );
+			}
+			else
+				selected[ 1 ].show();
+
 			this._.currentTabId = id;
 			this._.currentTabIndex = CKEDITOR.tools.indexOf( this._.tabIdList, id );
 		},
@@ -1378,7 +1433,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		// Transform the contents entries in contentObjects.
 		var contents = dialogDefinition.contents;
 		for ( var i = 0, content ; ( content = contents[i] ) ; i++ )
-			contents[ i ] = new contentObject( dialog, content );
+			contents[ i ] = content && new contentObject( dialog, content );
 
 		CKEDITOR.tools.extend( this, dialogDefinition );
 	};
@@ -1762,9 +1817,10 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 	function showCover( editor )
 	{
 		var win = CKEDITOR.document.getWindow();
-		var backgroundColorStyle = editor.config.dialog_backgroundCoverColor || 'white',
-			backgroundCoverOpacity = editor.config.dialog_backgroundCoverOpacity,
-			baseFloatZIndex = editor.config.baseFloatZIndex,
+		var config = editor.config,
+			backgroundColorStyle = config.dialog_backgroundCoverColor || 'white',
+			backgroundCoverOpacity = config.dialog_backgroundCoverOpacity,
+			baseFloatZIndex = config.baseFloatZIndex,
 			coverKey = CKEDITOR.tools.genKey(
 					backgroundColorStyle,
 					backgroundCoverOpacity,
@@ -2043,7 +2099,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 					styles = ( stylesArg && stylesArg.call ? stylesArg( elementDefinition ) : stylesArg ) || {},
 					attributes = ( attributesArg && attributesArg.call ? attributesArg( elementDefinition ) : attributesArg ) || {},
 					innerHTML = ( contentsArg && contentsArg.call ? contentsArg.call( this, dialog, elementDefinition ) : contentsArg ) || '',
-					domId = this.domId = attributes.id || CKEDITOR.tools.getNextNumber() + '_uiElement',
+					domId = this.domId = attributes.id || CKEDITOR.tools.getNextId() + '_uiElement',
 					id = this.id = elementDefinition.id,
 					i;
 
@@ -2195,14 +2251,14 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 						if ( widths )
 						{
 							if ( widths[i] )
-								styles.push( 'width:' + CKEDITOR.tools.cssLength( widths[i] ) );
+								styles.push( 'width:' + cssLength( widths[i] ) );
 						}
 						else
 							styles.push( 'width:' + Math.floor( 100 / childHtmlList.length ) + '%' );
 						if ( height )
-							styles.push( 'height:' + CKEDITOR.tools.cssLength( height ) );
+							styles.push( 'height:' + cssLength( height ) );
 						if ( elementDefinition && elementDefinition.padding != undefined )
-							styles.push( 'padding:' + CKEDITOR.tools.cssLength( elementDefinition.padding ) );
+							styles.push( 'padding:' + cssLength( elementDefinition.padding ) );
 						if ( styles.length > 0 )
 							html.push( 'style="' + styles.join('; ') + '" ' );
 						html.push( '>', childHtmlList[i], '</td>' );
@@ -2255,7 +2311,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			 */
 			vbox : function( dialog, childObjList, childHtmlList, htmlList, elementDefinition )
 			{
-				if (arguments.length < 3 )
+				if ( arguments.length < 3 )
 					return;
 
 				this._ || ( this._ = {} );
@@ -2270,7 +2326,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 					html.push( 'style="' );
 					if ( elementDefinition && elementDefinition.expand )
 						html.push( 'height:100%;' );
-					html.push( 'width:' + CKEDITOR.tools.cssLength( width || '100%' ), ';' );
+					html.push( 'width:' + cssLength( width || '100%' ), ';' );
 					html.push( '"' );
 					html.push( 'align="', CKEDITOR.tools.htmlEncode(
 						( elementDefinition && elementDefinition.align ) || ( dialog.getParentEditor().lang.dir == 'ltr' ? 'left' : 'right' ) ), '" ' );
@@ -2281,13 +2337,13 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 						var styles = [];
 						html.push( '<tr><td role="presentation" ' );
 						if ( width )
-							styles.push( 'width:' + CKEDITOR.tools.cssLength( width || '100%' ) );
+							styles.push( 'width:' + cssLength( width || '100%' ) );
 						if ( heights )
-							styles.push( 'height:' + CKEDITOR.tools.cssLength( heights[i] ) );
+							styles.push( 'height:' + cssLength( heights[i] ) );
 						else if ( elementDefinition && elementDefinition.expand )
 							styles.push( 'height:' + Math.floor( 100 / childHtmlList.length ) + '%' );
 						if ( elementDefinition && elementDefinition.padding != undefined )
-							styles.push( 'padding:' + CKEDITOR.tools.cssLength( elementDefinition.padding ) );
+							styles.push( 'padding:' + cssLength( elementDefinition.padding ) );
 						if ( styles.length > 0 )
 							html.push( 'style="', styles.join( '; ' ), '" ' );
 						html.push( ' class="cke_dialog_ui_vbox_child">', childHtmlList[i], '</td></tr>' );
@@ -2341,14 +2397,15 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 		/**
 		 * Sets the value of this dialog UI object.
 		 * @param {Object} value The new value.
+		 * @param {Boolean} noChangeEvent Internal commit, to supress 'change' event on this element.
 		 * @returns {CKEDITOR.dialog.uiElement} The current UI element.
 		 * @example
 		 * uiElement.setValue( 'Dingo' );
 		 */
-		setValue : function( value )
+		setValue : function( value, noChangeEvent )
 		{
 			this.getInputElement().setValue( value );
-			this.fire( 'change', { value : value } );
+			!noChangeEvent && this.fire( 'change', { value : value } );
 			return this;
 		},
 
@@ -2949,4 +3006,12 @@ CKEDITOR.plugins.add( 'dialog',
  *		is being loaded.
  * @param {CKEDITOR.editor} editor The editor instance that will use the
  *		dialog.
+ */
+
+/**
+ * Fired when a tab is going to be selected in a dialog
+ * @name dialog#selectPage
+ * @event
+ * @param String page The id of the page that it's gonna be selected.
+ * @param String currentPage The id of the current page.
  */

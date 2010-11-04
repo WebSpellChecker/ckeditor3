@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
@@ -54,7 +54,77 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		</ul></li>
 	</ul>
 	<h3>
-			CKEditor 3.4.1 (SVN)</h3>
+			CKEditor 3.4.2</h3>
+	<p>
+			New features:</p>
+	<ul>
+		<li><a href="http://dev.ckeditor.com/ticket/5024">#5024</a> : Added a sample that shows how to output HTML that is valid for Flash.</li>
+	</ul>
+	<p>
+			Fixed issues:</p>
+	<ul>
+		<li><a href="http://dev.ckeditor.com/ticket/5237">#5237</a> : English text in dialogs' title was flipped when using RTL language (office2003 and v2 skins).</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6289">#6289</a> : Deleting nested table removed the parent cell.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6341">#6341</a> : The editor contents now has the text cursor.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6153">#6153</a> : Chrome: tab focus is wrong.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6261">#6261</a> : Focus and infinite loop between multiple editors.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6170">#6170</a> : Dedicated class names are removed from floating panels when opening another panel.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6339">#6339</a> : Autogrow plugin now doesn't work on maximized editors.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6237">#6237</a> : BIDI: Applying same language direction to all paragraphs not working.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6353">#6353</a> : [IE] Resize was broken with office2003 and v2 skins.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6375">#6375</a> : Avoiding errors when hiding the editor after the blur event.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6133">#6133</a> : Styled paragraphs result on buggy list creation.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5074">#5074</a> : Link target is not removed when changing to popup.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6408">#6408</a> : [IE] Autogrow now works correctly on Quirks.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6420">#6420</a> : [IE] The table properties dialog now correctly retrieves the caption text.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6141">#6141</a> : It was impossible to outdent a list when indentOffset was set to 0.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6377">#6377</a> : FF width and height are not shown for smiley in Image properties dialog.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5399">#5399</a> : Lists pasted from Word do not maintain their nesting.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6225">#6225</a> : [FF] Can not transform sevaral lines to list with enterMode BR.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6467">#6467</a> : [FF] It is now possible to disable the plugin command on "mode" event.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6461">#6461</a> : Attributes are now being kept when changing block formatting.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6226">#6226</a> : BIDI: Language direction applied to a Paragraph is removed when we apply one of Paragraph formatting options.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5395">#5395</a> : [Opera] Native context menu incorrectly opened after Opera 10.2.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6444">#6444</a> : [Opera] Close panels and dialogs don't return focus to wysiwyg frame.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6332">#6332</a> : IE: V2 skin bottom dialog's border broken.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5646">#5646</a> : Parser incorreclty removes inline element when there's only one comment node enclosed.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6189">#6189</a> : Minor code size reduction.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5045">#5045</a> : uiColor behaved wrong if multiple editors were used with period in their names.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5766">#5766</a> : Config entry "ignoreEmptyParagraph" should only remove one single empty paragraph in document.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5931">#5931</a> : Unable to apply inline style because of nested elements with same style name.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6083">#6083</a> : Dialog close sometimes cause collapsed editor selection before the insertion.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6253">#6253</a> : BIDI: creating a Numbered/Bulleted list causing improper behavior on bidi.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/4023">#4023</a> : [Opera] Maximize plugin.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6403">#6403</a> : [Opera] Font name options is not correctly marked in dropdown list.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/4534">#4534</a> : [Opera] Arrow key to navigate through combo list has side effects of window scrolling.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6534">#6534</a> : [Opera] Menu key brings up both CKEditor and browser context menu.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6534">#6534</a> : [Opera] Menu key brings up both CKEditor and browser context menu.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6416">#6416</a> : [IE9] Unable to make text selection with mouse in source area.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6417">#6417</a> : [IE9] Context menu opens at the upper-left corner always.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6501">#6501</a> : [IE9] Context menu item layout is broken.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6099">#6099</a> : BIDI: when we apply explicit language direction to Numbered/Bulleted List the corresponding BIDI Tool bar icon is not highlighted in the Toolbar.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6100">#6100</a> : BIDI: when we change Table language direction indentation of text in Table cells is not applied correctly.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6376">#6376</a> : BIDI: buttons should not toggle the base language direction.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6235">#6235</a> : BIDI: Applying direction to multi-paragraph selection within a div.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6187">#6187</a> : [IE6] Multi-instance loading produces 404s on background images.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5446">#5446</a> : Setting config.filebrowserImageBrowseUrl results in displaying also Browser Server on links.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5626">#5626</a> : CKeditor 3.2.1 : html content attached makes ckeditor crash the browser FF/IE.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6508">#6508</a> : BiDi: Margin mirroring logic doesn't honor CSS direction.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6043">#6043</a> : BIDI: When we apply RTL direction to a right aligned Paragraph, Paragraph is not moved to left & Alignment of Paragraph is not changed.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6485">#6485</a> : BIDI: When direction is applied on partial selected list, the style is been incorrectly applied on the entired list.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6087">#6087</a> : Cursor of input fields in dialog isn't visible in RLT .</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5595">#5595</a> : Extra leading spaces added in preformatted block.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6094">#6094</a> : Match full word option doesn't stop on block boundaries.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5730">#5730</a> : [Safari] Continual pastes (holding paste key) breaks document contents.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5850">#5850</a> : [IE] Inline style misbehaviors at the beginning of numbered/bulleted list.</li>
+		<li>Updated the following language files:<ul>
+			<li><a href="http://dev.ckeditor.com/ticket/6427">#6427</a> : Ukrainian;</li>
+			<li><a href="http://dev.ckeditor.com/ticket/6464">#6464</a> : Finnish;</li>
+			<li>Hebrew;</li>
+		</ul></li>
+	</ul>
+	<h3>
+			CKEditor 3.4.1</h3>
 	<p>
 			New features:</p>
 	<ul>
@@ -70,7 +140,49 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		<li><a href="http://dev.ckeditor.com/ticket/5717">#5717</a> : Removed the scayt_contextMenuOntop setting and the SCAYT context menu options are always on top.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/5956">#5956</a> : [FF] It was impossible to create an editor inside an hidden container.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/5753">#5753</a> : It was impossible to have a default value for the name field in the select dialog.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/6041">#6041</a> : BIDI: Direction of Increase Indent & Decrease Indent icons are not reversed after changing Lang direction to RTL.</li>		
+		<li><a href="http://dev.ckeditor.com/ticket/6041">#6041</a> : BIDI: Direction of Increase Indent & Decrease Indent icons are not reversed after changing Lang direction to RTL.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6138">#6138</a> : List indentation is not working.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5649">#5649</a> : Image dialog too wide when many styles are set.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5715">#5715</a> : Cell color picker dialog returns focus to document.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6108">#6108</a> : Fixed div style.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5336">#5336</a> : Remove object style.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6155">#6155</a> : [[FF]] Modifying Table Header Properties by selecting first Row, causing several issues.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6163">#6163</a> : Focus not going to Tabs in Image dialog when we went to Edit the Image.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6177">#6177</a> : IE we can't start Numbered/Bulleted list on a Empty page.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5413">#5413</a> : Browser error after pasting html table in CKEditor.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6034">#6034</a> : Horizontal Alignment applied to Table cell is not updated correctly in the Toolbar.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6112">#6112</a> : BIDI: Alignment set to text in Table cell is not shown in the Tool bar when we press Enter to start a new Paragraph.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6117">#6117</a> : BIDI: Language direction is changing when we come out of Numbered/Bulleted list.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6182">#6182</a> : Language Direction field on the Advanced tab of Table Properties dialog has a fixed pixel width.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5487">#5487</a> : Fullpage writer problem with line-break.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6197">#6197</a> : The CKEDITOR.loader base path auto-detection was not working with the _source folder.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6240">#6240</a> : Font Names & Font Sizes should be shown Left Align even for RTL Languages.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5975">#5975</a> : Page-break should have proper Alt Text instead of Unknown object. so that JAWS reads it properly.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6255">#6255</a> : Inserting a page break as the first node triggered an error.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6188">#6188</a> : [IE7] Automatic color button had the wrong cursor.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6129">#6129</a> : The show blocks' labels are now shown in the right for RTL languages.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5421">#5421</a> : &amp;shy; entity not converted when config.entities=false.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5769">#5769</a> : xhtml code generation problem &amp;nbsp; instead of &amp;#160; (htmlentities, entities,entities_additional,..., configuration).</li>
+		<li><a href="http://dev.ckeditor.com/ticket/4472">#4472</a> : [FF3] Browser window scrolls to loaded CKEditor.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6230">#6230</a> : Fixed invalid parameter count for setTimeout function call.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5335">#5335</a> : Several lines' formatted data will be merged to one line when we apply Numbers/Bullets.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5353">#5353</a> : wrong width of editor after resize() called in Firefox 3.6.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5778">#5778</a> : [IE] Unwanted scroll on first mouse right-click.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5218">#5218</a> : [FF] Copy/paste of an image from same domain changed URL to relative URL.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6265">#6265</a> : Popup window properties were visible in the link dialog's target tab when nothing was selected.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6075">#6075</a> : [FF] Newly created links didn't fill in information on edit.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6183">#6183</a> : The toolbar panels options sometimes had the contents' link color.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6192">#6192</a> : [WebKit] Inserting smileys was not working because of editor focus issues.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6178">#6178</a> : [WebKit] Inserting elements by code was failing if the editor didn't receive the focus first.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6179">#6179</a> : [WebKit] The Image dialog was not working if the editor didn't receive the focus first.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/4657">#4657</a> : [Opera] Styles where not working with collapsed selections.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5839">#5839</a> : "Insert row after" was removing the ids of the elements from the clicked row.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6315">#6315</a> : DIV plugin TT #2885 regression.</li>
+		<li>Updated the following language files:<ul>
+			<li><a href="http://dev.ckeditor.com/ticket/6246">#6246</a> : Chinese Simplified;</li>
+			<li><a href="http://dev.ckeditor.com/ticket/6256">#6256</a> : Dutch;</li>
+			<li><a href="http://dev.ckeditor.com/ticket/6271">#6271</a> : English;</li>
+		</ul></li>
 	</ul>
 	<h3>
 			CKEditor 3.4</h3>

@@ -20,7 +20,7 @@ es.js      Found: 524 Missing: 22
 et.js      Found: 301 Missing: 245
 eu.js      Found: 403 Missing: 143
 fa.js      Found: 302 Missing: 244
-fi.js      Found: 518 Missing: 28
+fi.js      Found: 531 Missing: 15
 fo.js      Found: 420 Missing: 126
 fr-ca.js   Found: 301 Missing: 245
 fr.js      Found: 403 Missing: 143
@@ -40,7 +40,7 @@ lv.js      Found: 283 Missing: 263
 mn.js      Found: 300 Missing: 246
 ms.js      Found: 265 Missing: 281
 nb.js      Found: 470 Missing: 76
-nl.js      Found: 494 Missing: 52
+nl.js      Found: 531 Missing: 15
 no.js      Found: 470 Missing: 76
 pl.js      Found: 411 Missing: 135
 pt-br.js   Found: 524 Missing: 22
@@ -54,7 +54,7 @@ sr.js      Found: 275 Missing: 271
 sv.js      Found: 299 Missing: 247
 th.js      Found: 287 Missing: 259
 tr.js      Found: 524 Missing: 22
-uk.js      Found: 404 Missing: 142
+uk.js      Found: 531 Missing: 15
 vi.js      Found: 481 Missing: 65
-zh-cn.js   Found: 523 Missing: 23
+zh-cn.js   Found: 531 Missing: 15
 zh.js      Found: 404 Missing: 142

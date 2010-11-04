@@ -187,7 +187,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 			}
 
 			// Render the "More Colors" button.
-			if ( config.colorButton_enableMore )
+			if ( config.colorButton_enableMore === undefined || config.colorButton_enableMore )
 			{
 				output.push(
 					'</tr>' +
@@ -200,7 +200,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 								' role="option" aria-posinset="', total, '" aria-setsize="', total, '">',
 								lang.more,
 							'</a>' +
-						'</td>' );	// It is later in the code.
+						'</td>' );	// tr is later in the code.
 			}
 
 			output.push( '</tr></table>' );
@@ -212,12 +212,11 @@ CKEDITOR.plugins.add( 'colorbutton',
 
 /**
  * Whether to enable the "More Colors..." button in the color selectors.
- * @default false
+ * @default true
  * @type Boolean
  * @example
  * config.colorButton_enableMore = false;
  */
-CKEDITOR.config.colorButton_enableMore = true;
 
 /**
  * Defines the colors to be displayed in the color selectors. It's a string

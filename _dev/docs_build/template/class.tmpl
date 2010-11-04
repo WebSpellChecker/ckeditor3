@@ -53,6 +53,9 @@
 				<if test="data.version"><br />Version
 					{+ data.version +}.<br />
 				</if>
+
+				{+resolveLinks(data.classDesc)+}
+				
 				<if test="data.augments.length"><br />Extends
 					{+
 						data.augments
@@ -61,18 +64,16 @@
 							function($) { return new Link().toSymbol($); }
 						)
 						.join(", ")
-					+}.<br />
+					+}.
 				</if>
 			
-				{+resolveLinks(data.classDesc)+}
-				
 				<if test="!data.isBuiltin()">{# isn't defined in any file #}
 					<br /><i>Defined in: </i> {+ ckeditor_FileLink( data.srcFile ) +}.
 				</if>
 			</p>
 
 <!-- ============================== constructor summary ==================== -->			
-			<if test="!data.isBuiltin() && (data.isNamespace || data.is('CONSTRUCTOR'))">
+			<if test="!data.isBuiltin() && data.is('CONSTRUCTOR')">
 			<table class="summaryTable" cellspacing="0" summary="A summary of the constructor documented in the class {+data.alias+}.">
 				<caption>{+classType+}Summary</caption>
 				<thead>
@@ -272,7 +273,7 @@
 								if (member.isStatic) output += "&lt;static&gt; ";
 							!}&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><if test="member.isStatic && member.memberOf != '_global_'">{+member.memberOf+}.</if><b>{+new Link().toSymbol(member.alias).withText(member.name)+}</b>{+makeSignature(member.params)+}
+								<div class="fixedFont"><if test="member.isStatic && member.memberOf != '_global_'">{+member.memberOf+}.</if><b>{+new Link().toSymbol(member.alias).withText(member.name)+}</b>
 								</div>
 								<div class="description">{+resolveLinks(summarize(member.desc))+}</div>
 							</td>
@@ -312,7 +313,7 @@
 			</if>
 
 <!-- ============================== constructor details ==================== -->		
-			<if test="!data.isBuiltin() && (data.isNamespace || data.is('CONSTRUCTOR'))">
+			<if test="!data.isBuiltin() && data.is('CONSTRUCTOR')">
 			<div class="details"><a name="constructor"> </a>
 				<div class="sectionTitle">
 					{+classType+}Detail

@@ -39,7 +39,7 @@ CKEDITOR.plugins.add( 'contextmenu',
 					// 2. Considering the fact that ctrl/meta key is not been occupied
 					//  for multiple range selecting (like Gecko), we use this key
 					//  combination as a fallback for triggering context-menu. (#4530)
-					if ( CKEDITOR.env.opera )
+					if ( CKEDITOR.env.opera && !( 'oncontextmenu' in document.body ))
 					{
 						var contextMenuOverrideButton;
 						element.on( 'mousedown', function( evt )
@@ -109,6 +109,19 @@ CKEDITOR.plugins.add( 'contextmenu',
 								0, this );
 						},
 						this );
+
+					if ( CKEDITOR.env.opera )
+					{
+						// 'contextmenu' event triggered by Windows menu key is unpreventable,
+						// cancel the key event itself. (#6534)
+						element.on( 'keypress' , function ( evt )
+						{
+							var domEvent = evt.data;
+
+							if ( domEvent.$.keyCode == 0 )
+								domEvent.preventDefault();
+						});
+					}
 
 					if ( CKEDITOR.env.webkit )
 					{

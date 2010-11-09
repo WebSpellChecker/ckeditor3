@@ -104,6 +104,8 @@ CKEDITOR.plugins.add( 'adobeair',
 		editor.on( 'uiReady', function()
 		{
 			convertInlineHandlers( editor.container );
+			editor.sharedtop && convertInlineHandlers( editor.sharedtop );
+			editor.sharedbottom && convertInlineHandlers( editor.sharedbottom );
 		} );
 
 		var richCombo = CKEDITOR.ui.richCombo,

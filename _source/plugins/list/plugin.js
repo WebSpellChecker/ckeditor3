@@ -88,6 +88,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					if ( !rootNode || listArray[ currentIndex ].parent.getName() != rootNode.getName() )
 					{
 						rootNode = listArray[ currentIndex ].parent.clone( false, 1 );
+						dir && rootNode.setAttribute( 'dir', dir );
 						retval.append( rootNode );
 					}
 					currentListItem = rootNode.append( item.element.clone( 0, 1 ) );
@@ -292,7 +293,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					listContents.push( contentNode );
 
-					// Determine the lists's direction. 
+					// Determine the lists's direction.
 					if ( !explicitDirection && contentNode.getDirection() )
 						explicitDirection = 1;
 
@@ -340,7 +341,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					contentBlock.removeStyle( 'direction' );
 					contentBlock.removeAttribute( 'dir' );
 				}
-				
+
 				contentBlock.copyAttributes( listItem );
 				contentBlock.moveChildren( listItem );
 				contentBlock.remove();

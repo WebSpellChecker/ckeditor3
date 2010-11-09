@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -40,7 +40,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				var rangeList = this,
 					bookmark = CKEDITOR.dom.walker.bookmark(),
-					emptySpaces = CKEDITOR.dom.walker.whitespaces(),
 					guard = function( node ) { return ! ( node.is && node.is( 'tr' ) ); },
 						bookmarks = [],
 					current;
@@ -113,11 +112,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							}
 
 							range.moveToBookmark( bookmarks.shift() );
-							
+
+							var next;
 							// Merge ranges finally after moving to bookmarks.
 							while( mergeCount-- )
 							{
-								var next = rangeList[ ++current ];
+								next = rangeList[ ++current ];
 								next.moveToBookmark( bookmarks.shift() );
 								range.setEnd( next.endContainer, next.endOffset );
 							}

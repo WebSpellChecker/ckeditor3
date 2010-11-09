@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -78,9 +78,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	}
 
 	// Returns the CSS property to be used for identing a given element.
-	function getIndentCssProperty( element )
+	function getIndentCssProperty( element, dir )
 	{
-		return element.getComputedStyle( 'direction' ) == 'ltr' ? 'margin-left' : 'margin-right';
+		return ( dir || element.getComputedStyle( 'direction' ) ) == 'ltr' ? 'margin-left' : 'margin-right';
 	}
 
 	function isListItem( node )
@@ -157,8 +157,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				// Convert the array back to a DOM forest (yes we might have a few subtrees now).
 				// And replace the old list with the new forest.
-				var newListDir = listNode.getAttribute( 'dir' ) || listNode.getStyle( 'direction' );
-				var newList = CKEDITOR.plugins.list.arrayToList( listArray, database, null, editor.config.enterMode, newListDir );
+				var newList = CKEDITOR.plugins.list.arrayToList( listArray, database, null, editor.config.enterMode, listNode.getDirection() );
 
 				// Avoid nested <li> after outdent even they're visually same,
 				// recording them for later refactoring.(#3982)
@@ -220,7 +219,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					indentElement( block );
 			}
 
-			function indentElement( element )
+			function indentElement( element, dir )
 			{
 				if ( element.getCustomData( 'indent_processed' ) )
 					return false;
@@ -256,7 +255,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 				else
 				{
-					var indentCssProperty = getIndentCssProperty( element ),
+					var indentCssProperty = getIndentCssProperty( element, dir ),
 						currentOffset = parseInt( element.getStyle( indentCssProperty ), 10 );
 					if ( isNaN( currentOffset ) )
 						currentOffset = 0;
@@ -282,37 +281,44 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				ranges = selection && selection.getRanges( 1 ),
 				range;
 
-			var skipBookmarks = CKEDITOR.dom.walker.bookmark( 0, 1 );
 
 			var iterator = ranges.createIterator();
 			while ( ( range = iterator.getNextRange() ) )
 			{
-				// Do not indent body. (#6138)
-				range.shrink( CKEDITOR.SHRINK_ELEMENT );
-				if ( range.endContainer.getName() == 'body' )
-					range.setEndAt( range.endContainer.getLast( skipBookmarks ), CKEDITOR.POSITION_BEFORE_END );
-
-				var startContainer = range.startContainer,
-					endContainer = range.endContainer,
-					rangeRoot = range.getCommonAncestor(),
+				var rangeRoot = range.getCommonAncestor(),
 					nearestListBlock = rangeRoot;
 
 				while ( nearestListBlock && !( nearestListBlock.type == CKEDITOR.NODE_ELEMENT &&
 					listNodeNames[ nearestListBlock.getName() ] ) )
 					nearestListBlock = nearestListBlock.getParent();
 
+				// Avoid having selection enclose the entire list. (#6138)
+				// [<ul><li>...</li></ul>] =><ul><li>[...]</li></ul>
+				if ( !nearestListBlock )
+				{
+					var selectedNode = range.getEnclosedNode();
+					if ( selectedNode
+						&& selectedNode.type == CKEDITOR.NODE_ELEMENT
+						&& selectedNode.getName() in listNodeNames)
+					{
+						range.setStartAt( selectedNode, CKEDITOR.POSITION_AFTER_START );
+						range.setEndAt( selectedNode, CKEDITOR.POSITION_BEFORE_END );
+						nearestListBlock = selectedNode;
+					}
+				}
+
 				// Avoid selection anchors under list root.
 				// <ul>[<li>...</li>]</ul> =>	<ul><li>[...]</li></ul>
-				if ( nearestListBlock && startContainer.type == CKEDITOR.NODE_ELEMENT
-					&& startContainer.getName() in listNodeNames )
+				if ( nearestListBlock && range.startContainer.type == CKEDITOR.NODE_ELEMENT
+					&& range.startContainer.getName() in listNodeNames )
 				{
 					var walker = new CKEDITOR.dom.walker( range );
 					walker.evaluator = isListItem;
 					range.startContainer = walker.next();
 				}
 
-				if ( nearestListBlock && endContainer.type == CKEDITOR.NODE_ELEMENT
-					&& endContainer.getName() in listNodeNames )
+				if ( nearestListBlock && range.endContainer.type == CKEDITOR.NODE_ELEMENT
+					&& range.endContainer.getName() in listNodeNames )
 				{
 					walker = new CKEDITOR.dom.walker( range );
 					walker.evaluator = isListItem;
@@ -321,10 +327,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				if ( nearestListBlock )
 				{
-					var firstListItem = nearestListBlock.getFirst( function( node )
-						{
-							return node.type == CKEDITOR.NODE_ELEMENT && node.is( 'li' );
-						}),
+					var firstListItem = nearestListBlock.getFirst( isListItem ),
+						hasMultipleItems = !!firstListItem.getNext( isListItem ),
 						rangeStart = range.startContainer,
 						indentWholeList = firstListItem.equals( rangeStart ) || firstListItem.contains( rangeStart );
 
@@ -332,7 +336,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// Only do that for indenting or when using indent classes or when there is something to outdent. (#6141)
 					if ( !( indentWholeList &&
 						( self.name == 'indent' || self.useIndentClasses || parseInt( nearestListBlock.getStyle( getIndentCssProperty( nearestListBlock ) ), 10 ) ) &&
-							indentElement( nearestListBlock ) ) )
+							indentElement( nearestListBlock, !hasMultipleItems && firstListItem.getDirection() ) ) )
 								indentList( nearestListBlock );
 				}
 				else
@@ -390,7 +394,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				var range = new CKEDITOR.dom.range( editor.document );
 				range.setStartBefore( e.data );
 				range.setEndAfter( e.data );
-				
+
 				var walker = new CKEDITOR.dom.walker( range ),
 					node;
 

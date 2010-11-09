@@ -165,7 +165,7 @@ CKEDITOR.ui.panel.prototype =
 				// Register the CKEDITOR global.
 				win.$.CKEDITOR = CKEDITOR;
 
-				// Arrow keys for scrolling is only preventable with 'keypress' event in Opera (#4534).  
+				// Arrow keys for scrolling is only preventable with 'keypress' event in Opera (#4534).
 				doc.on( 'key' + ( CKEDITOR.env.opera? 'press':'down' ), function( evt )
 					{
 						var keystroke = evt.data.getKeystroke(),
@@ -314,7 +314,7 @@ CKEDITOR.ui.panel.block = CKEDITOR.tools.createClass(
 
 			// Safari need focus on the iframe window first(#3389), but we need
 			// lock the blur to avoid hiding the panel.
-			if ( CKEDITOR.env.webkit )
+			if ( CKEDITOR.env.webkit || CKEDITOR.env.opera )
 				item.getDocument().getWindow().focus();
 			item.focus();
 

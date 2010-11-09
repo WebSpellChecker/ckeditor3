@@ -123,7 +123,8 @@ CKEDITOR.plugins.add( 'floatpanel',
 
 				element.setStyles(
 					{
-						top : '-30000px',
+						top : 0,
+						left: 0,
 						display	: ''
 					});
 				// Don't use display or visibility style because we need to
@@ -277,7 +278,7 @@ CKEDITOR.plugins.add( 'floatpanel',
 							}
 
 							// Trigger the onHide event of the previously active panel to prevent
-							// incorrect styles from being applied (#6170) 
+							// incorrect styles from being applied (#6170)
 							var innerElement = element.getFirst(),
 								activePanel;
 							if ( ( activePanel = innerElement.getCustomData( 'activePanel' ) ) )
@@ -317,7 +318,7 @@ CKEDITOR.plugins.add( 'floatpanel',
 					this.hideChild();
 					this.element.setStyle( 'display', 'none' );
 					this.visible = 0;
-					this.element.getFirst().removeCustomData( 'activePanel' ); 
+					this.element.getFirst().removeCustomData( 'activePanel' );
 				}
 			},
 

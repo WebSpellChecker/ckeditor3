@@ -225,6 +225,19 @@ CKEDITOR.plugins.contextMenu = CKEDITOR.tools.createClass(
 				},
 				this );
 
+			if ( CKEDITOR.env.opera )
+			{
+				// 'contextmenu' event triggered by Windows menu key is unpreventable,
+				// cancel the key event itself. (#6534)
+				element.on( 'keypress' , function ( evt )
+				{
+					var domEvent = evt.data;
+
+					if ( domEvent.$.keyCode === 0 )
+						domEvent.preventDefault();
+				});
+			}
+
 			if ( CKEDITOR.env.webkit )
 			{
 				var holdCtrlKey,

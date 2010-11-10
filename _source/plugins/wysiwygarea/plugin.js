@@ -974,8 +974,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								}
 								else if ( !CKEDITOR.env.opera && editor.window )
 								{
-									editor.window.focus();
-
+									var win = editor.window;
+									// AIR need a while when focus was switching previously  from a link.
+									CKEDITOR.env.air? setTimeout( function () { win.focus(); }, 0 ) : win.focus();
 									editor.selectionChange();
 								}
 							}

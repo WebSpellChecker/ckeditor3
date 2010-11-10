@@ -124,6 +124,7 @@ CKEDITOR.themes.add( 'default', (function()
 					' dir="', editor.lang.dir, '"' +
 					' title="', ( CKEDITOR.env.gecko ? ' ' : '' ), '"' +
 					' lang="', editor.langCode, '"' +
+						( CKEDITOR.env.webkit? ' tabindex="' + tabIndex + '"' : '' ) +
 					' role="application"' +
 					' aria-labelledby="cke_', name, '_arialbl"' +
 					( style ? ' style="' + style + '"' : '' ) +
@@ -159,6 +160,9 @@ CKEDITOR.themes.add( 'default', (function()
 			 * alert( <b>editor.container</b>.getName() );  "span"
 			 */
 			editor.container = container;
+
+			// Redirect the focus into editor for webkit. (#5713)
+			CKEDITOR.env.webkit && editor.container.on( 'focus', function() { editor.focus(); } );
 
 			// Disable browser context menu for editor's chrome.
 			container.disableContextMenu();

@@ -423,7 +423,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// for other browers, the 'src' attribute should be left empty to
 							// trigger iframe's 'load' event.
   							' src="' + ( CKEDITOR.env.air ? editor._.air_bootstrap_frame_url : CKEDITOR.env.ie ? 'javascript:void(function(){' + encodeURIComponent( srcScript ) + '}())' : '' ) + '"' +
-							' tabIndex="' + editor.tabIndex + '"' +
+						  	' tabIndex="' + ( CKEDITOR.env.webkit? -1 : editor.tabIndex ) + '"' +
   							' allowTransparency="true"' +
   							'></iframe>' );
 

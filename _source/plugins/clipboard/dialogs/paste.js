@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -80,29 +80,35 @@ CKEDITOR.dialog.add( 'paste', function( editor )
 						' frameborder="0" ' +
 						' allowTransparency="true"' +
 						// Support for custom document.domain in IE.
-						( isCustomDomain ?
+						( CKEDITOR.env.air ? ' src="' + editor._.air_bootstrap_frame_url + '"' :
+							( isCustomDomain ?
 							' src="javascript:void((function(){' +
 								'document.open();' +
 								'document.domain=\'' + document.domain + '\';' +
 								'document.close();' +
-							'})())"' : '' ) +
+							'})())"' : '' ) ) +
 						' role="region"' +
 						' aria-label="' + lang.pasteArea + '"' +
 						' aria-describedby="' + this.getContentElement( 'general', 'pasteMsg' ).domId + '"' +
 						' aria-multiple="true"' +
 						'></iframe>' );
 
-			iframe.on( 'load', function( e )
+			if ( CKEDITOR.env.air )
+				CKEDITOR._[ 'air_bootstrap_data' + editor.name ] = htmlToLoad;
+			else
 			{
-				e.removeListener();
-				var doc = iframe.getFrameDocument().$;
-				// Custom domain handling is needed after each document.open().
-				doc.open();
-				if ( isCustomDomain )
-					doc.domain = document.domain;
-				doc.write( htmlToLoad );
-				doc.close();
-			}, this );
+				iframe.on( 'load', function( e )
+				{
+					e.removeListener();
+					var doc = iframe.getFrameDocument().$;
+					// Custom domain handling is needed after each document.open().
+					doc.open();
+					if ( isCustomDomain )
+						doc.domain = document.domain;
+					doc.write( htmlToLoad );
+					doc.close();
+				}, this );
+			}
 
 			iframe.setCustomData( 'dialog', this );
 

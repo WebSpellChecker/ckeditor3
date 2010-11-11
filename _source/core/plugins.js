@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -52,17 +52,20 @@ CKEDITOR.plugins.load = CKEDITOR.tools.override( CKEDITOR.plugins.load, function
 							loadPlugins.call( this, requiredPlugins );
 						else
 						{
-							// Call the "onLoad" function for all plugins.
-							for ( pluginName in allPlugins )
+							var methods = [ 'beforeLoad', 'onLoad', 'afterLoad' ];
+							for ( var i = 0; i < methods.length; i++ )
 							{
-								plugin = allPlugins[ pluginName ];
-								if ( plugin.onLoad && !plugin.onLoad._called )
+								// Call the "onLoad" function for all plugins.
+								for ( pluginName in allPlugins )
 								{
-									plugin.onLoad();
-									plugin.onLoad._called = 1;
+									plugin = allPlugins[ pluginName ];
+									if ( plugin[ methods[ i ] ] && !plugin[ methods[ i ] ]._called )
+									{
+										plugin[ methods[ i ] ]();
+										plugin[ methods[ i ] ]._called = 1;
+									}
 								}
 							}
-
 							// Call the callback.
 							if ( callback )
 								callback.call( scope || window, allPlugins );

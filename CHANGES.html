@@ -35,10 +35,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		CKEditor Changelog
 	</h1>
 	<h3>
+			CKEditor 3.4.3 (SVN)</h3>
 			CKEditor 3.5 (SVN)</h3>
 	<p>
 			New features:</p>
 	<ul>
+		<li></li>
 		<li><a href="http://dev.ckeditor.com/ticket/5755">#5755</a> : Introduced the <a href="http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html#.dialog_buttonsOrder">dialog_buttonsOrder</a> setting, making it possible to control the buttons order.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/4648">#4648</a> : Added the new Iframe plugin.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6010">#6010</a> : The "automatic" option of the font/background color panel now represents the real color.</li>
@@ -50,6 +52,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		<li><a href="http://dev.ckeditor.com/ticket/4821">#4821</a> : Icons in the toolbar were distorted with IE and zoom != 100%.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/5587">#5587</a> : Visual improvements in dialogs.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/4652">#4652</a> : Config for disable editor context menu.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6569">#6569</a> : Indentation now honors text direction of the only item.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6579">#6579</a> : The jQuery adapter wasn't working properly tunning on incompatible environments.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6471">#6471</a> : BIDI: Pressing decrease indent in an RTL bulleted list causes incorrect behaviour.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6644">#6644</a> : Restrict onmousedown handler to the toolbar area.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6656">#6656</a> : Panelbutton's buttons became active when clicking on source.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5404">#5404</a> : Whitespaces (NBSP) were incorrectly added into empty table cells and list items.</li>
 		<li>Updated the following language files:<ul>
 			<li>Hebrew;</li>
 		</ul></li>
@@ -66,7 +74,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	<ul>
 		<li><a href="http://dev.ckeditor.com/ticket/5237">#5237</a> : English text in dialogs' title was flipped when using RTL language (office2003 and v2 skins).</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6289">#6289</a> : Deleting nested table removed the parent cell.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/6341">#6341</a> : The editor contents now has the text cursor.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6341">#6341</a> : The editor contents now have the text cursor.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6153">#6153</a> : Chrome: tab focus is wrong.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6261">#6261</a> : Focus and infinite loop between multiple editors.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6170">#6170</a> : Dedicated class names are removed from floating panels when opening another panel.</li>
@@ -81,14 +89,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		<li><a href="http://dev.ckeditor.com/ticket/6141">#6141</a> : It was impossible to outdent a list when indentOffset was set to 0.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6377">#6377</a> : FF width and height are not shown for smiley in Image properties dialog.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/5399">#5399</a> : Lists pasted from Word do not maintain their nesting.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/6225">#6225</a> : [FF] Can not transform sevaral lines to list with enterMode BR.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6467">#6467</a> : [FF] It is now possible to disable the plugin command on "mode" event.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6461">#6461</a> : Attributes are now being kept when changing block formatting.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6226">#6226</a> : BIDI: Language direction applied to a Paragraph is removed when we apply one of Paragraph formatting options.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/5395">#5395</a> : [Opera] Native context menu incorrectly opened after Opera 10.2.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6444">#6444</a> : [Opera] Close panels and dialogs don't return focus to wysiwyg frame.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6332">#6332</a> : IE: V2 skin bottom dialog's border broken.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/5646">#5646</a> : Parser incorreclty removes inline element when there's only one comment node enclosed.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6189">#6189</a> : Minor code size reduction.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/5045">#5045</a> : uiColor behaved wrong if multiple editors were used with period in their names.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/5766">#5766</a> : Config entry "ignoreEmptyParagraph" should only remove one single empty paragraph in document.</li>

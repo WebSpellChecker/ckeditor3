@@ -86,7 +86,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		afterInit : function( editor )
 		{
 			var dataProcessor = editor.dataProcessor,
-				dataFilter = dataProcessor && dataProcessor.dataFilter;
+				dataFilter = dataProcessor && dataProcessor.dataFilter,
 				htmlFilter = dataProcessor && dataProcessor.htmlFilter;
 
 			if ( dataFilter )

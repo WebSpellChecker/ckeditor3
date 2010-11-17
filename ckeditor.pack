@@ -109,7 +109,6 @@ packages :
 					'_source/core/scriptloader.js',
 					'_source/core/resourcemanager.js',
 					'_source/core/plugins.js',
-					'_source/core/imagecacher.js',
 					'_source/core/skins.js',
 					'_source/core/themes.js',
 					'_source/core/ui.js',

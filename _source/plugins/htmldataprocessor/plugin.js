@@ -43,7 +43,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
         // 1. For IE version >=8,  empty blocks are displayed correctly themself in wysiwiyg;
         // 2. For the rest, at least table cell and list item need no filler space.
         // (#6248)
-        if ( fromSource && CKEDITOR.env.ie && 
+        if ( fromSource && CKEDITOR.env.ie &&
                 ( document.documentMode > 7
                 || block.name in CKEDITOR.dtd.tr
                 || block.name in CKEDITOR.dtd.$listItem ) )
@@ -504,6 +504,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * values. It's not recommended to change this setting for compliance with the
  * W3C XHTML 1.0 standards
  * (<a href="http://www.w3.org/TR/xhtml1/#C_12">C.12, XHTML 1.0</a>).
+ * @name CKEDITOR.config.forceSimpleAmpersand
  * @type Boolean
  * @default false
  * @example

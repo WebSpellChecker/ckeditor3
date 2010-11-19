@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -617,21 +617,21 @@ CKEDITOR.lang['zh-cn'] =
 
 	iframe :
 	{
-		title		: 'Iframe Properties', // MISSING
+		title		: 'Iframe属性', // MISSING
 		toolbar		: 'Iframe', // MISSING
-		height		: 'Height', // MISSING
-		width		: 'Width', // MISSING
-		invalidHeight	: 'Iframe height must be a number.', // MISSING
-		invalidWidth	: 'Iframe width must be a number.', // MISSING
-		noUrl		: 'Please type the iframe URL', // MISSING
-		scrolling		: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border', // MISSING
-		align		: 'Alignment', // MISSING
-		alignLeft		: 'Left', // MISSING
-		alignRight	: 'Right', // MISSING
-		alignTop		: 'Top', // MISSING
-		alignMiddle	: 'Middle', // MISSING
-		alignBottom	: 'Bottom' // MISSING
+		height		: '高度', // MISSING
+		width		: '宽度', // MISSING
+		invalidHeight	: '框架高度必须为数字格式', // MISSING
+		invalidWidth	: '框架宽度必须为数字格式', // MISSING
+		noUrl		: '请输入框架的 URL', // MISSING
+		scrolling		: '允许滚动条', // MISSING
+		border		: '显示框架边框', // MISSING
+		align		: '对齐方式', // MISSING
+		alignLeft		: '左', // MISSING
+		alignRight	: '右', // MISSING
+		alignTop		: '上', // MISSING
+		alignMiddle	: '中', // MISSING
+		alignBottom	: '下' // MISSING
 	},
 
 	font :

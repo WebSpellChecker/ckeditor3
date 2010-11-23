@@ -52,7 +52,7 @@
 					var range = editor.getSelection().getRanges()[0];
 					range.shrink( CKEDITOR.SHRINK_TEXT );
 					var node = range.startContainer;
-					while( node && !( node.type == CKEDITOR.NODE_ELEMENT && node.hasAttributes( '_cke_placeholder' ) ) )
+					while( node && !( node.type == CKEDITOR.NODE_ELEMENT && node.data( 'cke-placeholder' ) ) )
 						node = node.getParent();
 					this._element = node;
 				}

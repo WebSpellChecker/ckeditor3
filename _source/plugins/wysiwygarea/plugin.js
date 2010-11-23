@@ -88,7 +88,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// Webkit does not scroll to the cursor position after pasting (#5558)
 			if ( CKEDITOR.env.webkit )
 			{
-				this.document.$.execCommand( 'inserthtml', false, '<span id="cke_paste_marker" cke_temp="1"></span>' );
+				this.document.$.execCommand( 'inserthtml', false, '<span id="cke_paste_marker" data-cke-temp="1"></span>' );
 				var marker = this.document.getById( 'cke_paste_marker' );
 				marker.scrollIntoView();
 				marker.remove();
@@ -478,7 +478,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					// is fully editable even before the editing iframe is fully loaded (#4455).
 					contentDomReadyHandler = CKEDITOR.tools.addFunction( contentDomReady );
 					var activationScript =
-						'<script id="cke_actscrpt" type="text/javascript" cke_temp="1">' +
+						'<script id="cke_actscrpt" type="text/javascript" data-cke-temp="1">' +
 							( isCustomDomain ? ( 'document.domain="' + document.domain + '";' ) : '' ) +
 							'window.parent.CKEDITOR.tools.callFunction( ' + contentDomReadyHandler + ', window );' +
 						'</script>';
@@ -791,7 +791,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 								// Build the additional stuff to be included into <head>.
 								var headExtra =
-									'<style type="text/css" cke_temp="1">' +
+									'<style type="text/css" data-cke-temp="1">' +
 										editor._.styles.join( '\n' ) +
 									'</style>';
 
@@ -799,7 +799,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									CKEDITOR.tools.buildStyleHtml( editor.config.contentsCss ) +
 									headExtra );
 
-								var baseTag = config.baseHref ? '<base href="' + config.baseHref + '" cke_temp="1" />' : '';
+								var baseTag = config.baseHref ? '<base href="' + config.baseHref + '" data-cke-temp="1" />' : '';
 
 								if ( fullPage )
 								{
@@ -971,7 +971,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			editor.on( 'contentDom', function()
 				{
 					var title = editor.document.getElementsByTag( 'title' ).getItem( 0 );
-					title.setAttribute( '_cke_title', editor.document.$.title );
+					title.data( 'cke-title', editor.document.$.title );
 					editor.document.$.title = frameLabel;
 				});
 

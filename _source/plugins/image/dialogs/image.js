@@ -319,7 +319,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						this.setupContent( LINK, link );
 				}
 
-				if ( element && element.getName() == 'img' && !element.getAttribute( '_cke_realelement' )
+				if ( element && element.getName() == 'img' && !element.data( 'cke-realelement' )
 					|| element && element.getName() == 'input' && element.getAttribute( 'type' ) == 'image' )
 				{
 					this.imageEditMode = element.getName();
@@ -533,7 +533,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											{
 												if ( type == IMAGE )
 												{
-													var url = element.getAttribute( '_cke_saved_src' ) || element.getAttribute( 'src' );
+													var url = element.data( 'cke-saved-src' ) || element.getAttribute( 'src' );
 													var field = this;
 
 													this.getDialog().dontResetSize = true;
@@ -547,7 +547,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											{
 												if ( type == IMAGE && ( this.getValue() || this.isChanged() ) )
 												{
-													element.setAttribute( '_cke_saved_src', decodeURI( this.getValue() ) );
+													element.data( 'cke-saved-src', decodeURI( this.getValue() ) );
 													element.setAttribute( 'src', decodeURI( this.getValue() ) );
 												}
 												else if ( type == CLEANUP )
@@ -1094,7 +1094,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							{
 								if ( type == LINK )
 								{
-									var href = element.getAttribute( '_cke_saved_href' );
+									var href = element.data( 'cke-saved-href' );
 									if ( !href )
 										href = element.getAttribute( 'href' );
 									this.setValue( href );
@@ -1106,7 +1106,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								{
 									if ( this.getValue() || this.isChanged() )
 									{
-										element.setAttribute( '_cke_saved_href', decodeURI( this.getValue() ) );
+										element.data( 'cke-saved-href', decodeURI( this.getValue() ) );
 										element.setAttribute( 'href', 'javascript:void(0)/*' +
 											CKEDITOR.tools.getNextNumber() + '*/' );
 

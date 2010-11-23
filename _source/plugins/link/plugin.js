@@ -71,7 +71,7 @@ CKEDITOR.plugins.add( 'link',
 
 				if ( element.is( 'a' ) )
 					evt.data.dialog =  ( element.getAttribute( 'name' ) && !element.getAttribute( 'href' ) ) ? 'anchor' : 'link';
-				else if ( element.is( 'img' ) && element.getAttribute( '_cke_real_element_type' ) == 'anchor' )
+				else if ( element.is( 'img' ) && element.data( 'cke-real-element-type' ) == 'anchor' )
 					evt.data.dialog = 'anchor';
 			});
 
@@ -113,7 +113,7 @@ CKEDITOR.plugins.add( 'link',
 					if ( !element || element.isReadOnly() )
 						return null;
 
-					var isAnchor = ( element.is( 'img' ) && element.getAttribute( '_cke_real_element_type' ) == 'anchor' );
+					var isAnchor = ( element.is( 'img' ) && element.data( 'cke-real-element-type' ) == 'anchor' );
 
 					if ( !isAnchor )
 					{

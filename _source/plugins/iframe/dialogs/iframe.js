@@ -54,7 +54,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				this.fakeImage = this.iframeNode = null;
 
 				var fakeImage = this.getSelectedElement();
-				if ( fakeImage && fakeImage.getAttribute( '_cke_real_element_type' ) && fakeImage.getAttribute( '_cke_real_element_type' ) == 'iframe' )
+				if ( fakeImage && fakeImage.data( 'cke-real-element-type' ) && fakeImage.data( 'cke-real-element-type' ) == 'iframe' )
 				{
 					this.fakeImage = fakeImage;
 

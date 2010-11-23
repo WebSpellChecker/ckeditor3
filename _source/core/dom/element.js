@@ -728,7 +728,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			{
 				var attribute = thisAttribs[ i ];
 
-				if ( ( !CKEDITOR.env.ie || ( attribute.specified && attribute.nodeName != '_cke_expando' ) ) && attribute.nodeValue != otherElement.getAttribute( attribute.nodeName ) )
+				if ( ( !CKEDITOR.env.ie || ( attribute.specified && attribute.nodeName != 'data-cke-expando' ) ) && attribute.nodeValue != otherElement.getAttribute( attribute.nodeName ) )
 					return false;
 			}
 
@@ -739,7 +739,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 				for ( i = 0 ; i < otherLength ; i++ )
 				{
 					attribute = otherAttribs[ i ];
-					if ( attribute.specified && attribute.nodeName != '_cke_expando'
+					if ( attribute.specified && attribute.nodeName != 'data-cke-expando'
 							&& attribute.nodeValue != this.getAttribute( attribute.nodeName ) )
 						return false;
 				}
@@ -789,7 +789,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			{
 				var child = children.getItem( i );
 
-				if ( child.type == CKEDITOR.NODE_ELEMENT && child.getAttribute( '_cke_bookmark' ) )
+				if ( child.type == CKEDITOR.NODE_ELEMENT && child.data( 'cke-bookmark' ) )
 					continue;
 
 				if ( child.type == CKEDITOR.NODE_ELEMENT && !child.isEmptyInlineRemoveable()
@@ -834,7 +834,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 									return true;
 
 							// Attributes to be ignored.
-							case '_cke_expando' :
+							case 'data-cke-expando' :
 								continue;
 
 							/*jsl:fallthru*/
@@ -854,7 +854,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 						attrsNum = attrs.length;
 
 					// The _moz_dirty attribute might get into the element after pasting (#5455)
-					var execludeAttrs = { _cke_expando : 1, _moz_dirty : 1 };
+					var execludeAttrs = { 'data-cke-expando' : 1, _moz_dirty : 1 };
 
 					return attrsNum > 0 &&
 						( attrsNum > 2 ||
@@ -917,7 +917,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 					// queuing them to be moved later. (#5567)
 					var pendingNodes = [];
 
-					while ( sibling.getAttribute( '_cke_bookmark' )
+					while ( sibling.data( 'cke-bookmark' )
 						|| sibling.isEmptyInlineRemoveable() )
 					{
 						pendingNodes.push( sibling );
@@ -1483,7 +1483,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 
 			// Replace the node.
 			this.getParent() && this.$.parentNode.replaceChild( newNode.$, this.$ );
-			newNode.$._cke_expando = this.$._cke_expando;
+			newNode.$[ 'data-cke-expando' ] = this.$[ 'data-cke-expando' ];
 			this.$ = newNode.$;
 		},
 
@@ -1560,5 +1560,22 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		getDirection : function( useComputed )
 		{
 			return useComputed ? this.getComputedStyle( 'direction' ) : this.getStyle( 'direction' ) || this.getAttribute( 'dir' );
+		},
+
+		/**
+		 * Gets, sets and removes custom data to be stored as HTML5 data-* attributes.
+		 * @name CKEDITOR.dom.element.data
+		 * @param {String} name The name of the attribute, execluding the 'data-' part.
+		 * @param {String} [value] The value to set. If set to false, the attribute will be removed.
+		 */
+		data : function ( name, value )
+		{
+			name = 'data-' + name;
+			if ( value === undefined )
+				return this.getAttribute( name );
+			else if ( value === false )
+				this.removeAttribute( name );
+			else
+				this.setAttribute( name, value );
 		}
 	});

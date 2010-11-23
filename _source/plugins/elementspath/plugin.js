@@ -82,8 +82,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						{
 							var index = elementsList.push( element ) - 1;
 							var name;
-							if ( element.getAttribute( '_cke_real_element_type' ) )
-								name = element.getAttribute( '_cke_real_element_type' );
+							if ( element.data( 'cke-real-element-type' ) )
+								name = element.data( 'cke-real-element-type' );
 							else
 								name = element.getName();
 

@@ -48,7 +48,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					editor.contextMenu.addListener( function( element, selection )
 						{
-							if ( !element || !element.hasAttribute( '_cke_placeholder' ) )
+							if ( !element || !element.data( 'cke-placeholder' ) )
 								return null;
 
 							return { editplaceholder : CKEDITOR.TRISTATE_OFF };
@@ -59,7 +59,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			editor.on( 'doubleclick', function( evt )
 				{
 					var element = evt.data.element;
-					if ( element.hasAttribute( '_cke_placeholder' ) )
+					if ( element.data( 'cke-placeholder' ) )
 						evt.data.dialog = 'editplaceholder';
 				});
 
@@ -75,7 +75,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					editor.document.getBody().on( 'resizestart', function( evt )
 						{
-							if ( editor.getSelection().getSelectedElement().hasAttribute( '_cke_placeholder' ) )
+							if ( editor.getSelection().getSelectedElement().data( 'cke-placeholder' ) )
 								evt.data.preventDefault();
 						});
 				});
@@ -111,7 +111,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						'span' : function( element )
 						{
-							if ( element.attributes && element.attributes._cke_placeholder )
+							if ( element.attributes && element.attributes[ 'data-cke-placeholder' ] )
 								delete element.name;
 						}
 					}
@@ -128,9 +128,9 @@ CKEDITOR.plugins.placeholder =
 		var element = new CKEDITOR.dom.element( 'span', editor.document );
 		element.setAttributes(
 			{
-				contentEditable	: 'false',
-				_cke_placeholder	: 1,
-				'class'		: 'cke_placeholder'
+				contentEditable		: 'false',
+				'data-cke-placeholder'	: 1,
+				'class'			: 'cke_placeholder'
 			}
 		);
 

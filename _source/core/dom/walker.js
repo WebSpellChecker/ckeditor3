@@ -374,7 +374,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			return ( node && node.getName
 					&& node.getName() == 'span'
-					&& node.hasAttribute( '_cke_bookmark' ) );
+					&& node.data( 'cke-bookmark' ) );
 		}
 
 		return function( node )

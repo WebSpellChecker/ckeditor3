@@ -56,7 +56,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			editor.on( 'doubleclick', function( evt )
 				{
 					var element = evt.data.element;
-					if ( element.is( 'img' ) && element.getAttribute( '_cke_real_element_type' ) == 'iframe' )
+					if ( element.is( 'img' ) && element.data( 'cke-real-element-type' ) == 'iframe' )
 						evt.data.dialog = 'iframe';
 				});
 
@@ -78,7 +78,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			{
 				editor.contextMenu.addListener( function( element, selection )
 					{
-						if ( element && element.is( 'img' ) && element.getAttribute( '_cke_real_element_type' ) == 'iframe' )
+						if ( element && element.is( 'img' ) && element.data( 'cke-real-element-type' ) == 'iframe' )
 							return { iframe : CKEDITOR.TRISTATE_OFF };
 					});
 			}

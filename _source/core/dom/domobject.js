@@ -203,7 +203,7 @@ CKEDITOR.dom.domObject.prototype = (function()
 	 */
 	domObjectProto.getCustomData = function( key )
 	{
-		var expandoNumber = this.$._cke_expando,
+		var expandoNumber = this.$[ 'data-cke-expando' ],
 			dataSlot = expandoNumber && customData[ expandoNumber ];
 
 		return dataSlot && dataSlot[ key ];
@@ -214,7 +214,7 @@ CKEDITOR.dom.domObject.prototype = (function()
 	 */
 	domObjectProto.removeCustomData = function( key )
 	{
-		var expandoNumber = this.$._cke_expando,
+		var expandoNumber = this.$[ 'data-cke-expando' ],
 			dataSlot = expandoNumber && customData[ expandoNumber ],
 			retval = dataSlot && dataSlot[ key ];
 
@@ -236,7 +236,7 @@ CKEDITOR.dom.domObject.prototype = (function()
 		// Clear all event listeners
 		this.removeAllListeners();
 
-		var expandoNumber = this.$._cke_expando;
+		var expandoNumber = this.$[ 'data-cke-expando' ];
 		expandoNumber && delete customData[ expandoNumber ];
 	};
 
@@ -249,7 +249,7 @@ CKEDITOR.dom.domObject.prototype = (function()
 	 */
 	domObjectProto.getUniqueId = function()
 	{
-		return this.$._cke_expando || ( this.$._cke_expando = CKEDITOR.tools.getNextNumber() );
+		return this.$[ 'data-cke-expando' ] || ( this.$[ 'data-cke-expando' ] = CKEDITOR.tools.getNextNumber() );
 	};
 
 	// Implement CKEDITOR.event.

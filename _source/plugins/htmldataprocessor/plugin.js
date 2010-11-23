@@ -98,7 +98,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		[
 			// Event attributes (onXYZ) must not be directly set. They can become
 			// active in the editing area (IE|WebKit).
-			[ ( /^on/ ), '_cke_pa_on' ]
+			[ ( /^on/ ), 'data-cke-pa-on' ]
 		]
 	};
 
@@ -121,10 +121,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			attributeNames :
 			[
 				// Attributes saved for changes and protected attributes.
-				[ ( /^_cke_(saved|pa)_/ ), '' ],
+				[ ( /^data-cke-(saved|pa)-/ ), '' ],
 
-				// All "_cke" attributes are to be ignored.
-				[ ( /^_cke.*/ ), '' ],
+				// All "data-cke" attributes are to be ignored.
+				[ ( /^data-cke.*/ ), '' ],
 
 				[ 'hidefocus', '' ]
 			],
@@ -138,7 +138,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					if ( attribs )
 					{
 						// Elements marked as temporary are to be ignored.
-						if ( attribs.cke_temp )
+						if ( attribs[ 'data-cke-temp' ] )
 							return false;
 
 						// Remove duplicated attributes - #3789.
@@ -146,7 +146,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							savedAttributeName;
 						for ( var i = 0 ; i < attributeNames.length ; i++ )
 						{
-							savedAttributeName = '_cke_saved_' + attributeNames[ i ];
+							savedAttributeName = 'data-cke-saved-' + attributeNames[ i ];
 							savedAttributeName in attribs && ( delete attribs[ attributeNames[ i ] ] );
 						}
 					}
@@ -181,7 +181,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					if ( !( element.children.length ||
 							element.attributes.name ||
-							element.attributes._cke_saved_name ) )
+							element.attributes[ 'data-cke-saved-name' ] ) )
 					{
 						return false;
 					}
@@ -211,7 +211,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				title : function( element )
 				{
 					var titleText = element.children[ 0 ];
-					titleText && ( titleText.value = element.attributes[ '_cke_title' ] || '' );
+					titleText && ( titleText.value = element.attributes[ 'data-cke-title' ] || '' );
 				}
 			},
 
@@ -273,7 +273,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	}
 
 	var protectAttributeRegex = /<((?:a|area|img|input)[\s\S]*?\s)((href|src|name)\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|(?:[^ "'>]+)))([^>]*)>/gi,
-		findSavedSrcRegex = /\s_cke_saved_src\s*=/;
+		findSavedSrcRegex = /\sdata-cke-saved-src\s*=/;
 
 	var protectElementsRegex = /(?:<style(?=[ >])[^>]*>[\s\S]*<\/style>)|(?:<(:?link|meta|base)[^>]*>)/gi,
 		encodedElementsRegex = /<cke:encoded>([^<]*)<\/cke:encoded>/gi;
@@ -291,7 +291,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				if ( attrName == 'src' && findSavedSrcRegex.test( tag ) )
 					return tag;
 				else
-					return '<' + beginning + fullAttr + ' _cke_saved_' + fullAttr + end + '>';
+					return '<' + beginning + fullAttr + ' data-cke-saved-' + fullAttr + end + '>';
 			});
 	}
 

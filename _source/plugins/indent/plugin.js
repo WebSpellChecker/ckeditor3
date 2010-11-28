@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -247,10 +247,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					indentStep = Math.min( indentStep, editor.config.indentClasses.length );
 					indentStep = Math.max( indentStep, 0 );
-					var className = CKEDITOR.tools.ltrim( element.$.className.replace( self.classNameRegex, '' ) );
-					if ( indentStep < 1 )
-						element.$.className = className;
-					else
+					element.$.className = CKEDITOR.tools.ltrim( element.$.className.replace( self.classNameRegex, '' ) );
+					if ( indentStep > 0 )
 						element.addClass( editor.config.indentClasses[ indentStep - 1 ] );
 				}
 				else
@@ -392,8 +390,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			editor.on( 'dirChanged', function( e )
 			{
 				var range = new CKEDITOR.dom.range( editor.document );
-				range.setStartBefore( e.data );
-				range.setEndAfter( e.data );
+				range.setStartBefore( e.data.node );
+				range.setEndAfter( e.data.node );
 
 				var walker = new CKEDITOR.dom.walker( range ),
 					node;
@@ -403,11 +401,26 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					if ( node.type == CKEDITOR.NODE_ELEMENT )
 					{
 						// A child with the defined dir is to be ignored.
-						if ( !node.equals( e.data ) && node.getDirection() )
+						if ( !node.equals( e.data.node ) && node.getDirection() )
 						{
 							range.setStartAfter( node );
 							walker = new CKEDITOR.dom.walker( range );
 							continue;
+						}
+
+						// Switch alignment classes.
+						var classes = editor.config.indentClasses;
+						if ( classes )
+						{
+							var suffix = ( e.data.dir == 'ltr' ) ? [ '_rtl', '' ] : [ '', '_rtl' ];
+							for ( var i = 0; i < classes.length; i++ )
+							{
+								if ( node.hasClass( classes[ i ] + suffix[ 0 ] ) )
+								{
+									node.removeClass( classes[ i ] + suffix[ 0 ] );
+									node.addClass( classes[ i ] + suffix[ 1 ] );
+								}
+							}
 						}
 
 						// Switch the margins.
@@ -427,6 +440,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 /**
  * Size of each indentation step
+ * @name CKEDITOR.config.indentOffset
  * @type Number
  * @default 40
  * @example
@@ -435,6 +449,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
  /**
  * Unit for the indentation style
+ * @name CKEDITOR.config.indentUnit
  * @type String
  * @default 'px'
  * @example
@@ -444,6 +459,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  /**
  * List of classes to use for indenting the contents. If it's null, no classes will be used
  * and instead the {@link #indentUnit} and {@link #indentOffset} properties will be used.
+ * @name CKEDITOR.config.indentClasses
  * @type Array
  * default null
  * @example

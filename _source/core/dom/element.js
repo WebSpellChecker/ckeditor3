@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -613,7 +613,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			// Cache the lowercased name inside a closure.
 			var nodeName = this.$.nodeName.toLowerCase();
 
-			if ( CKEDITOR.env.ie )
+			if ( CKEDITOR.env.ie && ! ( document.documentMode > 8 ) )
 			{
 				var scopeName = this.$.scopeName;
 				if ( scopeName != 'HTML' )
@@ -720,9 +720,6 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 
 			var thisLength = thisAttribs.length,
 				otherLength = otherAttribs.length;
-
-			if ( !CKEDITOR.env.ie && thisLength != otherLength )
-				return false;
 
 			for ( var i = 0 ; i < thisLength ; i++ )
 			{

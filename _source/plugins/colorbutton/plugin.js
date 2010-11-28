@@ -126,10 +126,18 @@ CKEDITOR.plugins.add( 'colorbutton',
 						var colorStyle = config['colorButton_' + type + 'Style'];
 
 						colorStyle.childRule = type == 'back' ?
-							// It's better to apply background color as the innermost style. (#3599)
-							function(){ return false; } :
-							// Fore color style must be applied inside links instead of around it.
-							function( element ){ return element.getName() != 'a'; };
+							function( element )
+							{
+								// It's better to apply background color as the innermost style. (#3599)
+								// Except for "unstylable elements". (#6103)
+								return isUnstylable( element );
+							}
+							:
+							function( element )
+							{
+								// Fore color style must be applied inside links instead of around it.
+								return element.getName() != 'a' || isUnstylable( element );
+							};
 
 						new CKEDITOR.style( colorStyle, { color : color } ).apply( editor.document );
 					}
@@ -206,6 +214,11 @@ CKEDITOR.plugins.add( 'colorbutton',
 			output.push( '</tr></table>' );
 
 			return output.join( '' );
+		}
+
+		function isUnstylable( ele )
+		{
+			return ( ele.getAttribute( 'contentEditable' ) == 'false' ) || ele.getAttribute( 'data-cke-nostyle' );
 		}
 	}
 });

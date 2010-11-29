@@ -101,15 +101,15 @@ CKEDITOR.ui.panel.prototype =
 							' role="application" src="javascript:void(' );
 
 			output.push(
-						// Support for custom document.domain in IE.
-						CKEDITOR.env.isCustomDomain() ?
-							'(function(){' +
-								'document.open();' +
-								'document.domain=\'' + document.domain + '\';' +
-								'document.close();' +
-							'})()'
-						:
-							'0' );
+							// Support for custom document.domain in IE.
+							CKEDITOR.env.isCustomDomain() ?
+								'(function(){' +
+									'document.open();' +
+									'document.domain=\'' + document.domain + '\';' +
+									'document.close();' +
+								'})()'
+							:
+								'0' );
 
 			output.push(
 						')"></iframe>' );

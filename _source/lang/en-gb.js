@@ -528,10 +528,10 @@ CKEDITOR.lang['en-gb'] =
 
 	justify :
 	{
-		left	: 'Left Justify',
-		center	: 'Centre Justify',
-		right	: 'Right Justify',
-		block	: 'Block Justify'
+		left	: 'Align Left',
+		center	: 'Centre',
+		right	: 'Align Right',
+		block	: 'Justify'
 	},
 
 	blockquote : 'Block Quote',

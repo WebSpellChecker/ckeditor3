@@ -241,7 +241,7 @@ if ( !CKEDITOR.env )
 				env.ie ? 'ie' :
 				env.gecko ? 'gecko' :
 				env.opera ? 'opera' :
-				env.air ? 'air' :
+				env.air ? 'air cke_browser_webkit' :
 				env.webkit ? 'webkit' :
 				'unknown' );
 

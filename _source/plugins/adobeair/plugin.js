@@ -1,9 +1,9 @@
 /*
-Copyright (c) 2003-2009, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
-( function()
+(function()
 {
 	var eventNameList = [ 'click', 'keydown', 'mousedown', 'keypress' ];
 	// any inline event callbacks assigned via innerHTML/outerHTML such as
@@ -19,14 +19,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			child = children.getItem( i );
 
-			( function( node )
+			(function( node )
 			{
 				for ( var j = 0; j < eventNameList.length; j++ )
 				{
-					( function( eventName )
+					(function( eventName )
 					{
 
-						if( node.hasAttribute( 'on' + eventName ) )
+						if ( node.hasAttribute( 'on' + eventName ) )
 						{
 							node.on( eventName, function( evt )
 							{
@@ -56,7 +56,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										// Integer form param.
 										if ( argName.match( /\d+/ ) )
 										{
-											callFuncArgs[ i ] = parseInt( argName );
+											callFuncArgs[ i ] = parseInt( argName, 10 );
 											continue;
 										}
 
@@ -78,14 +78,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									CKEDITOR.tools.callFunction.apply( window, callFuncArgs );
 								}
 
-								if( preventDefault )
+								if ( preventDefault )
 									evt.data.preventDefault();
-							} );
+							});
 						}
-					} )( eventNameList[ j ] );
+					})( eventNameList[ j ] );
 				}
-
-			} )( child );
+			})( child );
 		}
 	}
 
@@ -104,12 +103,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 
 			editor.on( 'uiReady', function()
-			{
-				convertInlineHandlers( editor.container );
-				editor.sharedtop && convertInlineHandlers( editor.sharedtop );
-				editor.sharedbottom && convertInlineHandlers( editor.sharedbottom );
-				editor.on( 'elementsPathUpdate', function( evt ) { convertInlineHandlers( evt.data ); } );
-			} );
+				{
+					convertInlineHandlers( editor.container );
+					editor.sharedtop && convertInlineHandlers( editor.sharedtop );
+					editor.sharedbottom && convertInlineHandlers( editor.sharedbottom );
+					editor.on( 'elementsPathUpdate', function( evt ) { convertInlineHandlers( evt.data ); } );
+				});
 
 		},
 
@@ -138,18 +137,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					holder = panel._.holder;
 					convertInlineHandlers( holder );
 				})();
-
 			}
 
 			richCombo && richCombo.on( 'uiReady', onPanelUIReady );
 			panelButton && panelButton.on( 'uiReady', onPanelUIReady );
 			menu && menu.on( 'uiReady', onPanelUIReady );
 			dialog && dialog.on( 'uiReady', function ( evt )
-			{
-				convertInlineHandlers( evt.data._.element );
-			} );
+				{
+					convertInlineHandlers( evt.data._.element );
+				});
 		}
-	} );
-
-} )();
-
+	});
+})();

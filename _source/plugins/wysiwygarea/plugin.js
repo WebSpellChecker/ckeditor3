@@ -414,7 +414,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 							'document.close();';
 
-
 						iframe = CKEDITOR.dom.element.createFromHtml( '<iframe' +
   							' style="width:100%;height:100%"' +
   							' frameBorder="0"' +
@@ -423,7 +422,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// for other browers, the 'src' attribute should be left empty to
 							// trigger iframe's 'load' event.
   							' src="' + ( CKEDITOR.env.air ? editor._.air_bootstrap_frame_url : CKEDITOR.env.ie ? 'javascript:void(function(){' + encodeURIComponent( srcScript ) + '}())' : '' ) + '"' +
-						  	' tabIndex="' + ( CKEDITOR.env.webkit? -1 : editor.tabIndex ) + '"' +
+							' tabIndex="' + ( CKEDITOR.env.webkit? -1 : editor.tabIndex ) + '"' +
   							' allowTransparency="true"' +
   							'></iframe>' );
 
@@ -499,15 +498,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							return;
 						frameLoaded = 0;
 
-
 						editor.fire( 'ariaWidget', iframe );
-						
+
 						var domDocument = domWindow.document,
 							body = domDocument.body;
 
 						// Remove this script from the DOM.
 						var script = domDocument.getElementById( "cke_actscrpt" );
-							script.parentNode.removeChild( script );
+						script.parentNode.removeChild( script );
 
 						body.spellcheck = !editor.config.disableNativeSpellChecker;
 
@@ -609,8 +607,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							} );
 						}
 
-
-						if( CKEDITOR.env.air )
+						if ( CKEDITOR.env.air )
 						{
 							// Hyperlinks is enabled in Adobe AIR wysiwyg mode.   
 							domDocument.$.addEventListener( 'click', function( ev )
@@ -959,6 +956,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 							focus : function()
 							{
+								var win = editor.window;
+
 								if ( isLoadingData )
 									isPendingFocus = true;
 								// Temporary solution caused by #6025, supposed be unified by #6154.
@@ -966,17 +965,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								{
 									// Required for Opera when switching focus
 									// from another iframe, e.g. panels. (#6444)
-									var iframe = editor.window.$.frameElement;
+									var iframe = win.$.frameElement;
 									iframe.blur(), iframe.focus();
 									editor.document.getBody().focus();
 
 									editor.selectionChange();
 								}
-								else if ( !CKEDITOR.env.opera && editor.window )
+								else if ( !CKEDITOR.env.opera && win )
 								{
-									var win = editor.window;
 									// AIR need a while when focus was switching previously  from a link.
-									CKEDITOR.env.air? setTimeout( function () { win.focus(); }, 0 ) : win.focus();
+									CKEDITOR.env.air ? setTimeout( function () { win.focus(); }, 0 ) : win.focus();
 									editor.selectionChange();
 								}
 							}
@@ -1016,7 +1014,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// Switch on design mode for a short while and close it after then.
 			function blinkCursor( retry )
 			{
-				CKEDITOR.tools.tryThese( function ()
+				CKEDITOR.tools.tryThese(
+					function()
 					{
 						editor.document.$.designMode = 'on';
 						setTimeout( function()
@@ -1025,7 +1024,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							if ( CKEDITOR.currentInstance == editor )
 								editor.document.getBody().focus();
 						}, 50 );
-				}, function ()
+					},
+					function()
 					{
 						// The above call is known to fail when parent DOM
 						// tree layout changes may break design mode. (#5782)
@@ -1036,7 +1036,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						body.setAttribute( 'contentEditable', true );
 						// Try it again once..
 						!retry && blinkCursor( 1 );
-				})
+					});
 			}
 
 			// Create an invisible element to grab focus.

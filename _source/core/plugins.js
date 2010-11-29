@@ -53,9 +53,9 @@ CKEDITOR.plugins.load = CKEDITOR.tools.override( CKEDITOR.plugins.load, function
 						else
 						{
 							var methods = [ 'beforeLoad', 'onLoad', 'afterLoad' ];
-							for ( var i = 0; i < methods.length; i++ )
+							for ( i = 0; i < methods.length; i++ )
 							{
-								// Call the "onLoad" function for all plugins.
+								// Call the events for all plugins.
 								for ( pluginName in allPlugins )
 								{
 									plugin = allPlugins[ pluginName ];
@@ -66,6 +66,7 @@ CKEDITOR.plugins.load = CKEDITOR.tools.override( CKEDITOR.plugins.load, function
 									}
 								}
 							}
+
 							// Call the callback.
 							if ( callback )
 								callback.call( scope || window, allPlugins );

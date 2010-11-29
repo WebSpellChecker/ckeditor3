@@ -270,7 +270,6 @@ CKEDITOR.config =
 	 */
 	plugins :
 		'about,' +
-		'adobeair,' +
 		'a11yhelp,' +
 		'basicstyles,' +
 		'bidi,' +

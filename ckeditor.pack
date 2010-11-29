@@ -134,7 +134,6 @@ packages :
 					'_source/skins/kama/skin.js',
 //					'_source/lang/en.js',
 					'_source/plugins/about/plugin.js',
-					'_source/plugins/adobeair/plugin.js',
 					'_source/plugins/a11yhelp/plugin.js',
 					'_source/plugins/basicstyles/plugin.js',
 					'_source/plugins/bidi/plugin.js',

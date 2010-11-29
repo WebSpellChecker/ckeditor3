@@ -18,8 +18,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 }
 
 .cke_skin_v2 span.cke_browser_webkit,
-.cke_skin_v2 span.cke_browser_gecko18,
-.cke_skin_v2 span.cke_browser_air
+.cke_skin_v2 span.cke_browser_gecko18
 {
 	display: block;
 }

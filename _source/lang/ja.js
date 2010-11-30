@@ -165,7 +165,7 @@ CKEDITOR.lang['ja'] =
 		langDirRTL		: '右から左 (RTL)',
 		acccessKey		: 'アクセスキー',
 		name			: 'Name属性',
-		langCode		: '文字表記の方向',
+		langCode		: '言語コード',
 		tabIndex		: 'タブインデックス',
 		advisoryTitle	: 'Title属性',
 		advisoryContentType	: 'Content Type属性',
@@ -196,8 +196,8 @@ CKEDITOR.lang['ja'] =
 	// List style dialog
 	list:
 	{
-		numberedTitle		: 'Numbered List Properties', // MISSING
-		bulletedTitle		: 'Bulleted List Properties', // MISSING
+		numberedTitle		: '段落番号 プロパティ',
+		bulletedTitle		: '箇条書き プロパティ',
 		type				: 'Type', // MISSING
 		start				: 'Start', // MISSING
 		validateStartNumber				:'List start number must be a whole number.', // MISSING
@@ -575,7 +575,7 @@ CKEDITOR.lang['ja'] =
 	stylesCombo :
 	{
 		label		: 'スタイル',
-		panelTitle	: 'Formatting Styles', // MISSING
+		panelTitle	: 'スタイル',
 		panelTitle1	: 'ブロックスタイル',
 		panelTitle2	: 'インラインスタイル',
 		panelTitle3	: 'オブジェクトスタイル'
@@ -600,10 +600,10 @@ CKEDITOR.lang['ja'] =
 
 	div :
 	{
-		title				: 'Create Div Container', // MISSING
-		toolbar				: 'Create Div Container', // MISSING
+		title				: 'Divコンテナ',
+		toolbar				: 'Divコンテナ',
 		cssClassInputLabel	: 'Stylesheet Classes', // MISSING
-		styleSelectLabel	: 'Style', // MISSING
+		styleSelectLabel	: 'スタイル',
 		IdInputLabel		: 'Id', // MISSING
 		languageCodeInputLabel	: ' Language Code', // MISSING
 		inlineStyleInputLabel	: 'Inline Style', // MISSING
@@ -611,8 +611,8 @@ CKEDITOR.lang['ja'] =
 		langDirLabel		: 'Language Direction', // MISSING
 		langDirLTRLabel		: 'Left to Right (LTR)', // MISSING
 		langDirRTLLabel		: 'Right to Left (RTL)', // MISSING
-		edit				: 'Edit Div', // MISSING
-		remove				: 'Remove Div' // MISSING
+		edit				: 'Divコンテナ 編集',
+		remove				: 'Divコンテナ 削除'
   	},
 
 	iframe :
@@ -771,7 +771,7 @@ CKEDITOR.lang['ja'] =
 
 	bidi :
 	{
-		ltr : 'Text direction from left to right', // MISSING
-		rtl : 'Text direction from right to left' // MISSING
+		ltr : 'テキストの向き : 左から右へ',
+		rtl : 'テキストの向き : 右から左へ'
 	}
 };

@@ -38,8 +38,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	}
 
-	function blockNeedsExtension( block, fromSource )
+	function blockNeedsExtension( block, fromSource, extendEmptyBlock )
 	{
+		if( !extendEmptyBlock ||
+			typeof extendEmptyBlock == 'function' && ( extendEmptyBlock( block ) == false ) )
+			return false;
+
         // 1. For IE version >=8,  empty blocks are displayed correctly themself in wysiwiyg;
         // 2. For the rest, at least table cell and list item need no filler space.
         // (#6248)
@@ -51,32 +55,27 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		var lastChild = lastNoneSpaceChild( block );
 
-		return !lastChild
-			|| lastChild.type == CKEDITOR.NODE_ELEMENT && lastChild.name == 'br'
-			// Some of the controls in form needs extension too,
-			// to move cursor at the end of the form. (#4791)
-			|| block.name == 'form' && lastChild.name == 'input';
+		return !lastChild || lastChild &&
+				( lastChild.type == CKEDITOR.NODE_ELEMENT && lastChild.name == 'br'
+				// Some of the controls in form needs extension too,
+				// to move cursor at the end of the form. (#4791)
+				|| block.name == 'form' && lastChild.name == 'input' );
 	}
 
-	function extendBlockForDisplay( block )
+	function getBlockExtension( isOutput, emptyBlockFiller )
 	{
-		trimFillers( block, true );
-
-		if ( blockNeedsExtension( block, true ) )
+		return function( node )
 		{
-			if ( CKEDITOR.env.ie )
-				block.add( new CKEDITOR.htmlParser.text( '\xa0' ) );
-			else
-				block.add( new CKEDITOR.htmlParser.element( 'br', {} ) );
+			trimFillers( node, !isOutput );
+
+			if ( blockNeedsExtension( node, !isOutput, emptyBlockFiller ) )
+			{
+				if ( isOutput || CKEDITOR.env.ie )
+					node.add( new CKEDITOR.htmlParser.text( '\xa0' ) );
+				else
+					node.add( new CKEDITOR.htmlParser.element( 'br', {} ) );
+			}
 		}
-	}
-
-	function extendBlockForOutput( block )
-	{
-		trimFillers( block );
-
-		if ( blockNeedsExtension( block ) )
-			block.add( new CKEDITOR.htmlParser.text( '\xa0' ) );
 	}
 
 	var dtd = CKEDITOR.dtd;
@@ -105,7 +104,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	var defaultDataBlockFilterRules = { elements : {} };
 
 	for ( i in blockLikeTags )
-		defaultDataBlockFilterRules.elements[ i ] = extendBlockForDisplay;
+		defaultDataBlockFilterRules.elements[ i ] = getBlockExtension();
 
 	var defaultHtmlFilterRules =
 		{
@@ -241,11 +240,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				return contents;
 			}
 		};
-
-	var defaultHtmlBlockFilterRules = { elements : {} };
-
-	for ( i in blockLikeTags )
-		defaultHtmlBlockFilterRules.elements[ i ] = extendBlockForOutput;
 
 	if ( CKEDITOR.env.ie )
 	{
@@ -412,7 +406,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			dataProcessor.dataFilter.addRules( defaultDataFilterRules );
 			dataProcessor.dataFilter.addRules( defaultDataBlockFilterRules );
 			dataProcessor.htmlFilter.addRules( defaultHtmlFilterRules );
+
+			var defaultHtmlBlockFilterRules = { elements : {} };
+			for ( i in blockLikeTags )
+				defaultHtmlBlockFilterRules.elements[ i ] = getBlockExtension( true, editor.config.fillEmptyBlocks );
+
 			dataProcessor.htmlFilter.addRules( defaultHtmlBlockFilterRules );
+		},
+		
+		onLoad : function()
+		{
+			! ( 'fillEmptyBlocks' in CKEDITOR.config ) && ( CKEDITOR.config.fillEmptyBlocks = 1 );
 		}
 	});
 
@@ -510,3 +514,24 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * @example
  * config.forceSimpleAmpersand = false;
  */
+
+/**
+ * Whether a filler text (non-breaking space entity - &nbsp;) will be inserted into empty block elements in HTML output,
+ * this is used to render block elements properly with line-height; When a function is instead specified,
+ * it'll be passed a {@link CKEDITOR.htmlParser.element} to decide whether adding the filler text
+ * by expecting a boolean return value.
+ * @name CKEDITOR.config.fillEmptyBlocks;
+ * @since 3.5
+ * @type Boolean
+ * @default true
+ * @example
+ * config.fillEmptyBlocks = false;	// Prevent filler nodes in all empty blocks.
+ *
+ * // Prevent filler node only in float cleaners.
+ * config.fillEmptyBlocks = function( element )
+ * {
+ * 	if ( element.attributes[ 'class' ].indexOf ( 'clear-both' ) != -1 )
+ * 		return false;
+ * }
+ */
+

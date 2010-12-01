@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -724,6 +724,9 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			for ( var i = 0 ; i < thisLength ; i++ )
 			{
 				var attribute = thisAttribs[ i ];
+
+				if ( attribute.nodeName == '_moz_dirty' )
+					continue;
 
 				if ( ( !CKEDITOR.env.ie || ( attribute.specified && attribute.nodeName != 'data-cke-expando' ) ) && attribute.nodeValue != otherElement.getAttribute( attribute.nodeName ) )
 					return false;

@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -184,6 +184,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						return false;
 					}
+				},
+
+				// Remove dummy span in webkit.
+				span: function( element )
+				{
+					if ( element.attributes[ 'class' ] == 'Apple-style-span' )
+						delete element.name;
 				},
 
 				html : function( element )

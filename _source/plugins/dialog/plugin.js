@@ -191,9 +191,9 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 		var tabsToRemove = {};
 		// Cache tabs that should be removed.
-		if ( !( 'removeDialogContents' in editor._ ) && editor.config.removeDialogContents )
+		if ( !( 'removeDialogTabs' in editor._ ) && editor.config.removeDialogTabs )
 		{
-			var removeContents = editor.config.removeDialogContents.split( ';' );
+			var removeContents = editor.config.removeDialogTabs.split( ';' );
 
 			for ( i = 0; i < removeContents.length; i++ )
 			{
@@ -206,11 +206,11 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 					tabsToRemove[ removeDialogName ].push( parts[ 1 ] );
 				}
 			}
-			editor._.removeDialogContents = tabsToRemove;
+			editor._.removeDialogTabs = tabsToRemove;
 		}
 
 		// Remove tabs of this dialog.
-		if ( editor._.removeDialogContents && ( tabsToRemove = editor._.removeDialogContents[ dialogName ] ) )
+		if ( editor._.removeDialogTabs && ( tabsToRemove = editor._.removeDialogTabs[ dialogName ] ) )
 		{
 			for ( i = 0; i < tabsToRemove.length; i++ )
 				definition.removeContents( tabsToRemove[ i ] );
@@ -3045,12 +3045,12 @@ CKEDITOR.plugins.add( 'dialog',
  * Separate each pair with semicolon (see example).
  * <b>Note: All names are case-sensitive.</b>
  * <b>Note: Be cautious when specifying dialog tabs that are mandatory, like "info", dialog functionality might be broken because of this!<b>
- * @name CKEDITOR.config.removeDialogContents
+ * @name CKEDITOR.config.removeDialogTabs
  * @type String
  * @since 3.5
  * @default ''
  * @example
- * config.removeDialogContents = 'flash:advanced;Image:Link';
+ * config.removeDialogTabs = 'flash:advanced;image:Link';
  */
 
 /**

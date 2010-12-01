@@ -188,6 +188,34 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 				definition : definition
 			}
 			, editor ).definition;
+
+		var tabsToRemove = {};
+		// Cache tabs that should be removed.
+		if ( !( 'removeDialogContents' in editor._ ) && editor.config.removeDialogContents )
+		{
+			var removeContents = editor.config.removeDialogContents.split( ';' );
+
+			for ( i = 0; i < removeContents.length; i++ )
+			{
+				var parts = removeContents[ i ].split( ':' );
+				if ( parts.length == 2 )
+				{
+					var removeDialogName = parts[ 0 ];
+					if ( !tabsToRemove[ removeDialogName ] )
+						tabsToRemove[ removeDialogName ] = [];
+					tabsToRemove[ removeDialogName ].push( parts[ 1 ] );
+				}
+			}
+			editor._.removeDialogContents = tabsToRemove;
+		}
+
+		// Remove tabs of this dialog.
+		if ( editor._.removeDialogContents && ( tabsToRemove = editor._.removeDialogContents[ dialogName ] ) )
+		{
+			for ( i = 0; i < tabsToRemove.length; i++ )
+				definition.removeContents( tabsToRemove[ i ] );
+		}
+
 		// Initialize load, show, hide, ok and cancel events.
 		if ( definition.onLoad )
 			this.on( 'load', definition.onLoad );
@@ -3010,7 +3038,20 @@ CKEDITOR.plugins.add( 'dialog',
  * @since 3.5
  * @example
  * config.dialog_buttonsOrder = 'rtl';
-*/
+ */
+
+/**  
+ * The dialog contents to removed. It's a string composed by dialog name and tab name with a colon between them.
+ * Separate each pair with semicolon (see example).
+ * <b>Note: All names are case-sensitive.</b>
+ * <b>Note: Be cautious when specifying dialog tabs that are mandatory, like "info", dialog functionality might be broken because of this!<b>
+ * @name CKEDITOR.config.removeDialogContents
+ * @type String
+ * @since 3.5
+ * @default ''
+ * @example
+ * config.removeDialogContents = 'flash:advanced;Image:Link';
+ */
 
 /**
  * Fired when a dialog definition is about to be used to create a dialog into

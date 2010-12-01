@@ -114,38 +114,31 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		afterLoad : function()
 		{
-			var richCombo = CKEDITOR.ui.richCombo,
-				panelButton = CKEDITOR.ui.panelButton,
-				menu = CKEDITOR.menu,
-				dialog = CKEDITOR.dialog;
-
-			function onPanelUIReady( evt )
+			CKEDITOR.ui.on( 'ready', function( evt )
 			{
-				var floatPanel = evt.data._.panel,
-					panel = floatPanel._.panel,
-					holder;
-
-				( function(){
-
-					// Adding dom event listeners off-line are not supported in AIR,
-					// waiting for panel iframe loaded.
-					if ( !panel.isLoaded )
-					{
-						setTimeout( arguments.callee, 30 );
-						return;
-					}
-					holder = panel._.holder;
-					convertInlineHandlers( holder );
-				})();
-			}
-
-			richCombo && richCombo.on( 'uiReady', onPanelUIReady );
-			panelButton && panelButton.on( 'uiReady', onPanelUIReady );
-			menu && menu.on( 'uiReady', onPanelUIReady );
-			dialog && dialog.on( 'uiReady', function ( evt )
+				var ui = evt.data;
+				// richcombo, panelbutton and menu
+				if ( ui._.panel )
 				{
-					convertInlineHandlers( evt.data._.element );
-				});
+					var panel = ui._.panel._.panel,
+							holder;
+
+					( function()
+					{
+						// Adding dom event listeners off-line are not supported in AIR,
+						// waiting for panel iframe loaded.
+						if ( !panel.isLoaded )
+						{
+							setTimeout( arguments.callee, 30 );
+							return;
+						}
+						holder = panel._.holder;
+						convertInlineHandlers( holder );
+					})();
+				}
+				else if ( ui instanceof CKEDITOR.dialog )
+					convertInlineHandlers( ui._.element );
+			});
 		}
 	});
 })();

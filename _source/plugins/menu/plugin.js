@@ -247,7 +247,7 @@ CKEDITOR.plugins.add( 'menu',
 				// Inject the HTML inside the panel.
 				element.setHtml( output.join( '' ) );
 
-				CKEDITOR.menu.fire( 'uiReady', this );
+				CKEDITOR.ui.fire( 'ready', this );
 
 				// Show the panel.
 				if ( this.parent )

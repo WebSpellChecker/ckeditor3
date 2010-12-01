@@ -43,7 +43,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 						// The block should not have scrollbars (#5933, #6056)
 						block.element.getDocument().getBody().setStyle( 'overflow', 'hidden' );
 
-						CKEDITOR.ui.panelButton.fire( 'uiReady', this );
+						CKEDITOR.ui.fire( 'ready', this );
 
 						var keys = block.keys;
 						var rtl = editor.lang.dir == 'rtl';

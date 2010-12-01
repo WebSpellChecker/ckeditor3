@@ -348,7 +348,7 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 			{
 				this._.list.commit();
 				this._.committed = 1;
-				CKEDITOR.ui.richCombo.fire( 'uiReady', this );
+				CKEDITOR.ui.fire( 'ready', this );
 			}
 		},
 

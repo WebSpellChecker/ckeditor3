@@ -177,7 +177,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					var space = getSpaceElement();
 					space.setHtml( html.join('') + emptyHtml );
-					editor.fire( 'elementsPathUpdate', space );
+					editor.fire( 'elementsPathUpdate', { space : space } );
 				});
 
 			editor.on( 'contentDomUnload', function()

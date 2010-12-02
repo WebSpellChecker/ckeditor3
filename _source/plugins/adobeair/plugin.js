@@ -112,7 +112,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							convertInlineHandlers( editor.sharedSpaces[ space ] );
 					}
 
-					editor.on( 'elementsPathUpdate', function( evt ) { convertInlineHandlers( evt.data ); } );
+					editor.on( 'elementsPathUpdate', function( evt ) { convertInlineHandlers( evt.data.space ); } );
 				});
 
 			editor.on( 'contentDom', function()

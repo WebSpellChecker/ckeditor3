@@ -52,18 +52,14 @@ CKEDITOR.plugins.load = CKEDITOR.tools.override( CKEDITOR.plugins.load, function
 							loadPlugins.call( this, requiredPlugins );
 						else
 						{
-							var methods = [ 'beforeLoad', 'onLoad', 'afterLoad' ];
-							for ( i = 0; i < methods.length; i++ )
+							// Call the "onLoad" function for all plugins.
+							for ( pluginName in allPlugins )
 							{
-								// Call the events for all plugins.
-								for ( pluginName in allPlugins )
+								plugin = allPlugins[ pluginName ];
+								if ( plugin.onLoad && !plugin.onLoad._called )
 								{
-									plugin = allPlugins[ pluginName ];
-									if ( plugin[ methods[ i ] ] && !plugin[ methods[ i ] ]._called )
-									{
-										plugin[ methods[ i ] ]();
-										plugin[ methods[ i ] ]._called = 1;
-									}
+									plugin.onLoad();
+									plugin.onLoad._called = 1;
 								}
 							}
 

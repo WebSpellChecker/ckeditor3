@@ -27,7 +27,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					(function( eventName )
 					{
-
 						if ( node.hasAttribute( 'on' + eventName ) )
 						{
 							node.on( eventName, function( evt )
@@ -120,37 +119,34 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							ev.data.preventDefault( true );
 						});
 				});
-		},
-
-		afterLoad : function()
-		{
-			CKEDITOR.ui.on( 'ready', function( evt )
-			{
-				var ui = evt.data;
-				// richcombo, panelbutton and menu
-				if ( ui._.panel )
-				{
-					var panel = ui._.panel._.panel,
-							holder;
-
-					( function()
-					{
-						// Adding dom event listeners off-line are not supported in AIR,
-						// waiting for panel iframe loaded.
-						if ( !panel.isLoaded )
-						{
-							setTimeout( arguments.callee, 30 );
-							return;
-						}
-						holder = panel._.holder;
-						convertInlineHandlers( holder );
-					})();
-				}
-				else if ( ui instanceof CKEDITOR.dialog )
-					convertInlineHandlers( ui._.element );
-			});
 		}
 	});
+
+	CKEDITOR.ui.on( 'ready', function( evt )
+		{
+			var ui = evt.data;
+			// richcombo, panelbutton and menu
+			if ( ui._.panel )
+			{
+				var panel = ui._.panel._.panel,
+						holder;
+
+				( function()
+				{
+					// Adding dom event listeners off-line are not supported in AIR,
+					// waiting for panel iframe loaded.
+					if ( !panel.isLoaded )
+					{
+						setTimeout( arguments.callee, 30 );
+						return;
+					}
+					holder = panel._.holder;
+					convertInlineHandlers( holder );
+				})();
+			}
+			else if ( ui instanceof CKEDITOR.dialog )
+				convertInlineHandlers( ui._.element );
+		});
 })();
 
 CKEDITOR.dom.document.prototype.write = CKEDITOR.tools.override( CKEDITOR.dom.document.prototype.write,

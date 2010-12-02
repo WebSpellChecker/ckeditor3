@@ -63,47 +63,45 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				editor.getSelection().selectElement( element );
 			}
 
-			var onClickHanlder = CKEDITOR.tools.addFunction( onClick ),
-					onKeydownHandler= CKEDITOR.tools.addFunction( function( elementIndex, ev )
+			var onClickHanlder = CKEDITOR.tools.addFunction( onClick );
+
+			var onKeyDownHandler = CKEDITOR.tools.addFunction( function( elementIndex, ev )
+				{
+					var idBase = editor._.elementsPath.idBase,
+						element;
+
+					ev = new CKEDITOR.dom.event( ev );
+
+					var rtl = editor.lang.dir == 'rtl';
+					switch ( ev.getKeystroke() )
 					{
-						var idBase = editor._.elementsPath.idBase,
-							element;
+						case rtl ? 39 : 37 :		// LEFT-ARROW
+						case 9 :					// TAB
+							element = CKEDITOR.document.getById( idBase + ( elementIndex + 1 ) );
+							if ( !element )
+								element = CKEDITOR.document.getById( idBase + '0' );
+							element.focus();
+							return false;
 
-						ev = new CKEDITOR.dom.event( ev );
+						case rtl ? 37 : 39 :		// RIGHT-ARROW
+						case CKEDITOR.SHIFT + 9 :	// SHIFT + TAB
+							element = CKEDITOR.document.getById( idBase + ( elementIndex - 1 ) );
+							if ( !element )
+								element = CKEDITOR.document.getById( idBase + ( editor._.elementsPath.list.length - 1 ) );
+							element.focus();
+							return false;
 
-						var rtl = editor.lang.dir == 'rtl';
-						switch ( ev.getKeystroke() )
-						{
-						 case rtl ? 39 : 37 :					// LEFT-ARROW
-						 case 9 :					// TAB
-						  element = CKEDITOR.document.getById( idBase + ( elementIndex + 1 ) );
-						  if ( !element )
-							  element = CKEDITOR.document.getById( idBase + '0' );
-						  element.focus();
-						  return false;
+						case 27 :					// ESC
+							editor.focus();
+							return false;
 
-						 case rtl ? 37 : 39 :					// RIGHT-ARROW
-						 case CKEDITOR.SHIFT + 9 :	// SHIFT + TAB
-						  element = CKEDITOR.document.getById( idBase + ( elementIndex - 1 ) );
-						  if ( !element )
-							  element = CKEDITOR.document.getById( idBase + ( editor._.elementsPath.list.length - 1 ) );
-						  element.focus();
-						  return false;
-
-						 case 27 :					// ESC
-						  editor.focus();
-						  return false;
-
-						 case 13 :					// ENTER	// Opera
-						 case 32 :					// SPACE
-						  onClick( elementIndex );
-						  return false;
-
-						 //default :
-						 //	alert( ev.getKeystroke() );
-						}
-						return true;
-					});
+						case 13 :					// ENTER	// Opera
+						case 32 :					// SPACE
+							onClick( elementIndex );
+							return false;
+					}
+					return true;
+				});
 
 			editor.on( 'selectionChange', function( ev )
 				{
@@ -161,7 +159,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									( ( CKEDITOR.env.gecko && CKEDITOR.env.version < 10900 ) ?
 									' onfocus="event.preventBubble();"' : '' ) +
 									' hidefocus="true" ' +
-									' onkeydown="return CKEDITOR.tools.callFunction(', onKeydownHandler, ',', index, ', event );"' +
+									' onkeydown="return CKEDITOR.tools.callFunction(', onKeyDownHandler, ',', index, ', event );"' +
 									extra ,
 									' onclick="CKEDITOR.tools.callFunction('+ onClickHanlder, ',', index, '); return false;"',
 									' role="button" aria-labelledby="' + idBase + index + '_label">',

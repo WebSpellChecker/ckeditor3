@@ -162,7 +162,7 @@ CKEDITOR.themes.add( 'default', (function()
 			editor.container = container;
 
 			// Redirect the focus into editor for webkit. (#5713)
-			CKEDITOR.env.webkit && editor.container.on( 'focus', function() { editor.focus(); } );
+			CKEDITOR.env.webkit && container.on( 'focus', function() { editor.focus(); } );
 
 			// Disable browser context menu for editor's chrome.
 			container.disableContextMenu();

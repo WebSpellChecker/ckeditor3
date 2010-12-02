@@ -173,7 +173,7 @@ CKEDITOR.ui.button._ =
 				'<span class="cke_button">',
 				'<a id="', id, '"' +
 					' class="', classes, '"',
-					env.gecko && env.version >= 10900 && !env.hc  ? '' : '" href="javascript:void(\''+ ( this.title || '' ).replace( "'"+ '' )+ '\')"',
+					env.gecko && env.version >= 10900 && !env.hc  ? '' : '" href="javascript:void(\''+ ( this.title || '' ).replace( /'/g, '' ) + '\')"',
 					' title="', this.title, '"' +
 					' tabindex="-1"' +
 					' hidefocus="true"' +
@@ -260,7 +260,7 @@ CKEDITOR.ui.button._ =
 		}
 	};
 
-} )();
+})();
 
 /**
  * Adds a button definition to the UI elements list.

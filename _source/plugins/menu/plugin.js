@@ -264,7 +264,6 @@ CKEDITOR.plugins.add( 'menu',
 			}
 		}
 	});
-	CKEDITOR.event.implementOn( CKEDITOR.menu, true );
 
 	function sortItems( items )
 	{
@@ -351,7 +350,6 @@ CKEDITOR.menuItem = CKEDITOR.tools.createClass(
 
 			var offset = ( this.iconOffset || 0 ) * -16;
 			output.push(
-//					' onkeydown="return CKEDITOR.ui.button._.keydown(', index, ', event);"' +
 					' onmouseover="CKEDITOR.tools.callFunction(', menu._.itemOverFn, ',', index, ');"' +
 					' onmouseout="CKEDITOR.tools.callFunction(', menu._.itemOutFn, ',', index, ');"' +
 					' onclick="CKEDITOR.tools.callFunction(', menu._.itemClickFn, ',', index, '); return false;"' +

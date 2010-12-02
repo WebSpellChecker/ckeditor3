@@ -142,5 +142,4 @@ CKEDITOR.UI_PANELBUTTON = 4;
 			}
 		}
 	});
-	CKEDITOR.event.implementOn( CKEDITOR.ui.panelButton, true );
 })();

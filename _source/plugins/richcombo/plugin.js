@@ -363,7 +363,6 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 		}
 	}
 });
-CKEDITOR.event.implementOn( CKEDITOR.ui.richCombo, true );
 
 CKEDITOR.ui.prototype.addRichCombo = function( name, definition )
 {

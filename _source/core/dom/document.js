@@ -226,80 +226,26 @@ CKEDITOR.tools.extend( CKEDITOR.dom.document.prototype,
 		},
 
 		/**
-		 * Wrapper for document.write that works around certain security
-		 * limitation because of the closed stream when calling this method.
-		 * @param html
-		 * @param mode
+		 * Defines the document contents through document.write. Note that the
+		 * previous document contents will be lost (cleaned).
+		 * @since 3.5
+		 * @param {String} html The HTML defining the document contents.
+		 * @example
+		 * document.write(
+		 *     '&lt;html&gt;' +
+		 *         '&lt;head&gt;&lt;title&gt;Sample Doc&lt;/title&gt;&lt;/head&gt;' +
+		 *         '&lt;body&gt;Document contents created by code&lt;/body&gt;' +
+		 *      '&lt;/html&gt;' );
 		 */
-		write : function( html, mode )
+		write : function( html )
 		{
-			// document.write() or document.writeln() fail silently after
-			// the page load event in Adobe AIR.
-			// DOM manipulation could be used instead.
-			if ( CKEDITOR.env.air && this.getBody() )
-			{
-				// We're taking the below extra work only because innerHTML
-				// on <html> element doesn't work as expected.
-				var doc = this;
+			// Don't leave any history log in IE. (#5657)
+			this.$.open( 'text/html', 'replace' );
 
-				// Grab all the <link> and <style>.
-				var styleSheetLinks = [],
-						styleTexts = [];
+			// Support for custom document.domain in IE.
+			CKEDITOR.env.isCustomDomain() &&  ( this.$.domain = document.domain );
 
-				html.replace( /<style[^>]*>([\s\S]*?)<\/style>/gi, function ( match, styleText )
-				{
-					styleTexts.push( styleText );
-				});
-
-				html.replace( /<link[^>]*?>/gi, function( linkHtml )
-				{
-					styleSheetLinks.push( linkHtml );
-				});
-
-				if ( styleSheetLinks.length )
-				{
-					// Inject the <head> HTML inside a <div>.
-					// Do that before getDocumentHead because WebKit moves
-					// <link css> elements to the <head> at this point.
-					var div = new CKEDITOR.dom.element( 'div', doc );
-					div.setHtml( styleSheetLinks.join( '' ) );
-					// Move the <div> nodes to <head>.
-					div.moveChildren( this.getHead( doc ) );
-				}
-
-				// Create style nodes for inline css.
-				// ( <style> content doesn't applied when setting via innerHTML )
-				var count = styleTexts.length;
-				if ( count )
-				{
-					var head = this.getHead( doc );
-					for ( var i = 0; i < count; i++ )
-					{
-						var node = head.append( 'style' );
-						node.setAttribute( "type", "text/css" );
-						node.append( doc.createText( styleTexts[ i ] ) );
-					}
-				}
-			
-				// Copy the entire <body>.  
-				doc.getBody().setAttributes( CKEDITOR.htmlParser.fragment.fromHtml(
-					// Separate body content and attributes.
-					html.replace( /(<body[^>]*>)([\s\S]*)(?=<\/body>)/i,
-						function( match, startTag, innerHTML )
-						{
-							doc.getBody().setHtml( innerHTML );
-							return startTag;
-						})
-					).children[ 0 ].attributes );
-			}
-			else
-			{
-				this.$.open( "text/html", mode );
-				// Support for custom document.domain in IE.
-				if ( CKEDITOR.env.isCustomDomain() )
-					this.$.domain = document.domain;
-				this.$.write( html );
-				this.$.close();
-			}
+			this.$.write( html );
+			this.$.close();
 		}
 	});

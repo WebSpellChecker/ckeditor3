@@ -607,17 +607,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							} );
 						}
 
-						if ( CKEDITOR.env.air )
-						{
-							// Hyperlinks is enabled in Adobe AIR wysiwyg mode.   
-							domDocument.$.addEventListener( 'click', function( ev )
-								{
-									ev.preventDefault() ;
-									ev.stopPropagation() ;
-								}, true ) ;
-						}
-						var focusTarget = ( CKEDITOR.env.ie || CKEDITOR.env.webkit ) ?
-								domWindow : domDocument;
 						// IE standard compliant in editing frame doesn't focus the editor when
 						// clicking outside actual content, manually apply the focus. (#1659)
 						if ( CKEDITOR.env.ie
@@ -973,7 +962,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								}
 								else if ( !CKEDITOR.env.opera && win )
 								{
-									// AIR need a while when focus was switching previously  from a link.
+									// AIR needs a while to focus when moving from a link.
 									CKEDITOR.env.air ? setTimeout( function () { win.focus(); }, 0 ) : win.focus();
 									editor.selectionChange();
 								}

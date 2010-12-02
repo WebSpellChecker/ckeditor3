@@ -6,7 +6,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 (function()
 {
 	var eventNameList = [ 'click', 'keydown', 'mousedown', 'keypress' ];
-	// any inline event callbacks assigned via innerHTML/outerHTML such as
+
+	// Inline event callbacks assigned via innerHTML/outerHTML, such as
 	// onclick/onmouseover, are ignored in AIR.
 	// Use DOM2 event listeners to substitue inline handlers instead.
 	function convertInlineHandlers( container )
@@ -15,6 +16,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		var children = container.getElementsByTag( '*' ),
 			count = children.count(),
 			child;
+
 		for ( var i = 0; i < count; i++ )
 		{
 			child = children.getItem( i );
@@ -101,7 +103,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// Frame source from application sandbox to be consumed by 'wysiwyg' plugin.
 			editor._.air_bootstrap_frame_url = this.path + '/assets/air_boostrap_frame.html?' + editor.name;
 
-
 			editor.on( 'uiReady', function()
 				{
 					convertInlineHandlers( editor.container );
@@ -110,6 +111,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					editor.on( 'elementsPathUpdate', function( evt ) { convertInlineHandlers( evt.data ); } );
 				});
 
+			editor.on( 'contentDom', function()
+				{
+					// Hyperlinks are enabled in editable documents in Adobe
+					// AIR. Prevent their click behavior.
+					editor.document.on( 'click', function( ev )
+						{
+							ev.data.preventDefault( true );
+						});
+				});
 		},
 
 		afterLoad : function()
@@ -142,3 +152,72 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	});
 })();
+
+CKEDITOR.dom.document.prototype.write = CKEDITOR.tools.override( CKEDITOR.dom.document.prototype.write,
+	function( original_write )
+	{
+		return function( html, mode )
+			{
+				// document.write() or document.writeln() fail silently after
+				// the page load event in Adobe AIR.
+				// DOM manipulation could be used instead.
+				if ( this.getBody() )
+				{
+					// We're taking the below extra work only because innerHTML
+					// on <html> element doesn't work as expected.
+					var doc = this;
+
+					// Grab all the <link> and <style>.
+					var styleSheetLinks = [],
+							styleTexts = [];
+
+					html.replace( /<style[^>]*>([\s\S]*?)<\/style>/gi, function ( match, styleText )
+					{
+						styleTexts.push( styleText );
+					});
+
+					html.replace( /<link[^>]*?>/gi, function( linkHtml )
+					{
+						styleSheetLinks.push( linkHtml );
+					});
+
+					if ( styleSheetLinks.length )
+					{
+						// Inject the <head> HTML inside a <div>.
+						// Do that before getDocumentHead because WebKit moves
+						// <link css> elements to the <head> at this point.
+						var div = new CKEDITOR.dom.element( 'div', doc );
+						div.setHtml( styleSheetLinks.join( '' ) );
+						// Move the <div> nodes to <head>.
+						div.moveChildren( this.getHead( doc ) );
+					}
+
+					// Create style nodes for inline css.
+					// ( <style> content doesn't applied when setting via innerHTML )
+					var count = styleTexts.length;
+					if ( count )
+					{
+						var head = this.getHead( doc );
+						for ( var i = 0; i < count; i++ )
+						{
+							var node = head.append( 'style' );
+							node.setAttribute( "type", "text/css" );
+							node.append( doc.createText( styleTexts[ i ] ) );
+						}
+					}
+			
+					// Copy the entire <body>.  
+					doc.getBody().setAttributes( CKEDITOR.htmlParser.fragment.fromHtml(
+						// Separate body content and attributes.
+						html.replace( /(<body[^>]*>)([\s\S]*)(?=<\/body>)/i,
+							function( match, startTag, innerHTML )
+							{
+								doc.getBody().setHtml( innerHTML );
+								return startTag;
+							})
+						).children[ 0 ].attributes );
+				}
+				else
+					original_write.apply( this, arguments );
+			};
+	});

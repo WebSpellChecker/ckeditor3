@@ -105,8 +105,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			editor.on( 'uiReady', function()
 				{
 					convertInlineHandlers( editor.container );
-					editor.sharedtop && convertInlineHandlers( editor.sharedtop );
-					editor.sharedbottom && convertInlineHandlers( editor.sharedbottom );
+
+					if ( editor.sharedSpaces )
+					{
+						for ( var space in editor.sharedSpaces )
+							convertInlineHandlers( editor.sharedSpaces[ space ] );
+					}
+
 					editor.on( 'elementsPathUpdate', function( evt ) { convertInlineHandlers( evt.data ); } );
 				});
 

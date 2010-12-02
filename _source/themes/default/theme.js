@@ -45,7 +45,9 @@ CKEDITOR.themes.add( 'default', (function()
 			// Get the deeper inner <div>.
 			container = mainContainer.getChild( [0,0,0,0] );
 
-			editor[ 'shared' + spaceName ] = container;
+			// Save a reference to the shared space container.
+			!editor.sharedSpaces && ( editor.sharedSpaces = {} );
+			editor.sharedSpaces[ spaceName ] = container;
 
 			// When the editor gets focus, we show the space container, hiding others.
 			editor.on( 'focus', function()

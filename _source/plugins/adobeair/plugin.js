@@ -32,8 +32,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							node.on( eventName, function( evt )
 							{
 								var inlineEventHandler = node.getAttribute( 'on' + eventName ),
-									callFunc = /callFunction\(([^)]+)\)/.exec( inlineEventHandler ),
-									callFuncArgs = callFunc &&  callFunc[ 1 ].split( ',' ),
+									callFunc = /(return\s*)?CKEDITOR\.tools\.callFunction\(([^)]+)\)/.exec( inlineEventHandler ),
+									hasReturn = callFunc && callFunc[ 1 ],
+									callFuncArgs = callFunc &&  callFunc[ 2 ].split( ',' ),
 									preventDefault = /return false;/.test( inlineEventHandler );
 
 								if ( callFuncArgs )
@@ -76,7 +77,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										}
 									}
 
-									CKEDITOR.tools.callFunction.apply( window, callFuncArgs );
+									var retval = CKEDITOR.tools.callFunction.apply( window, callFuncArgs );
+									if ( hasReturn && retval === false )
+										 preventDefault = 1;
 								}
 
 								if ( preventDefault )

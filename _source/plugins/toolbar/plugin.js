@@ -43,8 +43,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					editor.toolbox.focusCommandExecuted = true;
 
-					// Make the first button focus accessible. (#3417)
-					if ( CKEDITOR.env.ie )
+					// Make the first button focus accessible for IE. (#3417)
+					// Adobe AIR instead need while of delay.
+					if ( CKEDITOR.env.ie || CKEDITOR.env.air )
 						setTimeout( function(){ editor.toolbox.focus(); }, 100 );
 					else
 						editor.toolbox.focus();

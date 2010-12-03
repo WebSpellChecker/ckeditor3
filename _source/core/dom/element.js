@@ -307,20 +307,33 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 
 		/**
 		 * Moves the selection focus to this element.
+		 * @param  {Boolean} Whether defer the focusing into new thread after a little while.
 		 * @example
 		 * var element = CKEDITOR.document.getById( 'myTextarea' );
 		 * <b>element.focus()</b>;
 		 */
-		focus : function()
+		focus : (function()
 		{
-			// IE throws error if the element is not visible.
-			try
+			function exec( element )
 			{
-				this.$.focus();
+				// IE throws error if the element is not visible.
+				try
+				{
+					element.$.focus();
+				}
+				catch (e)
+				{}
 			}
-			catch (e)
-			{}
-		},
+
+			return function( defer )
+			{
+				var self = this;
+				if ( defer )
+					setTimeout( function(){ exec( self ) }, 100 );
+				else
+					exec( this );
+			}
+		}()),
 
 		/**
 		 * Gets the inner HTML of this element.

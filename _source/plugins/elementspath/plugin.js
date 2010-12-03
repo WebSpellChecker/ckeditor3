@@ -19,8 +19,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				var idBase = editor._.elementsPath.idBase;
 				var element = CKEDITOR.document.getById( idBase + '0' );
 
-				if ( element )
-					element.focus();
+				// Make the first button focus accessible for IE. (#3417)
+				// Adobe AIR instead need while of delay.
+				element && element.focus( CKEDITOR.env.ie || CKEDITOR.env.air );
 			}
 		}
 	};

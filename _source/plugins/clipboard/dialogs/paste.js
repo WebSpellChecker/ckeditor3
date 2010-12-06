@@ -13,7 +13,8 @@ CKEDITOR.dialog.add( 'paste', function( editor )
 		var doc = new CKEDITOR.dom.document( win.document ),
 			docElement = doc.$;
 
-		doc.getById( 'cke_actscrpt' ).remove();
+		var script = doc.getById( 'cke_actscrpt' );
+		script && script.remove();
 
 		CKEDITOR.env.ie ?
 			docElement.body.contentEditable = "true" :
@@ -80,7 +81,7 @@ CKEDITOR.dialog.add( 'paste', function( editor )
 						' frameborder="0" ' +
 						' allowTransparency="true"' +
 						// Support for custom document.domain in IE.
-						( CKEDITOR.env.air ? ' src="' + editor._.air_bootstrap_frame_url + '"' :
+						( CKEDITOR.env.air ? ' src="javascript:void(0)"' :
 							( isCustomDomain ?
 							' src="javascript:void((function(){' +
 								'document.open();' +
@@ -93,22 +94,29 @@ CKEDITOR.dialog.add( 'paste', function( editor )
 						' aria-multiple="true"' +
 						'></iframe>' );
 
-			if ( CKEDITOR.env.air )
-				CKEDITOR._[ 'air_bootstrap_data' + editor.name ] = htmlToLoad;
-			else
+			iframe.on( 'load', function( e )
 			{
-				iframe.on( 'load', function( e )
+				e.removeListener();
+
+				var doc;
+
+				if ( CKEDITOR.env.air )
 				{
-					e.removeListener();
-					var doc = iframe.getFrameDocument().$;
+					doc = iframe.getFrameDocument();
+					doc.write( htmlToLoad );
+					onPasteFrameLoad.call( this, doc.getWindow().$ );
+				}
+				else
+				{
+					doc = iframe.getFrameDocument().$;
 					// Custom domain handling is needed after each document.open().
 					doc.open();
 					if ( isCustomDomain )
 						doc.domain = document.domain;
 					doc.write( htmlToLoad );
 					doc.close();
-				}, this );
-			}
+				}
+			}, this );
 
 			iframe.setCustomData( 'dialog', this );
 

@@ -421,36 +421,37 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// With IE, the custom domain has to be taken care at first,
 							// for other browers, the 'src' attribute should be left empty to
 							// trigger iframe's 'load' event.
-  							' src="' + ( CKEDITOR.env.air ? editor._.air_bootstrap_frame_url : CKEDITOR.env.ie ? 'javascript:void(function(){' + encodeURIComponent( srcScript ) + '}())' : '' ) + '"' +
+  							' src="' + ( CKEDITOR.env.air ? 'javascript:void(0)' : CKEDITOR.env.ie ? 'javascript:void(function(){' + encodeURIComponent( srcScript ) + '}())' : '' ) + '"' +
 							' tabIndex="' + ( CKEDITOR.env.webkit? -1 : editor.tabIndex ) + '"' +
   							' allowTransparency="true"' +
   							'></iframe>' );
 
-						if ( CKEDITOR.env.air )
+						// Running inside of Firefox chrome the load event doesn't bubble like in a normal page (#5689)
+						if ( document.location.protocol == 'chrome:' )
+							CKEDITOR.event.useCapture = true;
+
+						// With FF, it's better to load the data on iframe.load. (#3894,#4058)
+						iframe.on( 'load', function( ev )
 						{
-							CKEDITOR._[ 'air_bootstrap_data' + editor.name ] = data;
 							frameLoaded = 1;
-						}
-						else
-						{
-							// Running inside of Firefox chrome the load event doesn't bubble like in a normal page (#5689)
-							if ( document.location.protocol == 'chrome:' )
-								CKEDITOR.event.useCapture = true;
+							ev.removeListener();
 
-							// With FF, it's better to load the data on iframe.load. (#3894,#4058)
-							iframe.on( 'load', function( ev )
-								{
-									frameLoaded = 1;
-									ev.removeListener();
-
-									var doc = iframe.getFrameDocument().$;
-
-									// Don't leave any history log in IE. (#5657)
-									doc.open( "text/html","replace" );
-									doc.write( data );
-									doc.close();
-								});
-						}
+							var doc;
+							if ( CKEDITOR.env.air )
+							{
+								doc = iframe.getFrameDocument();
+								doc.write( data );
+								contentDomReady( doc.getWindow().$ );
+							}
+							else
+							{
+								doc = iframe.getFrameDocument().$;
+								// Don't leave any history log in IE. (#5657)
+								doc.open( "text/html", "replace" );
+								doc.write( data );
+								doc.close();
+							}
+						});
 
 						// Reset adjustment back to default (#5689)
 						if ( document.location.protocol == 'chrome:' )
@@ -505,7 +506,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						// Remove this script from the DOM.
 						var script = domDocument.getElementById( "cke_actscrpt" );
-						script.parentNode.removeChild( script );
+						script && script.parentNode.removeChild( script );
 
 						body.spellcheck = !editor.config.disableNativeSpellChecker;
 

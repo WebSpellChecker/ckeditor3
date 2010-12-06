@@ -102,9 +102,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// Body doesn't get default margin on AIR.
 			editor.addCss( 'body { padding: 8px }' );
 
-			// Frame source from application sandbox to be consumed by 'wysiwyg' plugin.
-			editor._.air_bootstrap_frame_url = this.path + '/assets/air_boostrap_frame.html?' + editor.name;
-
 			editor.on( 'uiReady', function()
 				{
 					convertInlineHandlers( editor.container );
@@ -160,6 +157,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.dom.document.prototype.write = CKEDITOR.tools.override( CKEDITOR.dom.document.prototype.write,
 	function( original_write )
 	{
+		function appendElement( parent, tagName, fullTag, text )
+		{
+			var node = parent.append( tagName ),
+				attrs = CKEDITOR.htmlParser.fragment.fromHtml( fullTag ).children[ 0 ].attributes;
+			attrs && node.setAttributes( attrs );
+			text && node.append( parent.getDocument().createText( text ) );
+		}
+
 		return function( html, mode )
 			{
 				// document.write() or document.writeln() fail silently after
@@ -169,57 +174,52 @@ CKEDITOR.dom.document.prototype.write = CKEDITOR.tools.override( CKEDITOR.dom.do
 				{
 					// We're taking the below extra work only because innerHTML
 					// on <html> element doesn't work as expected.
-					var doc = this;
+					var doc = this,
+						head = this.getHead( doc );
 
-					// Grab all the <link> and <style>.
-					var styleSheetLinks = [],
-							styleTexts = [];
-
-					html.replace( /<style[^>]*>([\s\S]*?)<\/style>/gi, function ( match, styleText )
-					{
-						styleTexts.push( styleText );
-					});
-
-					html.replace( /<link[^>]*?>/gi, function( linkHtml )
-					{
-						styleSheetLinks.push( linkHtml );
-					});
-
-					if ( styleSheetLinks.length )
-					{
-						// Inject the <head> HTML inside a <div>.
-						// Do that before getDocumentHead because WebKit moves
-						// <link css> elements to the <head> at this point.
-						var div = new CKEDITOR.dom.element( 'div', doc );
-						div.setHtml( styleSheetLinks.join( '' ) );
-						// Move the <div> nodes to <head>.
-						div.moveChildren( this.getHead( doc ) );
-					}
-
-					// Create style nodes for inline css.
-					// ( <style> content doesn't applied when setting via innerHTML )
-					var count = styleTexts.length;
-					if ( count )
-					{
-						var head = this.getHead( doc );
-						for ( var i = 0; i < count; i++ )
+					// Create style nodes for inline css. ( <style> content doesn't applied when setting via innerHTML )
+					html = html.replace( /(<style[^>]*>)([\s\S]*?)<\/style>/gi,
+						function ( match, startTag, styleText )
 						{
-							var node = head.append( 'style' );
-							node.setAttribute( "type", "text/css" );
-							node.append( doc.createText( styleTexts[ i ] ) );
-						}
-					}
-			
-					// Copy the entire <body>.  
-					doc.getBody().setAttributes( CKEDITOR.htmlParser.fragment.fromHtml(
-						// Separate body content and attributes.
-						html.replace( /(<body[^>]*>)([\s\S]*)(?=<\/body>)/i,
-							function( match, startTag, innerHTML )
-							{
-								doc.getBody().setHtml( innerHTML );
-								return startTag;
-							})
-						).children[ 0 ].attributes );
+							appendElement( head, 'style', startTag, styleText );
+							return '';
+						});
+
+					html = html.replace( /<base\b[^>]*\/>/i,
+						function( match )
+						{
+							appendElement( head, 'base', match );
+							return '';
+						});
+
+					html = html.replace( /<title>([\s\S]*)<\/title>/i,
+						function( match, title )
+						{
+							doc.$.title = title;
+							return '';
+						});
+
+					// Move the rest of head stuff.
+					html = html.replace( /<head>([\s\S]*)<\/head>/i,
+						function( headHtml )
+						{
+							// Inject the <head> HTML inside a <div>.
+							// Do that before getDocumentHead because WebKit moves
+							// <link css> elements to the <head> at this point.
+							var div = new CKEDITOR.dom.element( 'div', doc );
+							div.setHtml( headHtml );
+							// Move the <div> nodes to <head>.
+							div.moveChildren( head );
+							return '';
+						});
+
+					html.replace( /(<body[^>]*>)([\s\S]*)(?=$|<\/body>)/i,
+						function( match, startTag, innerHTML )
+						{
+							doc.getBody().setHtml( innerHTML );
+							var attrs = CKEDITOR.htmlParser.fragment.fromHtml( startTag ).children[ 0 ].attributes;
+							attrs && doc.getBody().setAttributes( attrs );
+						});
 				}
 				else
 					original_write.apply( this, arguments );

@@ -307,12 +307,16 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 
 		/**
 		 * Moves the selection focus to this element.
+		 * @param  {Boolean} defer Whether to asynchronously defer the
+		 * 		execution by 100 ms.
 		 * @example
 		 * var element = CKEDITOR.document.getById( 'myTextarea' );
 		 * <b>element.focus()</b>;
 		 */
-		focus : function()
+		focus : (function()
 		{
+			function exec()
+			{
 			// IE throws error if the element is not visible.
 			try
 			{
@@ -320,7 +324,16 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			}
 			catch (e)
 			{}
-		},
+			}
+
+			return function( defer )
+			{
+				if ( defer )
+					CKEDITOR.tools.setTimeout( exec, 100, this );
+				else
+					exec.call( this );
+			}
+		}()),
 
 		/**
 		 * Gets the inner HTML of this element.

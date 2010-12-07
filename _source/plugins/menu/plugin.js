@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -335,6 +335,8 @@ CKEDITOR.plugins.add( 'menu',
 				// Inject the HTML inside the panel.
 				element.setHtml( output.join( '' ) );
 
+				CKEDITOR.ui.fire( 'ready', this );
+
 				// Show the panel.
 				if ( this.parent )
 					this.parent._.panel.showAsChild( panel, this.id, offsetParent, corner, offsetX, offsetY );
@@ -406,20 +408,20 @@ CKEDITOR.plugins.add( 'menu',
 				if ( this.className )
 					classes += ' ' + this.className;
 
-				var hasSubMenu = this.getItems;
+			var hasSubMenu = this.getItems;
 
-				output.push(
-					'<span class="cke_menuitem">' +
-					'<a id="', id, '"' +
-						' class="', classes, '" href="javascript:void(\'', ( this.label || '' ).replace( "'", '' ), '\')"' +
-						' title="', this.label, '"' +
-						' tabindex="-1"' +
-						'_cke_focus=1' +
-						' hidefocus="true"' +
-						' role="menuitem"' +
-						( hasSubMenu ? 'aria-haspopup="true"' : '' ) +
-						( state == CKEDITOR.TRISTATE_DISABLED ? 'aria-disabled="true"' : '' ) +
-						( state == CKEDITOR.TRISTATE_ON ? 'aria-pressed="true"' : '' ) );
+			output.push(
+				'<span class="cke_menuitem">' +
+				'<a id="', id, '"' +
+					' class="', classes, '" href="javascript:void(\'', ( this.label || '' ).replace( "'", '' ), '\')"' +
+					' title="', this.label, '"' +
+					' tabindex="-1"' +
+					'_cke_focus=1' +
+					' hidefocus="true"' +
+					' role="menuitem"' +
+					( hasSubMenu ? 'aria-haspopup="true"' : '' ) +
+					( state == CKEDITOR.TRISTATE_DISABLED ? 'aria-disabled="true"' : '' ) +
+					( state == CKEDITOR.TRISTATE_ON ? 'aria-pressed="true"' : '' ) );
 
 				// Some browsers don't cancel key events in the keydown but in the
 				// keypress.
@@ -441,34 +443,34 @@ CKEDITOR.plugins.add( 'menu',
 				var offset = ( this.iconOffset || 0 ) * -16;
 				output.push(
 //					' onkeydown="return CKEDITOR.ui.button._.keydown(', index, ', event);"' +
-						' onmouseover="CKEDITOR.tools.callFunction(', menu._.itemOverFn, ',', index, ');"' +
-						' onmouseout="CKEDITOR.tools.callFunction(', menu._.itemOutFn, ',', index, ');"' +
-						' onclick="CKEDITOR.tools.callFunction(', menu._.itemClickFn, ',', index, '); return false;"' +
-						'>' +
-							'<span class="cke_icon_wrapper"><span class="cke_icon"' +
-								( this.icon ? ' style="background-image:url(' + CKEDITOR.getUrl( this.icon ) + ');background-position:0 ' + offset + 'px;"'
-								: '' ) +
-								'></span></span>' +
-							'<span class="cke_label">' );
+					' onmouseover="CKEDITOR.tools.callFunction(', menu._.itemOverFn, ',', index, ');"' +
+					' onmouseout="CKEDITOR.tools.callFunction(', menu._.itemOutFn, ',', index, ');"' +
+					' onclick="CKEDITOR.tools.callFunction(', menu._.itemClickFn, ',', index, '); return false;"' +
+					'>' +
+						'<span class="cke_icon_wrapper"><span class="cke_icon"' +
+							( this.icon ? ' style="background-image:url(' + CKEDITOR.getUrl( this.icon ) + ');background-position:0 ' + offset + 'px;"'
+							: '' ) +
+							'></span></span>' +
+						'<span class="cke_label">' );
 
-				if ( hasSubMenu )
-				{
-					output.push(
-								'<span class="cke_menuarrow">',
-									'<span>&#',
-										( this.editor.lang.dir == 'rtl' ?
-											'9668' :	// BLACK LEFT-POINTING POINTER
-											'9658' ),	// BLACK RIGHT-POINTING POINTER
-									';</span>',
-								'</span>' );
-				}
+			if ( hasSubMenu )
+			{
+				output.push(
+							'<span class="cke_menuarrow">',
+								'<span>&#',
+									( this.editor.lang.dir == 'rtl' ?
+										'9668' :	// BLACK LEFT-POINTING POINTER
+										'9658' ),	// BLACK RIGHT-POINTING POINTER
+								';</span>',
+							'</span>' );
+			}
 
 				output.push(
 								htmlLabel,
 							'</span>' +
 					'</a>' +
 					'</span>' );
-			}
+		}
 		}
 	});
 

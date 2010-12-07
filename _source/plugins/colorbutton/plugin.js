@@ -44,6 +44,8 @@ CKEDITOR.plugins.add( 'colorbutton',
 						// The block should not have scrollbars (#5933, #6056)
 						block.element.getDocument().getBody().setStyle( 'overflow', 'hidden' );
 
+						CKEDITOR.ui.fire( 'ready', this );
+
 						var keys = block.keys;
 						var rtl = editor.lang.dir == 'rtl';
 						keys[ rtl ? 37 : 39 ]	= 'next';					// ARROW-RIGHT

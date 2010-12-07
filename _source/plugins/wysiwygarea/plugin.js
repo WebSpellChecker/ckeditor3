@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -107,7 +107,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			if ( selIsLocked )
 				this.getSelection().lock();
-		}
+			}
 		else
 			this.document.$.execCommand( 'inserthtml', false, data );
 
@@ -474,8 +474,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if ( iframe )
 							iframe.remove();
 
-
-						var srcScript =
+						var src =
 							'document.open();' +
 
 							// The document domain must be set any time we
@@ -484,14 +483,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 							'document.close();';
 
+						// With IE, the custom domain has to be taken care at first,
+						// for other browers, the 'src' attribute should be left empty to
+						// trigger iframe's 'load' event.
+  						src =
+							CKEDITOR.env.air ?
+								'javascript:void(0)' :
+							CKEDITOR.env.ie ?
+								'javascript:void(function(){' + encodeURIComponent( src ) + '}())'
+							:
+								'';
+
 						iframe = CKEDITOR.dom.element.createFromHtml( '<iframe' +
   							' style="width:100%;height:100%"' +
   							' frameBorder="0"' +
   							' title="' + frameLabel + '"' +
-							// With IE, the custom domain has to be taken care at first,
-							// for other browers, the 'src' attribute should be left empty to
-							// trigger iframe's 'load' event.
-  							' src="' + ( CKEDITOR.env.ie ? 'javascript:void(function(){' + encodeURIComponent( srcScript ) + '}())' : '' ) + '"' +
+  							' src="' + src + '"' +
 							' tabIndex="' + ( CKEDITOR.env.webkit? -1 : editor.tabIndex ) + '"' +
   							' allowTransparency="true"' +
   							'></iframe>' );
@@ -506,12 +513,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								frameLoaded = 1;
 								ev.removeListener();
 
-								var doc = iframe.getFrameDocument().$;
-
-								// Don't leave any history log in IE. (#5657)
-								doc.open( "text/html","replace" );
+								var doc = iframe.getFrameDocument();
 								doc.write( data );
-								doc.close();
+
+								CKEDITOR.env.air && contentDomReady( doc.getWindow().$ );
 							});
 
 						// Reset adjustment back to default (#5689)
@@ -567,7 +572,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						// Remove this script from the DOM.
 						var script = domDocument.getElementById( "cke_actscrpt" );
-						script.parentNode.removeChild( script );
+						script && script.parentNode.removeChild( script );
 
 						body.spellcheck = !editor.config.disableNativeSpellChecker;
 
@@ -1007,6 +1012,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 							focus : function()
 							{
+								var win = editor.window;
+
 								if ( isLoadingData )
 									isPendingFocus = true;
 								// Temporary solution caused by #6025, supposed be unified by #6154.
@@ -1020,10 +1027,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 									editor.selectionChange();
 								}
-								else if ( !CKEDITOR.env.opera && editor.window )
+								else if ( !CKEDITOR.env.opera && win )
 								{
-									editor.window.focus();
-
+									// AIR needs a while to focus when moving from a link.
+									CKEDITOR.env.air ? setTimeout( function () { win.focus(); }, 0 ) : win.focus();
 									editor.selectionChange();
 								}
 							}

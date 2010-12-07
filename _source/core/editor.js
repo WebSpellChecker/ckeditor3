@@ -227,6 +227,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			plugins = plugins.replace( removeRegex, '' );
 		}
 
+		// Load the Adobe AIR plugin conditionally.
+		CKEDITOR.env.air && ( plugins += ',adobeair' );
+
 		// Load all plugins defined in the "plugins" setting.
 		CKEDITOR.plugins.load( plugins.split( ',' ), function( plugins )
 			{

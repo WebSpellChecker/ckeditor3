@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
+<!--
+Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://ckeditor.com/license
+-->
 <application xmlns="http://ns.adobe.com/air/application/1.0">
 	<id>com.ckeditor.air.sample</id>
 	<name>CKEditor - Adobe AIR Sample Application</name>
 	<version>1.0</version>
 	<filename>CKEditor AIR Samples</filename>
 	<description>This is a sample AIR application of CKEditor.</description>
-	<copyright>Copyright (C) 2003-2010 Frederico Caldeira Knabben</copyright>
+	<copyright>Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.</copyright>
 	<initialWindow>
 		<content>_samples/adobeair/sample.html</content>
 		<title>CKEditor - Adobe AIR Sample</title>
@@ -23,14 +27,6 @@
 	</initialWindow>
 	<installFolder>CKEditor/Sample AIR Application</installFolder>
 	<programMenuFolder>CKEditor/Sample AIR Application</programMenuFolder>
-<!--
-	<icon>
-		<image16x16>_samples/adobeair/icons/16.png</image16x16>
-		<image32x32>_samples/adobeair/icons/32.png</image32x32>
-		<image48x48>_samples/adobeair/icons/48.png</image48x48>
-		<image128x128>_samples/adobeair/icons/128.png</image128x128>
-	</icon>
--->
 	<customUpdateUI>false</customUpdateUI>
 	<allowBrowserInvocation>false</allowBrowserInvocation>
 </application>

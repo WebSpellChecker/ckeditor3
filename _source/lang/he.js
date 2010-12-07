@@ -617,19 +617,19 @@ CKEDITOR.lang['he'] =
 
 	iframe :
 	{
-		title		: 'מאפייני חלון פנימי (Iframe)',
-		toolbar		: 'חלון פנימי (Iframe)',
+		title		: 'מאפייני חלון פנימי (iFrame)',
+		toolbar		: 'חלון פנימי (iFrame)',
 		height		: 'גובה',
 		width		: 'רוחב',
 		invalidHeight	: 'גובה החלון חייב להיות מספרי.',
 		invalidWidth	: 'רוחב החלון חייב להיות מספרי.',
 		noUrl		: 'יש להכניס כתובת לחלון.',
-		scrolling		: 'אפשר פסי גלילה',
+		scrolling	: 'אפשר פסי גלילה',
 		border		: 'הראה מסגרת לחלון',
 		align		: 'יישור',
-		alignLeft		: 'שמאל',
+		alignLeft	: 'שמאל',
 		alignRight	: 'ימין',
-		alignTop		: 'למעלה',
+		alignTop	: 'למעלה',
 		alignMiddle	: 'מרכז',
 		alignBottom	: 'למטה'
 	},

@@ -617,19 +617,19 @@ CKEDITOR.lang['eo'] =
 
 	iframe :
 	{
-		title		: 'Iframe Properties', // MISSING
-		toolbar		: 'Iframe', // MISSING
+		title		: 'iFrame Properties', // MISSING
+		toolbar		: 'iFrame', // MISSING
 		height		: 'Height', // MISSING
 		width		: 'Width', // MISSING
-		invalidHeight	: 'Iframe height must be a number.', // MISSING
-		invalidWidth	: 'Iframe width must be a number.', // MISSING
-		noUrl		: 'Please type the iframe URL', // MISSING
-		scrolling		: 'Enable scrollbars', // MISSING
+		invalidHeight	: 'iFrame height must be a number.', // MISSING
+		invalidWidth	: 'iFrame width must be a number.', // MISSING
+		noUrl		: 'Please type the iFrame URL', // MISSING
+		scrolling	: 'Enable scrollbars', // MISSING
 		border		: 'Show frame border', // MISSING
 		align		: 'Alignment', // MISSING
-		alignLeft		: 'Left', // MISSING
+		alignLeft	: 'Left', // MISSING
 		alignRight	: 'Right', // MISSING
-		alignTop		: 'Top', // MISSING
+		alignTop	: 'Top', // MISSING
 		alignMiddle	: 'Middle', // MISSING
 		alignBottom	: 'Bottom' // MISSING
 	},

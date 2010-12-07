@@ -617,19 +617,19 @@ CKEDITOR.lang['zh-cn'] =
 
 	iframe :
 	{
-		title		: 'Iframe属性',
-		toolbar		: 'Iframe',
+		title		: 'iFrame属性',
+		toolbar		: 'iFrame',
 		height		: '高度',
 		width		: '宽度',
 		invalidHeight	: '框架高度必须为数字格式',
 		invalidWidth	: '框架宽度必须为数字格式',
 		noUrl		: '请输入框架的 URL',
-		scrolling		: '允许滚动条',
+		scrolling	: '允许滚动条',
 		border		: '显示框架边框',
 		align		: '对齐方式',
-		alignLeft		: '左',
+		alignLeft	: '左',
 		alignRight	: '右',
-		alignTop		: '上',
+		alignTop	: '上',
 		alignMiddle	: '中',
 		alignBottom	: '下'
 	},

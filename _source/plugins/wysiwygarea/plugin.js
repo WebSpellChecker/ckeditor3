@@ -404,8 +404,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if ( iframe )
 							iframe.remove();
 
-
-						var srcScript =
+						var src =
 							'document.open();' +
 
 							// The document domain must be set any time we
@@ -414,14 +413,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 							'document.close();';
 
+						// With IE, the custom domain has to be taken care at first,
+						// for other browers, the 'src' attribute should be left empty to
+						// trigger iframe's 'load' event.
+  						src =
+							CKEDITOR.env.air ? 
+								'javascript:void(0)' :
+							CKEDITOR.env.ie ?
+								'javascript:void(function(){' + encodeURIComponent( src ) + '}())'
+							:
+								'';
+
 						iframe = CKEDITOR.dom.element.createFromHtml( '<iframe' +
   							' style="width:100%;height:100%"' +
   							' frameBorder="0"' +
   							' title="' + frameLabel + '"' +
-							// With IE, the custom domain has to be taken care at first,
-							// for other browers, the 'src' attribute should be left empty to
-							// trigger iframe's 'load' event.
-  							' src="' + ( CKEDITOR.env.air ? 'javascript:void(0)' : CKEDITOR.env.ie ? 'javascript:void(function(){' + encodeURIComponent( srcScript ) + '}())' : '' ) + '"' +
+  							' src="' + src + '"' +
 							' tabIndex="' + ( CKEDITOR.env.webkit? -1 : editor.tabIndex ) + '"' +
   							' allowTransparency="true"' +
   							'></iframe>' );
@@ -432,26 +439,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						// With FF, it's better to load the data on iframe.load. (#3894,#4058)
 						iframe.on( 'load', function( ev )
-						{
-							frameLoaded = 1;
-							ev.removeListener();
+							{
+								frameLoaded = 1;
+								ev.removeListener();
 
-							var doc;
-							if ( CKEDITOR.env.air )
-							{
-								doc = iframe.getFrameDocument();
+								var doc = iframe.getFrameDocument();
 								doc.write( data );
-								contentDomReady( doc.getWindow().$ );
-							}
-							else
-							{
-								doc = iframe.getFrameDocument().$;
-								// Don't leave any history log in IE. (#5657)
-								doc.open( "text/html", "replace" );
-								doc.write( data );
-								doc.close();
-							}
-						});
+
+								CKEDITOR.env.air && contentDomReady( doc.getWindow().$ );
+							});
 
 						// Reset adjustment back to default (#5689)
 						if ( document.location.protocol == 'chrome:' )

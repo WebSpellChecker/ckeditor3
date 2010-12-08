@@ -200,6 +200,10 @@ body .cke_dialog
 	text-align: left;
 }
 
+.cke_skin_office2003 .cke_dialog_footer .cke_resizer {
+	margin-top: 21px;
+}
+
 /* tabs */
 
 .cke_skin_office2003 .cke_dialog_tabs

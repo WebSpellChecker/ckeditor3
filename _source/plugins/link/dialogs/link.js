@@ -75,6 +75,8 @@ CKEDITOR.dialog.add( 'link', function( editor )
 			else
 				element.hide();
 		}
+
+		dialog.layout();
 	};
 
 	// Loads the parameters in a selected link to the link dialog fields.

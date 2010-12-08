@@ -197,6 +197,10 @@ body .cke_dialog
 	text-align: left;
 }
 
+.cke_skin_v2 .cke_dialog_footer .cke_resizer {
+	margin-top: 21px;
+}
+
 /* tabs */
 
 .cke_skin_v2 .cke_dialog_tabs

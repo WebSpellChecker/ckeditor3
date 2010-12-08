@@ -102,6 +102,16 @@ body .cke_dialog
 	text-align: left;
 }
 
+.cke_skin_kama .cke_dialog_footer .cke_resizer
+{
+	margin-top: 20px;
+}
+.cke_skin_kama .cke_browser_iequirks .cke_dialog_footer .cke_resizer,
+.cke_skin_kama .cke_browser_ie6 .cke_dialog_footer .cke_resizer
+{
+	margin-top: 27px;
+}
+
 /* tabs */
 
 .cke_skin_kama .cke_dialog_tabs

@@ -1538,36 +1538,6 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		},
 
 		/**
-		 *  Update the element's size with box model awareness.
-		 * @name CKEDITOR.dom.element.setSize
-		 * @param {String} type [width|height]
-		 * @param {Number} size The length unit in px.
-		 * @param isBorderBox Apply the {@param width} and {@param height} based on border box model.
-		 */
-		setSize : ( function()
-		{
-			var sides = {
-				width : [ "border-left-width", "border-right-width","padding-left", "padding-right" ],
-				height : [ "border-top-width", "border-bottom-width", "padding-top",  "padding-bottom" ]
-			};
-
-			return function( type, size, isBorderBox )
-				{
-					if ( typeof size == 'number' )
-					{
-						if ( isBorderBox && !( CKEDITOR.env.ie && CKEDITOR.env.quirks ) )
-						{
-							var	adjustment = 0;
-							for ( var i = 0, len = sides[ type ].length; i < len; i++ )
-								adjustment += parseInt( this.getComputedStyle( sides [ type ][ i ] ) || 0, 10 ) || 0;
-							size -= adjustment;
-						}
-						this.setStyle( type, size + 'px' );
-					}
-				};
-		})(),
-
-		/**
 		 * Gets element's direction. Supports both CSS 'direction' prop and 'dir' attr.
 		 */
 		getDirection : function( useComputed )
@@ -1592,3 +1562,54 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 				this.setAttribute( name, value );
 		}
 	});
+
+( function()
+{
+	var sides = {
+		width : [ "border-left-width", "border-right-width","padding-left", "padding-right" ],
+		height : [ "border-top-width", "border-bottom-width", "padding-top",  "padding-bottom" ]
+	};
+
+	function marginAndPaddingSize( type )
+	{
+		var adjustment = 0;
+		for ( var i = 0, len = sides[ type ].length; i < len; i++ )
+			adjustment += parseInt( this.getComputedStyle( sides [ type ][ i ] ) || 0, 10 ) || 0;
+		return adjustment;
+	}
+
+	/**
+	 * Update the element's size with box model awareness.
+	 * @name CKEDITOR.dom.element.setSize
+	 * @param {String} type [width|height]
+	 * @param {Number} size The length unit in px.
+	 * @param isBorderBox Apply the {@param width} and {@param height} based on border box model.
+	 */
+	CKEDITOR.dom.element.prototype.setSize = function( type, size, isBorderBox )
+		{
+			if ( typeof size == 'number' )
+			{
+				if ( isBorderBox && !( CKEDITOR.env.ie && CKEDITOR.env.quirks ) )
+					size -= marginAndPaddingSize.call( this, type );
+
+				this.setStyle( type, size + 'px' );
+			}
+		};
+
+	/**
+	 * Get the element's size, possibly with box model awareness.
+	 * @name CKEDITOR.dom.element.getSize
+	 * @param {String} type [width|height]
+	 * @param {Boolean} contentSize Get the {@param width} or {@param height} based on border box model.
+	 */
+	CKEDITOR.dom.element.prototype.getSize = function( type, contentSize )
+		{
+			var size = Math.max( this.$[ 'offset' + CKEDITOR.tools.capitalize( type )  ],
+				this.$[ 'client' + CKEDITOR.tools.capitalize( type )  ] ) || 0;
+
+			if ( contentSize )
+				size -= marginAndPaddingSize.call( this, type );
+
+			return size;
+		};
+})();

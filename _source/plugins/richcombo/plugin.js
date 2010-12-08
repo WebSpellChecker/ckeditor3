@@ -350,6 +350,7 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 				this._.committed = 1;
 				CKEDITOR.ui.fire( 'ready', this );
 			}
+			this._.committed = 1;
 		},
 
 		setState : function( state )

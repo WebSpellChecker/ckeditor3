@@ -1140,8 +1140,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							],
 							setup : function( type, element )
 							{
-								if ( type == LINK )
-									this.setValue( element.getAttribute( 'target' ) );
+								this.setValue( element.getAttribute( 'target' ) || '' );
 							},
 							commit : function( type, element )
 							{

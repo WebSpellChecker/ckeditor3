@@ -5,8 +5,5 @@
 ::
 :: Use this file to quickly run the sample in a Windows environment.
 ::
-:: Be sure to change the following directory path so it matches your AIR SDK
-:: installation path.
-::
 
-C:/AdobeAIRSDK/bin/adl application.xml ../../
+adl application.xml ../../

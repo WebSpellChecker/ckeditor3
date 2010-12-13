@@ -25,7 +25,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 			target.removeClass( "cke_light_background" );
 			dialog.hide();
 
-			editor.insertText( value );
+			editor.insertHtml( value );
 		}
 	};
 

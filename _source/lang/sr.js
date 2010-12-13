@@ -56,6 +56,7 @@ CKEDITOR.lang['sr'] =
 	superscript		: 'Степен',
 	horizontalrule	: 'Унеси хоризонталну линију',
 	pagebreak		: 'Insert Page Break for Printing', // MISSING
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Уклони линк',
 	undo			: 'Поништи акцију',
 	redo			: 'Понови акцију',
@@ -749,10 +750,11 @@ CKEDITOR.lang['sr'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

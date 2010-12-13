@@ -56,6 +56,7 @@ CKEDITOR.lang['bg'] =
 	superscript		: 'Индекс за степен',
 	horizontalrule	: 'Вмъкни хоризонтална линия',
 	pagebreak		: 'Вмъкни нов ред',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Изтрий връзка',
 	undo			: 'Отмени',
 	redo			: 'Повтори',
@@ -749,10 +750,11 @@ CKEDITOR.lang['bg'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

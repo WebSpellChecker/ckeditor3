@@ -56,6 +56,7 @@ CKEDITOR.lang['af'] =
 	superscript		: 'Superscript',
 	horizontalrule	: 'Horisontale lyn byvoeg',
 	pagebreak		: 'Bladsy breek byvoeg',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Skakel verweider',
 	undo			: 'Ont-skep',
 	redo			: 'Her-skep',
@@ -749,10 +750,11 @@ CKEDITOR.lang['af'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

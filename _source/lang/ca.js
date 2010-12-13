@@ -56,6 +56,7 @@ CKEDITOR.lang['ca'] =
 	superscript		: 'Superíndex',
 	horizontalrule	: 'Insereix línia horitzontal',
 	pagebreak		: 'Insereix salt de pàgina',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Elimina l\'enllaç',
 	undo			: 'Desfés',
 	redo			: 'Refés',
@@ -749,10 +750,11 @@ CKEDITOR.lang['ca'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Àncora',
-		flash	: 'Animació Flash',
-		div		: 'Salt de pàgina',
-		unknown	: 'Objecte desconegut'
+		anchor		: 'Àncora',
+		flash		: 'Animació Flash',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Objecte desconegut'
 	},
 
 	resize : 'Arrossegueu per redimensionar',

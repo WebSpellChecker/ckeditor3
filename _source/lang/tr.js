@@ -55,6 +55,7 @@ CKEDITOR.lang['tr'] =
 	superscript		: 'Üst Simge',
 	horizontalrule	: 'Yatay Satır Ekle',
 	pagebreak		: 'Sayfa Sonu Ekle',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Köprü Kaldır',
 	undo			: 'Geri Al',
 	redo			: 'Tekrarla',
@@ -748,10 +749,11 @@ CKEDITOR.lang['tr'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Bağlantı',
-		flash	: 'Flash Animasyonu',
-		div		: 'Sayfa Kesimi',
-		unknown	: 'Bilinmeyen Nesne'
+		anchor		: 'Bağlantı',
+		flash		: 'Flash Animasyonu',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Bilinmeyen Nesne'
 	},
 
 	resize : 'Boyutlandırmak için sürükle',

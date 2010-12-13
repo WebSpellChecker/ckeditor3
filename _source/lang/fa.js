@@ -56,6 +56,7 @@ CKEDITOR.lang['fa'] =
 	superscript		: 'بالانویس',
 	horizontalrule	: 'گنجاندن خط ِافقی',
 	pagebreak		: 'گنجاندن شکستگی ِپایان ِبرگه',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'برداشتن پیوند',
 	undo			: 'واچیدن',
 	redo			: 'بازچیدن',
@@ -749,10 +750,11 @@ CKEDITOR.lang['fa'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

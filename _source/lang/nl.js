@@ -56,6 +56,7 @@ CKEDITOR.lang['nl'] =
 	superscript		: 'Superscript',
 	horizontalrule	: 'Horizontale lijn invoegen',
 	pagebreak		: 'Pagina-einde invoegen',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Link verwijderen',
 	undo			: 'Ongedaan maken',
 	redo			: 'Opnieuw uitvoeren',
@@ -749,10 +750,11 @@ CKEDITOR.lang['nl'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anker',
-		flash	: 'Flash animatie',
-		div		: 'Pagina einde',
-		unknown	: 'Onbekend object'
+		anchor		: 'Anker',
+		flash		: 'Flash animatie',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Onbekend object'
 	},
 
 	resize : 'Sleep om te herschalen',

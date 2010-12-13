@@ -56,6 +56,7 @@ CKEDITOR.lang['sl'] =
 	superscript		: 'Nadpisano',
 	horizontalrule	: 'Vstavi vodoravno črto',
 	pagebreak		: 'Vstavi prelom strani',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Odstrani povezavo',
 	undo			: 'Razveljavi',
 	redo			: 'Ponovi',
@@ -749,10 +750,11 @@ CKEDITOR.lang['sl'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Sidro',
-		flash	: 'Flash animacija',
-		div		: 'Prelom strani',
-		unknown	: 'Neznan objekt'
+		anchor		: 'Sidro',
+		flash		: 'Flash animacija',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Neznan objekt'
 	},
 
 	resize : 'Potegni za spremembo velikosti',

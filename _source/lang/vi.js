@@ -56,6 +56,7 @@ CKEDITOR.lang['vi'] =
 	superscript		: 'Chỉ số trên',
 	horizontalrule	: 'Chèn đường phân cách ngang',
 	pagebreak		: 'Chèn ngắt trang',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Xoá liên kết',
 	undo			: 'Khôi phục thao tác',
 	redo			: 'Làm lại thao tác',
@@ -749,10 +750,11 @@ CKEDITOR.lang['vi'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Điểm neo',
-		flash	: 'Flash',
-		div		: 'Ngắt trang',
-		unknown	: 'Đối tượng không rõ ràng'
+		anchor		: 'Điểm neo',
+		flash		: 'Flash',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Đối tượng không rõ ràng'
 	},
 
 	resize : 'Kéo rê để thay đổi kích cỡ',

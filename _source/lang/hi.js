@@ -56,6 +56,7 @@ CKEDITOR.lang['hi'] =
 	superscript		: 'अभिलेख',
 	horizontalrule	: 'हॉरिज़ॉन्टल रेखा इन्सर्ट करें',
 	pagebreak		: 'पेज ब्रेक इन्सर्ट् करें',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'लिंक हटायें',
 	undo			: 'अन्डू',
 	redo			: 'रीडू',
@@ -749,10 +750,11 @@ CKEDITOR.lang['hi'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

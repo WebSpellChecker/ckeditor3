@@ -56,6 +56,7 @@ CKEDITOR.lang['fr-ca'] =
 	superscript		: 'Exposant',
 	horizontalrule	: 'Insérer un séparateur',
 	pagebreak		: 'Insérer un saut de page',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Supprimer le lien',
 	undo			: 'Annuler',
 	redo			: 'Refaire',
@@ -749,10 +750,11 @@ CKEDITOR.lang['fr-ca'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

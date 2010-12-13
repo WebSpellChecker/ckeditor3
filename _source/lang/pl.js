@@ -56,6 +56,7 @@ CKEDITOR.lang['pl'] =
 	superscript		: 'Indeks górny',
 	horizontalrule	: 'Wstaw poziomą linię',
 	pagebreak		: 'Wstaw odstęp',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Usuń hiperłącze',
 	undo			: 'Cofnij',
 	redo			: 'Ponów',
@@ -749,10 +750,11 @@ CKEDITOR.lang['pl'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Kotwica',
-		flash	: 'Animacja Flash',
-		div		: 'Separator stron',
-		unknown	: 'Nieznany obiekt'
+		anchor		: 'Kotwica',
+		flash		: 'Animacja Flash',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Nieznany obiekt'
 	},
 
 	resize : 'Przeciągnij, aby zmienić rozmiar',

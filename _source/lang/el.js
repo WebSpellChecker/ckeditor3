@@ -56,6 +56,7 @@ CKEDITOR.lang['el'] =
 	superscript		: 'Εκθέτης',
 	horizontalrule	: 'Εισαγωγή Οριζόντιας Γραμμής',
 	pagebreak		: 'Εισαγωγή τέλους σελίδας',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Αφαίρεση Συνδέσμου (Link)',
 	undo			: 'Αναίρεση',
 	redo			: 'Επαναφορά',
@@ -749,10 +750,11 @@ CKEDITOR.lang['el'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

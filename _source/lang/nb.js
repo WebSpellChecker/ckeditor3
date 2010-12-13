@@ -56,6 +56,7 @@ CKEDITOR.lang['nb'] =
 	superscript		: 'Hevet skrift',
 	horizontalrule	: 'Sett inn horisontal linje',
 	pagebreak		: 'Sett inn sideskift',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Fjern lenke',
 	undo			: 'Angre',
 	redo			: 'Gjør om',
@@ -749,10 +750,11 @@ CKEDITOR.lang['nb'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anker',
-		flash	: 'Flash Animasjon',
-		div		: 'Sideskift',
-		unknown	: 'Ukjent objekt'
+		anchor		: 'Anker',
+		flash		: 'Flash Animasjon',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Ukjent objekt'
 	},
 
 	resize : 'Dra for å skalere',

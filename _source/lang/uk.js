@@ -56,6 +56,7 @@ CKEDITOR.lang['uk'] =
 	superscript		: 'Верхній індекс',
 	horizontalrule	: 'Горизонтальна лінія',
 	pagebreak		: 'Вставити розрив сторінки',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Видалити посилання',
 	undo			: 'Повернути',
 	redo			: 'Повторити',
@@ -749,10 +750,11 @@ CKEDITOR.lang['uk'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Якір',
-		flash	: 'Flash-анімація',
-		div		: 'Розрив сторінки',
-		unknown	: 'Невідомий об\'єкт'
+		anchor		: 'Якір',
+		flash		: 'Flash-анімація',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Невідомий об\'єкт'
 	},
 
 	resize : 'Потягніть для зміни розмірів',

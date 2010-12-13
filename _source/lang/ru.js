@@ -56,6 +56,7 @@ CKEDITOR.lang['ru'] =
 	superscript		: 'Надстрочный индекс',
 	horizontalrule	: 'Вставить горизонтальную линию',
 	pagebreak		: 'Вставить разрыв страницы',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Убрать ссылку',
 	undo			: 'Отменить',
 	redo			: 'Повторить',
@@ -749,10 +750,11 @@ CKEDITOR.lang['ru'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Якорь',
-		flash	: 'Flash-анимация',
-		div		: 'Разрыв страницы',
-		unknown	: 'Неизвестный объект'
+		anchor		: 'Якорь',
+		flash		: 'Flash-анимация',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Неизвестный объект'
 	},
 
 	resize : 'Перетащите для изменения размера',

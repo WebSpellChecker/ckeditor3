@@ -56,6 +56,7 @@ CKEDITOR.lang['pt'] =
 	superscript		: 'Inferior à Linha',
 	horizontalrule	: 'Inserir Linha Horizontal',
 	pagebreak		: 'Inserir Quebra de Página',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Eliminar Hiperligação',
 	undo			: 'Anular',
 	redo			: 'Repetir',
@@ -749,10 +750,11 @@ CKEDITOR.lang['pt'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

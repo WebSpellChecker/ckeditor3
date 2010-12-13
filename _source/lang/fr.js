@@ -56,6 +56,7 @@ CKEDITOR.lang['fr'] =
 	superscript		: 'Exposant',
 	horizontalrule	: 'Ligne horizontale',
 	pagebreak		: 'Saut de page',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Supprimer le lien',
 	undo			: 'Annuler',
 	redo			: 'Rétablir',
@@ -749,10 +750,11 @@ CKEDITOR.lang['fr'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Ancre',
-		flash	: 'Animation Flash',
-		div		: 'Saut de Page',
-		unknown	: 'Objet Inconnu'
+		anchor		: 'Ancre',
+		flash		: 'Animation Flash',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Objet Inconnu'
 	},
 
 	resize : 'Glisser pour modifier la taille',

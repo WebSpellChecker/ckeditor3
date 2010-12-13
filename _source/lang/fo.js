@@ -56,6 +56,7 @@ CKEDITOR.lang['fo'] =
 	superscript		: 'Hækkað skrift',
 	horizontalrule	: 'Ger vatnrætta linju',
 	pagebreak		: 'Ger síðuskift',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Strika tilknýti',
 	undo			: 'Angra',
 	redo			: 'Vend aftur',
@@ -749,10 +750,11 @@ CKEDITOR.lang['fo'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Síðuskift',
-		unknown	: 'Ókent Object'
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Ókent Object'
 	},
 
 	resize : 'Drag fyri at broyta stødd',

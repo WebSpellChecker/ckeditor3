@@ -56,6 +56,7 @@ CKEDITOR.lang['gu'] =
 	superscript		: 'એક ચિહ્ન ઉપર કરેલું બીજું ચિહ્ન.',
 	horizontalrule	: 'સમસ્તરીય રેખા ઇન્સર્ટ/દાખલ કરવી',
 	pagebreak		: 'ઇન્સર્ટ પેજબ્રેક/પાનાને અલગ કરવું/દાખલ કરવું',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'લિંક કાઢવી',
 	undo			: 'રદ કરવું; પહેલાં હતી એવી સ્થિતિ પાછી લાવવી',
 	redo			: 'રિડૂ; પછી હતી એવી સ્થિતિ પાછી લાવવી',
@@ -749,10 +750,11 @@ CKEDITOR.lang['gu'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

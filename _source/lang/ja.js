@@ -56,6 +56,7 @@ CKEDITOR.lang['ja'] =
 	superscript		: '上付き文字',
 	horizontalrule	: '横罫線',
 	pagebreak		: '改ページ挿入',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'リンク削除',
 	undo			: '元に戻す',
 	redo			: 'やり直し',
@@ -749,10 +750,11 @@ CKEDITOR.lang['ja'] =
 
 	fakeobjects :
 	{
-		anchor	: 'アンカー',
-		flash	: 'Flash Animation',
-		div		: 'Page Break',
-		unknown	: 'Unknown Object'
+		anchor		: 'アンカー',
+		flash		: 'Flash Animation',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object'
 	},
 
 	resize : 'ドラッグしてリサイズ',

@@ -56,6 +56,7 @@ CKEDITOR.lang['et'] =
 	superscript		: 'Ülaindeks',
 	horizontalrule	: 'Sisesta horisontaaljoon',
 	pagebreak		: 'Sisesta lehevahetuskoht',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Eemalda link',
 	undo			: 'Võta tagasi',
 	redo			: 'Korda toimingut',
@@ -749,10 +750,11 @@ CKEDITOR.lang['et'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

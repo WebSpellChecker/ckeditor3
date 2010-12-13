@@ -56,6 +56,7 @@ CKEDITOR.lang['lv'] =
 	superscript		: 'Augšrakstā',
 	horizontalrule	: 'Ievietot horizontālu Atdalītājsvītru',
 	pagebreak		: 'Ievietot lapas pārtraukumu',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Noņemt hipersaiti',
 	undo			: 'Atcelt',
 	redo			: 'Atkārtot',
@@ -749,10 +750,11 @@ CKEDITOR.lang['lv'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

@@ -56,6 +56,7 @@ CKEDITOR.lang['de'] =
 	superscript		: 'Hochgestellt',
 	horizontalrule	: 'Horizontale Linie einfügen',
 	pagebreak		: 'Seitenumbruch einfügen',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Link entfernen',
 	undo			: 'Rückgängig',
 	redo			: 'Wiederherstellen',
@@ -749,10 +750,11 @@ CKEDITOR.lang['de'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anker',
-		flash	: 'Flash Animation',
-		div		: 'Seitenumbruch',
-		unknown	: 'Unbekanntes Objekt'
+		anchor		: 'Anker',
+		flash		: 'Flash Animation',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unbekanntes Objekt'
 	},
 
 	resize : 'Zum Vergrößern ziehen',

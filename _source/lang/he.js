@@ -56,6 +56,7 @@ CKEDITOR.lang['he'] =
 	superscript		: 'כתיב עליון',
 	horizontalrule	: 'הוספת קו אופקי',
 	pagebreak		: 'הוספת שבירת דף',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'הסרת הקישור',
 	undo			: 'ביטול צעד אחרון',
 	redo			: 'חזרה על צעד אחרון',
@@ -749,10 +750,11 @@ CKEDITOR.lang['he'] =
 
 	fakeobjects :
 	{
-		anchor	: 'עוגן',
-		flash	: 'סרטון פלאש',
-		div		: 'שבירת דף',
-		unknown	: 'אובייקט לא ידוע'
+		anchor		: 'עוגן',
+		flash		: 'סרטון פלאש',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'אובייקט לא ידוע'
 	},
 
 	resize : 'יש לגרור בכדי לשנות את הגודל',

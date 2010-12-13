@@ -56,6 +56,7 @@ CKEDITOR.lang['km'] =
 	superscript		: 'អក្សរតូចលើ',
 	horizontalrule	: 'បន្ថែមបន្ទាត់ផ្តេក',
 	pagebreak		: 'បន្ថែម ការផ្តាច់ទំព័រ',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'លប់ឈ្នាប់',
 	undo			: 'សារឡើងវិញ',
 	redo			: 'ធ្វើឡើងវិញ',
@@ -749,10 +750,11 @@ CKEDITOR.lang['km'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

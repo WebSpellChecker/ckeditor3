@@ -56,6 +56,7 @@ CKEDITOR.lang['th'] =
 	superscript		: 'ตัวยก',
 	horizontalrule	: 'แทรกเส้นคั่นบรรทัด',
 	pagebreak		: 'แทรกตัวแบ่งหน้า Page Break',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'ลบ ลิงค์',
 	undo			: 'ยกเลิกคำสั่ง',
 	redo			: 'ทำซ้ำคำสั่ง',
@@ -749,10 +750,11 @@ CKEDITOR.lang['th'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

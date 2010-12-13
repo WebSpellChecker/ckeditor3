@@ -56,6 +56,7 @@ CKEDITOR.lang['bn'] =
 	superscript		: 'অভিলেখ',
 	horizontalrule	: 'রেখা যুক্ত কর',
 	pagebreak		: 'পেজ ব্রেক',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'লিংক সরাও',
 	undo			: 'আনডু',
 	redo			: 'রি-ডু',
@@ -749,10 +750,11 @@ CKEDITOR.lang['bn'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

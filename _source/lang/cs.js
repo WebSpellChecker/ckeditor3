@@ -56,6 +56,7 @@ CKEDITOR.lang['cs'] =
 	superscript		: 'Horní index',
 	horizontalrule	: 'Vložit vodorovnou linku',
 	pagebreak		: 'Vložit konec stránky',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Odstranit odkaz',
 	undo			: 'Zpět',
 	redo			: 'Znovu',
@@ -749,10 +750,11 @@ CKEDITOR.lang['cs'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Záložka',
-		flash	: 'Flash animace',
-		div		: 'Zalomení stránky',
-		unknown	: 'Neznámý objekt'
+		anchor		: 'Záložka',
+		flash		: 'Flash animace',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Neznámý objekt'
 	},
 
 	resize : 'Uchopit pro změnu velikosti',

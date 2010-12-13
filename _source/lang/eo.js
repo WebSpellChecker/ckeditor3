@@ -56,6 +56,7 @@ CKEDITOR.lang['eo'] =
 	superscript		: 'Superskribo',
 	horizontalrule	: 'Enmeti Horizonta Linio',
 	pagebreak		: 'Insert Page Break for Printing', // MISSING
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Forigi Ligilon',
 	undo			: 'Malfari',
 	redo			: 'Refari',
@@ -749,10 +750,11 @@ CKEDITOR.lang['eo'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

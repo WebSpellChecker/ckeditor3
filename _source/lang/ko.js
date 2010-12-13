@@ -56,6 +56,7 @@ CKEDITOR.lang['ko'] =
 	superscript		: '위 첨자',
 	horizontalrule	: '수평선 삽입',
 	pagebreak		: 'Insert Page Break for Printing', // MISSING
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: '링크 삭제',
 	undo			: '취소',
 	redo			: '재실행',
@@ -749,10 +750,11 @@ CKEDITOR.lang['ko'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

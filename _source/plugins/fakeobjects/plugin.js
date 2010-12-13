@@ -62,7 +62,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 CKEDITOR.editor.prototype.createFakeElement = function( realElement, className, realElementType, isResizable )
 {
-	var lang = this.lang.fakeobjects;
+	var lang = this.lang.fakeobjects,
+		label = lang[ realElementType ] || lang.unknown;
 
 	var attributes =
 	{
@@ -70,7 +71,8 @@ CKEDITOR.editor.prototype.createFakeElement = function( realElement, className, 
 		src : CKEDITOR.getUrl( 'images/spacer.gif' ),
 		'data-cke-realelement' : encodeURIComponent( realElement.getOuterHtml() ),
 		'data-cke-real-node-type' : realElement.type,
-		alt : lang[ realElementType ] || lang.unknown,
+		alt : label,
+		title : label,
 		align : realElement.getAttribute( 'align' ) || ''
 	};
 
@@ -86,6 +88,7 @@ CKEDITOR.editor.prototype.createFakeElement = function( realElement, className, 
 CKEDITOR.editor.prototype.createFakeParserElement = function( realElement, className, realElementType, isResizable )
 {
 	var lang = this.lang.fakeobjects,
+		label = lang[ realElementType ] || lang.unknown,
 		html;
 
 	var writer = new CKEDITOR.htmlParser.basicWriter();
@@ -98,7 +101,8 @@ CKEDITOR.editor.prototype.createFakeParserElement = function( realElement, class
 		src : CKEDITOR.getUrl( 'images/spacer.gif' ),
 		'data-cke-realelement' : encodeURIComponent( html ),
 		'data-cke-real-node-type' : realElement.type,
-		alt : lang[ realElementType ] || lang.unknown,
+		alt : label,
+		title : label,
 		align : realElement.attributes.align || ''
 	};
 

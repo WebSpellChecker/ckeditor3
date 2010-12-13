@@ -56,6 +56,7 @@ CKEDITOR.lang['ro'] =
 	superscript		: 'Putere (superscript)',
 	horizontalrule	: 'Inserează linie orizontă',
 	pagebreak		: 'Inserează separator de pagină (Page Break)',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Înlătură link (legătură web)',
 	undo			: 'Starea anterioară (undo)',
 	redo			: 'Starea ulterioară (redo)',
@@ -749,10 +750,11 @@ CKEDITOR.lang['ro'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

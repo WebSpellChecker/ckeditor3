@@ -56,6 +56,7 @@ CKEDITOR.lang['ar'] =
 	superscript		: 'مرتفع',
 	horizontalrule	: 'خط فاصل',
 	pagebreak		: 'إدخال صفحة جديدة',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'إزالة رابط',
 	undo			: 'تراجع',
 	redo			: 'إعادة',
@@ -749,10 +750,11 @@ CKEDITOR.lang['ar'] =
 
 	fakeobjects :
 	{
-		anchor	: 'إرساء',
-		flash	: 'رسم متحرك بالفلاش',
-		div		: 'فاصل صفحة',
-		unknown	: 'كائن غير معروف'
+		anchor		: 'إرساء',
+		flash		: 'رسم متحرك بالفلاش',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'كائن غير معروف'
 	},
 
 	resize : 'اسحب لتغيير الحجم',

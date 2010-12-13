@@ -56,6 +56,7 @@ CKEDITOR.lang['cy'] =
 	superscript		: 'Uwchsgript',
 	horizontalrule	: 'Mewnosod Llinell Lorweddol',
 	pagebreak		: 'Mewnosod Toriad Tudalen i Argraffu',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Datgysylltu',
 	undo			: 'Dadwneud',
 	redo			: 'Ailadrodd',
@@ -749,10 +750,11 @@ CKEDITOR.lang['cy'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Angor',
-		flash	: 'Animeiddiant Flash',
-		div		: 'Toriad Tudalen',
-		unknown	: 'Gwrthrych Anhysbys'
+		anchor		: 'Angor',
+		flash		: 'Animeiddiant Flash',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Gwrthrych Anhysbys'
 	},
 
 	resize : 'Llusgo i ailfeintio',

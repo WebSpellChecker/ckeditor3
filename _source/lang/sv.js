@@ -56,6 +56,7 @@ CKEDITOR.lang['sv'] =
 	superscript		: 'Upphöjda tecken',
 	horizontalrule	: 'Infoga horisontal linje',
 	pagebreak		: 'Infoga sidbrytning',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Radera länk',
 	undo			: 'Ångra',
 	redo			: 'Gör om',
@@ -749,10 +750,11 @@ CKEDITOR.lang['sv'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

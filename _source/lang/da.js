@@ -56,6 +56,7 @@ CKEDITOR.lang['da'] =
 	superscript		: 'Hævet skrift',
 	horizontalrule	: 'Indsæt vandret streg',
 	pagebreak		: 'Indsæt sideskift',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Fjern hyperlink',
 	undo			: 'Fortryd',
 	redo			: 'Annullér fortryd',
@@ -749,10 +750,11 @@ CKEDITOR.lang['da'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anker',
-		flash	: 'Flashanimation',
-		div		: 'Sideskift',
-		unknown	: 'Ukendt objekt'
+		anchor		: 'Anker',
+		flash		: 'Flashanimation',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Ukendt objekt'
 	},
 
 	resize : 'Træk for at skalere',

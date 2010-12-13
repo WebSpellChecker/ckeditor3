@@ -56,6 +56,7 @@ CKEDITOR.lang['mn'] =
 	superscript		: 'Зэрэг болгох',
 	horizontalrule	: 'Хөндлөн зураас оруулах',
 	pagebreak		: 'Хуудас тусгаарлагч оруулах',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Линк авч хаях',
 	undo			: 'Хүчингүй болгох',
 	redo			: 'Өмнөх үйлдлээ сэргээх',
@@ -749,10 +750,11 @@ CKEDITOR.lang['mn'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

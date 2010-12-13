@@ -56,6 +56,7 @@ CKEDITOR.lang['sk'] =
 	superscript		: 'Horný index',
 	horizontalrule	: 'Vložiť vodorovnú čiaru',
 	pagebreak		: 'Vložiť oddeľovač stránky',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Odstrániť odkaz',
 	undo			: 'Späť',
 	redo			: 'Znovu',
@@ -749,10 +750,11 @@ CKEDITOR.lang['sk'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

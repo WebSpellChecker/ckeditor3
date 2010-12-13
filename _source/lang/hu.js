@@ -56,6 +56,7 @@ CKEDITOR.lang['hu'] =
 	superscript		: 'Felső index',
 	horizontalrule	: 'Elválasztóvonal beillesztése',
 	pagebreak		: 'Oldaltörés beillesztése',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Hivatkozás törlése',
 	undo			: 'Visszavonás',
 	redo			: 'Ismétlés',
@@ -749,10 +750,11 @@ CKEDITOR.lang['hu'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Horgony',
-		flash	: 'Flash animáció',
-		div		: 'Oldaltörés',
-		unknown	: 'Ismeretlen objektum'
+		anchor		: 'Horgony',
+		flash		: 'Flash animáció',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Ismeretlen objektum'
 	},
 
 	resize : 'Húzza az átméretezéshez',

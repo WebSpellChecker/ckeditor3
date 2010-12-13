@@ -56,6 +56,7 @@ CKEDITOR.lang['zh'] =
 	superscript		: '上標',
 	horizontalrule	: '插入水平線',
 	pagebreak		: '插入分頁符號',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: '移除超連結',
 	undo			: '復原',
 	redo			: '重複',
@@ -749,10 +750,11 @@ CKEDITOR.lang['zh'] =
 
 	fakeobjects :
 	{
-		anchor	: '錨點',
-		flash	: 'Flash 動畫',
-		div		: '分頁',
-		unknown	: '不明物件'
+		anchor		: '錨點',
+		flash		: 'Flash 動畫',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: '不明物件'
 	},
 
 	resize : '拖拽改變大小',

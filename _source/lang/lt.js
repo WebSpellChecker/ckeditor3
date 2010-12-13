@@ -56,6 +56,7 @@ CKEDITOR.lang['lt'] =
 	superscript		: 'Viršutinis indeksas',
 	horizontalrule	: 'Įterpti horizontalią liniją',
 	pagebreak		: 'Įterpti puslapių skirtuką',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Panaikinti nuorodą',
 	undo			: 'Atšaukti',
 	redo			: 'Atstatyti',
@@ -749,10 +750,11 @@ CKEDITOR.lang['lt'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Anchor', // MISSING
-		flash	: 'Flash Animation', // MISSING
-		div		: 'Page Break', // MISSING
-		unknown	: 'Unknown Object' // MISSING
+		anchor		: 'Anchor', // MISSING
+		flash		: 'Flash Animation', // MISSING
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Unknown Object' // MISSING
 	},
 
 	resize : 'Drag to resize', // MISSING

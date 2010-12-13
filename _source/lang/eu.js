@@ -56,6 +56,7 @@ CKEDITOR.lang['eu'] =
 	superscript		: 'Goi-indize',
 	horizontalrule	: 'Txertatu Marra Horizontala',
 	pagebreak		: 'Txertatu Orrialde-jauzia',
+	pagebreakAlt		: 'Page Break', // MISSING
 	unlink			: 'Kendu Esteka',
 	undo			: 'Desegin',
 	redo			: 'Berregin',
@@ -749,10 +750,11 @@ CKEDITOR.lang['eu'] =
 
 	fakeobjects :
 	{
-		anchor	: 'Aingura',
-		flash	: 'Flash Animazioa',
-		div		: 'Orrialde Saltoa',
-		unknown	: 'Objektu ezezaguna'
+		anchor		: 'Aingura',
+		flash		: 'Flash Animazioa',
+		iframe		: 'iFrame', // MISSING
+		hiddenfield	: 'Hidden Field', // MISSING
+		unknown		: 'Objektu ezezaguna'
 	},
 
 	resize : 'Arrastatu tamaina aldatzeko',

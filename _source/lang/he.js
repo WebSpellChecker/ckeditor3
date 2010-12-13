@@ -56,7 +56,7 @@ CKEDITOR.lang['he'] =
 	superscript		: 'כתיב עליון',
 	horizontalrule	: 'הוספת קו אופקי',
 	pagebreak		: 'הוספת שבירת דף',
-	pagebreakAlt		: 'Page Break', // MISSING
+	pagebreakAlt		: 'שבירת דף',
 	unlink			: 'הסרת הקישור',
 	undo			: 'ביטול צעד אחרון',
 	redo			: 'חזרה על צעד אחרון',
@@ -725,8 +725,8 @@ CKEDITOR.lang['he'] =
 	{
 		anchor		: 'עוגן',
 		flash		: 'סרטון פלאש',
-		iframe		: 'iFrame', // MISSING
-		hiddenfield	: 'Hidden Field', // MISSING
+		iframe		: 'חלון פנימי (iFrame)',
+		hiddenfield	: 'שדה חבוי',
 		unknown		: 'אובייקט לא ידוע'
 	},
 

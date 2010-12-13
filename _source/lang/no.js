@@ -110,6 +110,17 @@ CKEDITOR.lang['no'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'Bredde',
+		height			: 'Høyde',
+		align			: 'Juster',
+		alignLeft		: 'Venstre',
+		alignRight		: 'Høyre',
+		alignCenter		: 'Midtjuster',
+		alignTop		: 'Topp',
+		alignMiddle		: 'Midten',
+		alignBottom		: 'Bunn',
+		invalidHeight	: 'Høyde må være ett nummer',
+		invalidWidth	: 'Bredde må være ett nummer.',
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, utilgjenglig</span>'
@@ -156,9 +167,7 @@ CKEDITOR.lang['no'] =
 		popupFullScreen	: 'Full skjerm (IE)',
 		popupScrollBars	: 'Scrollbar',
 		popupDependent	: 'Avhenging (Netscape)',
-		popupWidth		: 'Bredde',
 		popupLeft		: 'Venstre posisjon',
-		popupHeight		: 'Høyde',
 		popupTop		: 'Topp-posisjon',
 		id				: 'Id',
 		langDir			: 'Språkretning',
@@ -244,15 +253,9 @@ CKEDITOR.lang['no'] =
 		rows		: 'Rader',
 		columns		: 'Kolonner',
 		border		: 'Rammestørrelse',
-		align		: 'Justering',
-		alignLeft	: 'Venstre',
-		alignCenter	: 'Midtjuster',
-		alignRight	: 'Høyre',
-		width		: 'Bredde',
 		widthPx		: 'piksler',
 		widthPc		: 'prosent',
 		widthUnit	: 'Bredde-enhet',
-		height		: 'Høyde',
 		cellSpace	: 'Cellemarg',
 		cellPad		: 'Cellepolstring',
 		caption		: 'Tittel',
@@ -288,9 +291,6 @@ CKEDITOR.lang['no'] =
 			wordWrap		: 'Tekstbrytning',
 			hAlign			: 'Horisontal justering',
 			vAlign			: 'Vertikal justering',
-			alignTop		: 'Topp',
-			alignMiddle		: 'Midten',
-			alignBottom		: 'Bunnen',
 			alignBaseline	: 'Grunnlinje',
 			bgColor			: 'Bakgrunnsfarge',
 			borderColor		: 'Rammefarge',
@@ -411,24 +411,17 @@ CKEDITOR.lang['no'] =
 		btnUpload	: 'Send det til serveren',
 		upload		: 'Last opp',
 		alt			: 'Alternativ tekst',
-		width		: 'Bredde',
-		height		: 'Høyde',
 		lockRatio	: 'Lås forhold',
 		unlockRatio	: 'Ikke lås forhold',
 		resetSize	: 'Tilbakestill størrelse',
 		border		: 'Ramme',
 		hSpace		: 'HMarg',
 		vSpace		: 'VMarg',
-		align		: 'Juster',
-		alignLeft	: 'Venstre',
-		alignRight	: 'Høyre',
 		alertUrl	: 'Vennligst skriv bilde-urlen',
 		linkTab		: 'Lenke',
 		button2Img	: 'Vil du endre den valgte bildeknappen til ett vanlig bilde?',
 		img2Button	: 'Vil du endre det valgte bildet til en bildeknapp?',
 		urlMissing	: 'Bildets adresse mangler.',
-		validateWidth	: 'Bredde må være ett nummer.',
-		validateHeight	: 'Høyde må være ett nummer.',
 		validateBorder	: 'Ramme må være ett nummer.',
 		validateHSpace	: 'HSpace må være ett nummer.',
 		validateVSpace	: 'VSpace må være ett nummer.'
@@ -452,16 +445,10 @@ CKEDITOR.lang['no'] =
 		accessAlways	: 'Alltid',
 		accessSameDomain: 'Samme domene',
 		accessNever		: 'Aldri',
-		align			: 'Juster',
-		alignLeft		: 'Venstre',
 		alignAbsBottom	: 'Abs bunn',
 		alignAbsMiddle	: 'Abs midten',
 		alignBaseline	: 'Bunnlinje',
-		alignBottom		: 'Bunn',
-		alignMiddle		: 'Midten',
-		alignRight		: 'Høyre',
 		alignTextTop	: 'Tekst topp',
-		alignTop		: 'Topp',
 		quality			: 'Kvalitet',
 		qualityBest		: 'Best',
 		qualityHigh		: 'Høy',
@@ -475,13 +462,9 @@ CKEDITOR.lang['no'] =
 		windowMode		: 'Vindu modus',
 		flashvars		: 'Variabler for flash',
 		bgcolor			: 'Bakgrunnsfarge',
-		width			: 'Bredde',
-		height			: 'Høyde',
 		hSpace			: 'HMarg',
 		vSpace			: 'VMarg',
 		validateSrc		: 'Vennligst skriv inn lenkens url',
-		validateWidth	: 'Bredde må være ett nummer.',
-		validateHeight	: 'Høyde må være ett nummer',
 		validateHSpace	: 'HSpace må være ett nummer.',
 		validateVSpace	: 'VSpace må være ett nummer.'
 	},
@@ -620,19 +603,9 @@ CKEDITOR.lang['no'] =
 	{
 		title		: 'iFrame Properties', // MISSING
 		toolbar		: 'iFrame', // MISSING
-		height		: 'Height', // MISSING
-		width		: 'Width', // MISSING
-		invalidHeight	: 'iFrame height must be a number.', // MISSING
-		invalidWidth	: 'iFrame width must be a number.', // MISSING
 		noUrl		: 'Please type the iFrame URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border', // MISSING
-		align		: 'Alignment', // MISSING
-		alignLeft	: 'Left', // MISSING
-		alignRight	: 'Right', // MISSING
-		alignTop	: 'Top', // MISSING
-		alignMiddle	: 'Middle', // MISSING
-		alignBottom	: 'Bottom' // MISSING
+		border		: 'Show frame border' // MISSING
 	},
 
 	font :

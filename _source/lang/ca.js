@@ -110,6 +110,17 @@ CKEDITOR.lang['ca'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'Amplada',
+		height			: 'Alçada',
+		align			: 'Alineació',
+		alignLeft		: 'Ajusta a l\'esquerra',
+		alignRight		: 'Ajusta a la dreta',
+		alignCenter		: 'Centre',
+		alignTop		: 'Top', // MISSING
+		alignMiddle		: 'Middle', // MISSING
+		alignBottom		: 'Bottom', // MISSING
+		invalidHeight	: 'L\'alçada ha de ser un nombre.',
+		invalidWidth	: 'L\'amplada ha de ser un nombre.',
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, no disponible</span>'
@@ -156,9 +167,7 @@ CKEDITOR.lang['ca'] =
 		popupFullScreen	: 'Pantalla completa (IE)',
 		popupScrollBars	: 'Barres d\'scroll',
 		popupDependent	: 'Depenent (Netscape)',
-		popupWidth		: 'Amplada',
 		popupLeft		: 'Posició esquerra',
-		popupHeight		: 'Alçada',
 		popupTop		: 'Posició dalt',
 		id				: 'Id',
 		langDir			: 'Direcció de l\'idioma',
@@ -244,15 +253,9 @@ CKEDITOR.lang['ca'] =
 		rows		: 'Files',
 		columns		: 'Columnes',
 		border		: 'Mida vora',
-		align		: 'Alineació',
-		alignLeft	: 'Esquerra',
-		alignCenter	: 'Centre',
-		alignRight	: 'Dreta',
-		width		: 'Amplada',
 		widthPx		: 'píxels',
 		widthPc		: 'percentatge',
 		widthUnit	: 'unitat d\'amplada',
-		height		: 'Alçada',
 		cellSpace	: 'Espaiat de cel·les',
 		cellPad		: 'Encoixinament de cel·les',
 		caption		: 'Títol',
@@ -288,9 +291,6 @@ CKEDITOR.lang['ca'] =
 			wordWrap		: 'Ajustar al contingut',
 			hAlign			: 'Aliniació Horizontal',
 			vAlign			: 'Aliniació Vertical',
-			alignTop		: 'A dalt',
-			alignMiddle		: 'Al mig',
-			alignBottom		: 'A baix',
 			alignBaseline	: 'A la línia base',
 			bgColor			: 'Color de fons',
 			borderColor		: 'Color de la vora',
@@ -411,24 +411,17 @@ CKEDITOR.lang['ca'] =
 		btnUpload	: 'Envia-la al servidor',
 		upload		: 'Puja',
 		alt			: 'Text alternatiu',
-		width		: 'Amplada',
-		height		: 'Alçada',
 		lockRatio	: 'Bloqueja les proporcions',
 		unlockRatio	: 'Desbloqueja el ràtio',
 		resetSize	: 'Restaura la mida',
 		border		: 'Vora',
 		hSpace		: 'Espaiat horit.',
 		vSpace		: 'Espaiat vert.',
-		align		: 'Alineació',
-		alignLeft	: 'Ajusta a l\'esquerra',
-		alignRight	: 'Ajusta a la dreta',
 		alertUrl	: 'Si us plau, escriviu la URL de la imatge',
 		linkTab		: 'Enllaç',
 		button2Img	: 'Voleu transformar el botó d\'imatge seleccionat en una simple imatge?',
 		img2Button	: 'Voleu transformar la imatge seleccionada en un botó d\'imatge?',
 		urlMissing	: 'Falta la URL de la imatge.',
-		validateWidth	: 'L\'amplada ha de ser un nombre enter.',
-		validateHeight	: 'L\'alçada ha de ser un nombre enter.',
 		validateBorder	: 'La vora ha de ser un nombre enter.',
 		validateHSpace	: 'HSpace ha de ser un nombre enter.',
 		validateVSpace	: 'VSpace ha de ser un nombre enter.'
@@ -452,16 +445,10 @@ CKEDITOR.lang['ca'] =
 		accessAlways	: 'Sempre',
 		accessSameDomain: 'El mateix domini',
 		accessNever		: 'Mai',
-		align			: 'Alineació',
-		alignLeft		: 'Ajusta a l\'esquerra',
 		alignAbsBottom	: 'Abs Bottom',
 		alignAbsMiddle	: 'Abs Middle',
 		alignBaseline	: 'Baseline',
-		alignBottom		: 'Bottom',
-		alignMiddle		: 'Middle',
-		alignRight		: 'Ajusta a la dreta',
 		alignTextTop	: 'Text Top',
-		alignTop		: 'Top',
 		quality			: 'Qualitat',
 		qualityBest		: 'La millor',
 		qualityHigh		: 'Alta',
@@ -475,13 +462,9 @@ CKEDITOR.lang['ca'] =
 		windowMode		: 'Mode de la finestra',
 		flashvars		: 'Variables de Flash',
 		bgcolor			: 'Color de Fons',
-		width			: 'Amplada',
-		height			: 'Alçada',
 		hSpace			: 'Espaiat horit.',
 		vSpace			: 'Espaiat vert.',
 		validateSrc		: 'Si us plau, escrigui l\'enllaç URL',
-		validateWidth	: 'L\'amplada ha de ser un nombre.',
-		validateHeight	: 'L\'alçada ha de ser un nombre.',
 		validateHSpace	: 'L\'espaiat horitzonatal ha de ser un nombre.',
 		validateVSpace	: 'L\'espaiat vertical ha de ser un nombre.'
 	},
@@ -620,19 +603,9 @@ CKEDITOR.lang['ca'] =
 	{
 		title		: 'iFrame Properties', // MISSING
 		toolbar		: 'iFrame', // MISSING
-		height		: 'Height', // MISSING
-		width		: 'Width', // MISSING
-		invalidHeight	: 'iFrame height must be a number.', // MISSING
-		invalidWidth	: 'iFrame width must be a number.', // MISSING
 		noUrl		: 'Please type the iFrame URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border', // MISSING
-		align		: 'Alignment', // MISSING
-		alignLeft	: 'Left', // MISSING
-		alignRight	: 'Right', // MISSING
-		alignTop	: 'Top', // MISSING
-		alignMiddle	: 'Middle', // MISSING
-		alignBottom	: 'Bottom' // MISSING
+		border		: 'Show frame border' // MISSING
 	},
 
 	font :

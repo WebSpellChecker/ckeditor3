@@ -110,6 +110,17 @@ CKEDITOR.lang['ko'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: '너비',
+		height			: '높이',
+		align			: '정렬',
+		alignLeft		: '왼쪽',
+		alignRight		: '오른쪽',
+		alignCenter		: '가운데',
+		alignTop		: '위',
+		alignMiddle		: '중간',
+		alignBottom		: '아래',
+		invalidHeight	: 'Height must be a number.', // MISSING
+		invalidWidth	: 'Width must be a number.', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -156,9 +167,7 @@ CKEDITOR.lang['ko'] =
 		popupFullScreen	: '전체화면 (IE)',
 		popupScrollBars	: '스크롤바',
 		popupDependent	: 'Dependent (Netscape)',
-		popupWidth		: '너비',
 		popupLeft		: '왼쪽 위치',
-		popupHeight		: '높이',
 		popupTop		: '윗쪽 위치',
 		id				: 'Id', // MISSING
 		langDir			: '쓰기 방향',
@@ -244,15 +253,9 @@ CKEDITOR.lang['ko'] =
 		rows		: '가로줄',
 		columns		: '세로줄',
 		border		: '테두리 크기',
-		align		: '정렬',
-		alignLeft	: '왼쪽',
-		alignCenter	: '가운데',
-		alignRight	: '오른쪽',
-		width		: '너비',
 		widthPx		: '픽셀',
 		widthPc		: '퍼센트',
 		widthUnit	: 'width unit', // MISSING
-		height		: '높이',
 		cellSpace	: '셀 간격',
 		cellPad		: '셀 여백',
 		caption		: '캡션',
@@ -288,9 +291,6 @@ CKEDITOR.lang['ko'] =
 			wordWrap		: 'Word Wrap', // MISSING
 			hAlign			: 'Horizontal Alignment', // MISSING
 			vAlign			: 'Vertical Alignment', // MISSING
-			alignTop		: 'Top', // MISSING
-			alignMiddle		: 'Middle', // MISSING
-			alignBottom		: 'Bottom', // MISSING
 			alignBaseline	: 'Baseline', // MISSING
 			bgColor			: 'Background Color', // MISSING
 			borderColor		: 'Border Color', // MISSING
@@ -411,24 +411,17 @@ CKEDITOR.lang['ko'] =
 		btnUpload	: '서버로 전송',
 		upload		: '업로드',
 		alt			: '이미지 설명',
-		width		: '너비',
-		height		: '높이',
 		lockRatio	: '비율 유지',
 		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: '원래 크기로',
 		border		: '테두리',
 		hSpace		: '수평여백',
 		vSpace		: '수직여백',
-		align		: '정렬',
-		alignLeft	: '왼쪽',
-		alignRight	: '오른쪽',
 		alertUrl	: '이미지 URL을 입력하십시요',
 		linkTab		: '링크',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
 		urlMissing	: 'Image source URL is missing.', // MISSING
-		validateWidth	: 'Width must be a whole number.', // MISSING
-		validateHeight	: 'Height must be a whole number.', // MISSING
 		validateBorder	: 'Border must be a whole number.', // MISSING
 		validateHSpace	: 'HSpace must be a whole number.', // MISSING
 		validateVSpace	: 'VSpace must be a whole number.' // MISSING
@@ -452,16 +445,10 @@ CKEDITOR.lang['ko'] =
 		accessAlways	: 'Always', // MISSING
 		accessSameDomain: 'Same domain', // MISSING
 		accessNever		: 'Never', // MISSING
-		align			: '정렬',
-		alignLeft		: '왼쪽',
 		alignAbsBottom	: '줄아래(Abs Bottom)',
 		alignAbsMiddle	: '줄중간(Abs Middle)',
 		alignBaseline	: '기준선',
-		alignBottom		: '아래',
-		alignMiddle		: '중간',
-		alignRight		: '오른쪽',
 		alignTextTop	: '글자상단',
-		alignTop		: '위',
 		quality			: 'Quality', // MISSING
 		qualityBest		: 'Best', // MISSING
 		qualityHigh		: 'High', // MISSING
@@ -475,13 +462,9 @@ CKEDITOR.lang['ko'] =
 		windowMode		: 'Window mode', // MISSING
 		flashvars		: 'Variables for Flash', // MISSING
 		bgcolor			: '배경 색상',
-		width			: '너비',
-		height			: '높이',
 		hSpace			: '수평여백',
 		vSpace			: '수직여백',
 		validateSrc		: '링크 URL을 입력하십시요.',
-		validateWidth	: 'Width must be a number.', // MISSING
-		validateHeight	: 'Height must be a number.', // MISSING
 		validateHSpace	: 'HSpace must be a number.', // MISSING
 		validateVSpace	: 'VSpace must be a number.' // MISSING
 	},
@@ -620,19 +603,9 @@ CKEDITOR.lang['ko'] =
 	{
 		title		: 'iFrame Properties', // MISSING
 		toolbar		: 'iFrame', // MISSING
-		height		: 'Height', // MISSING
-		width		: 'Width', // MISSING
-		invalidHeight	: 'iFrame height must be a number.', // MISSING
-		invalidWidth	: 'iFrame width must be a number.', // MISSING
 		noUrl		: 'Please type the iFrame URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border', // MISSING
-		align		: 'Alignment', // MISSING
-		alignLeft	: 'Left', // MISSING
-		alignRight	: 'Right', // MISSING
-		alignTop	: 'Top', // MISSING
-		alignMiddle	: 'Middle', // MISSING
-		alignBottom	: 'Bottom' // MISSING
+		border		: 'Show frame border' // MISSING
 	},
 
 	font :

@@ -110,6 +110,17 @@ CKEDITOR.lang['lv'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'Platums',
+		height			: 'Augstums',
+		align			: 'Nolīdzināt',
+		alignLeft		: 'Pa kreisi',
+		alignRight		: 'Pa labi',
+		alignCenter		: 'Centrēti',
+		alignTop		: 'Augšā',
+		alignMiddle		: 'Vertikāli centrēts',
+		alignBottom		: 'Apakšā',
+		invalidHeight	: 'Height must be a number.', // MISSING
+		invalidWidth	: 'Width must be a number.', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -156,9 +167,7 @@ CKEDITOR.lang['lv'] =
 		popupFullScreen	: 'Pilnā ekrānā (IE)',
 		popupScrollBars	: 'Ritjoslas',
 		popupDependent	: 'Atkarīgs (Netscape)',
-		popupWidth		: 'Platums',
 		popupLeft		: 'Kreisā koordināte',
-		popupHeight		: 'Augstums',
 		popupTop		: 'Augšējā koordināte',
 		id				: 'Id', // MISSING
 		langDir			: 'Valodas lasīšanas virziens',
@@ -244,15 +253,9 @@ CKEDITOR.lang['lv'] =
 		rows		: 'Rindas',
 		columns		: 'Kolonnas',
 		border		: 'Rāmja izmērs',
-		align		: 'Novietojums',
-		alignLeft	: 'Pa kreisi',
-		alignCenter	: 'Centrēti',
-		alignRight	: 'Pa labi',
-		width		: 'Platums',
 		widthPx		: 'pikseļos',
 		widthPc		: 'procentuāli',
 		widthUnit	: 'width unit', // MISSING
-		height		: 'Augstums',
 		cellSpace	: 'Rūtiņu atstatums',
 		cellPad		: 'Rūtiņu nobīde',
 		caption		: 'Leģenda',
@@ -288,9 +291,6 @@ CKEDITOR.lang['lv'] =
 			wordWrap		: 'Word Wrap', // MISSING
 			hAlign			: 'Horizontal Alignment', // MISSING
 			vAlign			: 'Vertical Alignment', // MISSING
-			alignTop		: 'Top', // MISSING
-			alignMiddle		: 'Middle', // MISSING
-			alignBottom		: 'Bottom', // MISSING
 			alignBaseline	: 'Baseline', // MISSING
 			bgColor			: 'Background Color', // MISSING
 			borderColor		: 'Border Color', // MISSING
@@ -411,24 +411,17 @@ CKEDITOR.lang['lv'] =
 		btnUpload	: 'Nosūtīt serverim',
 		upload		: 'Augšupielādēt',
 		alt			: 'Alternatīvais teksts',
-		width		: 'Platums',
-		height		: 'Augstums',
 		lockRatio	: 'Nemainīga Augstuma/Platuma attiecība',
 		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Atjaunot sākotnējo izmēru',
 		border		: 'Rāmis',
 		hSpace		: 'Horizontālā telpa',
 		vSpace		: 'Vertikālā telpa',
-		align		: 'Nolīdzināt',
-		alignLeft	: 'Pa kreisi',
-		alignRight	: 'Pa labi',
 		alertUrl	: 'Lūdzu norādīt attēla hipersaiti',
 		linkTab		: 'Hipersaite',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
 		urlMissing	: 'Image source URL is missing.', // MISSING
-		validateWidth	: 'Width must be a whole number.', // MISSING
-		validateHeight	: 'Height must be a whole number.', // MISSING
 		validateBorder	: 'Border must be a whole number.', // MISSING
 		validateHSpace	: 'HSpace must be a whole number.', // MISSING
 		validateVSpace	: 'VSpace must be a whole number.' // MISSING
@@ -452,16 +445,10 @@ CKEDITOR.lang['lv'] =
 		accessAlways	: 'Always', // MISSING
 		accessSameDomain: 'Same domain', // MISSING
 		accessNever		: 'Never', // MISSING
-		align			: 'Nolīdzināt',
-		alignLeft		: 'Pa kreisi',
 		alignAbsBottom	: 'Absolūti apakšā',
 		alignAbsMiddle	: 'Absolūti vertikāli centrēts',
 		alignBaseline	: 'Pamatrindā',
-		alignBottom		: 'Apakšā',
-		alignMiddle		: 'Vertikāli centrēts',
-		alignRight		: 'Pa labi',
 		alignTextTop	: 'Teksta augšā',
-		alignTop		: 'Augšā',
 		quality			: 'Quality', // MISSING
 		qualityBest		: 'Best', // MISSING
 		qualityHigh		: 'High', // MISSING
@@ -475,13 +462,9 @@ CKEDITOR.lang['lv'] =
 		windowMode		: 'Window mode', // MISSING
 		flashvars		: 'Variables for Flash', // MISSING
 		bgcolor			: 'Fona krāsa',
-		width			: 'Platums',
-		height			: 'Augstums',
 		hSpace			: 'Horizontālā telpa',
 		vSpace			: 'Vertikālā telpa',
 		validateSrc		: 'Lūdzu norādi hipersaiti',
-		validateWidth	: 'Width must be a number.', // MISSING
-		validateHeight	: 'Height must be a number.', // MISSING
 		validateHSpace	: 'HSpace must be a number.', // MISSING
 		validateVSpace	: 'VSpace must be a number.' // MISSING
 	},
@@ -620,19 +603,9 @@ CKEDITOR.lang['lv'] =
 	{
 		title		: 'iFrame Properties', // MISSING
 		toolbar		: 'iFrame', // MISSING
-		height		: 'Height', // MISSING
-		width		: 'Width', // MISSING
-		invalidHeight	: 'iFrame height must be a number.', // MISSING
-		invalidWidth	: 'iFrame width must be a number.', // MISSING
 		noUrl		: 'Please type the iFrame URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border', // MISSING
-		align		: 'Alignment', // MISSING
-		alignLeft	: 'Left', // MISSING
-		alignRight	: 'Right', // MISSING
-		alignTop	: 'Top', // MISSING
-		alignMiddle	: 'Middle', // MISSING
-		alignBottom	: 'Bottom' // MISSING
+		border		: 'Show frame border' // MISSING
 	},
 
 	font :

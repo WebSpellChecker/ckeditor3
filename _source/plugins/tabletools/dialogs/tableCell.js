@@ -100,7 +100,7 @@ CKEDITOR.dialog.add( 'cellProperties', function( editor )
 													type : 'text',
 													id : 'width',
 													width: '100px',
-													label : langTable.width,
+													label : langCommon.width,
 													validate : validate[ 'number' ]( langCell.invalidWidth ),
 
 													// Extra labelling of width unit type.
@@ -164,7 +164,7 @@ CKEDITOR.dialog.add( 'cellProperties', function( editor )
 												{
 													type : 'text',
 													id : 'height',
-													label : langTable.height,
+													label : langCommon.height,
 													width: '100px',
 													'default' : '',
 													validate : validate[ 'number' ]( langCell.invalidHeight ),
@@ -245,9 +245,9 @@ CKEDITOR.dialog.add( 'cellProperties', function( editor )
 											items :
 											[
 												[ langCommon.notSet, '' ],
-												[ langTable.alignLeft, 'left' ],
-												[ langTable.alignCenter, 'center' ],
-												[ langTable.alignRight, 'right' ]
+												[ langCommon.alignLeft, 'left' ],
+												[ langCommon.alignCenter, 'center' ],
+												[ langCommon.alignRight, 'right' ]
 											],
 											setup : function( element )
 											{
@@ -276,9 +276,9 @@ CKEDITOR.dialog.add( 'cellProperties', function( editor )
 											items :
 											[
 												[ langCommon.notSet, '' ],
-												[ langCell.alignTop, 'top' ],
-												[ langCell.alignMiddle, 'middle' ],
-												[ langCell.alignBottom, 'bottom' ],
+												[ langCommon.alignTop, 'top' ],
+												[ langCommon.alignMiddle, 'middle' ],
+												[ langCommon.alignBottom, 'bottom' ],
 												[ langCell.alignBaseline, 'baseline' ]
 											],
 											setup : function( element )

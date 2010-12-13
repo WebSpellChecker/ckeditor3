@@ -122,8 +122,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									type : 'text',
 									style : 'width:100%',
 									labelLayout : 'vertical',
-									label : iframeLang.width,
-									validate : CKEDITOR.dialog.validate.integer( iframeLang.invalidWidth ),
+									label : commonLang.width,
+									validate : CKEDITOR.dialog.validate.integer( commonLang.invalidWidth ),
 									setup : function( iframeNode, fakeImage )
 									{
 										loadValue.apply( this, arguments );
@@ -146,8 +146,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									type : 'text',
 									style : 'width:100%',
 									labelLayout : 'vertical',
-									label : iframeLang.height,
-									validate : CKEDITOR.dialog.validate.integer( iframeLang.invalidHeight ),
+									label : commonLang.height,
+									validate : CKEDITOR.dialog.validate.integer( commonLang.invalidHeight ),
 									setup : function( iframeNode, fakeImage )
 									{
 										loadValue.apply( this, arguments );
@@ -172,15 +172,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									items :
 									[
 										[ commonLang.notSet , '' ],
-										[ iframeLang.alignLeft , 'left' ],
-										[ iframeLang.alignRight , 'right' ],
-										[ iframeLang.alignTop , 'top' ],
-										[ iframeLang.alignMiddle , 'middle' ],
-										[ iframeLang.alignBottom , 'bottom' ]
+										[ commonLang.alignLeft , 'left' ],
+										[ commonLang.alignRight , 'right' ],
+										[ commonLang.alignTop , 'top' ],
+										[ commonLang.alignMiddle , 'middle' ],
+										[ commonLang.alignBottom , 'bottom' ]
 									],
 									style : 'width:100%',
 									labelLayout : 'vertical',
-									label : iframeLang.align,
+									label : commonLang.align,
 									setup : function( iframeNode, fakeImage )
 									{
 										loadValue.apply( this, arguments );

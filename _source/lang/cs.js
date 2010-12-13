@@ -110,6 +110,17 @@ CKEDITOR.lang['cs'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'Šířka',
+		height			: 'Výška',
+		align			: 'Zarovnání',
+		alignLeft		: 'Vlevo',
+		alignRight		: 'Vpravo',
+		alignCenter		: 'Na střed',
+		alignTop		: 'Nahoru',
+		alignMiddle		: 'Na střed',
+		alignBottom		: 'Dolů',
+		invalidHeight	: 'Zadaná výška musí být číslo.',
+		invalidWidth	: 'Zadaná šířka musí být číslo.',
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, nedostupné</span>'
@@ -156,9 +167,7 @@ CKEDITOR.lang['cs'] =
 		popupFullScreen	: 'Celá obrazovka (IE)',
 		popupScrollBars	: 'Posuvníky',
 		popupDependent	: 'Závislost (Netscape)',
-		popupWidth		: 'Šířka',
 		popupLeft		: 'Levý okraj',
-		popupHeight		: 'Výška',
 		popupTop		: 'Horní okraj',
 		id				: 'Id',
 		langDir			: 'Orientace jazyka',
@@ -244,15 +253,9 @@ CKEDITOR.lang['cs'] =
 		rows		: 'Řádky',
 		columns		: 'Sloupce',
 		border		: 'Ohraničení',
-		align		: 'Zarovnání',
-		alignLeft	: 'Vlevo',
-		alignCenter	: 'Na střed',
-		alignRight	: 'Vpravo',
-		width		: 'Šířka',
 		widthPx		: 'bodů',
 		widthPc		: 'procent',
 		widthUnit	: 'width unit', // MISSING
-		height		: 'Výška',
 		cellSpace	: 'Vzdálenost buněk',
 		cellPad		: 'Odsazení obsahu v buňce',
 		caption		: 'Popis',
@@ -288,9 +291,6 @@ CKEDITOR.lang['cs'] =
 			wordWrap		: 'Zalamování',
 			hAlign			: 'Vodorovné zarovnání',
 			vAlign			: 'Svislé zarovnání',
-			alignTop		: 'Nahoru',
-			alignMiddle		: 'Doprostřed',
-			alignBottom		: 'Dolů',
 			alignBaseline	: 'Na účaří',
 			bgColor			: 'Barva pozadí',
 			borderColor		: 'Barva okraje',
@@ -411,24 +411,17 @@ CKEDITOR.lang['cs'] =
 		btnUpload	: 'Odeslat na server',
 		upload		: 'Odeslat',
 		alt			: 'Alternativní text',
-		width		: 'Šířka',
-		height		: 'Výška',
 		lockRatio	: 'Zámek',
 		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Původní velikost',
 		border		: 'Okraje',
 		hSpace		: 'H-mezera',
 		vSpace		: 'V-mezera',
-		align		: 'Zarovnání',
-		alignLeft	: 'Vlevo',
-		alignRight	: 'Vpravo',
 		alertUrl	: 'Zadejte prosím URL obrázku',
 		linkTab		: 'Odkaz',
 		button2Img	: 'Skutečně chcete převést zvolené obrázkové tlačítko na obyčejný obrázek?',
 		img2Button	: 'Skutečně chcete převést zvolený obrázek na obrázkové tlačítko?',
 		urlMissing	: 'Zadané URL zdroje obrázku nebylo nalezeno.',
-		validateWidth	: 'Width must be a whole number.', // MISSING
-		validateHeight	: 'Height must be a whole number.', // MISSING
 		validateBorder	: 'Border must be a whole number.', // MISSING
 		validateHSpace	: 'HSpace must be a whole number.', // MISSING
 		validateVSpace	: 'VSpace must be a whole number.' // MISSING
@@ -452,16 +445,10 @@ CKEDITOR.lang['cs'] =
 		accessAlways	: 'Vždy',
 		accessSameDomain: 'Ve stejné doméně',
 		accessNever		: 'Nikdy',
-		align			: 'Zarovnání',
-		alignLeft		: 'Vlevo',
 		alignAbsBottom	: 'Zcela dolů',
 		alignAbsMiddle	: 'Doprostřed',
 		alignBaseline	: 'Na účaří',
-		alignBottom		: 'Dolů',
-		alignMiddle		: 'Na střed',
-		alignRight		: 'Vpravo',
 		alignTextTop	: 'Na horní okraj textu',
-		alignTop		: 'Nahoru',
 		quality			: 'Kvalita',
 		qualityBest		: 'Nejlepší',
 		qualityHigh		: 'Vysoká',
@@ -475,13 +462,9 @@ CKEDITOR.lang['cs'] =
 		windowMode		: 'Režim okna',
 		flashvars		: 'Proměnné pro Flash',
 		bgcolor			: 'Barva pozadí',
-		width			: 'Šířka',
-		height			: 'Výška',
 		hSpace			: 'H-mezera',
 		vSpace			: 'V-mezera',
 		validateSrc		: 'Zadejte prosím URL odkazu',
-		validateWidth	: 'Zadaná šířka musí být číslo.',
-		validateHeight	: 'Zadaná výška musí být číslo.',
 		validateHSpace	: 'Zadaná H-mezera musí být číslo.',
 		validateVSpace	: 'Zadaná V-mezera musí být číslo.'
 	},
@@ -620,19 +603,9 @@ CKEDITOR.lang['cs'] =
 	{
 		title		: 'iFrame Properties', // MISSING
 		toolbar		: 'iFrame', // MISSING
-		height		: 'Height', // MISSING
-		width		: 'Width', // MISSING
-		invalidHeight	: 'iFrame height must be a number.', // MISSING
-		invalidWidth	: 'iFrame width must be a number.', // MISSING
 		noUrl		: 'Please type the iFrame URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border', // MISSING
-		align		: 'Alignment', // MISSING
-		alignLeft	: 'Left', // MISSING
-		alignRight	: 'Right', // MISSING
-		alignTop	: 'Top', // MISSING
-		alignMiddle	: 'Middle', // MISSING
-		alignBottom	: 'Bottom' // MISSING
+		border		: 'Show frame border' // MISSING
 	},
 
 	font :

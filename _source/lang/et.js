@@ -110,6 +110,17 @@ CKEDITOR.lang['et'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'Laius',
+		height			: 'Kõrgus',
+		align			: 'Joondus',
+		alignLeft		: 'Vasak',
+		alignRight		: 'Paremale',
+		alignCenter		: 'Kesk',
+		alignTop		: 'Üles',
+		alignMiddle		: 'Keskele',
+		alignBottom		: 'Alla',
+		invalidHeight	: 'Height must be a number.', // MISSING
+		invalidWidth	: 'Width must be a number.', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -156,9 +167,7 @@ CKEDITOR.lang['et'] =
 		popupFullScreen	: 'Täisekraan (IE)',
 		popupScrollBars	: 'Kerimisribad',
 		popupDependent	: 'Sõltuv (Netscape)',
-		popupWidth		: 'Laius',
 		popupLeft		: 'Vasak asukoht',
-		popupHeight		: 'Kõrgus',
 		popupTop		: 'Ülemine asukoht',
 		id				: 'Id', // MISSING
 		langDir			: 'Keele suund',
@@ -244,15 +253,9 @@ CKEDITOR.lang['et'] =
 		rows		: 'Read',
 		columns		: 'Veerud',
 		border		: 'Joone suurus',
-		align		: 'Joondus',
-		alignLeft	: 'Vasak',
-		alignCenter	: 'Kesk',
-		alignRight	: 'Parem',
-		width		: 'Laius',
 		widthPx		: 'pikslit',
 		widthPc		: 'protsenti',
 		widthUnit	: 'width unit', // MISSING
-		height		: 'Kõrgus',
 		cellSpace	: 'Lahtri vahe',
 		cellPad		: 'Lahtri täidis',
 		caption		: 'Tabeli tiitel',
@@ -288,9 +291,6 @@ CKEDITOR.lang['et'] =
 			wordWrap		: 'Word Wrap', // MISSING
 			hAlign			: 'Horizontal Alignment', // MISSING
 			vAlign			: 'Vertical Alignment', // MISSING
-			alignTop		: 'Top', // MISSING
-			alignMiddle		: 'Middle', // MISSING
-			alignBottom		: 'Bottom', // MISSING
 			alignBaseline	: 'Baseline', // MISSING
 			bgColor			: 'Background Color', // MISSING
 			borderColor		: 'Border Color', // MISSING
@@ -411,24 +411,17 @@ CKEDITOR.lang['et'] =
 		btnUpload	: 'Saada serverissee',
 		upload		: 'Lae üles',
 		alt			: 'Alternatiivne tekst',
-		width		: 'Laius',
-		height		: 'Kõrgus',
 		lockRatio	: 'Lukusta kuvasuhe',
 		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Lähtesta suurus',
 		border		: 'Joon',
 		hSpace		: 'H. vaheruum',
 		vSpace		: 'V. vaheruum',
-		align		: 'Joondus',
-		alignLeft	: 'Vasak',
-		alignRight	: 'Paremale',
 		alertUrl	: 'Palun kirjuta pildi URL',
 		linkTab		: 'Link',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
 		urlMissing	: 'Image source URL is missing.', // MISSING
-		validateWidth	: 'Width must be a whole number.', // MISSING
-		validateHeight	: 'Height must be a whole number.', // MISSING
 		validateBorder	: 'Border must be a whole number.', // MISSING
 		validateHSpace	: 'HSpace must be a whole number.', // MISSING
 		validateVSpace	: 'VSpace must be a whole number.' // MISSING
@@ -452,16 +445,10 @@ CKEDITOR.lang['et'] =
 		accessAlways	: 'Always', // MISSING
 		accessSameDomain: 'Same domain', // MISSING
 		accessNever		: 'Never', // MISSING
-		align			: 'Joondus',
-		alignLeft		: 'Vasak',
 		alignAbsBottom	: 'Abs alla',
 		alignAbsMiddle	: 'Abs keskele',
 		alignBaseline	: 'Baasjoonele',
-		alignBottom		: 'Alla',
-		alignMiddle		: 'Keskele',
-		alignRight		: 'Paremale',
 		alignTextTop	: 'Tekstit üles',
-		alignTop		: 'Üles',
 		quality			: 'Quality', // MISSING
 		qualityBest		: 'Best', // MISSING
 		qualityHigh		: 'High', // MISSING
@@ -475,13 +462,9 @@ CKEDITOR.lang['et'] =
 		windowMode		: 'Window mode', // MISSING
 		flashvars		: 'Variables for Flash', // MISSING
 		bgcolor			: 'Tausta värv',
-		width			: 'Laius',
-		height			: 'Kõrgus',
 		hSpace			: 'H. vaheruum',
 		vSpace			: 'V. vaheruum',
 		validateSrc		: 'Palun kirjuta lingi URL',
-		validateWidth	: 'Width must be a number.', // MISSING
-		validateHeight	: 'Height must be a number.', // MISSING
 		validateHSpace	: 'HSpace must be a number.', // MISSING
 		validateVSpace	: 'VSpace must be a number.' // MISSING
 	},
@@ -620,19 +603,9 @@ CKEDITOR.lang['et'] =
 	{
 		title		: 'iFrame Properties', // MISSING
 		toolbar		: 'iFrame', // MISSING
-		height		: 'Height', // MISSING
-		width		: 'Width', // MISSING
-		invalidHeight	: 'iFrame height must be a number.', // MISSING
-		invalidWidth	: 'iFrame width must be a number.', // MISSING
 		noUrl		: 'Please type the iFrame URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border', // MISSING
-		align		: 'Alignment', // MISSING
-		alignLeft	: 'Left', // MISSING
-		alignRight	: 'Right', // MISSING
-		alignTop	: 'Top', // MISSING
-		alignMiddle	: 'Middle', // MISSING
-		alignBottom	: 'Bottom' // MISSING
+		border		: 'Show frame border' // MISSING
 	},
 
 	font :

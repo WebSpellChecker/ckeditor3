@@ -110,6 +110,17 @@ CKEDITOR.lang['el'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'Πλάτος',
+		height			: 'Ύψος',
+		align			: 'Ευθυγράμμιση (Align)',
+		alignLeft		: 'Αριστερά',
+		alignRight		: 'Δεξιά (Right)',
+		alignCenter		: 'Κέντρο',
+		alignTop		: 'Πάνω (Top)',
+		alignMiddle		: 'Μέση (Middle)',
+		alignBottom		: 'Κάτω (Bottom)',
+		invalidHeight	: 'Height must be a number.', // MISSING
+		invalidWidth	: 'Width must be a number.', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -156,9 +167,7 @@ CKEDITOR.lang['el'] =
 		popupFullScreen	: 'Ολόκληρη η Οθόνη (IE)',
 		popupScrollBars	: 'Μπάρες Κύλισης',
 		popupDependent	: 'Dependent (Netscape)',
-		popupWidth		: 'Πλάτος',
 		popupLeft		: 'Τοποθεσία Αριστερής Άκρης',
-		popupHeight		: 'Ύψος',
 		popupTop		: 'Τοποθεσία Πάνω Άκρης',
 		id				: 'Id', // MISSING
 		langDir			: 'Κατεύθυνση κειμένου',
@@ -244,15 +253,9 @@ CKEDITOR.lang['el'] =
 		rows		: 'Γραμμές',
 		columns		: 'Κολώνες',
 		border		: 'Μέγεθος Περιθωρίου',
-		align		: 'Στοίχιση',
-		alignLeft	: 'Αριστερά',
-		alignCenter	: 'Κέντρο',
-		alignRight	: 'Δεξιά',
-		width		: 'Πλάτος',
 		widthPx		: 'pixels',
 		widthPc		: '%',
 		widthUnit	: 'width unit', // MISSING
-		height		: 'Ύψος',
 		cellSpace	: 'Απόσταση κελιών',
 		cellPad		: 'Γέμισμα κελιών',
 		caption		: 'Υπέρτιτλος',
@@ -288,9 +291,6 @@ CKEDITOR.lang['el'] =
 			wordWrap		: 'Word Wrap', // MISSING
 			hAlign			: 'Horizontal Alignment', // MISSING
 			vAlign			: 'Vertical Alignment', // MISSING
-			alignTop		: 'Top', // MISSING
-			alignMiddle		: 'Middle', // MISSING
-			alignBottom		: 'Bottom', // MISSING
 			alignBaseline	: 'Baseline', // MISSING
 			bgColor			: 'Background Color', // MISSING
 			borderColor		: 'Border Color', // MISSING
@@ -411,24 +411,17 @@ CKEDITOR.lang['el'] =
 		btnUpload	: 'Αποστολή στον Διακομιστή',
 		upload		: 'Αποστολή',
 		alt			: 'Εναλλακτικό Κείμενο (ALT)',
-		width		: 'Πλάτος',
-		height		: 'Ύψος',
 		lockRatio	: 'Κλείδωμα Αναλογίας',
 		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Επαναφορά Αρχικού Μεγέθους',
 		border		: 'Περιθώριο',
 		hSpace		: 'Οριζόντιος Χώρος (HSpace)',
 		vSpace		: 'Κάθετος Χώρος (VSpace)',
-		align		: 'Ευθυγράμμιση (Align)',
-		alignLeft	: 'Αριστερά',
-		alignRight	: 'Δεξιά (Right)',
 		alertUrl	: 'Εισάγετε την τοποθεσία (URL) της εικόνας',
 		linkTab		: 'Σύνδεσμος',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
 		urlMissing	: 'Image source URL is missing.', // MISSING
-		validateWidth	: 'Width must be a whole number.', // MISSING
-		validateHeight	: 'Height must be a whole number.', // MISSING
 		validateBorder	: 'Border must be a whole number.', // MISSING
 		validateHSpace	: 'HSpace must be a whole number.', // MISSING
 		validateVSpace	: 'VSpace must be a whole number.' // MISSING
@@ -452,16 +445,10 @@ CKEDITOR.lang['el'] =
 		accessAlways	: 'Always', // MISSING
 		accessSameDomain: 'Same domain', // MISSING
 		accessNever		: 'Never', // MISSING
-		align			: 'Ευθυγράμμιση (Align)',
-		alignLeft		: 'Αριστερά',
 		alignAbsBottom	: 'Απόλυτα Κάτω (Abs Bottom)',
 		alignAbsMiddle	: 'Απόλυτα στη Μέση (Abs Middle)',
 		alignBaseline	: 'Γραμμή Βάσης (Baseline)',
-		alignBottom		: 'Κάτω (Bottom)',
-		alignMiddle		: 'Μέση (Middle)',
-		alignRight		: 'Δεξιά (Right)',
 		alignTextTop	: 'Κορυφή Κειμένου (Text Top)',
-		alignTop		: 'Πάνω (Top)',
 		quality			: 'Quality', // MISSING
 		qualityBest		: 'Best', // MISSING
 		qualityHigh		: 'High', // MISSING
@@ -475,13 +462,9 @@ CKEDITOR.lang['el'] =
 		windowMode		: 'Window mode', // MISSING
 		flashvars		: 'Variables for Flash', // MISSING
 		bgcolor			: 'Χρώμα Υποβάθρου',
-		width			: 'Πλάτος',
-		height			: 'Ύψος',
 		hSpace			: 'Οριζόντιος Χώρος (HSpace)',
 		vSpace			: 'Κάθετος Χώρος (VSpace)',
 		validateSrc		: 'Εισάγετε την τοποθεσία (URL) του υπερσυνδέσμου (Link)',
-		validateWidth	: 'Width must be a number.', // MISSING
-		validateHeight	: 'Height must be a number.', // MISSING
 		validateHSpace	: 'HSpace must be a number.', // MISSING
 		validateVSpace	: 'VSpace must be a number.' // MISSING
 	},
@@ -620,19 +603,9 @@ CKEDITOR.lang['el'] =
 	{
 		title		: 'iFrame Properties', // MISSING
 		toolbar		: 'iFrame', // MISSING
-		height		: 'Height', // MISSING
-		width		: 'Width', // MISSING
-		invalidHeight	: 'iFrame height must be a number.', // MISSING
-		invalidWidth	: 'iFrame width must be a number.', // MISSING
 		noUrl		: 'Please type the iFrame URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border', // MISSING
-		align		: 'Alignment', // MISSING
-		alignLeft	: 'Left', // MISSING
-		alignRight	: 'Right', // MISSING
-		alignTop	: 'Top', // MISSING
-		alignMiddle	: 'Middle', // MISSING
-		alignBottom	: 'Bottom' // MISSING
+		border		: 'Show frame border' // MISSING
 	},
 
 	font :

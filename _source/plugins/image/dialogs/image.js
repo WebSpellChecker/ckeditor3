@@ -627,7 +627,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															type : 'text',
 															width: '40px',
 															id : 'txtWidth',
-															label : editor.lang.image.width,
+															label : editor.lang.common.width,
 															onKeyUp : onSizeChange,
 															onChange : function()
 															{
@@ -637,7 +637,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															{
 																var aMatch  =  this.getValue().match( regexGetSizeOrEmpty );
 																if ( !aMatch )
-																	alert( editor.lang.image.validateWidth );
+																	alert( editor.lang.common.invalidWidth );
 																return !!aMatch;
 															},
 															setup : setupDimension,
@@ -676,7 +676,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															type : 'text',
 															id : 'txtHeight',
 															width: '40px',
-															label : editor.lang.image.height,
+															label : editor.lang.common.height,
 															onKeyUp : onSizeChange,
 															onChange : function()
 															{
@@ -686,7 +686,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 															{
 																var aMatch = this.getValue().match( regexGetSizeOrEmpty );
 																if ( !aMatch )
-																	alert( editor.lang.image.validateHeight );
+																	alert( editor.lang.common.invalidHeight );
 																return !!aMatch;
 															},
 															setup : setupDimension,
@@ -978,13 +978,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 													type : 'select',
 													widths : [ '35%','65%' ],
 													style : 'width:90px',
-													label : editor.lang.image.align,
+													label : editor.lang.common.align,
 													'default' : '',
 													items :
 													[
 														[ editor.lang.common.notSet , ''],
-														[ editor.lang.image.alignLeft , 'left'],
-														[ editor.lang.image.alignRight , 'right']
+														[ editor.lang.common.alignLeft , 'left'],
+														[ editor.lang.common.alignRight , 'right']
 														// Backward compatible with v2 on setup when specified as attribute value,
 														// while these values are no more available as select options.
 														//	[ editor.lang.image.alignAbsBottom , 'absBottom'],

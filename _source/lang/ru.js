@@ -110,6 +110,17 @@ CKEDITOR.lang['ru'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'Ширина',
+		height			: 'Высота',
+		align			: 'Выравнивание',
+		alignLeft		: 'По левому краю',
+		alignRight		: 'По правому краю',
+		alignCenter		: 'По центру',
+		alignTop		: 'По верху',
+		alignMiddle		: 'Посередине',
+		alignBottom		: 'Понизу',
+		invalidHeight	: 'Высота задается числом.',
+		invalidWidth	: 'Ширина задается числом.',
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, недоступно</span>'
@@ -156,9 +167,7 @@ CKEDITOR.lang['ru'] =
 		popupFullScreen	: 'Полный экран (IE)',
 		popupScrollBars	: 'Полосы прокрутки',
 		popupDependent	: 'Зависимый (Netscape)',
-		popupWidth		: 'Ширина',
 		popupLeft		: 'Позиция слева',
-		popupHeight		: 'Высота',
 		popupTop		: 'Позиция сверху',
 		id				: 'Id',
 		langDir			: 'Направление языка',
@@ -244,15 +253,9 @@ CKEDITOR.lang['ru'] =
 		rows		: 'Строки',
 		columns		: 'Колонки',
 		border		: 'Размер бордюра',
-		align		: 'Выравнивание',
-		alignLeft	: 'Слева',
-		alignCenter	: 'По центру',
-		alignRight	: 'Справа',
-		width		: 'Ширина',
 		widthPx		: 'пикселей',
 		widthPc		: 'процентов',
 		widthUnit	: 'width unit', // MISSING
-		height		: 'Высота',
 		cellSpace	: 'Промежуток (spacing)',
 		cellPad		: 'Отступ (padding)',
 		caption		: 'Заголовок',
@@ -288,9 +291,6 @@ CKEDITOR.lang['ru'] =
 			wordWrap		: 'Перенос по словам',
 			hAlign			: 'Выравнивание по горизонтали',
 			vAlign			: 'Выравнивание по вертикали',
-			alignTop		: 'По верху',
-			alignMiddle		: 'Посередине',
-			alignBottom		: 'По низу',
 			alignBaseline	: 'По базовой линии',
 			bgColor			: 'Цвет фона',
 			borderColor		: 'Цвет границы',
@@ -411,24 +411,17 @@ CKEDITOR.lang['ru'] =
 		btnUpload	: 'Отправить на сервер',
 		upload		: 'Закачать',
 		alt			: 'Альтернативный текст',
-		width		: 'Ширина',
-		height		: 'Высота',
 		lockRatio	: 'Сохранять пропорции',
 		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Сбросить размер',
 		border		: 'Бордюр',
 		hSpace		: 'Горизонтальный отступ',
 		vSpace		: 'Вертикальный отступ',
-		align		: 'Выравнивание',
-		alignLeft	: 'По левому краю',
-		alignRight	: 'По правому краю',
 		alertUrl	: 'Пожалуйста, введите URL изображения',
 		linkTab		: 'Ссылка',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?',
 		img2Button	: 'Do you want to transform the selected image on a image button?',
 		urlMissing	: 'Отсутствует URL картинки.',
-		validateWidth	: 'Width must be a whole number.', // MISSING
-		validateHeight	: 'Height must be a whole number.', // MISSING
 		validateBorder	: 'Border must be a whole number.', // MISSING
 		validateHSpace	: 'HSpace must be a whole number.', // MISSING
 		validateVSpace	: 'VSpace must be a whole number.' // MISSING
@@ -452,16 +445,10 @@ CKEDITOR.lang['ru'] =
 		accessAlways	: 'Всегда',
 		accessSameDomain: 'Тот же домен',
 		accessNever		: 'Никогда',
-		align			: 'Выравнивание',
-		alignLeft		: 'По левому краю',
 		alignAbsBottom	: 'Абс понизу',
 		alignAbsMiddle	: 'Абс посередине',
 		alignBaseline	: 'По базовой линии',
-		alignBottom		: 'Понизу',
-		alignMiddle		: 'Посередине',
-		alignRight		: 'По правому краю',
 		alignTextTop	: 'Текст наверху',
-		alignTop		: 'По верху',
 		quality			: 'Качество',
 		qualityBest		: 'Лучшее',
 		qualityHigh		: 'Высокое',
@@ -475,13 +462,9 @@ CKEDITOR.lang['ru'] =
 		windowMode		: 'Оконный режим',
 		flashvars		: 'Переменные для Flash',
 		bgcolor			: 'Цвет фона',
-		width			: 'Ширина',
-		height			: 'Высота',
 		hSpace			: 'Горизонтальный отступ',
 		vSpace			: 'Вертикальный отступ',
 		validateSrc		: 'Пожалуйста, введите URL ссылки',
-		validateWidth	: 'Ширина задается числом.',
-		validateHeight	: 'Высота задается числом.',
 		validateHSpace	: 'Горизонтальный отступ задается числом.',
 		validateVSpace	: 'Вертикальный отступ задается числом.'
 	},
@@ -620,19 +603,9 @@ CKEDITOR.lang['ru'] =
 	{
 		title		: 'iFrame Properties', // MISSING
 		toolbar		: 'iFrame', // MISSING
-		height		: 'Height', // MISSING
-		width		: 'Width', // MISSING
-		invalidHeight	: 'iFrame height must be a number.', // MISSING
-		invalidWidth	: 'iFrame width must be a number.', // MISSING
 		noUrl		: 'Please type the iFrame URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border', // MISSING
-		align		: 'Alignment', // MISSING
-		alignLeft	: 'Left', // MISSING
-		alignRight	: 'Right', // MISSING
-		alignTop	: 'Top', // MISSING
-		alignMiddle	: 'Middle', // MISSING
-		alignBottom	: 'Bottom' // MISSING
+		border		: 'Show frame border' // MISSING
 	},
 
 	font :

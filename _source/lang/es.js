@@ -110,6 +110,17 @@ CKEDITOR.lang['es'] =
 		langDirRTL		: 'Derecha a izquierda (RTL)',
 		styles			: 'Estilos',
 		cssClasses		: 'Clase de la hoja de estilos',
+		width			: 'Anchura',
+		height			: 'Altura',
+		align			: 'Alineación',
+		alignLeft		: 'Izquierda',
+		alignRight		: 'Derecha',
+		alignCenter		: 'Centrado',
+		alignTop		: 'Tope',
+		alignMiddle		: 'Centro',
+		alignBottom		: 'Pie',
+		invalidHeight	: 'Altura debe ser un número.',
+		invalidWidth	: 'Anchura debe ser un número.',
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, no disponible</span>'
@@ -156,9 +167,7 @@ CKEDITOR.lang['es'] =
 		popupFullScreen	: 'Pantalla Completa (IE)',
 		popupScrollBars	: 'Barras de desplazamiento',
 		popupDependent	: 'Dependiente (Netscape)',
-		popupWidth		: 'Anchura',
 		popupLeft		: 'Posición Izquierda',
-		popupHeight		: 'Altura',
 		popupTop		: 'Posición Derecha',
 		id				: 'Id',
 		langDir			: 'Orientación',
@@ -244,15 +253,9 @@ CKEDITOR.lang['es'] =
 		rows		: 'Filas',
 		columns		: 'Columnas',
 		border		: 'Tamaño de Borde',
-		align		: 'Alineación',
-		alignLeft	: 'Izquierda',
-		alignCenter	: 'Centrado',
-		alignRight	: 'Derecha',
-		width		: 'Anchura',
 		widthPx		: 'pixeles',
 		widthPc		: 'porcentaje',
 		widthUnit	: 'unidad de la anchura',
-		height		: 'Altura',
 		cellSpace	: 'Esp. e/celdas',
 		cellPad		: 'Esp. interior',
 		caption		: 'Título',
@@ -288,9 +291,6 @@ CKEDITOR.lang['es'] =
 			wordWrap		: 'Ajustar al contenido',
 			hAlign			: 'Alineación Horizontal',
 			vAlign			: 'Alineación Vertical',
-			alignTop		: 'Arriba',
-			alignMiddle		: 'Medio',
-			alignBottom		: 'Abajo',
 			alignBaseline	: 'Linea de base',
 			bgColor			: 'Color de fondo',
 			borderColor		: 'Color de borde',
@@ -411,24 +411,17 @@ CKEDITOR.lang['es'] =
 		btnUpload	: 'Enviar al Servidor',
 		upload		: 'Cargar',
 		alt			: 'Texto Alternativo',
-		width		: 'Anchura',
-		height		: 'Altura',
 		lockRatio	: 'Proporcional',
 		unlockRatio	: 'Desbloquear el proporcional',
 		resetSize	: 'Tamaño Original',
 		border		: 'Borde',
 		hSpace		: 'Esp.Horiz',
 		vSpace		: 'Esp.Vert',
-		align		: 'Alineación',
-		alignLeft	: 'Izquierda',
-		alignRight	: 'Derecha',
 		alertUrl	: 'Por favor escriba la URL de la imagen',
 		linkTab		: 'Vínculo',
 		button2Img	: '¿Desea convertir el botón de imagen en una simple imagen?',
 		img2Button	: '¿Desea convertir la imagen en un botón de imagen?',
 		urlMissing	: 'Debe indicar la URL de la imagen.',
-		validateWidth	: 'La anchura debe ser un número.',
-		validateHeight	: 'La altura debe ser un número.',
 		validateBorder	: 'El borde debe ser un número.',
 		validateHSpace	: 'El espaciado horizontal debe ser un número.',
 		validateVSpace	: 'El espaciado vertical debe ser un número.'
@@ -452,16 +445,10 @@ CKEDITOR.lang['es'] =
 		accessAlways	: 'Siempre',
 		accessSameDomain: 'Mismo dominio',
 		accessNever		: 'Nunca',
-		align			: 'Alineación',
-		alignLeft		: 'Izquierda',
 		alignAbsBottom	: 'Abs inferior',
 		alignAbsMiddle	: 'Abs centro',
 		alignBaseline	: 'Línea de base',
-		alignBottom		: 'Pie',
-		alignMiddle		: 'Centro',
-		alignRight		: 'Derecha',
 		alignTextTop	: 'Tope del texto',
-		alignTop		: 'Tope',
 		quality			: 'Calidad',
 		qualityBest		: 'La mejor',
 		qualityHigh		: 'Alta',
@@ -475,13 +462,9 @@ CKEDITOR.lang['es'] =
 		windowMode		: 'WindowMode',
 		flashvars		: 'Opciones',
 		bgcolor			: 'Color de Fondo',
-		width			: 'Anchura',
-		height			: 'Altura',
 		hSpace			: 'Esp.Horiz',
 		vSpace			: 'Esp.Vert',
 		validateSrc		: 'Por favor escriba el vínculo URL',
-		validateWidth	: 'Anchura debe ser un número.',
-		validateHeight	: 'Altura debe ser un número.',
 		validateHSpace	: 'Esp.Horiz debe ser un número.',
 		validateVSpace	: 'Esp.Vert debe ser un número.'
 	},
@@ -620,19 +603,9 @@ CKEDITOR.lang['es'] =
 	{
 		title		: 'iFrame Properties', // MISSING
 		toolbar		: 'iFrame', // MISSING
-		height		: 'Height', // MISSING
-		width		: 'Width', // MISSING
-		invalidHeight	: 'iFrame height must be a number.', // MISSING
-		invalidWidth	: 'iFrame width must be a number.', // MISSING
 		noUrl		: 'Please type the iFrame URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border', // MISSING
-		align		: 'Alignment', // MISSING
-		alignLeft	: 'Left', // MISSING
-		alignRight	: 'Right', // MISSING
-		alignTop	: 'Top', // MISSING
-		alignMiddle	: 'Middle', // MISSING
-		alignBottom	: 'Bottom' // MISSING
+		border		: 'Show frame border' // MISSING
 	},
 
 	font :

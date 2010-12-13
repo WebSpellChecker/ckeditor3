@@ -110,6 +110,17 @@ CKEDITOR.lang['nl'] =
 		langDirRTL		: 'Rechts naar links (RTL)',
 		styles			: 'Stijlen',
 		cssClasses		: 'Stylesheet klassen',
+		width			: 'Breedte',
+		height			: 'Hoogte',
+		align			: 'Uitlijning',
+		alignLeft		: 'Links',
+		alignRight		: 'Rechts',
+		alignCenter		: 'Centreren',
+		alignTop		: 'Boven',
+		alignMiddle		: 'Midden',
+		alignBottom		: 'Beneden',
+		invalidHeight	: 'De hoogte moet een getal zijn.',
+		invalidWidth	: 'De breedte moet een getal zijn.',
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, niet beschikbaar</span>'
@@ -156,9 +167,7 @@ CKEDITOR.lang['nl'] =
 		popupFullScreen	: 'Volledig scherm (IE)',
 		popupScrollBars	: 'Schuifbalken',
 		popupDependent	: 'Afhankelijk (Netscape)',
-		popupWidth		: 'Breedte',
 		popupLeft		: 'Positie links',
-		popupHeight		: 'Hoogte',
 		popupTop		: 'Positie boven',
 		id				: 'Id',
 		langDir			: 'Schrijfrichting',
@@ -244,15 +253,9 @@ CKEDITOR.lang['nl'] =
 		rows		: 'Rijen',
 		columns		: 'Kolommen',
 		border		: 'Breedte rand',
-		align		: 'Uitlijning',
-		alignLeft	: 'Links',
-		alignCenter	: 'Centreren',
-		alignRight	: 'Rechts',
-		width		: 'Breedte',
 		widthPx		: 'pixels',
 		widthPc		: 'procent',
 		widthUnit	: 'eenheid breedte',
-		height		: 'Hoogte',
 		cellSpace	: 'Afstand tussen cellen',
 		cellPad		: 'Ruimte in de cel',
 		caption		: 'Naam',
@@ -288,9 +291,6 @@ CKEDITOR.lang['nl'] =
 			wordWrap		: 'Automatische terugloop',
 			hAlign			: 'Horizontale uitlijning',
 			vAlign			: 'Verticale uitlijning',
-			alignTop		: 'Boven',
-			alignMiddle		: 'Midden',
-			alignBottom		: 'Onder',
 			alignBaseline	: 'Basislijn',
 			bgColor			: 'Achtergrondkleur',
 			borderColor		: 'Kleur rand',
@@ -411,24 +411,17 @@ CKEDITOR.lang['nl'] =
 		btnUpload	: 'Naar server verzenden',
 		upload		: 'Upload',
 		alt			: 'Alternatieve tekst',
-		width		: 'Breedte',
-		height		: 'Hoogte',
 		lockRatio	: 'Afmetingen vergrendelen',
 		unlockRatio	: 'Afmetingen ontgrendelen',
 		resetSize	: 'Afmetingen resetten',
 		border		: 'Rand',
 		hSpace		: 'HSpace',
 		vSpace		: 'VSpace',
-		align		: 'Uitlijning',
-		alignLeft	: 'Links',
-		alignRight	: 'Rechts',
 		alertUrl	: 'Geef de URL van de afbeelding',
 		linkTab		: 'Link',
 		button2Img	: 'Wilt u de geselecteerde afbeeldingsknop vervangen door een eenvoudige afbeelding?',
 		img2Button	: 'Wilt u de geselecteerde afbeelding vervangen door een afbeeldingsknop?',
 		urlMissing	: 'De URL naar de afbeelding ontbreekt.',
-		validateWidth	: 'Breedte moet een heel nummer zijn.',
-		validateHeight	: 'Hoogte moet een heel nummer zijn.',
 		validateBorder	: 'Rand moet een heel nummer zijn.',
 		validateHSpace	: 'HSpace moet een heel nummer zijn.',
 		validateVSpace	: 'VSpace moet een heel nummer zijn.'
@@ -452,16 +445,10 @@ CKEDITOR.lang['nl'] =
 		accessAlways	: 'Altijd',
 		accessSameDomain: 'Zelfde domeinnaam',
 		accessNever		: 'Nooit',
-		align			: 'Uitlijning',
-		alignLeft		: 'Links',
 		alignAbsBottom	: 'Absoluut-onder',
 		alignAbsMiddle	: 'Absoluut-midden',
 		alignBaseline	: 'Basislijn',
-		alignBottom		: 'Beneden',
-		alignMiddle		: 'Midden',
-		alignRight		: 'Rechts',
 		alignTextTop	: 'Boven tekst',
-		alignTop		: 'Boven',
 		quality			: 'Kwaliteit',
 		qualityBest		: 'Beste',
 		qualityHigh		: 'Hoog',
@@ -475,13 +462,9 @@ CKEDITOR.lang['nl'] =
 		windowMode		: 'Venster modus',
 		flashvars		: 'Variabelen voor Flash',
 		bgcolor			: 'Achtergrondkleur',
-		width			: 'Breedte',
-		height			: 'Hoogte',
 		hSpace			: 'HSpace',
 		vSpace			: 'VSpace',
 		validateSrc		: 'Geef de link van de URL',
-		validateWidth	: 'De breedte moet een getal zijn.',
-		validateHeight	: 'De hoogte moet een getal zijn.',
 		validateHSpace	: 'De HSpace moet een getal zijn.',
 		validateVSpace	: 'De VSpace moet een getal zijn.'
 	},
@@ -620,19 +603,9 @@ CKEDITOR.lang['nl'] =
 	{
 		title		: 'iFrame Properties', // MISSING
 		toolbar		: 'iFrame', // MISSING
-		height		: 'Height', // MISSING
-		width		: 'Width', // MISSING
-		invalidHeight	: 'iFrame height must be a number.', // MISSING
-		invalidWidth	: 'iFrame width must be a number.', // MISSING
 		noUrl		: 'Please type the iFrame URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border', // MISSING
-		align		: 'Alignment', // MISSING
-		alignLeft	: 'Left', // MISSING
-		alignRight	: 'Right', // MISSING
-		alignTop	: 'Top', // MISSING
-		alignMiddle	: 'Middle', // MISSING
-		alignBottom	: 'Bottom' // MISSING
+		border		: 'Show frame border' // MISSING
 	},
 
 	font :

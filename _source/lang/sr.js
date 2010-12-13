@@ -110,6 +110,17 @@ CKEDITOR.lang['sr'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'Ширина',
+		height			: 'Висина',
+		align			: 'Равнање',
+		alignLeft		: 'Лево',
+		alignRight		: 'Десно',
+		alignCenter		: 'Средина',
+		alignTop		: 'Врх',
+		alignMiddle		: 'Средина',
+		alignBottom		: 'Доле',
+		invalidHeight	: 'Height must be a number.', // MISSING
+		invalidWidth	: 'Width must be a number.', // MISSING
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, unavailable</span>' // MISSING
@@ -156,9 +167,7 @@ CKEDITOR.lang['sr'] =
 		popupFullScreen	: 'Приказ преко целог екрана (ИE)',
 		popupScrollBars	: 'Скрол бар',
 		popupDependent	: 'Зависно (Netscape)',
-		popupWidth		: 'Ширина',
 		popupLeft		: 'Од леве ивице екрана (пиксела)',
-		popupHeight		: 'Висина',
 		popupTop		: 'Од врха екрана (пиксела)',
 		id				: 'Id', // MISSING
 		langDir			: 'Смер језика',
@@ -244,15 +253,9 @@ CKEDITOR.lang['sr'] =
 		rows		: 'Редова',
 		columns		: 'Kолона',
 		border		: 'Величина оквира',
-		align		: 'Равнање',
-		alignLeft	: 'Лево',
-		alignCenter	: 'Средина',
-		alignRight	: 'Десно',
-		width		: 'Ширина',
 		widthPx		: 'пиксела',
 		widthPc		: 'процената',
 		widthUnit	: 'width unit', // MISSING
-		height		: 'Висина',
 		cellSpace	: 'Ћелијски простор',
 		cellPad		: 'Размак ћелија',
 		caption		: 'Наслов табеле',
@@ -288,9 +291,6 @@ CKEDITOR.lang['sr'] =
 			wordWrap		: 'Word Wrap', // MISSING
 			hAlign			: 'Horizontal Alignment', // MISSING
 			vAlign			: 'Vertical Alignment', // MISSING
-			alignTop		: 'Top', // MISSING
-			alignMiddle		: 'Middle', // MISSING
-			alignBottom		: 'Bottom', // MISSING
 			alignBaseline	: 'Baseline', // MISSING
 			bgColor			: 'Background Color', // MISSING
 			borderColor		: 'Border Color', // MISSING
@@ -411,24 +411,17 @@ CKEDITOR.lang['sr'] =
 		btnUpload	: 'Пошаљи на сервер',
 		upload		: 'Пошаљи',
 		alt			: 'Алтернативни текст',
-		width		: 'Ширина',
-		height		: 'Висина',
 		lockRatio	: 'Закључај однос',
 		unlockRatio	: 'Unlock Ratio', // MISSING
 		resetSize	: 'Ресетуј величину',
 		border		: 'Оквир',
 		hSpace		: 'HSpace',
 		vSpace		: 'VSpace',
-		align		: 'Равнање',
-		alignLeft	: 'Лево',
-		alignRight	: 'Десно',
 		alertUrl	: 'Унесите УРЛ слике',
 		linkTab		: 'Линк',
 		button2Img	: 'Do you want to transform the selected image button on a simple image?', // MISSING
 		img2Button	: 'Do you want to transform the selected image on a image button?', // MISSING
 		urlMissing	: 'Image source URL is missing.', // MISSING
-		validateWidth	: 'Width must be a whole number.', // MISSING
-		validateHeight	: 'Height must be a whole number.', // MISSING
 		validateBorder	: 'Border must be a whole number.', // MISSING
 		validateHSpace	: 'HSpace must be a whole number.', // MISSING
 		validateVSpace	: 'VSpace must be a whole number.' // MISSING
@@ -452,16 +445,10 @@ CKEDITOR.lang['sr'] =
 		accessAlways	: 'Always', // MISSING
 		accessSameDomain: 'Same domain', // MISSING
 		accessNever		: 'Never', // MISSING
-		align			: 'Равнање',
-		alignLeft		: 'Лево',
 		alignAbsBottom	: 'Abs доле',
 		alignAbsMiddle	: 'Abs средина',
 		alignBaseline	: 'Базно',
-		alignBottom		: 'Доле',
-		alignMiddle		: 'Средина',
-		alignRight		: 'Десно',
 		alignTextTop	: 'Врх текста',
-		alignTop		: 'Врх',
 		quality			: 'Quality', // MISSING
 		qualityBest		: 'Best', // MISSING
 		qualityHigh		: 'High', // MISSING
@@ -475,13 +462,9 @@ CKEDITOR.lang['sr'] =
 		windowMode		: 'Window mode', // MISSING
 		flashvars		: 'Variables for Flash', // MISSING
 		bgcolor			: 'Боја позадине',
-		width			: 'Ширина',
-		height			: 'Висина',
 		hSpace			: 'HSpace',
 		vSpace			: 'VSpace',
 		validateSrc		: 'Унесите УРЛ линка',
-		validateWidth	: 'Width must be a number.', // MISSING
-		validateHeight	: 'Height must be a number.', // MISSING
 		validateHSpace	: 'HSpace must be a number.', // MISSING
 		validateVSpace	: 'VSpace must be a number.' // MISSING
 	},
@@ -620,19 +603,9 @@ CKEDITOR.lang['sr'] =
 	{
 		title		: 'iFrame Properties', // MISSING
 		toolbar		: 'iFrame', // MISSING
-		height		: 'Height', // MISSING
-		width		: 'Width', // MISSING
-		invalidHeight	: 'iFrame height must be a number.', // MISSING
-		invalidWidth	: 'iFrame width must be a number.', // MISSING
 		noUrl		: 'Please type the iFrame URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border', // MISSING
-		align		: 'Alignment', // MISSING
-		alignLeft	: 'Left', // MISSING
-		alignRight	: 'Right', // MISSING
-		alignTop	: 'Top', // MISSING
-		alignMiddle	: 'Middle', // MISSING
-		alignBottom	: 'Bottom' // MISSING
+		border		: 'Show frame border' // MISSING
 	},
 
 	font :

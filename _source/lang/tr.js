@@ -109,6 +109,17 @@ CKEDITOR.lang['tr'] =
 		langDirRTL		: 'Right to Left (RTL)', // MISSING
 		styles			: 'Style', // MISSING
 		cssClasses		: 'Stylesheet Classes', // MISSING
+		width			: 'Genişlik',
+		height			: 'Yükseklik',
+		align			: 'Hizalama',
+		alignLeft		: 'Sol',
+		alignRight		: 'Sağ',
+		alignCenter		: 'Merkez',
+		alignTop		: 'Tepe',
+		alignMiddle		: 'Orta',
+		alignBottom		: 'Alt',
+		invalidHeight	: 'Yükseklik sayı olmalıdır.',
+		invalidWidth	: 'Genişlik bir sayı olmalıdır.',
 
 		// Put the voice-only part of the label in the span.
 		unavailable		: '%1<span class="cke_accessibility">, hazır değildir</span>'
@@ -155,9 +166,7 @@ CKEDITOR.lang['tr'] =
 		popupFullScreen	: 'Tam Ekran (IE)',
 		popupScrollBars	: 'Kaydırma Çubukları',
 		popupDependent	: 'Bağımlı (Netscape)',
-		popupWidth		: 'Genişlik',
 		popupLeft		: 'Sola Göre Konum',
-		popupHeight		: 'Yükseklik',
 		popupTop		: 'Yukarıya Göre Konum',
 		id				: 'Id',
 		langDir			: 'Dil Yönü',
@@ -243,15 +252,9 @@ CKEDITOR.lang['tr'] =
 		rows		: 'Satırlar',
 		columns		: 'Sütunlar',
 		border		: 'Kenar Kalınlığı',
-		align		: 'Hizalama',
-		alignLeft	: 'Sol',
-		alignCenter	: 'Merkez',
-		alignRight	: 'Sağ',
-		width		: 'Genişlik',
 		widthPx		: 'piksel',
 		widthPc		: 'yüzde',
 		widthUnit	: 'genişlik birimi',
-		height		: 'Yükseklik',
 		cellSpace	: 'Izgara kalınlığı',
 		cellPad		: 'Izgara yazı arası',
 		caption		: 'Başlık',
@@ -287,9 +290,6 @@ CKEDITOR.lang['tr'] =
 			wordWrap		: 'Kelime Kaydırma',
 			hAlign			: 'Düşey Hizalama',
 			vAlign			: 'Yataş Hizalama',
-			alignTop		: 'Üst',
-			alignMiddle		: 'Orta',
-			alignBottom		: 'Alt',
 			alignBaseline	: 'Tabana',
 			bgColor			: 'Arkaplan Rengi',
 			borderColor		: 'Çerçeve Rengi',
@@ -410,24 +410,17 @@ CKEDITOR.lang['tr'] =
 		btnUpload	: 'Sunucuya Yolla',
 		upload		: 'Karşıya Yükle',
 		alt			: 'Alternatif Yazı',
-		width		: 'Genişlik',
-		height		: 'Yükseklik',
 		lockRatio	: 'Oranı Kilitle',
 		unlockRatio	: 'Kilitli Oran',
 		resetSize	: 'Boyutu Başa Döndür',
 		border		: 'Kenar',
 		hSpace		: 'Yatay Boşluk',
 		vSpace		: 'Dikey Boşluk',
-		align		: 'Hizalama',
-		alignLeft	: 'Sol',
-		alignRight	: 'Sağ',
 		alertUrl	: 'Lütfen resmin URL\'sini yazınız',
 		linkTab		: 'Köprü',
 		button2Img	: 'Seçili resim butonunu basit resime çevirmek istermisiniz?',
 		img2Button	: 'Seçili olan resimi, resimli butona çevirmek istermisiniz?',
 		urlMissing	: 'Resmin URL kaynağı eksiktir.',
-		validateWidth	: 'Genişlik tam sayı olmalıdır.',
-		validateHeight	: 'Yükseklik tam sayı olmalıdır.',
 		validateBorder	: 'Çerçeve tam sayı olmalıdır.',
 		validateHSpace	: 'HSpace tam sayı olmalıdır.',
 		validateVSpace	: 'VSpace tam sayı olmalıdır.'
@@ -451,16 +444,10 @@ CKEDITOR.lang['tr'] =
 		accessAlways	: 'Herzaman',
 		accessSameDomain: 'Aynı domain',
 		accessNever		: 'Asla',
-		align			: 'Hizalama',
-		alignLeft		: 'Sol',
 		alignAbsBottom	: 'Tam Altı',
 		alignAbsMiddle	: 'Tam Ortası',
 		alignBaseline	: 'Taban Çizgisi',
-		alignBottom		: 'Alt',
-		alignMiddle		: 'Orta',
-		alignRight		: 'Sağ',
 		alignTextTop	: 'Yazı Tepeye',
-		alignTop		: 'Tepe',
 		quality			: 'Kalite',
 		qualityBest		: 'En iyi',
 		qualityHigh		: 'Yüksek',
@@ -474,13 +461,9 @@ CKEDITOR.lang['tr'] =
 		windowMode		: 'Pencere modu',
 		flashvars		: 'Flash Değerleri',
 		bgcolor			: 'Arka Renk',
-		width			: 'Genişlik',
-		height			: 'Yükseklik',
 		hSpace			: 'Yatay Boşluk',
 		vSpace			: 'Dikey Boşluk',
 		validateSrc		: 'Lütfen köprü URL\'sini yazın',
-		validateWidth	: 'Genişlik bir sayı olmalıdır.',
-		validateHeight	: 'Yükseklik sayı olmalıdır.',
 		validateHSpace	: 'HSpace sayı olmalıdır.',
 		validateVSpace	: 'VSpace sayı olmalıdır.'
 	},
@@ -619,19 +602,9 @@ CKEDITOR.lang['tr'] =
 	{
 		title		: 'iFrame Properties', // MISSING
 		toolbar		: 'iFrame', // MISSING
-		height		: 'Height', // MISSING
-		width		: 'Width', // MISSING
-		invalidHeight	: 'iFrame height must be a number.', // MISSING
-		invalidWidth	: 'iFrame width must be a number.', // MISSING
 		noUrl		: 'Please type the iFrame URL', // MISSING
 		scrolling	: 'Enable scrollbars', // MISSING
-		border		: 'Show frame border', // MISSING
-		align		: 'Alignment', // MISSING
-		alignLeft	: 'Left', // MISSING
-		alignRight	: 'Right', // MISSING
-		alignTop	: 'Top', // MISSING
-		alignMiddle	: 'Middle', // MISSING
-		alignBottom	: 'Bottom' // MISSING
+		border		: 'Show frame border' // MISSING
 	},
 
 	font :

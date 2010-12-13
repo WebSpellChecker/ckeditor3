@@ -899,7 +899,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 												type :  'text',
 												widths : [ '50%', '50%' ],
 												labelLayout : 'horizontal',
-												label : linkLang.popupWidth,
+												label : commonLang.width,
 												id : 'width',
 												setup : setupPopupParams,
 												commit : commitPopupParams
@@ -925,7 +925,7 @@ CKEDITOR.dialog.add( 'link', function( editor )
 												type :  'text',
 												labelLayout : 'horizontal',
 												widths : [ '50%', '50%' ],
-												label : linkLang.popupHeight,
+												label : commonLang.height,
 												id : 'height',
 												setup : setupPopupParams,
 												commit : commitPopupParams

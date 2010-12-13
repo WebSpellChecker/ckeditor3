@@ -72,7 +72,7 @@ CKEDITOR.dialog.add( 'cellProperties', function( editor )
 
 		return {
 			title : langCell.title,
-			minWidth : CKEDITOR.env.ie && CKEDITOR.env.quirks? 450 : 400,
+			minWidth : CKEDITOR.env.ie && CKEDITOR.env.quirks? 450 : 410,
 			minHeight : CKEDITOR.env.ie && CKEDITOR.env.quirks?  230 : 200,
 			contents : [
 				{

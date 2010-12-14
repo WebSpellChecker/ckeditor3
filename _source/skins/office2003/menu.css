@@ -52,11 +52,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 /* IE with zoom != 100% will distort the icons otherwise #4821 */
 .cke_browser_ie .cke_skin_office2003 .cke_menuitem .cke_icon
 {
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='icons.png', sizingMethod='scale');
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale');
 }
 .cke_browser_ie.cke_rtl .cke_skin_office2003 .cke_menuitem .cke_icon
 {
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='icons_rtl.png', sizingMethod='scale');
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale');
 }
 .cke_browser_ie6 .cke_skin_office2003 .cke_menuitem .cke_icon
 {
@@ -72,11 +72,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 /* IE with zoom != 100% will distort the icons otherwise #4821 */
 .cke_browser_ie .cke_skin_office2003 .cke_menuitem .cke_disabled .cke_icon
 {
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='icons.png', sizingMethod='scale');
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale');
 }
 .cke_browser_ie.cke_rtl .cke_skin_office2003 .cke_menuitem .cke_disabled .cke_icon
 {
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='icons_rtl.png', sizingMethod='scale');
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale');
 }
 .cke_browser_ie6 .cke_skin_office2003 .cke_menuitem .cke_disabled .cke_icon
 {

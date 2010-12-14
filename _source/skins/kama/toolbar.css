@@ -189,12 +189,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 .cke_skin_kama .cke_browser_ie .cke_button a.cke_disabled *,
 .cke_skin_kama .cke_browser_ie a:hover.cke_button .cke_disabled *
 {
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='icons.png', sizingMethod='scale'), alpha(opacity=30);
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale'), alpha(opacity=30);
 }
 .cke_skin_kama .cke_browser_ie .cke_rtl .cke_button a.cke_disabled *,
 .cke_skin_kama .cke_browser_ie .cke_rtl a:hover.cke_button .cke_disabled *
 {
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='icons_rtl.png', sizingMethod='scale'), alpha(opacity=30);
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale'), alpha(opacity=30);
 }
 .cke_skin_kama .cke_browser_ie6 .cke_button a.cke_disabled *,
 .cke_skin_kama .cke_browser_ie6 a:hover.cke_button .cke_disabled *
@@ -263,11 +263,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 /* IE with zoom != 100% will distort the icons otherwise #4821 */
 .cke_skin_kama .cke_browser_ie .cke_button .cke_icon
 {
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='icons.png', sizingMethod='scale'); 
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale');
 }
 .cke_skin_kama .cke_browser_ie .cke_rtl .cke_button .cke_icon
 {
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='icons_rtl.png', sizingMethod='scale'); 
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale');
 }
 .cke_skin_kama .cke_browser_ie6 .cke_button .cke_icon
 {
@@ -332,7 +332,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 /* IE with zoom != 100% will distort the icons otherwise #4821 */
 .cke_skin_kama .cke_browser_ie .cke_button .cke_buttonarrow
 {
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/sprites.png', sizingMethod='scale');
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale');
 }
 .cke_skin_kama .cke_browser_ie6 .cke_button .cke_buttonarrow
 {

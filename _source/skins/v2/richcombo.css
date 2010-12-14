@@ -151,7 +151,7 @@
 /* IE with zoom != 100% will distort the icons otherwise #4821 */
 .cke_skin_v2 .cke_browser_ie .cke_rcombo .cke_openbutton
 {
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/sprites.png', sizingMethod='scale'); 
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale');
 }
 .cke_skin_v2 .cke_browser_ie6 .cke_rcombo .cke_openbutton
 {
@@ -252,7 +252,7 @@
 /* IE with zoom != 100% will distort the icons otherwise #4821 */
 .cke_skin_v2 .cke_browser_ie .cke_rcombo .cke_disabled .cke_openbutton
 {
-	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='images/sprites.png', sizingMethod='scale'), alpha(opacity=50);
+	filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(sizingMethod='scale'), alpha(opacity=50);
 }
 .cke_skin_v2 .cke_browser_ie6 .cke_rcombo .cke_disabled .cke_openbutton
 {

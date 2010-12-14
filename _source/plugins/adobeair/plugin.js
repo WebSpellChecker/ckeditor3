@@ -5,7 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 (function()
 {
-	var eventNameList = [ 'click', 'keydown', 'mousedown', 'keypress' ];
+	var eventNameList = [ 'click', 'keydown', 'mousedown', 'keypress', 'mouseover', 'mouseout' ];
 
 	// Inline event callbacks assigned via innerHTML/outerHTML, such as
 	// onclick/onmouseover, are ignored in AIR.

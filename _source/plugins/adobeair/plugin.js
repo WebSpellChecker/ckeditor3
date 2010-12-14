@@ -27,12 +27,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					(function( eventName )
 					{
+						var inlineEventHandler = node.getAttribute( 'on' + eventName );
 						if ( node.hasAttribute( 'on' + eventName ) )
 						{
+							node.removeAttribute( 'on' + eventName );
 							node.on( eventName, function( evt )
 							{
-								var inlineEventHandler = node.getAttribute( 'on' + eventName ),
-									callFunc = /(return\s*)?CKEDITOR\.tools\.callFunction\(([^)]+)\)/.exec( inlineEventHandler ),
+								var callFunc = /(return\s*)?CKEDITOR\.tools\.callFunction\(([^)]+)\)/.exec( inlineEventHandler ),
 									hasReturn = callFunc && callFunc[ 1 ],
 									callFuncArgs = callFunc &&  callFunc[ 2 ].split( ',' ),
 									preventDefault = /return false;/.test( inlineEventHandler );

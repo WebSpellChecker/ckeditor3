@@ -725,7 +725,6 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			else
 				element.setStyle( 'display', 'block' );
 
-			CKEDITOR.ui.fire( 'ready', this );
 			// FIREFOX BUG: Fix vanishing caret for Firefox 2 or Gecko 1.8.
 			if ( CKEDITOR.env.gecko && CKEDITOR.env.version < 10900 )
 			{
@@ -792,6 +791,8 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 					// Execute onLoad for the first show.
 					this.fireOnce( 'load', {} );
+					CKEDITOR.ui.fire( 'ready', this );
+
 					this.fire( 'show', {} );
 					this._.editor.fire( 'dialogShow', this );
 

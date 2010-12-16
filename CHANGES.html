@@ -40,28 +40,27 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			New features:</p>
 	<ul>
 		<li><a href="http://dev.ckeditor.com/ticket/4090">#4090</a> : Full Adobe AIR support.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/5084">#5084</a> : Dialogs are now resizable with a grip in the bottom of the dialog.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5084">#5084</a> : Dialogs are now resizable with a grip in the footer.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/5755">#5755</a> : Introduced the <a href="http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html#.dialog_buttonsOrder">dialog_buttonsOrder</a> setting, making it possible to control the buttons order.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/4648">#4648</a> : Added the new Iframe plugin.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/4648">#4648</a> : New "Iframe" plugin.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6010">#6010</a> : The "automatic" option of the font/background color panel now represents the real color.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/5654">#5654</a> : Added the new placeholder plugin.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5654">#5654</a> : New "placeholder" plugin.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6334">#6334</a> : CKEditor now uses <a href="http://www.w3.org/TR/2010/WD-html5-20101019/elements.html#embedding-custom-non-visible-data-with-the-data-attributes">HTML5's data-* attributes</a> for its internal attributes.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/6103">#6103</a> : It's now possible to control the styling of inline read-only elements with the disableReadonlyStyling setting. It's also possible to avoid inline-styling any element by setting its data-cke-nostyle attribute to "1".</li>
-		<li><a href="http://dev.ckeditor.com/ticket/5404">#5404</a> : "fillEmptyBlocks" configuration option of v2 is now available.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/5367">#5367</a> : New "CKEDITOR.editor::insertText" method (check api.html sample page for usages) is now provided to insert plain text into editor.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/5367">#5915</a> : Hiding dialog tabs.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6103">#6103</a> : It's now possible to control the styling of inline read-only elements with the <a href="http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html#.disableReadonlyStyling">disableReadonlyStyling</a> setting. It's also possible to avoid inline-styling any element by setting its "data-cke-nostyle" attribute to "1".</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5404">#5404</a> : <a href="http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html#.fillEmptyBlocks">fillEmptyBlocks</a> configuration option of v2 is now available.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5367">#5367</a> : New <a href="http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.editor.html#insertText">CKEDITOR.editor#insertText</a> method (check api.html sample page for usages) is now provided to insert plain text into editor.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5367">#5915</a> : New <a href="http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.config.html#.removeDialogTabs">removeDialogTabs</a> configuration option to hide certain dialog tabs.</li>
 	</ul>
 	<p>
 			Fixed issues:</p>
 	<ul>
 		<li><a href="http://dev.ckeditor.com/ticket/4821">#4821</a> : Icons in the toolbar were distorted with IE and zoom != 100%.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/5587">#5587</a> : Visual improvements in dialogs.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/4652">#4652</a> : Config for disable editor context menu.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/5599">#5599</a> : Labels for special characters need to be resourced.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/6419">#6419</a> : IE: List creation by merging problem.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/6502">#6502</a> : Remove IE6 image preloading.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5587">#5587</a> : Visual improvements in dialogs, reinforce field label on separate line.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/4652">#4652</a> : Now it's able to disable editor context menu by simply removing the "contextmenu" plugin.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/5599">#5599</a> : Labels of "specialchar" dialog are now translated.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6419">#6419</a> : [IE] List creation by merging problem.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6502">#6502</a> : Removed IE6 image preloading, which was used to defect the duplicate request of background images.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6822">#6822</a> : Added labels to fake objects.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/6820">#6820</a> : [IE] toolbar icons sprites 404s on editor load.</li>
 		<li>Updated the following language files:<ul>
 			<li>Hebrew;</li>
 		</ul></li>
@@ -101,7 +100,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		<li><a href="http://dev.ckeditor.com/ticket/6747">#6747</a> : Full screen layout issue caused by page element focus outside editor.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6779">#6779</a> : Click on "body" on elements blink the selection off.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6781">#6781</a> : [IE7] Dialogs are broken with RTL and office2003 and v2 skins.</li>
-		<li><a href="http://dev.ckeditor.com/ticket/6798">#6798</a> : IE7: Dialog buttons disappearing in RTL after dragging.</li>
+		<li><a href="http://dev.ckeditor.com/ticket/6798">#6798</a> : [IE7] Dialog buttons disappear in RTL after dragging.</li>
 		<li><a href="http://dev.ckeditor.com/ticket/6806">#6806</a> : [IE7] Dialog buttons invisible on focus.</li>
 		<li>Updated the following language files:<ul>
 			<li><a href="http://dev.ckeditor.com/ticket/6756">#6756</a> : Hungarian;</li>

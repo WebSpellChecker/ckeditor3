@@ -6,7 +6,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.plugins.add( 'contextmenu',
 {
 	requires : [ 'menu' ],
-	
+
 	// Make sure the base class (CKEDITOR.menu) is loaded before it (#3318).
 	onLoad : function()
 	{

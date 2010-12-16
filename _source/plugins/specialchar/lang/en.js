@@ -1,4 +1,4 @@
-
+﻿
 CKEDITOR.plugins.setLang( 'specialchar', 'en',
 {
 	euro: "EURO SIGN",

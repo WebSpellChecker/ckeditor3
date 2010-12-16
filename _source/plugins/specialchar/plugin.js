@@ -11,7 +11,7 @@ CKEDITOR.plugins.add( 'specialchar',
 {
 	// List of available localizations.
 	availableLangs : { en:1 },
-	
+
 	init : function( editor )
 	{
 		var pluginName = 'specialchar',
@@ -55,7 +55,7 @@ CKEDITOR.plugins.add( 'specialchar',
   * config.specialChars = [ '&quot;', '&rsquo;', [ '&custom;', 'Custom label' ] ];
   * config.specialChars = config.specialChars.concat( [ '&quot;', [ '&rsquo;', 'Custom label' ] ] );
   */
-CKEDITOR.config.specialChars = 
+CKEDITOR.config.specialChars =
 	[
 		'!','&quot;','#','$','%','&amp;',"'",'(',')','*','+','-','.','/',
 		'0','1','2','3','4','5','6','7','8','9',':',';',

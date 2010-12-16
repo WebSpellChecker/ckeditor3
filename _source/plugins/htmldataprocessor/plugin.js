@@ -420,7 +420,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			dataProcessor.htmlFilter.addRules( defaultHtmlBlockFilterRules );
 		},
-		
+
 		onLoad : function()
 		{
 			! ( 'fillEmptyBlocks' in CKEDITOR.config ) && ( CKEDITOR.config.fillEmptyBlocks = 1 );
@@ -541,4 +541,3 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * 		return false;
  * }
  */
-

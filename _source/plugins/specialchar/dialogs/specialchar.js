@@ -217,7 +217,7 @@ CKEDITOR.dialog.add( 'specialchar', function( editor )
 					if ( ( character = chars[ i ] ) )
 					{
 						charDesc = '';
-						
+
 						if ( character instanceof Array )
 						{
 							charDesc = character[ 1 ];

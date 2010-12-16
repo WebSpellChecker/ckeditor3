@@ -110,10 +110,10 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			buttonsOrder = editor.config.dialog_buttonsOrder || 'OS',
 			dir = editor.lang.dir;
 
-			if ( ( buttonsOrder == 'OS' && CKEDITOR.env.mac ) ||    // The buttons in MacOS Apps are in reverse order (#4750)  
-				( buttonsOrder == 'rtl' && dir == 'ltr' ) ||  
-				( buttonsOrder == 'ltr' && dir == 'rtl' ) )  
-					defaultDefinition.buttons.reverse();  
+			if ( ( buttonsOrder == 'OS' && CKEDITOR.env.mac ) ||    // The buttons in MacOS Apps are in reverse order (#4750)
+				( buttonsOrder == 'rtl' && dir == 'ltr' ) ||
+				( buttonsOrder == 'ltr' && dir == 'rtl' ) )
+					defaultDefinition.buttons.reverse();
 
 
 		// Completes the definition with the default values.
@@ -1755,7 +1755,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			else if ( resizable == CKEDITOR.DIALOG_RESIZE_HEIGHT )
 				direction = ' cke_resizer_vertical';
 			var resizer = CKEDITOR.dom.element.createFromHtml( '<div class="cke_resizer' + direction + '"' +
-					' title="' + CKEDITOR.tools.htmlEncode( editor.lang.resize ) + '"' + 
+					' title="' + CKEDITOR.tools.htmlEncode( editor.lang.resize ) + '"' +
 					' onmousedown="CKEDITOR.tools.callFunction(' + mouseDownFn + ', event )"></div>' );
 			dialog.parts.footer.append( resizer, 1 );
 		});
@@ -3030,7 +3030,7 @@ CKEDITOR.plugins.add( 'dialog',
  * config.dialog_buttonsOrder = 'rtl';
  */
 
-/**  
+/**
  * The dialog contents to removed. It's a string composed by dialog name and tab name with a colon between them.
  * Separate each pair with semicolon (see example).
  * <b>Note: All names are case-sensitive.</b>

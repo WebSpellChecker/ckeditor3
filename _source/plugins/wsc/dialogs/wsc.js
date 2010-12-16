@@ -189,4 +189,3 @@ CKEDITOR.dialog.on( 'resize', function( evt )
 		iframe && iframe.setStyle( 'height', data.height + 'px' );
 	}
 });
-

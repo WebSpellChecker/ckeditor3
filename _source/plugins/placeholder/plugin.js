@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -64,9 +64,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				});
 
 			editor.addCss(
-				'.cke_placeholder' + 
-				'{' + 
-					'background-color: #ffff00;' + 
+				'.cke_placeholder' +
+				'{' +
+					'background-color: #ffff00;' +
 					( CKEDITOR.env.gecko ? 'cursor: default;' : '' ) +
 				'}'
 			);
@@ -121,7 +121,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	});
 })();
 
-CKEDITOR.plugins.placeholder = 
+CKEDITOR.plugins.placeholder =
 {
 	createPlaceholder : function( editor, oldElement, text, isGet )
 	{

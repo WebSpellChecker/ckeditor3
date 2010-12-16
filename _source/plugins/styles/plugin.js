@@ -370,7 +370,7 @@ CKEDITOR.STYLE_OBJECT = 3;
 	{
 		var unstylable,
 			editable;
-		
+
 		while ( ( element = element.getParent() ) )
 		{
 			if ( element.getName() == 'body' )
@@ -416,7 +416,7 @@ CKEDITOR.STYLE_OBJECT = 3;
 
 		// Indicates that fully selected read-only elements are to be included in the styling range.
 		var includeReadonly = def.includeReadonly;
-		
+
 		// If the read-only inclusion is not available in the definition, try
 		// to get it from the document data.
 		if ( includeReadonly == undefined )
@@ -446,7 +446,7 @@ CKEDITOR.STYLE_OBJECT = 3;
 		// If the first element can't be styled, we'll start processing right
 		// after its unstylable root.
 		if ( firstUnstylable )
-			currentNode = firstUnstylable.getNextSourceNode( true );			
+			currentNode = firstUnstylable.getNextSourceNode( true );
 
 		// If the last element can't be styled, we'll stop processing on its
 		// unstylable root.

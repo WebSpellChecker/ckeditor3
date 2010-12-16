@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -12,7 +12,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		scrolling : { 'true' : 'yes', 'false' : 'no' },
 		frameborder : { 'true' : '1', 'false' : '0' }
 	};
-	
+
 	function loadValue( iframeNode )
 	{
 		var isCheckbox = this instanceof CKEDITOR.ui.dialog.checkbox;

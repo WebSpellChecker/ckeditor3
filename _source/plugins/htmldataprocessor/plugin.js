@@ -527,7 +527,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
  * this is used to render block elements properly with line-height; When a function is instead specified,
  * it'll be passed a {@link CKEDITOR.htmlParser.element} to decide whether adding the filler text
  * by expecting a boolean return value.
- * @name CKEDITOR.config.fillEmptyBlocks;
+ * @name CKEDITOR.config.fillEmptyBlocks
  * @since 3.5
  * @type Boolean
  * @default true

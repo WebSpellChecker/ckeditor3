@@ -1,4 +1,4 @@
-﻿/*
+/*
 Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -11,12 +11,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 (function()
 {
 	// List of elements in which has no way to move editing focus outside.
-	var nonExitableElementNames = { table:1,pre:1 };
+	var nonExitableElementNames = { table:1 };
 
 	// Matching an empty paragraph at the end of document.
 	var emptyParagraphRegexp = /(^|<body\b[^>]*>)\s*<(p|div|address|h\d|center)[^>]*>\s*(?:<br[^>]*>|&nbsp;|\u00A0|&#160;)?\s*(:?<\/\2>)?\s*(?=$|<\/body>)/gi;
 
 	var notWhitespaceEval = CKEDITOR.dom.walker.whitespaces( true );
+
+	// Elements that could have empty new line around, including table, pre-formatted block, hr, page-break. (#6554)
+	function nonExitable( element )
+	{
+		return ( element.getName() in nonExitableElementNames )
+				|| element.isBlockBoundary() && CKEDITOR.dtd.$empty[ element.getName() ];
+	}
 
 	function checkReadOnly( selection )
 	{
@@ -317,7 +324,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				var element = fixedBlock.getNext( isNotWhitespace );
 				if ( element &&
 					 element.type == CKEDITOR.NODE_ELEMENT &&
-					 !nonExitableElementNames[ element.getName() ] )
+					 !nonExitable( element ) )
 				{
 					range.moveToElementEditStart( element );
 					fixedBlock.remove();
@@ -327,7 +334,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					element = fixedBlock.getPrevious( isNotWhitespace );
 					if ( element &&
 						 element.type == CKEDITOR.NODE_ELEMENT &&
-						 !nonExitableElementNames[ element.getName() ] )
+						 !nonExitable( element ) )
 					{
 						range.moveToElementEditEnd( element );
 						fixedBlock.remove();
@@ -1026,7 +1033,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					focusGrabber = editor.container.append( CKEDITOR.dom.element.createFromHtml(
 						// Use 'span' instead of anything else to fly under the screen-reader radar. (#5049)
-						'<span tabindex="-1" style="position:absolute; left:-10000" role="presentation"></span>' ) );
+						'<span tabindex="-1" style="position:absolute;" role="presentation"></span>' ) );
 
 					focusGrabber.on( 'focus', function()
 						{

@@ -107,25 +107,24 @@ CKEDITOR.tools.extend( CKEDITOR.dom.node.prototype,
 		{
 			var $clone = this.$.cloneNode( includeChildren );
 
-			var removeIds = function( node )
+			if ( !cloneId )
 			{
-				if ( node.nodeType != CKEDITOR.NODE_ELEMENT )
-					return;
-
-				if ( !cloneId )
-					node.removeAttribute( 'id', false );
-				node.removeAttribute( '_cke_expando', false );
-
-				if ( includeChildren )
+				var removeIds = function( node )
 				{
-					var childs = node.childNodes;
-					for ( var i=0; i < childs.length; i++ )
-						removeIds( childs[ i ] );
-				}
-			};
+					if ( node.nodeType != CKEDITOR.NODE_ELEMENT )
+						return;
 
-			// The "id" attribute should never be cloned to avoid duplication.
-			removeIds( $clone );
+					node.removeAttribute( 'id', false ) ;
+					node.removeAttribute( '_cke_expando', false ) ;
+
+					var childs = node.childNodes;
+					for ( var i=0 ; i < childs.length ; i++ )
+						removeIds( childs[ i ] );
+				};
+
+				// The "id" attribute should never be cloned to avoid duplication.
+				removeIds( $clone );
+			}
 
 			return new CKEDITOR.dom.node( $clone );
 		},
@@ -660,6 +659,24 @@ CKEDITOR.tools.extend( CKEDITOR.dom.node.prototype,
 			}
 		},
 
+		/**
+		 * Checks is this node is read-only (should not be changed). It
+		 * additionaly returns the element, if any, which defines the read-only
+		 * state of this node. It may be the node itself or any of its parent
+		 * nodes.
+		 * @returns {CKEDITOR.dom.element|Boolean} An element containing
+		 *		read-only attributes or "false" if none is found.
+		 * @since 3.5
+		 * @example
+		 * // For the following HTML:
+		 * // <div contenteditable="false">Some <b>text</b></div>
+		 * 
+		 * // If "ele" is the above <div>
+		 * ele.getReadOnlyRoot();  // the <div> element
+		 *
+		 * // If "ele" is the above <b>
+		 * ele.getReadOnlyRoot();  // the <div> element
+		 */
 		isReadOnly : function()
 		{
 			var current = this;

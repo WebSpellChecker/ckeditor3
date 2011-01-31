@@ -1,6 +1,6 @@
 <?php
 /*
-* Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+* Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 * For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -505,7 +505,7 @@ class CKEditor
 		}
 		else {
 			/**
-			 * realpath — Returns canonicalized absolute pathname
+			 * realpath - Returns canonicalized absolute pathname
 			 */
 			$realPath = realpath( './' ) ;
 		}
@@ -524,7 +524,7 @@ class CKEditor
 
 		$documentRoot = substr($realPath, 0, strlen($realPath) - strlen($selfPath));
 		$fileUrl = substr($file, strlen($documentRoot));
-		$ckeditorUrl = str_replace("ckeditor_php5.php", "", $fileUrl);
+		$ckeditorUrl = str_replace("ckeditor_php4.php", "", $fileUrl);
 
 		return $ckeditorUrl;
 	}
@@ -570,6 +570,9 @@ class CKEditor
 				array('\\\\', '\\/', '\\n', '\\t', '\\r', '\\b', '\\f', '\"'));
 
 				$val = str_replace($jsonReplaces[0], $jsonReplaces[1], $val);
+				if (strtoupper(substr($val, 0, 9)) == 'CKEDITOR.') {
+					return $val;
+				}
 
 				return '"' . $val . '"';
 			}

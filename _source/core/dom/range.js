@@ -1328,8 +1328,8 @@ CKEDITOR.dom.range = function( document )
 					else
 					{
 						this.setStartAt( blockBoundary, fromInside ?
-						                                CKEDITOR.POSITION_AFTER_START :
-						                                CKEDITOR.POSITION_AFTER_END );
+								CKEDITOR.POSITION_AFTER_START :
+								CKEDITOR.POSITION_AFTER_END );
 					}
 
 					// Enlarging the end boundary.

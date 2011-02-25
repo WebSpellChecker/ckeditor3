@@ -1271,6 +1271,8 @@ CKEDITOR.dom.range = function( document )
 
 				case CKEDITOR.ENLARGE_BLOCK_CONTENTS:
 				case CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS:
+				case CKEDITOR.ENLARGE_BLOCKS:
+				case CKEDITOR.ENLARGE_LIST_ITEMS:
 
 					// Enlarging the start boundary.
 					var walkerRange = new CKEDITOR.dom.range( this.document );
@@ -1281,10 +1283,11 @@ CKEDITOR.dom.range = function( document )
 					walkerRange.setEnd( this.startContainer, this.startOffset );
 
 					var walker = new CKEDITOR.dom.walker( walkerRange ),
+						toSkip = CKEDITOR.dom.walker.whitespaces( 1 ),
 					    blockBoundary,  // The node on which the enlarging should stop.
 						tailBr, // In case BR as block boundary.
 					    notBlockBoundary = CKEDITOR.dom.walker.blockBoundary(
-								( unit == CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS ) ? { br : 1 } : null ),
+								( unit == CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS || unit == CKEDITOR.ENLARGE_LIST_ITEMS ) ? { br : 1 } : null ),
 						// Record the encountered 'blockBoundary' for later use.
 						boundaryGuard = function( node )
 						{
@@ -1312,13 +1315,22 @@ CKEDITOR.dom.range = function( document )
 					// Start the range either after the end of found block (<p>...</p>[text)
 					// or at the start of block (<p>[text...), by comparing the document position
 					// with 'enlargeable' node.
-					this.setStartAt(
-							blockBoundary,
-							!blockBoundary.is( 'br' ) &&
+					var fromInside = !blockBoundary.is( 'br' ) &&
 							( !enlargeable && this.checkStartOfBlock()
-							  || enlargeable && blockBoundary.contains( enlargeable ) ) ?
-								CKEDITOR.POSITION_AFTER_START :
-								CKEDITOR.POSITION_AFTER_END );
+								|| enlargeable && blockBoundary.contains( enlargeable ) );
+
+					if ( ( unit == CKEDITOR.ENLARGE_BLOCKS || unit == CKEDITOR.ENLARGE_LIST_ITEMS ) && fromInside )
+					{
+						while ( ! ( blockBoundary.is( 'body' ) || blockBoundary.getPrevious( toSkip ) ) )
+							blockBoundary = blockBoundary.getParent();
+						this.setStartBefore( blockBoundary );
+					}
+					else
+					{
+						this.setStartAt( blockBoundary, fromInside ?
+						                                CKEDITOR.POSITION_AFTER_START :
+						                                CKEDITOR.POSITION_AFTER_END );
+					}
 
 					// Enlarging the end boundary.
 					walkerRange = this.clone();
@@ -1327,7 +1339,7 @@ CKEDITOR.dom.range = function( document )
 					walker = new CKEDITOR.dom.walker( walkerRange );
 
 					// tailBrGuard only used for on range end.
-					walker.guard = ( unit == CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS ) ?
+					walker.guard = ( unit == CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS || unit == CKEDITOR.ENLARGE_LIST_ITEMS ) ?
 						tailBrGuard : boundaryGuard;
 					blockBoundary = null;
 					// End the range right before the block boundary node.
@@ -1339,12 +1351,23 @@ CKEDITOR.dom.range = function( document )
 
 					// Close the range either before the found block start (text]<p>...</p>) or at the block end (...text]</p>)
 					// by comparing the document position with 'enlargeable' node.
-					this.setEndAt(
-							blockBoundary,
-							( !enlargeable && this.checkEndOfBlock()
-							  || enlargeable && blockBoundary.contains( enlargeable ) ) ?
-								CKEDITOR.POSITION_BEFORE_END :
-								CKEDITOR.POSITION_BEFORE_START );
+					fromInside = ( !enlargeable && this.checkEndOfBlock()
+							|| enlargeable && blockBoundary.contains( enlargeable ) );
+
+					if ( ( unit == CKEDITOR.ENLARGE_BLOCKS || unit == CKEDITOR.ENLARGE_LIST_ITEMS ) && fromInside )
+					{
+						while ( ! ( blockBoundary.is( 'body' ) || blockBoundary.getNext( toSkip ) ) )
+							blockBoundary = blockBoundary.getParent();
+						this.setEndAfter( blockBoundary );
+					}
+					else
+					{
+						this.setEndAt(
+								blockBoundary, fromInside ?
+									CKEDITOR.POSITION_BEFORE_END :
+									CKEDITOR.POSITION_BEFORE_START );
+					}
+
 					// We must include the <br> at the end of range if there's
 					// one and we're expanding list item contents
 					if ( tailBr )
@@ -2019,6 +2042,8 @@ CKEDITOR.POSITION_AFTER_END		= 4;	// <element>contents</element>^		"text"
 CKEDITOR.ENLARGE_ELEMENT = 1;
 CKEDITOR.ENLARGE_BLOCK_CONTENTS = 2;
 CKEDITOR.ENLARGE_LIST_ITEM_CONTENTS = 3;
+CKEDITOR.ENLARGE_BLOCKS = 4;
+CKEDITOR.ENLARGE_LIST_ITEMS = 5;
 
 // Check boundary types.
 // @see CKEDITOR.dom.range.prototype.checkBoundaryOfElement

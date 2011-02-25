@@ -220,6 +220,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			return ( !!object && object instanceof Array );
 		},
 
+		convertToList : function( list )
+		{
+			var array;
+			if ( CKEDITOR.tools.isArray( list ) )
+			{
+				array = list;
+				list = {};
+				for ( var i = 0; i < array.length; i++ )
+					list[ array[ i ] ] = 1;
+			}
+			return list;
+		},
+
 		/**
 		 * Whether the object contains no properties of it's own.
  		 * @param object

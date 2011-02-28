@@ -34,8 +34,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		selectedElement = selectedElement || path.block || path.blockLimit;
 
 		// If we're having BODY here, user probably done CTRL+A, let's try to get the enclosed node, if any.
-		selectedElement.is( 'body' ) &&
-			( selectedElement = editor.getSelection().getRanges()[ 0 ].getEnclosedNode() );
+		selectedElement.is( 'body' ) && ( selectedElement = editor.getSelection().getSelectedElement() );
 
 		if ( !selectedElement )
 			return;

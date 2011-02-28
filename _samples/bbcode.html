@@ -1,0 +1,106 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!--
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://ckeditor.com/license
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>BBCode plugin &mdash; CKEditor Sample</title>
+	<meta content="text/html; charset=utf-8" http-equiv="content-type" />
+	<!-- CKReleaser %REMOVE_LINE%
+	<script type="text/javascript" src="../ckeditor.js"></script>
+	CKReleaser %REMOVE_START% -->
+	<script type="text/javascript" src="../ckeditor_source.js"></script>
+	<!-- CKReleaser %REMOVE_END% -->
+	<script src="sample.js" type="text/javascript"></script>
+	<link href="sample.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+	<h1 class="samples">
+		CKEditor Sample &mdash; Replace Textarea Elements by Class Name
+	</h1>
+	<div class="description">
+	<p>
+		This sample shows how to configure CKEditor to <strong>output <a href="http://en.wikipedia.org/wiki/BBCode">BBCode</a> format instead of outputting HTML</strong>,
+		along with the appropriate editor configurations that fits for a BBCode editing environment.
+	</p>
+	<p>
+		A snippet of the configuration code can be seen below; check the source of this page for
+		full definition:
+	</p>
+	<pre class="samples">
+CKEDITOR.replace( 'editor1',
+	{
+		extraPlugins : 'bbcode',
+		enterMode : CKEDITOR.ENTER_BR,
+		entities : false,
+		fontSize_sizes : "30/30%;50/50%;100/100%;120/120%;150/150%;200/200%;300/300%",
+		colorButton_colors : 'Red/FF0000,Green/00FF00,Blue/0000FF',
+		toolbar : [
+			['Source', '-', 'Save','NewPage','Preview','-','Bold', 'Italic','-', 'TextColor', 'FontSize','-','Underline','-','Link', 'Image'],
+			['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
+			['Smiley','SpecialChar'],
+			['NumberedList','BulletedList','-','Blockquote']
+		]
+	});
+	</pre>
+	</div>
+
+	<!-- This <div> holds alert messages to be display in the sample page. -->
+	<div id="alerts">
+		<noscript>
+			<p>
+				<strong>CKEditor requires JavaScript to run</strong>. In a browser with no JavaScript
+				support, like yours, you should still see the contents (HTML data) and you should
+				be able to edit it normally, without a rich editor interface.
+			</p>
+		</noscript>
+	</div>
+	<form action="sample_posteddata.php" method="post">
+		<p>
+			<label for="editor1">
+				Editor 1:</label>
+			<textarea cols="80" id="editor1" name="editor1" rows="10">This is some [b]sample text[/b]. You are using [url=http://ckeditor.com/]CKEditor[/url].</textarea>
+			<script type="text/javascript">
+			//<![CDATA[
+
+			// Replace the <textarea id="editor"> with an CKEditor
+			// instance, using the "bbcode" plugin, shaping some of the
+			// editor configuration to fit BBCode environment.
+			CKEDITOR.replace( 'editor1',
+			{
+				extraPlugins : 'bbcode',
+				enterMode : CKEDITOR.ENTER_BR,
+				entities : false,
+				fillEmptyBlocks : false,
+				fontSize_sizes : "30/30%;50/50%;100/100%;120/120%;150/150%;200/200%;300/300%",
+				colorButton_colors : 'Red/FF0000,Green/00FF00,Blue/0000FF',
+				toolbar :
+				[
+					['Source', '-', 'Save','NewPage','Preview','-','Bold', 'Italic','Underline','-', 'TextColor', 'FontSize','-','Link', 'Image'],
+					'/',
+					['NumberedList','BulletedList','-','Blockquote'],
+					['Smiley','SpecialChar'],
+					['Find','Replace','-','SelectAll','RemoveFormat']
+				]
+			});
+
+			//]]>
+			</script>
+		</p>
+		<p>
+			<input type="submit" value="Submit" />
+		</p>
+	</form>
+	<div id="footer">
+		<hr />
+		<p>
+			CKEditor - The text editor for the Internet - <a class="samples" href="http://ckeditor.com/">http://ckeditor.com</a>
+		</p>
+		<p id="copy">
+			Copyright &copy; 2003-2011, <a class="samples" href="http://cksource.com/">CKSource</a> - Frederico
+			Knabben. All rights reserved.
+		</p>
+	</div>
+</body>
+</html>

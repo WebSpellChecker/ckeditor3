@@ -45,7 +45,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			var idBase = 'cke_elementspath_' + CKEDITOR.tools.getNextNumber() + '_';
 
-			editor._.elementsPath = { idBase : idBase, filters : [] };
+			editor._.elementsPath = { idBase : idBase, filters : [], nameMap: {} };
 
 			editor.on( 'themeSpace', function( event )
 				{
@@ -119,7 +119,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						html = [],
 						editor = ev.editor,
 						elementsList = editor._.elementsPath.list = [],
-						filters = editor._.elementsPath.filters;
+						filters = editor._.elementsPath.filters,
+						nameMap = editor._.elementsPath.nameMap || {};
 
 					while ( element )
 					{
@@ -141,6 +142,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								name = element.data( 'cke-real-element-type' );
 							else
 								name = element.getName();
+
+							// Map to display name if any, e.g. ol -> list
+							name = nameMap[ name ] || name;
 
 							// Use this variable to add conditional stuff to the
 							// HTML (because we are doing it in reverse order... unshift).

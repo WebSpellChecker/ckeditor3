@@ -1,26 +1,19 @@
-﻿/*
+﻿﻿/*
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
 (function()
 {
-	var bbcodeMap = { 'b' : 'strong', 'u': 'u', 'i' : 'em', 'color' : 'span', 'size' : 'span', 'quote' : 'blockquote', 'code' : 'code', 'url' : 'a', 'email' : 'cke:email', 'img' : 'cke:img', '*' : 'li', 'list' : 'ol' },
-			convertMap = { 'strong' : 'b' , 'b' : 'b', 'u': 'u', 'em' : 'i', 'i': 'i', 'code' : 'code', 'cke:img' : 'img', 'li' : '*' },
+	var bbcodeMap = { 'b' : 'strong', 'u': 'u', 'i' : 'em', 'color' : 'span', 'size' : 'span', 'quote' : 'blockquote', 'code' : 'code', 'url' : 'a', 'email' : 'span', 'img' : 'span', '*' : 'li', 'list' : 'ol' },
+			convertMap = { 'strong' : 'b' , 'b' : 'b', 'u': 'u', 'em' : 'i', 'i': 'i', 'code' : 'code', 'li' : '*' },
 			tagnameMap = { 'strong' : 'b', 'em' : 'i', 'u' : 'u', 'li' : '*', 'ul' : 'list', 'ol' : 'list', 'code' : 'code', 'a' : 'link', 'img' : 'img', 'blockquote' : 'quote' },
 			stylesMap = { 'color' : 'color', 'size' : 'font-size' },
 			attributesMap = { 'url' : 'href', 'email' : 'mailhref', 'quote': 'cite', 'list' : 'listType' };
 
-	// Find out the list of block-like tags that can contain <br>.
+	// List of block-like tags.
 	var dtd =  CKEDITOR.dtd,
-		blockLikeTags = CKEDITOR.tools.extend( {}, dtd.$block, dtd.$listItem, dtd.$tableContent );
-
-	for ( var i in blockLikeTags )
-	{
-		if ( ! ( 'br' in dtd[i] ) )
-			delete blockLikeTags[i];
-	}
-
+		blockLikeTags = CKEDITOR.tools.extend( { table:1 }, dtd.$block, dtd.$listItem, dtd.$tableContent, dtd.$list );
 
 	var semicolonFixRegex = /\s*(?:;\s*|$)/;
 	function serializeStyleText( stylesObject )
@@ -144,6 +137,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							attribs[ attributesMap[ part ] ] = optionPart;
 					}
 
+					// Two special handling - image and email, protect them
+					// as "span" with an attribute marker.
+					if ( part == 'email' || part == 'img' )
+						attribs[ 'bbcode' ] = part;
+
 					this.onTagOpen( tagName, attribs, CKEDITOR.dtd.$empty[ tagName ] );
 				}
 				// Closing tag
@@ -216,7 +214,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if ( pendingBrs && ( lineBreakParent || lineBreakPrevious || lineBreakCurrent ) )
 				pendingBrs--;
 
-			if ( closing && pendingBrs && tagName in blockLikeTags )
+			// 1. Either we're at the end of block, where it requires us to compensate the br filler
+			// removing logic (from htmldataprocessor).
+			// 2. Or we're at the end of pseudo block, where it requires us to compensate
+			// the bogus br effect.
+			if ( pendingBrs && tagName in blockLikeTags )
 				pendingBrs++;
 
 			while ( pendingBrs && pendingBrs-- )
@@ -604,16 +606,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							  delete element.attributes.cite;
 						  }
 					  },
-					  'cke:img' : function( element )
+					  'span' : function( element )
 					  {
-						  element.name = 'img';
-						  element.attributes.src = element.children[ 0 ].value;
-						  element.children = [];
-					  },
-					  'cke:email' : function ( element )
-					  {
-						  element.name = 'a';
-						  element.attributes.href = 'mailto:' + element.children[ 0 ].value;
+						  var bbcode;
+						  if ( ( bbcode = element.attributes.bbcode ) )
+						  {
+							  if ( bbcode == 'img' )
+							  {
+								  element.name = 'img';
+								  element.attributes.src = element.children[ 0 ].value;
+								  element.children = [];
+							  }
+							  else if ( bbcode == 'email' )
+							  {
+								  element.name = 'a';
+								  element.attributes.href = 'mailto:' + element.children[ 0 ].value;
+							  }
+							  
+							  delete element.attributes.bbcode;
+						  }
 					  },
 					  'ol' : function ( element )
 					  {
@@ -731,6 +742,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						element.name = tagName;
 						value && ( element.attributes.option = value );
+					},
+
+					// Remove any bogus br from the end of a pseudo block,
+					// e.g. <div>some text<br /><p>paragraph</p></div>
+					br : function( element )
+					{
+						var next = element.next;
+						if ( next && next.name in blockLikeTags )
+							return false;
 					}
 				}
 			  }, 1 );

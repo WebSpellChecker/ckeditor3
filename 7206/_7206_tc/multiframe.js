@@ -82,12 +82,12 @@ Widget_CKEditor.prototype.createEditorElem = function Widget_CKEditor_createEdit
 	// loads the script in the script frame
 
 	// NG
-	//loader.oDocument = globals.scriptFrame.document;
+	loader.oDocument = globals.scriptFrame.document;
 
 	// OK
-	loader.oDocument = globals.uiFrame.document;
+	// loader.oDocument = globals.uiFrame.document;
 
-	loader.load("../ckeditor.js");
+	loader.load("../ckeditor_source.js");
 }
 
 Widget_CKEditor.prototype.onDatasetComplete = function Widget_CKEditor_onDatasetComplete(state){
@@ -98,7 +98,8 @@ Widget_CKEditor.prototype.onDatasetComplete = function Widget_CKEditor_onDataset
 		}
 	}
 	if (window['CKEDITOR'] && CKEDITOR.status == 'loaded') {
-		var editor = CKEDITOR.replace(this.id, {});
+		globals.uiFrame.CKEDITOR = window['CKEDITOR'];
+		var editor = CKEDITOR.replace( globals.uiFrame.document.getElementById( this.id ), {});
 	}
 	else {
 		setTimeout(this.onDatasetComplete.setContext(this), 100);

@@ -289,7 +289,7 @@ CKEDITOR.editor.prototype.getThemeSpace = function( spaceName )
 {
 	var spacePrefix = 'cke_' + spaceName;
 	var space = this._[ spacePrefix ] ||
-		( this._[ spacePrefix ] = CKEDITOR.document.getById( spacePrefix + '_' + this.name ) );
+		( this._[ spacePrefix ] = this.element.getDocument().getById( spacePrefix + '_' + this.name ) );
 	return space;
 };
 

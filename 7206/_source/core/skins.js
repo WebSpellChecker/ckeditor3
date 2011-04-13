@@ -103,14 +103,14 @@ CKEDITOR.skins = (function()
 				{
 					appendSkinPath( cssPart );
 					for ( var c = 0 ; c < cssPart.length ; c++ )
-						CKEDITOR.document.appendStyleSheet( cssPart[ c ] );
+						editor.element.getDocument().appendStyleSheet( cssPart[ c ] );
 				}
 				else
 				{
 					cssPart = fixCSSTextRelativePath(
 								cssPart, CKEDITOR.getUrl( paths[ skinName ] ) );
 					// Processing Inline CSS part.
-					CKEDITOR.document.appendStyleText( cssPart );
+					editor.element.getDocument().appendStyleText( cssPart );
 				}
 
 				part.css = cssPart;

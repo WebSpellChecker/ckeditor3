@@ -1,0 +1,16 @@
+<html>
+<head>
+<script>
+function onLoadHandler(){
+	globals = uiFrame.globals = scriptFrame.globals = new scriptFrame.Globals();
+	globals.uiFrame = uiFrame;
+	globals.scriptFrame = scriptFrame;
+	globals.rootWindow = window;
+}
+</script>
+</head>
+<frameset rows="100%,0%,0%" border="0" onload="onLoadHandler();">
+<frame name="uiFrame" id="uiFrame" src="./multiframe_ui.html" frameborder="0" noresize scrolling="auto">
+<frame name="scriptFrame" id="scriptFrame" src="./multiframe_script.html" frameborder="0" noresize>
+</frameset>
+</html>

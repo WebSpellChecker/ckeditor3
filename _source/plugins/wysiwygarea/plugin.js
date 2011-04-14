@@ -1149,7 +1149,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 			// Set the HTML style to 100% to have the text cursor in affect (#6341)
 			else if ( CKEDITOR.env.gecko )
+			{
 				editor.addCss( 'html { height: 100% !important; }' );
+				editor.addCss( 'img:-moz-broken { -moz-force-broken-image-icon : 1;	width : 24px; height : 24px; }' );
+			}
+
+			/* #3658: [IE6] Editor document has horizontal scrollbar on long lines
+			To prevent this misbehavior, we show the scrollbar always */
+			/* #6341: The text cursor must be set on the editor area. */
+			/* #6632: Avoid having "text" shape of cursor in IE7 scrollbars.*/
+			editor.addCss( 'html {	_overflow-y: scroll; cursor: text;	*cursor:auto;}' );
+			// Use correct cursor for these elements
+			editor.addCss( 'img, input, textarea { cursor: default;}' );
 
 			// Switch on design mode for a short while and close it after then.
 			function blinkCursor( retry )

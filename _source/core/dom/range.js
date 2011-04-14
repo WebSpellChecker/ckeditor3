@@ -359,7 +359,7 @@ CKEDITOR.dom.range = function( document )
 			if ( node.type == CKEDITOR.NODE_TEXT )
 			{
 				// If there's any visible text, then we're not at the start.
-				if ( CKEDITOR.tools.trim( node.getText() ).length )
+				if ( node.hasAscendant( 'pre' ) || CKEDITOR.tools.trim( node.getText() ).length )
 					return false;
 			}
 			else if ( node.type == CKEDITOR.NODE_ELEMENT )

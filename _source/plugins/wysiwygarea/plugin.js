@@ -381,12 +381,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 		}
 
-		// When enterMode set to block, we'll establing new paragraph only if we're
-		// selecting inline contents right under body. (#3657)
-		if ( enterMode != CKEDITOR.ENTER_BR
-		     && range.collapsed
-			 && blockLimit.getName() == 'body'
-			 && !path.block )
+		// When we're in block enter mode, a new paragraph will be established
+		// to encapsulate inline contents right under body. (#3657)
+		if ( editor.config.autoParagraph !== false
+				&& enterMode != CKEDITOR.ENTER_BR
+				&& range.collapsed
+				&& blockLimit.getName() == 'body'
+				&& !path.block )
 		{
 			editor.fire( 'updateSnapshot' );
 			restoreDirty( editor );
@@ -1314,6 +1315,17 @@ CKEDITOR.config.ignoreEmptyParagraph = true;
  * Fired when data is loaded and ready for retrieval in an editor instance.
  * @name CKEDITOR.editor#dataReady
  * @event
+ */
+
+/**
+ * Whether automatically create wrapping blocks around inline contents inside document body,
+ * this helps to ensure the integrality of the block enter mode.
+ * <strong>Note:</strong> Changing the default value might introduce unpredictable usability issues.
+ * @since 3.6
+ * @type Boolean
+ * @default true
+ * @example
+ * config.autoParagraph = false;
  */
 
 /**

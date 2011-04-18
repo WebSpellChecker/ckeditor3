@@ -80,7 +80,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				sClassName = oElement[ 1 ];
 
 			styles.push( {
-				name : aClasses[ i ],
+				name : element + '.' + sClassName,
 				element : element,
 				attributes : {'class' : sClassName}
 			});

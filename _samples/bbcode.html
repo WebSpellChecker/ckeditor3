@@ -17,7 +17,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 </head>
 <body>
 	<h1 class="samples">
-		CKEditor Sample &mdash; Replace Textarea Elements by Class Name
+		CKEditor Sample &mdash; BBCode plugin
 	</h1>
 	<div class="description">
 	<p>
@@ -74,14 +74,26 @@ CKEDITOR.replace( 'editor1',
 				entities : false,
 				fillEmptyBlocks : false,
 				fontSize_sizes : "30/30%;50/50%;100/100%;120/120%;150/150%;200/200%;300/300%",
-				colorButton_colors : 'Red/FF0000,Green/00FF00,Blue/0000FF',
 				toolbar :
 				[
-					['Source', '-', 'Save','NewPage','Preview','-','Bold', 'Italic','Underline','-', 'TextColor', 'FontSize','-','Link', 'Image'],
+					['Source', '-', 'Save','NewPage','Preview','-','Undo','Redo'],
+					['Find','Replace','-','SelectAll','RemoveFormat'],
+					['Link', 'Image'],
 					'/',
+					['FontSize', 'Bold', 'Italic','Underline'],
 					['NumberedList','BulletedList','-','Blockquote'],
-					['Smiley','SpecialChar'],
-					['Find','Replace','-','SelectAll','RemoveFormat']
+					['TextColor', '-', 'Smiley','SpecialChar', '-', 'Maximize']
+				],
+				smiley_images :
+				[
+					'regular_smile.gif','sad_smile.gif','wink_smile.gif','teeth_smile.gif','tounge_smile.gif',
+					'embaressed_smile.gif','omg_smile.gif','whatchutalkingabout_smile.gif','angel_smile.gif','shades_smile.gif',
+					'cry_smile.gif','kiss.gif'
+				],
+				smiley_descriptions :
+				[
+					'smiley', 'sad', 'wink', 'laugh', 'cheeky', 'blush', 'surprise',
+					'indecision', 'angel', 'cool', 'crying', 'kiss'
 				]
 			});
 

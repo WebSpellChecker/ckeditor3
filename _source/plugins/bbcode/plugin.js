@@ -5,6 +5,42 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 (function()
 {
+	CKEDITOR.on( 'dialogDefinition', function( ev )
+	{
+		var tab, name = ev.data.name,
+			definition = ev.data.definition;
+
+		if ( name == 'link' )
+		{
+			definition.removeContents( 'target' );
+			definition.removeContents( 'upload' );
+			definition.removeContents( 'advanced' );
+			tab = definition.getContents( 'info' );
+			tab.remove( 'emailSubject' );
+			tab.remove( 'emailBody' );
+		}
+		if ( name == 'image' )
+		{
+			definition.removeContents( 'advanced' );
+			tab = definition.getContents( 'Link' );
+			tab.remove( 'cmbTarget' );
+			tab = definition.getContents( 'info' );
+			tab.remove( 'ratioLock' );
+			tab.remove( 'txtAlt' );
+			tab.remove( 'txtHeight' );
+			tab.remove( 'txtWidth' );
+			tab.remove( 'txtBorder' );
+			tab.remove( 'txtHSpace' );
+			tab.remove( 'txtVSpace' );
+			tab.remove( 'cmbAlign' );
+		}
+		if ( name == 'numberedListStyle' )
+		{
+			tab = definition.getContents( 'info' );
+			tab.remove('start');
+		}
+	});
+
 	var bbcodeMap = { 'b' : 'strong', 'u': 'u', 'i' : 'em', 'color' : 'span', 'size' : 'span', 'quote' : 'blockquote', 'code' : 'code', 'url' : 'a', 'email' : 'span', 'img' : 'span', '*' : 'li', 'list' : 'ol' },
 			convertMap = { 'strong' : 'b' , 'b' : 'b', 'u': 'u', 'em' : 'i', 'i': 'i', 'code' : 'code', 'li' : '*' },
 			tagnameMap = { 'strong' : 'b', 'em' : 'i', 'u' : 'u', 'li' : '*', 'ul' : 'list', 'ol' : 'list', 'code' : 'code', 'a' : 'link', 'img' : 'img', 'blockquote' : 'quote' },
@@ -40,6 +76,37 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		} );
 		return retval;
 	}
+
+	function RGBToHex( cssStyle )
+	{
+		return cssStyle.replace( /(?:rgb\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\))/gi, function( match, red, green, blue )
+			{
+				red = parseInt( red, 10 ).toString( 16 );
+				green = parseInt( green, 10 ).toString( 16 );
+				blue = parseInt( blue, 10 ).toString( 16 );
+				var color = [red, green, blue] ;
+
+				// Add padding zeros if the hex value is less than 0x10.
+				for ( var i = 0 ; i < color.length ; i++ )
+					color[i] = String( '0' + color[i] ).slice( -2 ) ;
+
+				return '#' + color.join( '' ) ;
+			 });
+	}
+
+	// Maintain the map of smiley-to-description.
+	var smileyMap = {"smiley":":)","sad":":(","wink":";)","laugh":":D","cheeky":":P","blush":":*)","surprise":":-o","indecision":":|","angry":">:(","angel":"o:)","cool":"8-)","devil":">:-)","crying":";(","kiss":":-*" },
+		smileyReverseMap = {},
+		smileyRegExp = [];
+
+	// Build regexp for the list of smiley text.
+	for ( var i in smileyMap )
+	{
+		smileyReverseMap[ smileyMap[ i ] ] = i;
+		smileyRegExp.push( smileyMap[ i ].replace( /\(|\)|\:|\/|\*|\-|\|/g, function( match ) { return '\\' + match; } ) );
+	}
+
+	smileyRegExp = new RegExp( smileyRegExp.join( '|' ), 'g' );
 
 	var decodeHtml = ( function ()
 	{
@@ -202,7 +269,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 			}
 		}
-		
+
 		function checkPendingBrs( tagName, closing )
 		{
 			var len = currentNode.children.length,
@@ -386,7 +453,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					if ( lineBreak !== undefined && lineBreak.length )
 						pendingBrs++;
 					else if ( piece.length )
-						addElement( new CKEDITOR.htmlParser.text( piece ), currentNode );
+					{
+						var lastIndex = 0;
+
+						// Create smiley from text emotion.
+						piece.replace( smileyRegExp, function( match, index )
+						{
+							addElement( new CKEDITOR.htmlParser.text( piece.substr( lastIndex, index ) ), currentNode );
+							addElement( new CKEDITOR.htmlParser.element( 'smiley', { 'desc': smileyReverseMap[ match ] } ), currentNode );
+							lastIndex = index + match.length;
+						});
+
+						if ( lastIndex != piece.length )
+							addElement( new CKEDITOR.htmlParser.text( piece.substr( lastIndex, piece.length ) ), currentNode );
+					}
 				});
 			}
 		};
@@ -579,6 +659,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		  requires : [ 'htmldataprocessor' ],
 		  init : function( editor )
 		  {
+			  var config = editor.config;
+
 			  function BBCodeToHtml( code )
 			  {
 				  var fragment = CKEDITOR.htmlParser.fragment.fromBBCode( code ),
@@ -642,6 +724,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					  {
 						  if ( !element.attributes.href )
 							  element.attributes.href = element.children[ 0 ].value
+					  },
+					  'smiley' : function( element )
+					  {
+							element.name = 'img';
+
+							var description = element.attributes.desc,
+								image = config.smiley_images[ CKEDITOR.tools.indexOf( config.smiley_descriptions, description ) ],
+								src = CKEDITOR.tools.htmlEncode( config.smiley_path + image );
+
+						  element.attributes =
+						  {
+							  src : src,
+							  'data-cke-saved-src' : src,
+							  title :  description,
+							  alt : description
+						  };
 					  }
 				  }
 			  } );
@@ -662,7 +760,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						else if ( tagName == 'span' )
 						{
 							if ( value = style.color )
+							{
 								tagName = 'color';
+								value = RGBToHex( value );
+							}
 							else if ( value = style[ 'font-size' ] )
 							{
 								var percentValue = value.match( /(\d+)%$/ );
@@ -737,7 +838,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						else if ( tagName == 'img' )
 						{
 							element.isEmpty = 0;
-							element.children = [ new CKEDITOR.htmlParser.text( attributes.src ) ];
+
+							// Translate smiley (image) to text emotion.
+							var src = attributes[ 'data-cke-saved-src' ];
+							if ( src && src.indexOf( editor.config.smiley_path ) != -1 )
+								return new CKEDITOR.htmlParser.text( smileyMap[ attributes.alt ] );
+							else
+								element.children = [ new CKEDITOR.htmlParser.text( src ) ];
 						}
 
 						element.name = tagName;

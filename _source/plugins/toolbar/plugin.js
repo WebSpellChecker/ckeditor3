@@ -160,7 +160,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						var labelId = CKEDITOR.tools.getNextId();
 
-						var output = [ '<div class="cke_toolbox" role="toolbar" aria-labelledby="', labelId, '" onmousedown="return false;"' ],
+						var output = [ '<div class="cke_toolbox" role="group" aria-labelledby="', labelId, '" onmousedown="return false;"' ],
 							expanded =  editor.config.toolbarStartupExpanded !== false,
 							groupStarted;
 
@@ -203,7 +203,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								continue;
 							}
 
-							output.push( '<span id="', toolbarId, '" class="cke_toolbar" role="presentation"><span class="cke_toolbar_start"></span>' );
+							output.push( '<span id="', toolbarId, '" class="cke_toolbar" role="toolbar"><span class="cke_toolbar_start"></span>' );
 
 							// Add the toolbar to the "editor.toolbox.toolbars"
 							// array.

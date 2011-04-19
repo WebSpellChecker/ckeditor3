@@ -60,14 +60,35 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var itemKeystroke = function( item, keystroke )
 			{
-				var next, nextToolGroup, groupItemsCount;
+				var next, toolbar;
 				var rtl = editor.lang.dir == 'rtl';
 
 				switch ( keystroke )
 				{
 					case 9 :					// TAB
 					case CKEDITOR.SHIFT + 9 :	// SHIFT + TAB
-						
+						// Cycle through the toolbars, starting from the one
+						// closest to the current item.
+						while ( !toolbar || !toolbar.items.length )
+						{
+							toolbar = keystroke == 9 ?
+								( ( toolbar ? toolbar.next : item.toolbar.next ) || editor.toolbox.toolbars[ 0 ] ) : 
+								( ( toolbar ? toolbar.previous : item.toolbar.previous ) || editor.toolbox.toolbars[ editor.toolbox.toolbars.length - 1 ] );
+
+							// Look for the first item that accepts focus.
+							item = toolbar.items.length && toolbar.items[ 0 ];
+							while ( item && !item.focus )
+							{
+								item = item.next;
+
+								if ( !item )
+									toolbar = 0;
+							}
+						}
+
+						if ( item )
+							item.focus();
+
 						return false;
 
 					case rtl ? 37 : 39 :		// RIGHT-ARROW
@@ -80,22 +101,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// If it's the last item, cycle to the first one.
 							if ( !next )
 								next = item.toolbar.items[ 0 ];
-
-//							if ( !next )
-//							{
-//								nextToolGroup = item.toolbar.next;
-//								groupItemsCount = nextToolGroup && nextToolGroup.items.length;
-
-//								// Bypass the empty toolgroups.
-//								while ( groupItemsCount === 0 )
-//								{
-//									nextToolGroup = nextToolGroup.next;
-//									groupItemsCount = nextToolGroup && nextToolGroup.items.length;
-//								}
-
-//								if ( nextToolGroup )
-//									next = nextToolGroup.items[ 0 ];
-//							}
 
 							item = next;
 						}
@@ -120,22 +125,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// If it's the first item, cycle to the last one.
 							if ( !next )
 								next = item.toolbar.items[ item.toolbar.items.length - 1 ];
-
-//							if ( !next )
-//							{
-//								nextToolGroup = item.toolbar.previous;
-//								groupItemsCount = nextToolGroup && nextToolGroup.items.length;
-
-//								// Bypass the empty toolgroups.
-//								while ( groupItemsCount === 0 )
-//								{
-//									nextToolGroup = nextToolGroup.previous;
-//									groupItemsCount = nextToolGroup && nextToolGroup.items.length;
-//								}
-
-//								if ( nextToolGroup )
-//									next = nextToolGroup.items[ groupItemsCount - 1 ];
-//							}
 
 							item = next;
 						}

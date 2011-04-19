@@ -182,7 +182,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						{
 							var toolbarId,
 								toolbarObj = 0,
-								row = toolbar[ r ];
+								row = toolbar[ r ],
+								items;
 
 							// It's better to check if the row object is really
 							// available because it's a common mistake to leave
@@ -204,11 +205,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								continue;
 							}
 
+							items = row.items || row;
+
 							// Create all items defined for this toolbar.
-							for ( var i = 0 ; i < row.length ; i++ )
+							for ( var i = 0 ; i < items.length ; i++ )
 							{
 								var item,
-									itemName = row[ i ];
+									itemName = items[ i ];
 
 								if ( itemName == '-' )
 									item = CKEDITOR.ui.separator;
@@ -223,11 +226,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										// Create the basic toolbar object.
 										toolbarId = CKEDITOR.tools.getNextId();
 										toolbarObj = { id : toolbarId, items : [] };
+										toolbarName = row.name && ( editor.lang.toolbarGroups[ row.name ] || row.name );
 
 										// Output the toolbar opener.
 										output.push( '<span id="', toolbarId, '" class="cke_toolbar ',
-											( item.canGroup ? 'cke_toolbar_grouped' : 'cke_toolbar_ungrouped' ),
-											'" role="toolbar"><span class="cke_toolbar_start"></span>' );
+											( item.canGroup ? 'cke_toolbar_grouped' : 'cke_toolbar_ungrouped' ), '"',
+											( toolbarName ? ' aria-labelledby="'+ toolbarId +  '_label"' : '' ),
+											' role="toolbar">' );
+										
+										// If a toolbar name is available, send the voice label.
+										toolbarName && output.push( '<span id="', toolbarId, '_label" class="cke_voice_label">', toolbarName, '</span>' );
+
+										output.push( '<span class="cke_toolbar_start"></span>' );
 
 										// Add the toolbar to the "editor.toolbox.toolbars"
 										// array.
@@ -440,40 +450,36 @@ CKEDITOR.config.toolbar_Basic =
  * // This is actually the default value.
  * config.toolbar_Full =
  * [
- *     ['Source','-','Save','NewPage','Preview','-','Templates'],
- *     ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
- *     ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
- *     ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
+ *     { name: 'document',    items : [ 'Source','-','Save','NewPage','Preview','Print','-','Templates' ] },
+ *     { name: 'clipboard',   items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+ *     { name: 'editing',     items : [ 'Find','Replace','-','SelectAll','-','SpellChecker', 'Scayt' ] },
+ *     { name: 'forms',       items : [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
  *     '/',
- *     ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
- *     ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
- *     ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
- *     ['BidiLtr', 'BidiRtl' ],
- *     ['Link','Unlink','Anchor'],
- *     ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
+ *     { name: 'basicstyles', items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
+ *     { name: 'paragraph',   items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock' ] },
+ *     { name: 'links',       items : [ 'Link','Unlink','Anchor' ] },
+ *     { name: 'insert',      items : [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak' ] },
  *     '/',
- *     ['Styles','Format','Font','FontSize'],
- *     ['TextColor','BGColor'],
- *     ['Maximize', 'ShowBlocks','-','About']
+ *     { name: 'styles',      items : [ 'Styles','Format','Font','FontSize' ] },
+ *     { name: 'colors',      items : [ 'TextColor','BGColor' ] },
+ *     { name: 'tools',       items : [ 'Maximize', 'ShowBlocks','-','About' ] }
  * ];
  */
 CKEDITOR.config.toolbar_Full =
 [
-	['Source','-','Save','NewPage','Preview','-','Templates'],
-	['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
-	['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-	['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
+	{ name: 'document',		items : [ 'Source','-','Save','NewPage','Preview','Print','-','Templates' ] },
+	{ name: 'clipboard',	items : [ 'Cut','Copy','Paste','PasteText','PasteFromWord','-','Undo','Redo' ] },
+	{ name: 'editing',		items : [ 'Find','Replace','-','SelectAll','-','SpellChecker', 'Scayt' ] },
+	{ name: 'forms',		items : [ 'Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField' ] },
 	'/',
-	['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-	['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
-	['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
-	['BidiLtr', 'BidiRtl' ],
-	['Link','Unlink','Anchor'],
-	['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak','Iframe'],
+	{ name: 'basicstyles',	items : [ 'Bold','Italic','Underline','Strike','Subscript','Superscript','-','RemoveFormat' ] },
+	{ name: 'paragraph',	items : [ 'NumberedList','BulletedList','-','Outdent','Indent','-','Blockquote','CreateDiv','-','JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock' ] },
+	{ name: 'links',		items : [ 'Link','Unlink','Anchor' ] },
+	{ name: 'insert',		items : [ 'Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak' ] },
 	'/',
-	['Styles','Format','Font','FontSize'],
-	['TextColor','BGColor'],
-	['Maximize', 'ShowBlocks','-','About']
+	{ name: 'styles',		items : [ 'Styles','Format','Font','FontSize' ] },
+	{ name: 'colors',		items : [ 'TextColor','BGColor' ] },
+	{ name: 'tools',		items : [ 'Maximize', 'ShowBlocks','-','About' ] }
 ];
 
 /**

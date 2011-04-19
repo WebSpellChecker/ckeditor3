@@ -487,7 +487,7 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 			CKEDITOR.env.ie ?
 				function( propertyName )
 				{
-					return this.$.currentStyle[ CKEDITOR.tools.cssStyleToDomStyle( propertyName ) ];
+					return this.$.currentStyle && this.$.currentStyle[ CKEDITOR.tools.cssStyleToDomStyle( propertyName ) ];
 				}
 			:
 				function( propertyName )

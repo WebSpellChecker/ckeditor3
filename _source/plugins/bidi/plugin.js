@@ -261,7 +261,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	});
 
-	// If the element direction changed, we need to switch the margins of
+	// If a block direction changed, we need to switch the margins of
 	// the element and all its children, so it will get really reflected
 	// like a mirror. (#5910)
 	function dirChangeNotifier( org )
@@ -272,7 +272,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		return function( name, val )
 		{
-			if ( !this.getDocument().equals( CKEDITOR.document ) )
+			if ( !this.getDocument().equals( CKEDITOR.document ) && this.isBlockBoundary() )
 			{
 				var orgDir, dir;
 				if ( name == ( isAttribute || isRemoveAttribute ? 'dir' : 'direction' ) ||

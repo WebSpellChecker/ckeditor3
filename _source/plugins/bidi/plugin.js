@@ -226,19 +226,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		requires : [ 'styles', 'button' ],
 
-		beforeInit : function( editor )
-		{
-			// Adapt some critical editor configuration for better support
-			// of BBCode environment.
-			var config = editor.config;
-			CKEDITOR.tools.extend( config,
-			{
-				enterMode : CKEDITOR.ENTER_BR,
-				entities : false,
-				fillEmptyBlocks : false
-			}, true );
-		},
-
 		init : function( editor )
 		{
 			// All buttons use the same code to register. So, to avoid

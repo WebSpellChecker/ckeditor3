@@ -70,7 +70,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						
 						return false;
 
-					case rtl ? 37 : 39 :					// RIGHT-ARROW
+					case rtl ? 37 : 39 :		// RIGHT-ARROW
+					case 40 :					// DOWN-ARROW
 						do
 						{
 							// Look for the next item in the toolbar.
@@ -109,7 +110,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						return false;
 
-					case rtl ? 39 : 37 :					// LEFT-ARROW
+					case rtl ? 39 : 37 :		// LEFT-ARROW
+					case 38 :					// UP-ARROW
 						do
 						{
 							// Look for the previous item in the toolbar.

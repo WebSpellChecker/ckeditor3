@@ -459,13 +459,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						// Create smiley from text emotion.
 						piece.replace( smileyRegExp, function( match, index )
 						{
-							addElement( new CKEDITOR.htmlParser.text( piece.substr( lastIndex, index ) ), currentNode );
+							addElement( new CKEDITOR.htmlParser.text( piece.substring( lastIndex, index ) ), currentNode );
 							addElement( new CKEDITOR.htmlParser.element( 'smiley', { 'desc': smileyReverseMap[ match ] } ), currentNode );
 							lastIndex = index + match.length;
 						});
 
 						if ( lastIndex != piece.length )
-							addElement( new CKEDITOR.htmlParser.text( piece.substr( lastIndex, piece.length ) ), currentNode );
+							addElement( new CKEDITOR.htmlParser.text( piece.substring( lastIndex, piece.length ) ), currentNode );
 					}
 				});
 			}

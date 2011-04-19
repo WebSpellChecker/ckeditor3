@@ -881,7 +881,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		  
 		  afterInit : function( editor )
 		  {
-			  var filters, map;
+			  var filters;
 			  if ( editor._.elementsPath  )
 			  {
 				  // Eliminate irrelevant elements from displaying, e.g body and p.
@@ -901,6 +901,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									name = 'size';
 								else if ( element.getStyle( 'color' ) )
 									name = 'color';
+							}
+							else if ( name == 'img' )
+							{
+								var src = element.data( 'cke-saved-src' );
+								if ( src && src.indexOf( editor.config.smiley_path ) == 0 )
+									name = 'smiley';
 							}
 
 							return name;

@@ -180,7 +180,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						for ( var r = 0 ; r < toolbar.length ; r++ )
 						{
-							var row = toolbar[ r ];
+							var toolbarId,
+								toolbarObj = 0,
+								row = toolbar[ r ];
 
 							// It's better to check if the row object is really
 							// available because it's a common mistake to leave
@@ -189,9 +191,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// at all in IE. (#3983)
 							if ( !row )
 								continue;
-
-							var toolbarId = CKEDITOR.tools.getNextId(),
-								toolbarObj = { id : toolbarId, items : [] };
 
 							if ( groupStarted )
 							{
@@ -203,19 +202,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							{
 								output.push( '<div class="cke_break"></div>' );
 								continue;
-							}
-
-							output.push( '<span id="', toolbarId, '" class="cke_toolbar" role="toolbar"><span class="cke_toolbar_start"></span>' );
-
-							// Add the toolbar to the "editor.toolbox.toolbars"
-							// array.
-							var index = toolbars.push( toolbarObj ) - 1;
-
-							// Create the next/previous reference.
-							if ( index > 0 )
-							{
-								toolbarObj.previous = toolbars[ index - 1 ];
-								toolbarObj.previous.next = toolbarObj;
 							}
 
 							// Create all items defined for this toolbar.
@@ -231,6 +217,30 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 								if ( item )
 								{
+									// Initialize the toolbar first, if needed.
+									if ( !toolbarObj )
+									{
+										// Create the basic toolbar object.
+										toolbarId = CKEDITOR.tools.getNextId();
+										toolbarObj = { id : toolbarId, items : [] };
+
+										// Output the toolbar opener.
+										output.push( '<span id="', toolbarId, '" class="cke_toolbar ',
+											( item.canGroup ? 'cke_toolbar_grouped' : 'cke_toolbar_ungrouped' ),
+											'" role="toolbar"><span class="cke_toolbar_start"></span>' );
+
+										// Add the toolbar to the "editor.toolbox.toolbars"
+										// array.
+										var index = toolbars.push( toolbarObj ) - 1;
+
+										// Create the next/previous reference.
+										if ( index > 0 )
+										{
+											toolbarObj.previous = toolbars[ index - 1 ];
+											toolbarObj.previous.next = toolbarObj;
+										}
+									}
+
 									if ( item.canGroup )
 									{
 										if ( !groupStarted )
@@ -275,7 +285,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								groupStarted = 0;
 							}
 
-							output.push( '<span class="cke_toolbar_end"></span></span>' );
+							if ( toolbarObj )
+								output.push( '<span class="cke_toolbar_end"></span></span>' );
 						}
 
 						output.push( '</div>' );

@@ -65,28 +65,36 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				switch ( keystroke )
 				{
-					case rtl ? 37 : 39 :					// RIGHT-ARROW
 					case 9 :					// TAB
+					case CKEDITOR.SHIFT + 9 :	// SHIFT + TAB
+						
+						return false;
+
+					case rtl ? 37 : 39 :					// RIGHT-ARROW
 						do
 						{
 							// Look for the next item in the toolbar.
 							next = item.next;
 
+							// If it's the last item, cycle to the first one.
 							if ( !next )
-							{
-								nextToolGroup = item.toolbar.next;
-								groupItemsCount = nextToolGroup && nextToolGroup.items.length;
+								next = item.toolbar.items[ 0 ];
 
-								// Bypass the empty toolgroups.
-								while ( groupItemsCount === 0 )
-								{
-									nextToolGroup = nextToolGroup.next;
-									groupItemsCount = nextToolGroup && nextToolGroup.items.length;
-								}
+//							if ( !next )
+//							{
+//								nextToolGroup = item.toolbar.next;
+//								groupItemsCount = nextToolGroup && nextToolGroup.items.length;
 
-								if ( nextToolGroup )
-									next = nextToolGroup.items[ 0 ];
-							}
+//								// Bypass the empty toolgroups.
+//								while ( groupItemsCount === 0 )
+//								{
+//									nextToolGroup = nextToolGroup.next;
+//									groupItemsCount = nextToolGroup && nextToolGroup.items.length;
+//								}
+
+//								if ( nextToolGroup )
+//									next = nextToolGroup.items[ 0 ];
+//							}
 
 							item = next;
 						}
@@ -102,27 +110,30 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						return false;
 
 					case rtl ? 39 : 37 :					// LEFT-ARROW
-					case CKEDITOR.SHIFT + 9 :	// SHIFT + TAB
 						do
 						{
 							// Look for the previous item in the toolbar.
 							next = item.previous;
 
+							// If it's the first item, cycle to the last one.
 							if ( !next )
-							{
-								nextToolGroup = item.toolbar.previous;
-								groupItemsCount = nextToolGroup && nextToolGroup.items.length;
+								next = item.toolbar.items[ item.toolbar.items.length - 1 ];
 
-								// Bypass the empty toolgroups.
-								while ( groupItemsCount === 0 )
-								{
-									nextToolGroup = nextToolGroup.previous;
-									groupItemsCount = nextToolGroup && nextToolGroup.items.length;
-								}
+//							if ( !next )
+//							{
+//								nextToolGroup = item.toolbar.previous;
+//								groupItemsCount = nextToolGroup && nextToolGroup.items.length;
 
-								if ( nextToolGroup )
-									next = nextToolGroup.items[ groupItemsCount - 1 ];
-							}
+//								// Bypass the empty toolgroups.
+//								while ( groupItemsCount === 0 )
+//								{
+//									nextToolGroup = nextToolGroup.previous;
+//									groupItemsCount = nextToolGroup && nextToolGroup.items.length;
+//								}
+
+//								if ( nextToolGroup )
+//									next = nextToolGroup.items[ groupItemsCount - 1 ];
+//							}
 
 							item = next;
 						}

@@ -58,10 +58,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		init : function( editor )
 		{
+			var endFlag;
+
 			var itemKeystroke = function( item, keystroke )
 			{
 				var next, toolbar;
-				var rtl = editor.lang.dir == 'rtl';
+				var rtl = editor.lang.dir == 'rtl',
+					toolbarGroupCycling = editor.config.toolbarGroupCycling;
+
+				toolbarGroupCycling = toolbarGroupCycling === undefined || toolbarGroupCycling;
 
 				switch ( keystroke )
 				{
@@ -76,13 +81,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								( ( toolbar ? toolbar.previous : item.toolbar.previous ) || editor.toolbox.toolbars[ editor.toolbox.toolbars.length - 1 ] );
 
 							// Look for the first item that accepts focus.
-							item = toolbar.items.length && toolbar.items[ 0 ];
-							while ( item && !item.focus )
+							if ( toolbar.items.length )
 							{
-								item = item.next;
+								item = toolbar.items[ endFlag ? ( toolbar.items.length - 1 ) : 0 ];
+								while ( item && !item.focus )
+								{
+									item = endFlag ? item.previous : item.next;
 
-								if ( !item )
-									toolbar = 0;
+									if ( !item )
+										toolbar = 0;
+								}
 							}
 						}
 
@@ -93,51 +101,52 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					case rtl ? 37 : 39 :		// RIGHT-ARROW
 					case 40 :					// DOWN-ARROW
+						next = item;
 						do
 						{
 							// Look for the next item in the toolbar.
-							next = item.next;
+							next = next.next;
 
 							// If it's the last item, cycle to the first one.
-							if ( !next )
+							if ( !next && toolbarGroupCycling )
 								next = item.toolbar.items[ 0 ];
-
-							item = next;
 						}
-						while ( item && !item.focus )
+						while ( next && !next.focus )
 
 						// If available, just focus it, otherwise focus the
 						// first one.
-						if ( item )
-							item.focus();
+						if ( next )
+							next.focus();
 						else
-							editor.toolbox.focus();
+							// Send a TAB.
+							itemKeystroke( item, 9 );
 
 						return false;
 
 					case rtl ? 39 : 37 :		// LEFT-ARROW
 					case 38 :					// UP-ARROW
+						next = item;
 						do
 						{
 							// Look for the previous item in the toolbar.
-							next = item.previous;
+							next = next.previous;
 
 							// If it's the first item, cycle to the last one.
-							if ( !next )
+							if ( !next && toolbarGroupCycling )
 								next = item.toolbar.items[ item.toolbar.items.length - 1 ];
-
-							item = next;
 						}
-						while ( item && !item.focus )
+						while ( next && !next.focus )
 
 						// If available, just focus it, otherwise focus the
 						// last one.
-						if ( item )
-							item.focus();
+						if ( next )
+							next.focus();
 						else
 						{
-							var lastToolbarItems = editor.toolbox.toolbars[ editor.toolbox.toolbars.length - 1 ].items;
-							lastToolbarItems[ lastToolbarItems.length - 1 ].focus();
+							endFlag = 1;
+							// Send a SHIFT + TAB.
+							itemKeystroke( item, CKEDITOR.SHIFT + 9 );
+							endFlag = 0;
 						}
 
 						return false;
@@ -517,4 +526,16 @@ CKEDITOR.config.toolbarCanCollapse = true;
  * @default true
  * @example
  * config.toolbarStartupExpanded = false;
+ */
+
+/**
+ * When enabled, makes the arrow keys navigation cycle within the current
+ * toolbar group. Otherwise the arrows will move trought all items available in
+ * the toolbar. The TAB key will still be used to quickly jump among the
+ * toolbar groups.
+ * @name CKEDITOR.config.toolbarGroupCycling
+ * @type Boolean
+ * @default true
+ * @example
+ * config.toolbarGroupCycling = false;
  */

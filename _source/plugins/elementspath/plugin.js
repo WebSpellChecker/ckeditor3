@@ -45,7 +45,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			var idBase = 'cke_elementspath_' + CKEDITOR.tools.getNextNumber() + '_';
 
-			editor._.elementsPath = { idBase : idBase, filters : [], nameMap: {} };
+			editor._.elementsPath = { idBase : idBase, filters : [] };
 
 			editor.on( 'themeSpace', function( event )
 				{
@@ -119,32 +119,32 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						html = [],
 						editor = ev.editor,
 						elementsList = editor._.elementsPath.list = [],
-						filters = editor._.elementsPath.filters,
-						nameMap = editor._.elementsPath.nameMap || {};
+						filters = editor._.elementsPath.filters;
 
 					while ( element )
 					{
-						var ignore = 0;
+						var ignore = 0,
+							name;
+
+						if ( element.data( 'cke-real-element-type' ) )
+							name = element.data( 'cke-real-element-type' );
+						else
+							name = element.getName();
+
 						for ( var i = 0; i < filters.length; i++ )
 						{
-							if ( filters[ i ]( element ) === false )
+							var ret = filters[ i ]( element, name );
+							if ( ret === false )
 							{
 								ignore = 1;
 								break;
 							}
+							name = ret || name;
 						}
 
 						if ( !ignore )
 						{
 							var index = elementsList.push( element ) - 1;
-							var name;
-							if ( element.data( 'cke-real-element-type' ) )
-								name = element.data( 'cke-real-element-type' );
-							else
-								name = element.getName();
-
-							// Map to display name if any, e.g. ol -> list
-							name = nameMap[ name ] || name;
 
 							// Use this variable to add conditional stuff to the
 							// HTML (because we are doing it in reverse order... unshift).

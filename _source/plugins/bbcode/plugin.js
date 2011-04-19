@@ -888,12 +888,23 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				  if ( filters = editor._.elementsPath.filters )
 					filters.push( function( element )
 						{
-							return element.getName() in tagnameMap;
-						} );
+							var htmlName = element.getName(),
+								name = tagnameMap[ htmlName ] || false;
 
-				  // User friendly presentation as BBCode names.
-				  if ( map = editor._.elementsPath.nameMap )
-					  CKEDITOR.tools.extend( map, tagnameMap, true );
+							// Specialized anchor presents as email.
+							if ( name == 'link' && element.getAttribute( 'href' ).indexOf( 'mailto:' ) == 0 )
+								name = 'email';
+							// Styled span could be either size or color.
+							else if ( htmlName == 'span' )
+							{
+								if ( element.getStyle( 'font-size' ) )
+									name = 'size';
+								else if ( element.getStyle( 'color' ) )
+									name = 'color';
+							}
+
+							return name;
+						});
 			  }
 		  }
 	  } );

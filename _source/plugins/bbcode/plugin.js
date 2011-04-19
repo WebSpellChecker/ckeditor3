@@ -821,6 +821,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								if ( value.indexOf( 'mailto:' ) !== -1 )
 								{
 									tagName = 'email';
+									// [email] should have a single text child with email address.
+									element.children = [ new CKEDITOR.htmlParser.text( value.replace( 'mailto:', '' ) ) ];
 									value = '';
 								}
 								else

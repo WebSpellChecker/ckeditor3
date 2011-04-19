@@ -68,34 +68,31 @@ CKEDITOR.replace( 'editor1',
 			// instance, using the "bbcode" plugin, shaping some of the
 			// editor configuration to fit BBCode environment.
 			CKEDITOR.replace( 'editor1',
-			{
-				extraPlugins : 'bbcode',
-				enterMode : CKEDITOR.ENTER_BR,
-				entities : false,
-				fillEmptyBlocks : false,
-				fontSize_sizes : "30/30%;50/50%;100/100%;120/120%;150/150%;200/200%;300/300%",
-				toolbar :
-				[
-					['Source', '-', 'Save','NewPage','Preview','-','Undo','Redo'],
-					['Find','Replace','-','SelectAll','RemoveFormat'],
-					['Link', 'Image'],
-					'/',
-					['FontSize', 'Bold', 'Italic','Underline'],
-					['NumberedList','BulletedList','-','Blockquote'],
-					['TextColor', '-', 'Smiley','SpecialChar', '-', 'Maximize']
-				],
-				smiley_images :
-				[
-					'regular_smile.gif','sad_smile.gif','wink_smile.gif','teeth_smile.gif','tounge_smile.gif',
-					'embaressed_smile.gif','omg_smile.gif','whatchutalkingabout_smile.gif','angel_smile.gif','shades_smile.gif',
-					'cry_smile.gif','kiss.gif'
-				],
-				smiley_descriptions :
-				[
-					'smiley', 'sad', 'wink', 'laugh', 'cheeky', 'blush', 'surprise',
-					'indecision', 'angel', 'cool', 'crying', 'kiss'
-				]
-			});
+				{
+					extraPlugins : 'bbcode',
+					fontSize_sizes : "30/30%;50/50%;100/100%;120/120%;150/150%;200/200%;300/300%",
+					toolbar :
+					[
+						['Source', '-', 'Save','NewPage','Preview','-','Undo','Redo'],
+						['Find','Replace','-','SelectAll','RemoveFormat'],
+						['Link', 'Image'],
+						'/',
+						['FontSize', 'Bold', 'Italic','Underline'],
+						['NumberedList','BulletedList','-','Blockquote'],
+						['TextColor', '-', 'Smiley','SpecialChar', '-', 'Maximize']
+					],
+					smiley_images :
+					[
+						'regular_smile.gif','sad_smile.gif','wink_smile.gif','teeth_smile.gif','tounge_smile.gif',
+						'embaressed_smile.gif','omg_smile.gif','whatchutalkingabout_smile.gif','angel_smile.gif','shades_smile.gif',
+						'cry_smile.gif','kiss.gif'
+					],
+					smiley_descriptions :
+					[
+						'smiley', 'sad', 'wink', 'laugh', 'cheeky', 'blush', 'surprise',
+						'indecision', 'angel', 'cool', 'crying', 'kiss'
+					]
+			} );
 
 			//]]>
 			</script>

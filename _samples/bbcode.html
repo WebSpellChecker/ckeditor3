@@ -32,16 +32,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 CKEDITOR.replace( 'editor1',
 	{
 		extraPlugins : 'bbcode',
-		enterMode : CKEDITOR.ENTER_BR,
-		entities : false,
-		fontSize_sizes : "30/30%;50/50%;100/100%;120/120%;150/150%;200/200%;300/300%",
-		colorButton_colors : 'Red/FF0000,Green/00FF00,Blue/0000FF',
-		toolbar : [
-			['Source', '-', 'Save','NewPage','Preview','-','Bold', 'Italic','-', 'TextColor', 'FontSize','-','Underline','-','Link', 'Image'],
-			['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-			['Smiley','SpecialChar'],
-			['NumberedList','BulletedList','-','Blockquote']
-		]
+		toolbar :
+		[
+			['Source', '-', 'Save','NewPage','-','Undo','Redo'],
+			['Find','Replace','-','SelectAll','RemoveFormat'],
+			['Link', 'Image'],
+			'/',
+			['FontSize', 'Bold', 'Italic','Underline'],
+			['NumberedList','BulletedList','-','Blockquote'],
+			['TextColor', '-', 'Smiley','SpecialChar', '-', 'Maximize']
+		],
+		...
 	});
 	</pre>
 	</div>

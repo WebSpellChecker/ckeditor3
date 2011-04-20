@@ -656,7 +656,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	CKEDITOR.plugins.add( 'bbcode',
 	  {
-		  requires : [ 'htmldataprocessor' ],
+		  requires : [ 'htmldataprocessor', 'entities' ],
 		  beforeInit : function( editor )
 		  {
 			  // Adapt some critical editor configuration for better support
@@ -665,6 +665,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			  CKEDITOR.tools.extend( config,
 			  {
 				  enterMode : CKEDITOR.ENTER_BR,
+				  basicEntities: false,
 				  entities : false,
 				  fillEmptyBlocks : false
 			  }, true );

@@ -6,7 +6,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 (function()
 {
 	// Base HTML entities.
-	var htmlbase = 'nbsp,gt,lt';
+	var htmlbase = 'nbsp,gt,lt,amp';
 
 	var entities =
 		// Latin-1 Entities
@@ -61,7 +61,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				nbsp	: '\u00A0',		// IE | FF
 				shy		: '\u00AD',		// IE
 				gt		: '\u003E',		// IE | FF |   --   | Opera
-				lt		: '\u003C'		// IE | FF | Safari | Opera
+				lt		: '\u003C',		// IE | FF | Safari | Opera
+				amp : '\u0026'		// ALL
 			};
 
 		entities = entities.replace( /\b(nbsp|shy|gt|lt|amp)(?:,|$)/g, function( match, entity )
@@ -113,7 +114,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if ( htmlFilter )
 			{
 				// Mandatory HTML base entities.
-				var selectedEntities = htmlbase;
+				var selectedEntities = '';
+
+				if ( config.basicEntities !== false )
+					selectedEntities += htmlbase;
 
 				if ( config.entities )
 				{
@@ -168,6 +172,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	});
 })();
+
+/**
+ * Whether to escape HTML preserved entities in text, including:
+ * <ul>
+ * <li>nbsp</li>
+ * <li>gt</li>
+ * <li>lt</li>
+ * <li>amp</li>
+ * </ul>
+ * <strong>Note:</strong> It should not be subjected to change unless you're outputting non-HTML data format like BBCode.
+ * @type Boolean
+ * @default true
+ * @example
+ * config.basicEntities = false;
+ */
+CKEDITOR.config.basicEntities = true;
 
 /**
  * Whether to use HTML entities in the output.

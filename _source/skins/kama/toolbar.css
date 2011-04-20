@@ -129,6 +129,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	margin-left: 6px;
 }
 
+/* Otherwise LTR toolbar in IE Quirks with separators would be too high */
+.cke_skin_kama .cke_browser_iequirks .cke_ltr .cke_toolbar_grouped .cke_toolgroup
+{
+	padding-right: 1px;
+}
+
 .cke_skin_kama .cke_button a,
 .cke_skin_kama .cke_button a:hover,
 .cke_skin_kama .cke_button a:focus,

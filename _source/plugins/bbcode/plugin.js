@@ -690,15 +690,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				  {
 					  'blockquote' : function( element )
 					  {
+						  var quoted = new CKEDITOR.htmlParser.element( 'div' );
+						  quoted.children = element.children;
+						  element.children = [ quoted ];
 						  var citeText = element.attributes.cite;
 						  if ( citeText )
 						  {
-							  var quoted = new CKEDITOR.htmlParser.element( 'div' ),
-									  cite = new CKEDITOR.htmlParser.element( 'cite' );
+							  var cite = new CKEDITOR.htmlParser.element( 'cite' );
 							  cite.add( new CKEDITOR.htmlParser.text( citeText.replace( /^"|"$/g, '' ) ) )
-							  quoted.children = element.children;
-							  element.children = [ cite, quoted  ];
 							  delete element.attributes.cite;
+							  element.children.unshift( cite );
 						  }
 					  },
 					  'span' : function( element )

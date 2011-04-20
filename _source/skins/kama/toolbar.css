@@ -79,34 +79,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	background-position: 4px -1408px; /* +2px +3px */
 }
 
-.cke_skin_kama .cke_toolbar
-{
-	display: inline;
-}
-
 .cke_skin_kama .cke_separator
 {
 	display: inline-block;
-	float: left;
 	border-left: solid 1px #D3D3D3;
-	margin: 3px 2px;
+	margin: 3px 2px 0;
 	height: 16px;
-}
 
-.cke_skin_kama .cke_browser_ie .cke_separator
-{
-	#float: none;
-	#display: inline;
-}
-
-.cke_skin_kama .cke_rtl .cke_separator
-{
-	float: right;
-}
-
-.cke_skin_kama .cke_browser_ie .cke_rtl .cke_separator
-{
-	#float: none;
+	/* These are for IE < 8, but it's ok for the others */
+	vertical-align: top;
 }
 
 .cke_skin_kama .cke_break
@@ -125,7 +106,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	display: none;
 }
 
-.cke_skin_kama .cke_toolbar
+.cke_skin_kama .cke_toolbar.cke_toolbar_grouped
 {
 	-moz-border-radius:5px;
 	-webkit-border-radius: 5px;
@@ -141,26 +122,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	display: inline;
 }
 
-.cke_skin_kama .cke_rtl .cke_toolbar
+.cke_skin_kama .cke_rtl .cke_toolbar.cke_toolbar_grouped
 {
 	float: right;
 	margin-right: 0;
 	margin-left: 6px;
-}
-
-.cke_skin_kama .cke_toolbar
-{
-	display: block;
-	height: 22px;
-}
-
-.cke_skin_kama .cke_toolbar_ungrouped
-{
-	background: inherit;
-	border: 0;
-	padding: 0;
-	margin-right: 0;
-	margin-left: 0;
 }
 
 .cke_skin_kama .cke_button a,
@@ -318,7 +284,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	display: none;
 	padding-left: 3px;
 	line-height: 18px;
-	vertical-align: middle;
 	float: left;
 }
 

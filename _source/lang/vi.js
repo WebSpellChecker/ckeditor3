@@ -715,6 +715,8 @@ CKEDITOR.lang['vi'] =
 	{
 		title		: 'Thông tin về CKEditor',
 		dlgTitle	: 'Thông tin về CKEditor',
+		help	: 'Check $1 for help.', // MISSING
+		userGuide : 'CKEditor User\'s Guide', // MISSING
 		moreInfo	: 'Vui lòng ghé thăm trang web của chúng tôi để có thông tin về giấy phép:',
 		copy		: 'Bản quyền &copy; $1. Giữ toàn quyền.'
 	},

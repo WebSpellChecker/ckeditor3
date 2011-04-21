@@ -715,6 +715,8 @@ CKEDITOR.lang['zh'] =
 	{
 		title		: '關於 CKEditor',
 		dlgTitle	: '關於 CKEditor',
+		help	: 'Check $1 for help.', // MISSING
+		userGuide : 'CKEditor User\'s Guide', // MISSING
 		moreInfo	: '訪問我們的網站以獲取更多關於協議的信息',
 		copy		: 'Copyright &copy; $1. All rights reserved.'
 	},

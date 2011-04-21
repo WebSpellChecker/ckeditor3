@@ -715,6 +715,8 @@ CKEDITOR.lang['ja'] =
 	{
 		title		: 'CKEditorバージョン情報',
 		dlgTitle	: 'CKEditorバージョン情報',
+		help	: 'Check $1 for help.', // MISSING
+		userGuide : 'CKEditor User\'s Guide', // MISSING
 		moreInfo	: 'ライセンス情報の詳細はウェブサイトにて確認してください:',
 		copy		: 'Copyright &copy; $1. All rights reserved.'
 	},

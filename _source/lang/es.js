@@ -715,6 +715,8 @@ CKEDITOR.lang['es'] =
 	{
 		title		: 'Acerca de CKEditor',
 		dlgTitle	: 'Acerca de CKEditor',
+		help	: 'Check $1 for help.', // MISSING
+		userGuide : 'CKEditor User\'s Guide', // MISSING
 		moreInfo	: 'Para información de licencia, por favor visite nuestro sitio web:',
 		copy		: 'Copyright &copy; $1. Todos los derechos reservados.'
 	},

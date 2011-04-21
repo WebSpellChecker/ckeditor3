@@ -715,6 +715,8 @@ CKEDITOR.lang['cy'] =
 	{
 		title		: 'Ynghylch CKEditor',
 		dlgTitle	: 'Ynghylch CKEditor',
+		help	: 'Check $1 for help.', // MISSING
+		userGuide : 'CKEditor User\'s Guide', // MISSING
 		moreInfo	: 'Am wybodaeth ynghylch trwyddedau, ewch i\'n gwefan:',
 		copy		: 'Hawlfraint &copy; $1. Cedwir pob hawl.'
 	},

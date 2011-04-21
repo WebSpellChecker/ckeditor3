@@ -715,6 +715,8 @@ CKEDITOR.lang['hu'] =
 	{
 		title		: 'CKEditor névjegy',
 		dlgTitle	: 'CKEditor névjegy',
+		help	: 'Check $1 for help.', // MISSING
+		userGuide : 'CKEditor User\'s Guide', // MISSING
 		moreInfo	: 'Licenszelési információkért kérjük látogassa meg weboldalunkat:',
 		copy		: 'Copyright &copy; $1. Minden jog fenntartva.'
 	},

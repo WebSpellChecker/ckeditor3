@@ -714,6 +714,8 @@ CKEDITOR.lang['tr'] =
 	{
 		title		: 'CKEditor Hakkında',
 		dlgTitle	: 'CKEditor Hakkında',
+		help	: 'Check $1 for help.', // MISSING
+		userGuide : 'CKEditor User\'s Guide', // MISSING
 		moreInfo	: 'Lisanslama hakkında daha fazla bilgi almak için lütfen sitemizi ziyaret edin:',
 		copy		: 'Copyright &copy; $1. Tüm hakları saklıdır.'
 	},

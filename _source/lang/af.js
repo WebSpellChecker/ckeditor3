@@ -715,6 +715,8 @@ CKEDITOR.lang['af'] =
 	{
 		title		: 'Info oor CKEditor',
 		dlgTitle	: 'Info oor CKEditor',
+		help	: 'Check $1 for help.', // MISSING
+		userGuide : 'CKEditor User\'s Guide', // MISSING
 		moreInfo	: 'Vir lisensie-informasie, besoek asb. ons webwerf:',
 		copy		: 'Kopiereg &copy; $1. Alle regte voorbehou.'
 	},

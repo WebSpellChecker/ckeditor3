@@ -715,6 +715,8 @@ CKEDITOR.lang['he'] =
 	{
 		title		: 'אודות CKEditor',
 		dlgTitle	: 'אודות CKEditor',
+		help	: 'Check $1 for help.', // MISSING
+		userGuide : 'CKEditor User\'s Guide', // MISSING
 		moreInfo	: 'למידע נוסף בקרו באתרנו:',
 		copy		: 'Copyright &copy; $1. כל הזכויות שמורות.'
 	},

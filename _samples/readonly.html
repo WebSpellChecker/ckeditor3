@@ -1,4 +1,4 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <!--
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
@@ -20,22 +20,19 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 // The instanceReady event is fired, when an instance of CKEditor has finished
 // its initialization.
 CKEDITOR.on( 'instanceReady', function( ev )
-{
-	// Show the editor name and description in the browser status bar.
-	document.getElementById( 'eMessage' ).innerHTML = '<p>Instance <code>' + ev.editor.name + '<\/code> loaded.<\/p>';
+	{
+		// Show this sample buttons.
+		 document.getElementById( 'eButtons' ).style.display = 'block';
+	});
 
-	// Show this sample buttons.
-	 document.getElementById( 'eButtons' ).style.display = 'block';
-});
-
-function toggleReadOnly( isReadOnly )
+function toggleReadOnly( makeEditable )
 {
 	// Get the editor instance that we want to interact with.
-	var oEditor = CKEDITOR.instances.editor1;
+	var editor = CKEDITOR.instances.editor1;
 
 	// Change the read-only state of editor.
 	// http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.editor.html#setReadOnly
-	oEditor.setReadOnly( isReadOnly );
+	editor.setReadOnly( makeEditable );
 }
 
 	//]]>
@@ -44,13 +41,13 @@ function toggleReadOnly( isReadOnly )
 </head>
 <body>
 	<h1 class="samples">
-		CKEditor Sample &mdash; Using CKEditor ReadOnly API
+		CKEditor Sample &mdash; Using CKEditor Read-Only API
 	</h1>
 	<div class="description">
 	<p>
 		This sample shows how to use the
 		<a class="samples" href="http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.editor.html#setReadOnly">set read-only</a>
-		API to put editor into an immutable state.
+		API to put editor into read-only state, so user's are not able to change its contents.
 	</p>
 	<p>
 		For details on how to create this setup check the source code of this sample page.
@@ -68,13 +65,13 @@ function toggleReadOnly( isReadOnly )
 		</noscript>
 	</div>
 	<form action="sample_posteddata.php" method="post">
-		<textarea class="ckeditor" id="editor1" name="editor1" cols="100" rows="10"><p>This is some <strong>sample text</strong>. You are using <a href="http://ckeditor.com/">CKEditor</a>.some</p></textarea>
-		<div id="eMessage">
-		</div>
-		<div id="eButtons" style="display: none">
-			<input onclick="toggleReadOnly( true );" type="button" value="Turn on read-only" />
-			<input onclick="toggleReadOnly();" type="button" value="Turn off read-only" />
-		</div>
+		<p>
+			<textarea class="ckeditor" id="editor1" name="editor1" cols="100" rows="10">&lt;p&gt;This is some &lt;strong&gt;sample text&lt;/strong&gt;. You are using &lt;a href="http://ckeditor.com/"&gt;CKEditor&lt;/a&gt;.&lt;/p&gt;</textarea>
+		</p>
+		<p id="eButtons" style="display: none">
+			<input onclick="toggleReadOnly();" type="button" value="Turn on read-only" />
+			<input onclick="toggleReadOnly( true );" type="button" value="Turn off read-only" />
+		</p>
 	</form>
 	<div id="footer">
 		<hr />

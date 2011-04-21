@@ -161,12 +161,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		editor.tabIndex = editor.config.tabIndex || editor.element.getAttribute( 'tabindex' ) || 0;
 
 		/**
-		 * Immutable field indicate the read-only state of this editor.
+		 * Indicates the read-only state of this editor. This is a read-only property.
 		 * @name CKEDITOR.editor.prototype.readOnly
-		 * @see CKEDITOR.editor.prototype.setReadOnly
 		 * @type Boolean
-		 * @default CKEDITOR.config.readOnly
 		 * @since 3.6
+		 * @see CKEDITOR.editor.prototype.setReadOnly
 		 */
 		editor.readOnly = !!( editor.config.readOnly || editor.element.getAttribute( 'disabled' ) );
 
@@ -725,17 +724,23 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 		},
 
 		/**
-		 * Turn editor into read-only mode or restore it from read-only mode.
-		 * @param enable {Boolean}
+		 * Puts or restores the editor into read-only state. When in read-only,
+		 * the user is not able to change the editor contents, but still use
+		 * some editor features. This function sets the readOnly property of
+		 * the editor, firing the "readOnly" event.<br><br>
+		 * <strong>Note:</strong> the current editing area will be reloaded.
+		 * @param {Boolean} [makeEditable] Indicates that the editor must be
+		 *		restored from read-only mode, making it editable.
 		 * @since 3.6
-		 * <strong>Note:</strong> current editing block will be reloaded.
 		 */
-		setReadOnly : function( enable )
+		setReadOnly : function( makeEditable )
 		{
-			if ( this.readOnly != enable )
+			if ( this.readOnly != !makeEditable )
 			{
-				this.readOnly = !!enable;
-				// Reload current mode, then fire the event on editor.
+				this.readOnly = !makeEditable;
+				
+				// Fire the readOnly event so the editor features can update
+				// their state accordingly.
 				this.fire( 'readOnly' );
 			}
 		},
@@ -868,9 +873,10 @@ CKEDITOR.on( 'loaded', function()
  */
 
 /**
- * Whether to start the editor in read-only mode, otherwise it depends on if "disabled" attribute is presented on the host &lt;textarea&gt;.
+ * If "true", makes the editor start in read-only state. Otherwise, it'll check
+ * if the linked &lt;textarea&gt; has the "disabled" attribute.
  * @name CKEDITOR.config.readOnly
- * @see CKEDITOR.editor.setReadOnly
+ * @see CKEDITOR.editor#setReadOnly
  * @type Boolean
  * @default false
  * @since 3.6

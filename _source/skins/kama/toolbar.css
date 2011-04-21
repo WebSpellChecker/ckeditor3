@@ -381,6 +381,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	float: right;
 }
 
+/*** Mixed Fixes ***/
+
 .cke_skin_kama .cke_browser_ie .cke_button .cke_label
 {
 	line-height: 16px;

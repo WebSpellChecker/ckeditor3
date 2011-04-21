@@ -9,13 +9,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	display: inline;
 }
 
-/* IE7: fixed "source" button height to avoid it prevents toolbar from wrapping */
-.cke_skin_kama .cke_browser_ie7 .cke_button_source .cke_label
-{
-	display:inline-block;
-	vertical-align:top;
-}
-
 /* "Styles" panel size */
 .cke_skin_kama .cke_styles_panel
 {

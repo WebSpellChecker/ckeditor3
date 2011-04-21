@@ -160,6 +160,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		 */
 		editor.tabIndex = editor.config.tabIndex || editor.element.getAttribute( 'tabindex' ) || 0;
 
+		/**
+		 * Immutable field indicate the read-only state of this editor.
+		 * @name CKEDITOR.editor.prototype.readOnly
+		 * @see CKEDITOR.editor.prototype.setReadOnly
+		 * @type Boolean
+		 * @default CKEDITOR.config.readOnly
+		 * @since 3.6
+		 */
+		editor.readOnly = !!( editor.config.readOnly || editor.element.getAttribute( 'disabled' ) );
+
 		// Fire the "configLoaded" event.
 		editor.fireOnce( 'configLoaded' );
 
@@ -394,7 +404,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 	};
 
-	function updateCommandsMode()
+	function updateCommands()
 	{
 		var command,
 			commands = this._.commands,
@@ -403,7 +413,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		for ( var name in commands )
 		{
 			command = commands[ name ];
-			command[ command.startDisabled ? 'disable' : command.modes[ mode ] ? 'enable' : 'disable' ]();
+			command[ command.startDisabled ? 'disable' :
+					 this.readOnly && !command.readOnly ? 'disable' : command.modes[ mode ] ? 'enable' : 'disable' ]();
 		}
 	}
 
@@ -491,7 +502,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 			CKEDITOR.fire( 'instanceCreated', null, this );
 
-			this.on( 'mode', updateCommandsMode, null, null, 1 );
+			this.on( 'mode', updateCommands, null, null, 1 );
 
 			initConfig( this, instanceConfig );
 		};
@@ -714,6 +725,22 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 		},
 
 		/**
+		 * Turn editor into read-only mode or restore it from read-only mode.
+		 * @param enable {Boolean}
+		 * @since 3.6
+		 * <strong>Note:</strong> current editing block will be reloaded.
+		 */
+		setReadOnly : function( enable )
+		{
+			if ( this.readOnly != enable )
+			{
+				this.readOnly = !!enable;
+				// Reload current mode, then fire the event on editor.
+				this.fire( 'readOnly' );
+			}
+		},
+
+		/**
 		 * Inserts HTML into the currently selected position in the editor.
 		 * @param {String} data HTML code to be inserted into the editor.
 		 * @example
@@ -838,6 +865,17 @@ CKEDITOR.on( 'loaded', function()
  * @default false
  * @example
  * config.htmlEncodeOutput = true;
+ */
+
+/**
+ * Whether to start the editor in read-only mode, otherwise it depends on if "disabled" attribute is presented on the host &lt;textarea&gt;.
+ * @name CKEDITOR.config.readOnly
+ * @see CKEDITOR.editor.setReadOnly
+ * @type Boolean
+ * @default false
+ * @since 3.6
+ * @example
+ * config.readOnly = true;
  */
 
 /**
@@ -982,4 +1020,11 @@ CKEDITOR.on( 'loaded', function()
  * @event
  * @param {CKEDITOR.editor} editor This editor instance.
  * @param {Object} element The element to insert.
+ */
+
+/**
+ * Event fired once editor's {@link CKEDITOR.editor.prototype.readOnly} state has changed.
+ * @name CKEDITOR.editor#readOnly
+ * @event
+ * @param {CKEDITOR.editor} editor This editor instance.
  */

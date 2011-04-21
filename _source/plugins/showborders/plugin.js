@@ -40,6 +40,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		preserveState : true,
 		editorFocus : false,
+		readOnly: 1,
 
 		exec : function ( editor )
 		{

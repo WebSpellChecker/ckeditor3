@@ -1870,7 +1870,7 @@ CKEDITOR.dom.range = function( document )
 							return 0;
 						}
 						// Range enclosed entirely in an editable element.
-						else if ( node.is( 'body' )
+						else if ( node.is( 'html' )
 							|| node.getAttribute( 'contentEditable' ) == 'true'
 							&& ( node.contains( anotherEnd ) || node.equals( anotherEnd ) ) )
 						{

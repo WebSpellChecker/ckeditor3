@@ -97,9 +97,9 @@ CKEDITOR.plugins.add( 'menu',
 						{
 							var item = this.editor.getMenuItem( itemName );
 
-							if ( item )
+							if ( item && ( !item.command || this.editor.getCommand( item.command ).state ) )
 							{
-								item.state = listenerItems[ itemName ];
+								item.state =  listenerItems[ itemName ];
 								this.add( item );
 							}
 						}

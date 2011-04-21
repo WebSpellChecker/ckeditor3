@@ -149,10 +149,12 @@ CKEDITOR.ui.button.prototype =
 			editor.on( 'mode', function()
 				{
 					var mode = editor.mode;
+
 					// Restore saved button state.
-					this.setState( this.modes[ mode ] ?
-						modeStates[ mode ] != undefined ? modeStates[ mode ] :
-							CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED );
+					var state = this.modes[ mode ] ? modeStates[ mode ] != undefined ? modeStates[ mode ] :
+							CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED;
+
+					this.setState( editor.readOnly && !this.readOnly ? CKEDITOR.TRISTATE_DISABLED : state );
 				}, this);
 		}
 		else if ( command )

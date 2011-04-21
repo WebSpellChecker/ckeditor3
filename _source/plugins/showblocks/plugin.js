@@ -89,6 +89,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	var commandDefinition =
 	{
+		readOnly : 1,
 		preserveState : true,
 		editorFocus : false,
 

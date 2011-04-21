@@ -130,7 +130,8 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 
 			editor.on( 'mode', function()
 				{
-					this.setState( this.modes[ editor.mode ] ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED );
+					var state = this.modes[ editor.mode ] ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED;
+					this.setState( editor.readOnly && !this.readOnly ? CKEDITOR.TRISTATE_DISABLED : state  );
 					this.setValue( '' );
 				},
 				this );

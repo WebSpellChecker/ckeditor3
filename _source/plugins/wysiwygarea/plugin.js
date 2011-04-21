@@ -598,6 +598,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						body.spellcheck = !editor.config.disableNativeSpellChecker;
 
+						var editable = !editor.readOnly;
+
 						if ( CKEDITOR.env.ie )
 						{
 							// Don't display the focus border.
@@ -606,7 +608,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// Disable and re-enable the body to avoid IE from
 							// taking the editing focus at startup. (#141 / #523)
 							body.disabled = true;
-							body.contentEditable = true;
+							body.contentEditable = editable;
 							body.removeAttribute( 'disabled' );
 						}
 						else
@@ -618,20 +620,20 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								// Prefer 'contentEditable' instead of 'designMode'. (#3593)
 								if ( CKEDITOR.env.gecko && CKEDITOR.env.version >= 10900
 										|| CKEDITOR.env.opera )
-									domDocument.$.body.contentEditable = true;
+									domDocument.$.body.contentEditable = editable;
 								else if ( CKEDITOR.env.webkit )
-									domDocument.$.body.parentNode.contentEditable = true;
+									domDocument.$.body.parentNode.contentEditable = editable;
 								else
-									domDocument.$.designMode = 'on';
+									domDocument.$.designMode = editable? 'off' : 'on';
 							}, 0 );
 						}
 
-						CKEDITOR.env.gecko && CKEDITOR.tools.setTimeout( activateEditing, 0, null, editor );
+						editable && CKEDITOR.env.gecko && CKEDITOR.tools.setTimeout( activateEditing, 0, null, editor );
 
 						domWindow	= editor.window	= new CKEDITOR.dom.window( domWindow );
 						domDocument	= editor.document	= new CKEDITOR.dom.document( domDocument );
 
-						domDocument.on( 'dblclick', function( evt )
+						editable && domDocument.on( 'dblclick', function( evt )
 						{
 							var element = evt.data.getTarget(),
 								data = { element : element, dialog : '' };
@@ -712,8 +714,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						// IE standard compliant in editing frame doesn't focus the editor when
 						// clicking outside actual content, manually apply the focus. (#1659)
-						if ( CKEDITOR.env.ie
-							&& domDocument.$.compatMode == 'CSS1Compat'
+						if ( editable &&
+								CKEDITOR.env.ie && domDocument.$.compatMode == 'CSS1Compat'
 								|| CKEDITOR.env.gecko
 								|| CKEDITOR.env.opera )
 						{
@@ -744,7 +746,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							{
 								var doc = editor.document;
 
-								if ( CKEDITOR.env.gecko && CKEDITOR.env.version >= 10900 )
+								if ( editable && CKEDITOR.env.gecko && CKEDITOR.env.version >= 10900 )
 									blinkCursor();
 								else if ( CKEDITOR.env.opera )
 									doc.getBody().focus();
@@ -762,15 +764,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							});
 
 						var keystrokeHandler = editor.keystrokeHandler;
-						if ( keystrokeHandler )
-							keystrokeHandler.attach( domDocument );
+						// Prevent backspace from navigating off the page.
+						keystrokeHandler.blockedKeystrokes[ 8 ] = !editable;
+						keystrokeHandler.attach( domDocument );
 
 						if ( CKEDITOR.env.ie )
 						{
 							domDocument.getDocumentElement().addClass( domDocument.$.compatMode );
 							// Override keystrokes which should have deletion behavior
 							//  on control types in IE . (#4047)
-							domDocument.on( 'keydown', function( evt )
+							editable && domDocument.on( 'keydown', function( evt )
 							{
 								var keyCode = evt.data.getKeystroke();
 

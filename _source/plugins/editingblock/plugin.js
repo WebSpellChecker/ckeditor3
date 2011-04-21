@@ -113,6 +113,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					}, 0 );
 				});
 
+			// Force reload the mode to refresh all command states.
+			editor.on( 'readOnly', function() {
+				this.setMode( this.mode || this.config.startupMode, 1 );
+			});
+
 			editor.on( 'destroy', function ()
 			{
 				// ->		currentMode.unload( holderElement );
@@ -151,7 +156,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	 * // Switch to "source" view.
 	 * CKEDITOR.instances.editor1.setMode( 'source' );
 	 */
-	CKEDITOR.editor.prototype.setMode = function( mode )
+	CKEDITOR.editor.prototype.setMode = function( mode, forceReload )
 	{
 		this.fire( 'beforeSetMode', { newMode : mode } );
 
@@ -162,7 +167,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Unload the previous mode.
 		if ( this.mode )
 		{
-			if ( mode == this.mode )
+			if ( !forceReload && mode == this.mode )
 				return;
 
 			this.fire( 'beforeModeUnload' );

@@ -11,9 +11,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		init : function( editor )
 		{
-			var specialKeys = editor.specialKeys;
-			specialKeys[ 13 ] = enter;
-			specialKeys[ CKEDITOR.SHIFT + 13 ] = shiftEnter;
+			editor.addCommand( 'enter', {
+				modes : { wysiwyg:1 },
+				editorFocus : false,
+				exec : enter
+			});
+
+			editor.addCommand( 'shiftEnter', {
+				modes : { wysiwyg:1 },
+				editorFocus : false,
+				exec : shiftEnter
+			});
+
+			var keystrokes = editor.keystrokeHandler.keystrokes;
+			keystrokes[ 13 ] = 'enter';
+			keystrokes[ CKEDITOR.SHIFT + 13 ] = 'shiftEnter';
 		}
 	});
 

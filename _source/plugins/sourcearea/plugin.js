@@ -41,6 +41,8 @@ CKEDITOR.plugins.add( 'sourcearea',
 							textarea.addClass( 'cke_source' );
 							textarea.addClass( 'cke_enable_context_menu' );
 
+							editor.readOnly && textarea.setAttribute( 'disabled', true );
+
 							var styles =
 							{
 								// IE7 has overflow the <textarea> from wrapping table cell.
@@ -181,7 +183,7 @@ CKEDITOR.plugins.sourcearea =
 		{
 			modes : { wysiwyg:1, source:1 },
 			editorFocus : false,
-
+			readOnly : 1,
 			exec : function( editor )
 			{
 				if ( editor.mode == 'wysiwyg' )

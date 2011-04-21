@@ -347,7 +347,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 .cke_skin_kama .cke_browser_gecko .cke_rtl.cke_button a.cke_off,
 .cke_skin_kama .cke_browser_gecko .cke_rtl .cke_button .cke_icon,
 .cke_skin_kama .cke_browser_gecko .cke_rtl .cke_button .cke_buttonarrow,
-.cke_skin_kama .cke_browser_gecko .cke_separator,
+.cke_skin_kama .cke_browser_gecko .cke_rtl .cke_separator,
 .cke_skin_kama .cke_browser_gecko .cke_rtl .cke_toolbar_start
 {
 	float: right;

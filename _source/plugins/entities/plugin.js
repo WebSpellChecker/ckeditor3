@@ -134,8 +134,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				var entitiesTable = buildTable( selectedEntities );
 
-				// Create the Regex used to find entities in the text.
-				var entitiesRegex = '[' + entitiesTable.regex + ']';
+				// Create the Regex used to find entities in the text, leave it matches nothing if entities are empty.
+				var entitiesRegex = entitiesTable.regex ? '[' + entitiesTable.regex + ']' : 'a^';
 				delete entitiesTable.regex;
 
 				if ( config.entities && config.entities_processNumerical )

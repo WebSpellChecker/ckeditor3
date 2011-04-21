@@ -746,6 +746,21 @@ CKEDITOR.lang['pt-br'] =
 	toolbarCollapse	: 'Diminuir Barra de Ferramentas',
 	toolbarExpand	: 'Aumentar Barra de Ferramentas',
 
+	toolbarGroups :
+	{
+		document : 'Document', // MISSING
+		clipboard : 'Clipboard/Undo', // MISSING
+		editing : 'Editing', // MISSING
+		forms : 'Forms', // MISSING
+		basicstyles : 'Basic Styles', // MISSING
+		paragraph : 'Paragraph', // MISSING
+		links : 'Links', // MISSING
+		insert : 'Insert', // MISSING
+		styles : 'Styles', // MISSING
+		colors : 'Colors', // MISSING
+		tools : 'Tools' // MISSING
+	},
+
 	bidi :
 	{
 		ltr : 'Text direction from left to right', // MISSING

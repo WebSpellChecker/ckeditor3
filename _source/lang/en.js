@@ -747,6 +747,21 @@ CKEDITOR.lang['en'] =
 	toolbarCollapse	: 'Collapse Toolbar',
 	toolbarExpand	: 'Expand Toolbar',
 
+	toolbarGroups :
+	{
+		document : 'Document',
+		clipboard : 'Clipboard/Undo',
+		editing : 'Editing',
+		forms : 'Forms',
+		basicstyles : 'Basic Styles',
+		paragraph : 'Paragraph',
+		links : 'Links',
+		insert : 'Insert',
+		styles : 'Styles',
+		colors : 'Colors',
+		tools : 'Tools'
+	},
+
 	bidi :
 	{
 		ltr : 'Text direction from left to right',

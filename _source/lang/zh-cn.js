@@ -747,6 +747,21 @@ CKEDITOR.lang['zh-cn'] =
 	toolbarCollapse	: '折叠工具栏',
 	toolbarExpand	: '展开工具栏',
 
+	toolbarGroups :
+	{
+		document : 'Document', // MISSING
+		clipboard : 'Clipboard/Undo', // MISSING
+		editing : 'Editing', // MISSING
+		forms : 'Forms', // MISSING
+		basicstyles : 'Basic Styles', // MISSING
+		paragraph : 'Paragraph', // MISSING
+		links : 'Links', // MISSING
+		insert : 'Insert', // MISSING
+		styles : 'Styles', // MISSING
+		colors : 'Colors', // MISSING
+		tools : 'Tools' // MISSING
+	},
+
 	bidi :
 	{
 		ltr : '文字方向为从左至右',

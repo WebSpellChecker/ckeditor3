@@ -747,6 +747,21 @@ CKEDITOR.lang['cy'] =
 	toolbarCollapse	: 'Cyfangu\'r Bar Offer',
 	toolbarExpand	: 'Ehangu\'r Bar Offer',
 
+	toolbarGroups :
+	{
+		document : 'Document', // MISSING
+		clipboard : 'Clipboard/Undo', // MISSING
+		editing : 'Editing', // MISSING
+		forms : 'Forms', // MISSING
+		basicstyles : 'Basic Styles', // MISSING
+		paragraph : 'Paragraph', // MISSING
+		links : 'Links', // MISSING
+		insert : 'Insert', // MISSING
+		styles : 'Styles', // MISSING
+		colors : 'Colors', // MISSING
+		tools : 'Tools' // MISSING
+	},
+
 	bidi :
 	{
 		ltr : 'Text direction from left to right', // MISSING

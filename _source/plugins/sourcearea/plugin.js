@@ -41,7 +41,7 @@ CKEDITOR.plugins.add( 'sourcearea',
 							textarea.addClass( 'cke_source' );
 							textarea.addClass( 'cke_enable_context_menu' );
 
-							editor.readOnly && textarea.setAttribute( 'readonly', 'readonly' );
+							editor.readOnly && textarea.setAttribute( 'readOnly', 'readonly' );
 
 							var styles =
 							{
@@ -154,9 +154,9 @@ CKEDITOR.plugins.add( 'sourcearea',
 				if ( editor.mode == 'source' )
 				{
 					if ( editor.readOnly )
-						editor.textarea.setAttribute( 'readonly', 'readonly' );
+						editor.textarea.setAttribute( 'readOnly', 'readonly' );
 					else
-						editor.textarea.removeAttribute( 'readonly' );
+						editor.textarea.removeAttribute( 'readOnly' );
 				}
 			});
 

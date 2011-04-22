@@ -99,7 +99,7 @@ CKEDITOR.plugins.add( 'menu',
 
 							if ( item && ( !item.command || this.editor.getCommand( item.command ).state ) )
 							{
-								item.state =  listenerItems[ itemName ];
+								item.state = listenerItems[ itemName ];
 								this.add( item );
 							}
 						}

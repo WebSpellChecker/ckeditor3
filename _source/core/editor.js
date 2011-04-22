@@ -1033,7 +1033,7 @@ CKEDITOR.on( 'loaded', function()
  */
 
 /**
- * Event fired once editor's {@link CKEDITOR.editor.prototype.readOnly} state has changed.
+ * Event fired after {@link CKEDITOR.editor.prototype.readOnly} property changes.
  * @name CKEDITOR.editor#readOnly
  * @event
  * @param {CKEDITOR.editor} editor This editor instance.

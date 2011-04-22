@@ -94,6 +94,19 @@ CKEDITOR.ui.button._ =
 	var keydownFn = CKEDITOR.tools.addFunction( CKEDITOR.ui.button._.keydown, CKEDITOR.ui.button._ ),
 		focusFn = CKEDITOR.tools.addFunction( CKEDITOR.ui.button._.focus, CKEDITOR.ui.button._ );
 
+function updateState( editor )
+{
+	// "this" is a CKEDITOR.ui.button instance.
+
+	var mode = editor.mode;
+
+	// Restore saved button state.
+	var state = this.modes[ mode ] ? modeStates[ mode ] != undefined ? modeStates[ mode ] :
+			CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED;
+
+	this.setState( editor.readOnly && !this.readOnly ? CKEDITOR.TRISTATE_DISABLED : state );
+}
+
 CKEDITOR.ui.button.prototype =
 {
 	canGroup : true,
@@ -146,16 +159,10 @@ CKEDITOR.ui.button.prototype =
 					modeStates[ editor.mode ] = this._.state;
 				}, this );
 
-			editor.on( 'mode', function()
-				{
-					var mode = editor.mode;
+			editor.on( 'mode', updateState, this);
 
-					// Restore saved button state.
-					var state = this.modes[ mode ] ? modeStates[ mode ] != undefined ? modeStates[ mode ] :
-							CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED;
-
-					this.setState( editor.readOnly && !this.readOnly ? CKEDITOR.TRISTATE_DISABLED : state );
-				}, this);
+			// If this button is sensitive to readOnly state, update it accordingly.
+			!this.readOnly && editor.on( 'readOnly', updateState, this);
 		}
 		else if ( command )
 		{

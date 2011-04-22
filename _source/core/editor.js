@@ -409,6 +409,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			commands = this._.commands,
 			mode = this.mode;
 
+		if ( !mode )
+			return;
+
 		for ( var name in commands )
 		{
 			command = commands[ name ];
@@ -502,6 +505,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			CKEDITOR.fire( 'instanceCreated', null, this );
 
 			this.on( 'mode', updateCommands, null, null, 1 );
+			this.on( 'readOnly', updateCommands, null, null, 1 );
 
 			initConfig( this, instanceConfig );
 		};

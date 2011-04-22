@@ -59,8 +59,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						{
 							editor.on( 'mode', function()
 								{
-									setData();
-									editor.removeListener( 'mode', arguments.callee );
+									if ( editor.mode )
+									{
+										setData();
+										editor.removeListener( 'mode', arguments.callee );
+									}
 								});
 						}
 					}
@@ -179,6 +182,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		if ( !mode )
 		{
 			this.setData( data );
+			this.fire( 'mode' );
 			return;
 		}
 

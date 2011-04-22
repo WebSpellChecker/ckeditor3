@@ -113,11 +113,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					}, 0 );
 				});
 
-			// Force reload the mode to refresh all command states.
-			editor.on( 'readOnly', function() {
-				this.setMode( this.mode || this.config.startupMode, 1 );
-			});
-
 			editor.on( 'destroy', function ()
 			{
 				// ->		currentMode.unload( holderElement );
@@ -151,12 +146,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	/**
 	 * Sets the current editing mode in this editor instance.
-	 * @param {String} mode A registered mode name.
+	 * @param {String} [mode] A registered mode name. If not defined, the
+	 * 		current mode is simply unloaded.
 	 * @example
 	 * // Switch to "source" view.
 	 * CKEDITOR.instances.editor1.setMode( 'source' );
 	 */
-	CKEDITOR.editor.prototype.setMode = function( mode, forceReload )
+	CKEDITOR.editor.prototype.setMode = function( mode )
 	{
 		this.fire( 'beforeSetMode', { newMode : mode } );
 
@@ -167,7 +163,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		// Unload the previous mode.
 		if ( this.mode )
 		{
-			if ( !forceReload && mode == this.mode )
+			if ( mode == this.mode )
 				return;
 
 			this.fire( 'beforeModeUnload' );
@@ -179,6 +175,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		}
 
 		holderElement.setHtml( '' );
+
+		if ( !mode )
+		{
+			this.setData( data );
+			return;
+		}
 
 		// Load required mode.
 		var modeEditor = getMode( this, mode );

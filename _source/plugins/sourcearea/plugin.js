@@ -41,7 +41,7 @@ CKEDITOR.plugins.add( 'sourcearea',
 							textarea.addClass( 'cke_source' );
 							textarea.addClass( 'cke_enable_context_menu' );
 
-							editor.readOnly && textarea.setAttribute( 'disabled', true );
+							editor.readOnly && textarea.setAttribute( 'readonly', 'readonly' );
 
 							var styles =
 							{
@@ -147,6 +147,17 @@ CKEDITOR.plugins.add( 'sourcearea',
 							textarea.focus();
 						}
 					});
+			});
+
+		editor.on( 'readOnly', function()
+			{
+				if ( editor.mode == 'source' )
+				{
+					if ( editor.readOnly )
+						editor.textarea.setAttribute( 'readonly', 'readonly' );
+					else
+						editor.textarea.removeAttribute( 'readonly' );
+				}
 			});
 
 		editor.addCommand( 'source', sourcearea.commands.source );

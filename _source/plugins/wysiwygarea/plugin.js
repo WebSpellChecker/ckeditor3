@@ -1140,6 +1140,16 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					editor.document.$.title = frameLabel;
 				});
 
+			editor.on( 'readOnly', function()
+				{
+					if ( editor.mode == 'wysiwyg' )
+					{
+						// Simply reload the wysiwyg area.
+						editor.setMode();
+						editor.setMode( 'wysiwyg' );
+					}
+				});
+
 			// IE>=8 stricts mode doesn't have 'contentEditable' in effect
 			// on element unless it has layout. (#5562)
 			if ( CKEDITOR.document.$.documentMode >= 8 )

@@ -17,20 +17,28 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	<script type="text/javascript">
 	//<![CDATA[
 
+var editor;
+
 // The instanceReady event is fired, when an instance of CKEditor has finished
 // its initialization.
 CKEDITOR.on( 'instanceReady', function( ev )
 	{
-		// Show this sample buttons.
-		 document.getElementById( 'eButtons' ).style.display = 'block';
+		editor = ev.editor;
+
+		// Show this "on" button.
+		document.getElementById( 'readOnlyOn' ).style.display = '';
+
+		// Event fired when the readOnly property changes.
+		editor.on( 'readOnly', function()
+			{
+				document.getElementById( 'readOnlyOn' ).style.display = this.readOnly ? 'none' : '';
+				document.getElementById( 'readOnlyOff' ).style.display = this.readOnly ? '' : 'none';
+			});
 	});
 
 function toggleReadOnly( makeEditable )
 {
-	// Get the editor instance that we want to interact with.
-	var editor = CKEDITOR.instances.editor1;
-
-	// Change the read-only state of editor.
+	// Change the read-only state of the editor.
 	// http://docs.cksource.com/ckeditor_api/symbols/CKEDITOR.editor.html#setReadOnly
 	editor.setReadOnly( makeEditable );
 }
@@ -68,9 +76,9 @@ function toggleReadOnly( makeEditable )
 		<p>
 			<textarea class="ckeditor" id="editor1" name="editor1" cols="100" rows="10">&lt;p&gt;This is some &lt;strong&gt;sample text&lt;/strong&gt;. You are using &lt;a href="http://ckeditor.com/"&gt;CKEditor&lt;/a&gt;.&lt;/p&gt;</textarea>
 		</p>
-		<p id="eButtons" style="display: none">
-			<input onclick="toggleReadOnly();" type="button" value="Turn on read-only" />
-			<input onclick="toggleReadOnly( true );" type="button" value="Turn off read-only" />
+		<p>
+			<input id="readOnlyOn" onclick="toggleReadOnly();" type="button" value="Make it read-only" style="display:none" />
+			<input id="readOnlyOff" onclick="toggleReadOnly( true );" type="button" value="Make it editable again" style="display:none" />
 		</p>
 	</form>
 	<div id="footer">

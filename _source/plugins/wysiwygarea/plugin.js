@@ -1179,6 +1179,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// Switch on design mode for a short while and close it after then.
 			function blinkCursor( retry )
 			{
+				if ( editor.readOnly )
+					return;
+
 				CKEDITOR.tools.tryThese(
 					function()
 					{

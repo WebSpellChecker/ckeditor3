@@ -1144,9 +1144,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					if ( editor.mode == 'wysiwyg' )
 					{
-						// Simply reload the wysiwyg area.
-						editor.setMode();
-						editor.setMode( 'wysiwyg' );
+						// Symply reload the wysiwyg area. It'll take care of read-only.
+						var wysiwyg = editor.getMode();
+						wysiwyg.loadData( wysiwyg.getData() );
 					}
 				});
 

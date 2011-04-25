@@ -429,6 +429,9 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 							name = 'className';
 							break;
 
+						case 'name':
+							return this.$.name;
+
 						case 'tabindex':
 							var tabIndex = standard.call( this, name );
 
@@ -887,11 +890,28 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		 * @param {String} name The attribute name.
 		 * @example
 		 */
-		hasAttribute : function( name )
+		hasAttribute : (function()
 		{
-			var $attr = this.$.attributes.getNamedItem( name );
-			return !!( $attr && $attr.specified );
-		},
+			function standard( name )
+			{
+				var $attr = this.$.attributes.getNamedItem( name );
+				return !!( $attr && $attr.specified );
+			}
+			
+			return ( CKEDITOR.env.ie && CKEDITOR.env.version < 8 ) ? 
+					function( name )
+					{
+						// On IE < 8 the name attribute cannot be retrieved
+						// right after the element creation and setting the
+						// name with setAttribute.
+						if ( name == 'name' )
+							return !!this.$.name;
+
+						return standard.call( this, name );
+					}
+				:
+					standard;
+		})(),
 
 		/**
 		 * Hides this element (display:none).

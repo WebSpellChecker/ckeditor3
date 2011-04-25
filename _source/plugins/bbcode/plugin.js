@@ -25,14 +25,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			tab = definition.getContents( 'Link' );
 			tab.remove( 'cmbTarget' );
 			tab = definition.getContents( 'info' );
-			tab.remove( 'ratioLock' );
 			tab.remove( 'txtAlt' );
-			tab.remove( 'txtHeight' );
-			tab.remove( 'txtWidth' );
-			tab.remove( 'txtBorder' );
-			tab.remove( 'txtHSpace' );
-			tab.remove( 'txtVSpace' );
-			tab.remove( 'cmbAlign' );
+			tab.remove( 'basic' );
 		}
 		if ( name == 'numberedListStyle' )
 		{

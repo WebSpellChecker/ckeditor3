@@ -619,6 +619,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							children :
 							[
 								{
+									id : 'basic',
 									type : 'vbox',
 									children :
 									[

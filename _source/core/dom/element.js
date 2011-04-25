@@ -714,6 +714,9 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 
 		isEditable : function()
 		{
+			if ( this.isReadOnly() )
+				return false;
+
 			// Get the element name.
 			var name = this.getName();
 

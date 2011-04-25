@@ -138,7 +138,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						{
 							var index = elementsList.push( element ) - 1;
 							var name;
-							if ( element.data( 'cke-real-element-type' ) )
+							if ( element.data( 'cke-display-name' ) )
+								name = element.data( 'cke-display-name' );
+							else if ( element.data( 'cke-real-element-type' ) )
 								name = element.data( 'cke-real-element-type' );
 							else
 								name = element.getName();

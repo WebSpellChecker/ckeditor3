@@ -213,7 +213,7 @@ CKEDITOR.STYLE_OBJECT = 3;
 		// current style definition.
 		checkElementRemovable : function( element, fullMatch )
 		{
-			if ( !element )
+			if ( !element || element.isReadOnly() )
 				return false;
 
 			var def = this._.definition,

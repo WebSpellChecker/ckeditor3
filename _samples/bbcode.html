@@ -5,7 +5,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 -->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<title>BBCode plugin &mdash; CKEditor Sample</title>
+	<title>BBCode Plugin &mdash; CKEditor Sample</title>
 	<meta content="text/html; charset=utf-8" http-equiv="content-type" />
 	<!-- CKReleaser %REMOVE_LINE%
 	<script type="text/javascript" src="../ckeditor.js"></script>
@@ -17,21 +17,28 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 </head>
 <body>
 	<h1 class="samples">
-		CKEditor Sample &mdash; BBCode plugin
+		CKEditor Sample &mdash; BBCode Plugin
 	</h1>
 	<div class="description">
 	<p>
-		This sample shows how to configure CKEditor to <strong>output <a href="http://en.wikipedia.org/wiki/BBCode">BBCode</a> format instead of outputting HTML</strong>,
-		along with the appropriate editor configurations that fits for a BBCode editing environment.
+		This sample shows how to configure CKEditor to output <a href="http://en.wikipedia.org/wiki/BBCode">BBCode</a> format instead of HTML.
+		Please note that the editor configuration was modify to reflect what is needed in a BBCode editing environment.
+		Smiley images, for example, were stripped to the emoticons that are commonly used in some BBCode dialects.
+	</p>
+	<p>
+		Please note that currently there is no standard for the BBCode markup language, so its implementation
+		for different platforms (message boards) can vary. This means that before using CKEditor to
+		output BBCode you may need to adjust the implementation to your own environment. 
 	</p>
 	<p>
 		A snippet of the configuration code can be seen below; check the source of this page for
-		full definition:
+		a full definition:
 	</p>
 	<pre class="samples">
 CKEDITOR.replace( 'editor1',
 	{
 		extraPlugins : 'bbcode',
+		removePlugins : 'bidi,button,dialogadvtab,div,filebrowser,flash,format,forms,horizontalrule,iframe,indent,justify,liststyle,pagebreak,showborders,stylescombo,table,tabletools,templates',
 		toolbar :
 		[
 			['Source', '-', 'Save','NewPage','-','Undo','Redo'],
@@ -42,9 +49,18 @@ CKEDITOR.replace( 'editor1',
 			['NumberedList','BulletedList','-','Blockquote'],
 			['TextColor', '-', 'Smiley','SpecialChar', '-', 'Maximize']
 		],
-		...
-	});
-	</pre>
+		smiley_images :
+		[
+			'regular_smile.gif','sad_smile.gif','wink_smile.gif','teeth_smile.gif','tounge_smile.gif',
+			'embaressed_smile.gif','omg_smile.gif','whatchutalkingabout_smile.gif','angel_smile.gif','shades_smile.gif',
+			'cry_smile.gif','kiss.gif'
+		],
+		smiley_descriptions :
+		[
+			'smiley', 'sad', 'wink', 'laugh', 'cheeky', 'blush', 'surprise',
+			'indecision', 'angel', 'cool', 'crying', 'kiss'
+		]
+	});	</pre>
 	</div>
 
 	<!-- This <div> holds alert messages to be display in the sample page. -->
@@ -73,7 +89,9 @@ CKEDITOR.replace( 'editor1',
 					extraPlugins : 'bbcode',
 					// Remove unused plugins.
 					removePlugins : 'bidi,button,dialogadvtab,div,filebrowser,flash,format,forms,horizontalrule,iframe,indent,justify,liststyle,pagebreak,showborders,stylescombo,table,tabletools,templates',
+					// Width and height are not supported in the BBCode format, so object resizing is disabled.
 					disableObjectResizing : true,
+					// Define font sizes in percent values.
 					fontSize_sizes : "30/30%;50/50%;100/100%;120/120%;150/150%;200/200%;300/300%",
 					toolbar :
 					[
@@ -85,6 +103,7 @@ CKEDITOR.replace( 'editor1',
 						['NumberedList','BulletedList','-','Blockquote'],
 						['TextColor', '-', 'Smiley','SpecialChar', '-', 'Maximize']
 					],
+					// Strip CKEditor smileys to those commonly used in BBCode.
 					smiley_images :
 					[
 						'regular_smile.gif','sad_smile.gif','wink_smile.gif','teeth_smile.gif','tounge_smile.gif',

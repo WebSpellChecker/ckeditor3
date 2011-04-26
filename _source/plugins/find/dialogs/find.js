@@ -854,6 +854,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				finder.searchRange = getSearchRange();
 
 				this.selectPage( startupPage );
+
+				this[ ( startupPage == 'find' && this._.editor.readOnly? 'hide' : 'show' ) + 'Page' ]( 'replace');
 			},
 			onHide : function()
 			{

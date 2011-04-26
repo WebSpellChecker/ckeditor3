@@ -67,6 +67,9 @@ CKEDITOR.plugins.add( 'link',
 		// Register selection change handler for the unlink button.
 		 editor.on( 'selectionChange', function( evt )
 			{
+				if ( editor.readOnly )
+					return;
+
 				/*
 				 * Despite our initial hope, document.queryCommandEnabled() does not work
 				 * for this in Firefox. So we must detect the state by element paths.

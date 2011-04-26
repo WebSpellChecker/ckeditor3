@@ -36,6 +36,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		toolbarFocus :
 		{
 			modes : { wysiwyg : 1, source : 1 },
+			readOnly : 1,
 
 			exec : function( editor )
 			{
@@ -326,6 +327,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 							editor.addCommand( 'toolbarCollapse',
 								{
+									readOnly : 1,
 									exec : function( editor )
 									{
 										var collapser = CKEDITOR.document.getById( collapserId ),

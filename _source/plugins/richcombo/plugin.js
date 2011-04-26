@@ -128,13 +128,16 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 				clickFn : clickFn
 			};
 
-			editor.on( 'mode', function()
-				{
-					var state = this.modes[ editor.mode ] ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED;
-					this.setState( editor.readOnly && !this.readOnly ? CKEDITOR.TRISTATE_DISABLED : state  );
-					this.setValue( '' );
-				},
-				this );
+			function updateState()
+			{
+				var state = this.modes[ editor.mode ] ? CKEDITOR.TRISTATE_OFF : CKEDITOR.TRISTATE_DISABLED;
+				this.setState( editor.readOnly && !this.readOnly ? CKEDITOR.TRISTATE_DISABLED : state );
+				this.setValue( '' );
+			}
+
+			editor.on( 'mode', updateState, this );
+			// If this combo is sensitive to readOnly state, update it accordingly.
+			!this.readOnly && editor.on( 'readOnly', updateState, this);
 
 			var keyDownFn = CKEDITOR.tools.addFunction( function( ev, element )
 				{

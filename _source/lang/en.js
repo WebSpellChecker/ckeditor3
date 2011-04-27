@@ -766,5 +766,45 @@ CKEDITOR.lang['en'] =
 	{
 		ltr : 'Text direction from left to right',
 		rtl : 'Text direction from right to left'
+	},
+
+	docprops : 
+	{
+		label : 'Document Properties',
+		title : 'Document Properties',
+		design : 'Design',
+		meta : 'Meta Tags',
+		chooseColor : 'Choose',
+		other : 'Other...',
+		docTitle :	'Page Title',
+		charset : 	'Character Set Encoding',
+		charsetOther : 'Other Character Set Encoding',
+		charsetASCII : 'ASCII',
+		charsetCE : 'Central European',
+		charsetCT : 'Chinese Traditional (Big5)',
+		charsetCR : 'Cyrillic',
+		charsetGR : 'Greek',
+		charsetJP : 'Japanese',
+		charsetKR : 'Korean',
+		charsetTR : 'Turkish',
+		charsetUN : 'Unicode (UTF-8)',
+		charsetWE : 'Westren European',
+		docType : 'Document Type Heading',
+		docTypeOther : 'Other Document Type Heading',
+		xhtmlDec : 'Include XHTML Declarations',
+		bgColor : 'Background Color',
+		bgImage : 'Background Image URL',
+		bgFixed : 'Non-scrolling (Fixed) Background',
+		txtColor : 'Text Color',
+		margin : 'Page Margins',
+		marginTop : 'Top',
+		marginLeft : 'Left',
+		marginRight : 'Right',
+		marginBottom : 'Bottom',
+		metaKeywords : 'Document Indexing Keywords (comma separated)',
+		metaDescription : 'Document Description',
+		metaAuthor : 'Author',
+		metaCopyright : 'Copyright',
+		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>'
 	}
 };

@@ -949,6 +949,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										{
 											editor.docType = docType = match;
 											return '';
+										}).replace( /<\?xml\s[^\?]*\?>/i, function( match )
+										{
+											editor.xmlDeclaration = match;
+											return '';
 										});
 								}
 
@@ -1021,6 +1025,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								var config = editor.config,
 									fullPage = config.fullPage,
 									docType = fullPage && editor.docType,
+									xmlDeclaration = fullPage && editor.xmlDeclaration,
 									doc = iframe.getFrameDocument();
 
 								var data = fullPage
@@ -1038,6 +1043,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								if ( config.ignoreEmptyParagraph )
 									data = data.replace( emptyParagraphRegexp, function( match, lookback ) { return lookback; } );
 
+								if ( xmlDeclaration )
+									data = xmlDeclaration + '\n' + data;
 								if ( docType )
 									data = docType + '\n' + data;
 

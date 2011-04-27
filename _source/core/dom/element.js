@@ -429,6 +429,10 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 							name = 'className';
 							break;
 
+						case 'http-equiv':
+							name = 'httpEquiv';
+							break;
+
 						case 'name':
 							return this.$.name;
 

@@ -115,6 +115,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		var switchLockRatio = function( dialog, value )
 		{
+			if ( !dialog.getContentElement( 'info', 'ratioLock' ) )
+				return;
+
 			var oImageOriginal = dialog.originalElement;
 
 			// Dialog may already closed. (#5505)
@@ -169,8 +172,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var oImageOriginal = dialog.originalElement;
 			if ( oImageOriginal.getCustomData( 'isReady' ) == 'true' )
 			{
-				dialog.setValueOf( 'info', 'txtWidth', oImageOriginal.$.width );
-				dialog.setValueOf( 'info', 'txtHeight', oImageOriginal.$.height );
+				var widthField = dialog.getContentElement( 'info', 'txtWidth' ),
+					heightField = dialog.getContentElement( 'info', 'txtHeight' );
+				widthField && widthField.setValue( oImageOriginal.$.width );
+				heightField && heightField.setValue( oImageOriginal.$.height );
 			}
 			updatePreview( dialog );
 		};
@@ -451,8 +456,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				if ( dialogType != 'image' )
 					this.hidePage( 'Link' );		//Hide Link tab.
 				var doc = this._.element.getDocument();
-				this.addFocusable( doc.getById( btnResetSizeId ), 5 );
-				this.addFocusable( doc.getById( btnLockSizesId ), 5 );
+
+				if ( this.getContentElement( 'info', 'ratioLock' ) )
+				{
+					this.addFocusable( doc.getById( btnResetSizeId ), 5 );
+					this.addFocusable( doc.getById( btnLockSizesId ), 5 );
+				}
 
 				this.commitContent = commitContent;
 			},
@@ -612,6 +621,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							children :
 							[
 								{
+									id : 'basic',
 									type : 'vbox',
 									children :
 									[
@@ -728,6 +738,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 													]
 												},
 												{
+													id : 'ratioLock',
 													type : 'html',
 													id : 'htmlButtons',
 													style : 'margin-top:30px;width:40px;height:40px;',

@@ -19,7 +19,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			tab.remove( 'emailSubject' );
 			tab.remove( 'emailBody' );
 		}
-		if ( name == 'image' )
+		else if ( name == 'image' )
 		{
 			definition.removeContents( 'advanced' );
 			tab = definition.getContents( 'Link' );
@@ -27,11 +27,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			tab = definition.getContents( 'info' );
 			tab.remove( 'txtAlt' );
 			tab.remove( 'basic' );
-		}
-		if ( name == 'numberedListStyle' )
-		{
-			tab = definition.getContents( 'info' );
-			tab.remove('start');
 		}
 	});
 

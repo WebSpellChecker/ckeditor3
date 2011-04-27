@@ -70,6 +70,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	// #### checkSelectionChange : END
 
+	function rangeRequiresFix( range )
+	{
+		function isInlineCt( node )
+		{
+			return node && node.type == CKEDITOR.NODE_ELEMENT
+					&& node.getName() in CKEDITOR.dtd.$removeEmpty;
+		}
+
+		var start = range.startContainer,
+			offset = range.startOffset;
+
+		if ( start.type == CKEDITOR.NODE_TEXT )
+			return false;
+
+		// 1. Empty inline element. <span>^</span>
+		// 2. Adjoin to inline element. <p><strong>text</strong>^</p>
+		return !CKEDITOR.tools.trim( start.getHtml() ) ? isInlineCt( start ) : isInlineCt( start.getChild( offset - 1 ) ) || isInlineCt( start.getChild( offset ) );
+	}
+
 	var selectAllCmd =
 	{
 		modes : { wysiwyg : 1, source : 1 },
@@ -158,24 +177,50 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						// executed, so they'll not get blocked by it.
 						switch ( e.data.keyCode )
 						{
+							case 13 :	// ENTER
+							case CKEDITOR.SHIFT + 13 :	// SHIFT-ENTER
 							case 37 :	// LEFT-ARROW
 							case 39 :	// RIGHT-ARROW
 							case 8 :	// BACKSPACE
 								removeFillingChar( editor.document );
 						}
-					});
+					}, null, null, 10 );
 
-				var fillingCharBefore;
+				var fillingCharBefore,
+					resetSelection;
+
 				function beforeData()
 				{
-					var fillingChar = getFillingChar( editor.document );
-					fillingCharBefore = fillingChar && fillingChar.getText();
-					fillingCharBefore && fillingChar.setText( fillingCharBefore.replace( /\u200B/g, '' ) );
+					var doc = editor.document,
+						fillingChar = getFillingChar( doc );
+
+					if ( fillingChar )
+					{
+						// If cursor is right blinking by side of the filler node, save it for restoring,
+						// as the following text substitution will blind it. (#7437)
+						var sel = doc.$.defaultView.getSelection();
+						if ( sel.type == 'Caret' && sel.anchorNode == fillingChar.$ )
+							resetSelection = 1;
+
+						fillingCharBefore = fillingChar.getText();
+						fillingChar.setText( fillingCharBefore.replace( /\u200B/g, '' ) );
+					}
 				}
 				function afterData()
 				{
-						var fillingChar = getFillingChar( editor.document );
-						fillingChar && fillingChar.setText( fillingCharBefore );
+					var doc = editor.document,
+						fillingChar = getFillingChar( doc );
+
+					if ( fillingChar )
+					{
+						fillingChar.setText( fillingCharBefore );
+
+						if ( resetSelection )
+						{
+							doc.$.defaultView.getSelection().setPosition( fillingChar.$,fillingChar.getLength() );
+							resetSelection = 0;
+						}
+					}
 				}
 				editor.on( 'beforeUndoImage', beforeData );
 				editor.on( 'afterUndoImage', afterData );
@@ -522,10 +567,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	};
 
 	var styleObjectElements =
-	{
-		img:1,hr:1,li:1,table:1,tr:1,td:1,th:1,embed:1,object:1,ol:1,ul:1,
-		a:1, input:1, form:1, select:1, textarea:1, button:1, fieldset:1, th:1, thead:1, tfoot:1
-	};
+		{
+			img:1,hr:1,li:1,table:1,tr:1,td:1,th:1,embed:1,object:1,ol:1,ul:1,
+			a:1,input:1,form:1,select:1,textarea:1,button:1,fieldset:1,thead:1,tfoot:1
+		};
 
 	CKEDITOR.dom.selection.prototype =
 	{
@@ -656,7 +701,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						range.collapse( start );
 
 						// Gets the element that encloses the range entirely.
-						var parent = range.parentElement();
+						var parent = range.parentElement(),
+							doc = parent.ownerDocument;
 
 						// Empty parent element, e.g. <i>^</i>
 						if ( !parent.hasChildNodes() )
@@ -664,6 +710,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						var siblings = parent.children,
 							child,
+							sibling,
 							testRange = range.duplicate(),
 							startIndex = 0,
 							endIndex = siblings.length - 1,
@@ -685,7 +732,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							else if ( position < 0 )
 								startIndex = index + 1;
 							else
-								return { container : parent, offset : getNodeIndex( child ) };
+							{
+								// IE9 report wrong measurement with compareEndPoints when range anchors between two BRs.
+								// e.g. <p>text<br />^<br /></p> (#7433)
+								if ( CKEDITOR.env.ie9Compat && child.tagName == 'BR' )
+								{
+									var bmId = 'cke_range_marker';
+									range.execCommand( 'CreateBookmark', false, bmId );
+									child = doc.getElementsByName( bmId )[ 0 ];
+									var offset = getNodeIndex( child );
+									parent.removeChild( child );
+									return { container : parent, offset : offset };
+								}
+								else
+									return { container : parent, offset : getNodeIndex( child ) };
+							}
 						}
 
 						// All childs are text nodes,
@@ -741,10 +802,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// Start the measuring until distance overflows, meanwhile count the text nodes.
 							while ( distance > 0 )
 							{
-								child = child[ position > 0 ? 'previousSibling' : 'nextSibling' ];
 								try
 								{
-									distance -= child.nodeValue.length;
+									sibling = child[ position > 0 ? 'previousSibling' : 'nextSibling' ];
+									distance -= sibling.nodeValue.length;
+									child = sibling;
 								}
 								// Measurement in IE could be somtimes wrong because of <select> element. (#4611)
 								catch( e )
@@ -1149,44 +1211,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				return;
 			}
 
-			if ( CKEDITOR.env.ie )
-			{
-				this.getNative().empty();
+			range = new CKEDITOR.dom.range( element.getDocument() );
+			range.setStartBefore( element );
+			range.setEndAfter( element );
+			range.select();
 
-				try
-				{
-					// Try to select the node as a control.
-					range = this.document.$.body.createControlRange();
-					range.addElement( element.$ );
-					range.select();
-				}
-				catch( e )
-				{
-					// If failed, select it as a text range.
-					range = this.document.$.body.createTextRange();
-					range.moveToElementText( element.$ );
-					range.select();
-				}
-				finally
-				{
-					this.document.fire( 'selectionchange' );
-				}
+			this.document.fire( 'selectionchange' );
+			this.reset();
 
-				this.reset();
-			}
-			else
-			{
-				// Create the range for the element.
-				range = this.document.$.createRange();
-				range.selectNode( element.$ );
-
-				// Select the range.
-				var sel = this.getNative();
-				sel.removeAllRanges();
-				sel.addRange( range );
-
-				this.reset();
-			}
 		},
 
 		/**
@@ -1284,7 +1316,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						startContainer.appendText( '' );
 					}
 
-					if ( range.collapsed && CKEDITOR.env.webkit )
+					if ( range.collapsed
+							&& CKEDITOR.env.webkit
+							&& rangeRequiresFix( range ) )
 					{
 						// Append a zero-width space so WebKit will not try to
 						// move the selection by itself (#1272).
@@ -1407,9 +1441,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// V2
 			function( forceExpand )
 			{
-				var collapsed = this.collapsed;
-				var isStartMarkerAlone;
-				var dummySpan;
+				var collapsed = this.collapsed,
+					isStartMarkerAlone, dummySpan, ieRange;
+
+				// Try to make a object selection.
+				var selected = this.getEnclosedNode();
+				if ( selected )
+				{
+					try
+					{
+						ieRange = this.document.$.body.createControlRange();
+						ieRange.addElement( selected.$ );
+						ieRange.select();
+						return;
+					}
+					catch( er ) {}
+				}
 
 				// IE doesn't support selecting the entire table row/cell, move the selection into cells, e.g.
 				// <table><tbody><tr>[<td>cell</b></td>... => <table><tbody><tr><td>[cell</td>...
@@ -1429,7 +1476,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					endNode = bookmark.endNode;
 
 				// Create the main range which will be used for the selection.
-				var ieRange = this.document.$.body.createTextRange();
+				ieRange = this.document.$.body.createTextRange();
 
 				// Position the range at the start boundary.
 				ieRange.moveToElementText( startNode.$ );

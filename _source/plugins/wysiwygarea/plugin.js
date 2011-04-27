@@ -10,19 +10,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 (function()
 {
-	// List of elements in which has no way to move editing focus outside.
-	var nonExitableElementNames = { table:1,pre:1 };
-
 	// Matching an empty paragraph at the end of document.
-	var emptyParagraphRegexp = /(^|<body\b[^>]*>)\s*<(p|div|address|h\d|center)[^>]*>\s*(?:<br[^>]*>|&nbsp;|\u00A0|&#160;)?\s*(:?<\/\2>)?\s*(?=$|<\/body>)/gi;
+	var emptyParagraphRegexp = /(^|<body\b[^>]*>)\s*<(p|div|address|h\d|center|pre)[^>]*>\s*(?:<br[^>]*>|&nbsp;|\u00A0|&#160;)?\s*(:?<\/\2>)?\s*(?=$|<\/body>)/gi;
 
 	var notWhitespaceEval = CKEDITOR.dom.walker.whitespaces( true );
 
-	// Elements that could have empty new line around, including table, pre-formatted block, hr, page-break. (#6554)
-	function nonExitable( element )
+	// Elements that could blink the cursor anchoring beside it, like hr, page-break. (#6554)
+	function nonEditable( element )
 	{
-		return ( element.getName() in nonExitableElementNames )
-				|| element.isBlockBoundary() && CKEDITOR.dtd.$empty[ element.getName() ];
+		return element.isBlockBoundary() && CKEDITOR.dtd.$empty[ element.getName() ];
 	}
 
 
@@ -366,8 +362,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			activateEditing( editor );
 
 			// Ensure bogus br could help to move cursor (out of styles) to the end of block. (#7041)
-			var pathBlock = path.block || path.blockLimit;
-			if ( pathBlock && !pathBlock.getBogus() )
+			var pathBlock = path.block || path.blockLimit,
+				lastNode = pathBlock && pathBlock.getLast( isNotEmpty );
+
+			// In case it's not ended with block element and doesn't have bogus yet. (#7467)
+			if ( pathBlock
+					&& !( lastNode && lastNode.type == CKEDITOR.NODE_ELEMENT && lastNode.isBlockBoundary() )
+					&& !pathBlock.is( 'pre' )
+					&& !pathBlock.getBogus() )
 			{
 				editor.fire( 'updateSnapshot' );
 				restoreDirty( editor );
@@ -403,7 +405,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				var element = fixedBlock.getNext( isNotWhitespace );
 				if ( element &&
 					 element.type == CKEDITOR.NODE_ELEMENT &&
-					 !nonExitable( element ) )
+					 !nonEditable( element ) )
 				{
 					range.moveToElementEditStart( element );
 					fixedBlock.remove();
@@ -413,7 +415,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					element = fixedBlock.getPrevious( isNotWhitespace );
 					if ( element &&
 						 element.type == CKEDITOR.NODE_ELEMENT &&
-						 !nonExitable( element ) )
+						 !nonEditable( element ) )
 					{
 						range.moveToElementEditEnd( element );
 						fixedBlock.remove();
@@ -422,31 +424,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 
 			range.select();
-			// Notify non-IE that selection has changed.
-			if ( !CKEDITOR.env.ie )
-			{
-				// Make sure next selection change is correct.  (#6811)
-				editor.forceNextSelectionCheck();
-				editor.selectionChange();
-			}
+			// Cancel this selection change in favor of the next (correct).  (#6811)
+			evt.cancel();
 		}
 
-		// All browsers are incapable to moving cursor out of certain non-exitable
-		// blocks (e.g. table, list, pre) at the end of document, make this happen by
-		// place a bogus node there, which would be later removed by dataprocessor.
-		var walkerRange = new CKEDITOR.dom.range( editor.document ),
-			walker = new CKEDITOR.dom.walker( walkerRange );
-		walkerRange.selectNodeContents( body );
-		walker.evaluator = function( node )
-		{
-			return node.type == CKEDITOR.NODE_ELEMENT && ( node.getName() in nonExitableElementNames );
-		};
-		walker.guard = function( node, isMoveout )
-		{
-			return !( ( node.type == CKEDITOR.NODE_TEXT && isNotWhitespace( node ) ) || isMoveout );
-		};
-
-		if ( walker.previous() )
+		// Browsers are incapable of moving cursor out of certain block elements (e.g. table, div, pre)
+		// at the end of document, makes it unable to continue adding content, we have to make this
+		// easier by opening an new empty paragraph.
+		var testRange = new CKEDITOR.dom.range( editor.document );
+		testRange.moveToElementEditEnd( editor.document.getBody() );
+		var testPath = new CKEDITOR.dom.elementPath( testRange.startContainer );
+		if ( !testPath.blockLimit.is( 'body') )
 		{
 			editor.fire( 'updateSnapshot' );
 			restoreDirty( editor );
@@ -691,6 +679,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						// Webkit: avoid from editing form control elements content.
 						if ( CKEDITOR.env.webkit )
 						{
+							// Mark that cursor will right blinking (#7113).
+							domDocument.on( 'mousedown', function() { wasFocused = 1; } );
 							// Prevent from tick checkbox/radiobox/select
 							domDocument.on( 'click', function( ev )
 							{
@@ -1273,14 +1263,12 @@ CKEDITOR.config.disableObjectResizing = false;
 CKEDITOR.config.disableNativeTableHandles = true;
 
 /**
- * Disables the built-in spell checker while typing natively available in the
- * browser (currently Firefox and Safari only).<br /><br />
+ * Disables the built-in words spell checker if browser provides one.<br /><br />
  *
- * Even if word suggestions will not appear in the CKEditor context menu, this
- * feature is useful to help quickly identifying misspelled words.<br /><br />
+ * <strong>Note:</strong> Although word suggestions provided by browsers (natively) will not appear in CKEditor's default context menu,
+ * users can always reach the native context menu by holding the <em>Ctrl</em> key when right-clicking if {@link CKEDITOR.config.browserContextMenuOnCtrl}
+ * is enabled or you're simply not using the context menu plugin.
  *
- * This setting is currently compatible with Firefox only due to limitations in
- * other browsers.
  * @type Boolean
  * @default true
  * @example

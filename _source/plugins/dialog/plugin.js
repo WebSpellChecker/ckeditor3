@@ -637,10 +637,17 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 						height : height
 					}, this._.editor );
 
+				this.fire( 'resize',
+					{
+						skin : this._.editor.skinName,
+						width : width,
+						height : height
+					}, this._.editor );
+
 				// Update dialog position when dimension get changed in RTL.
 				if ( this._.editor.lang.dir == 'rtl' && this._.position )
 					this._.position.x = CKEDITOR.document.getWindow().getViewPaneSize().width -
-						this._.contentSize.width - parseInt( this._.element.getFirst().getStyle( 'right' ) );
+						this._.contentSize.width - parseInt( this._.element.getFirst().getStyle( 'right' ), 10 );
 
 				this._.contentSize = { width : width, height : height };
 			};
@@ -747,8 +754,8 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 
 			// First, set the dialog to an appropriate size.
-			this.resize( this._.contentSize && this._.contentSize.width || definition.minWidth,
-					this._.contentSize && this._.contentSize.height || definition.minHeight );
+			this.resize( this._.contentSize && this._.contentSize.width || definition.width || definition.minWidth,
+					this._.contentSize && this._.contentSize.height || definition.height || definition.minHeight );
 
 			// Reset all inputs back to their default value.
 			this.reset();
@@ -951,7 +958,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 							children : contents.elements,
 							expand : !!contents.expand,
 							padding : contents.padding,
-							style : contents.style || 'width: 100%;'
+							style : contents.style || 'width: 100%;height:100%'
 						}, pageHtml );
 
 			// Create the HTML for the tab and the content block.
@@ -1275,7 +1282,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			 * 	init: function( editor )
 			 * 	{
 			 * 		editor.addCommand( 'mydialog',new CKEDITOR.dialogCommand( 'mydialog' ) );
-			 *  
+			 *
 			 * 		if ( editor.contextMenu )
 			 * 		{
 			 * 			editor.addMenuGroup( 'mygroup', 10 );
@@ -1290,7 +1297,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			 *  				return { 'My Dialog' : CKEDITOR.TRISTATE_OFF };
 			 * 			});
 			 * 		}
-			 *  
+			 *
 			 * 		<strong>CKEDITOR.dialog.add</strong>( 'mydialog', function( api )
 			 * 		{
 			 * 			// CKEDITOR.dialog.definition
@@ -1329,12 +1336,12 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 			 * 					alert( "You have entered: " + textareaObj.getValue() );
 			 * 				}
 			 * 			};
-			 * 
+			 *
 			 * 			return dialogDefinition;
 			 * 		} );
 			 * 	}
 			 * } );
-			 * 
+			 *
 			 * CKEDITOR.replace( 'editor1', { extraPlugins : 'myplugin' } );
 			 */
 			add : function( name, dialogDefinition )
@@ -1898,6 +1905,11 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 	var covers = {},
 		currentCover;
 
+	function cancelEvent( ev )
+	{
+		ev.data.preventDefault(1);
+	}
+
 	function showCover( editor )
 	{
 		var win = CKEDITOR.document.getWindow();
@@ -1957,6 +1969,10 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 
 			coverElement = CKEDITOR.dom.element.createFromHtml( html.join( '' ) );
 			coverElement.setOpacity( backgroundCoverOpacity != undefined ? backgroundCoverOpacity : 0.5 );
+
+			coverElement.on( 'keydown', cancelEvent );
+			coverElement.on( 'keypress', cancelEvent );
+			coverElement.on( 'keyup', cancelEvent );
 
 			coverElement.appendTo( CKEDITOR.document.getBody() );
 			covers[ coverKey ] = coverElement;
@@ -3181,11 +3197,13 @@ CKEDITOR.plugins.add( 'dialog',
 
 /**
  * Fired when a dialog is being resized. The event is fired on
- * the 'CKEDITOR.dialog' object, not a dialog instance.
+ * both the 'CKEDITOR.dialog' object and the dialog instance
+ * since 3.5.3, previously it's available only in the global object.
  * @name CKEDITOR.dialog#resize
  * @since 3.5
  * @event
- * @param {CKEDITOR.dialog} dialog The dialog being resized.
+ * @param {CKEDITOR.dialog} dialog The dialog being resized (if
+ * it's fired on the dialog itself, this parameter isn't sent).
  * @param {String} skin The skin name.
  * @param {Number} width The new width.
  * @param {Number} height The new height.

@@ -170,7 +170,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					children.sort( function ( node1, node2 )
 								   {
 									   return node1.type == CKEDITOR.NODE_ELEMENT && node2.type == node1.type ?
-											tableOrder.indexOf( node1.name ) > tableOrder.indexOf( node2.name ) ? 1 : -1 : 0;
+											CKEDITOR.tools.indexOf( tableOrder, node1.name )  > CKEDITOR.tools.indexOf( tableOrder, node2.name ) ? 1 : -1 : 0;
 								   } );
 				},
 
@@ -428,7 +428,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					);
 
 					// Avoid protecting over protected, e.g. /\{.*?\}/
-					return /cke_temp(comment)?/.test( match ) ? match
+					return ( /cke_temp(comment)?/ ).test( match ) ? match
 						: '<!--{cke_temp}' + ( protectedHtml.push( match ) - 1 ) + '-->';
 				});
 		}
@@ -448,8 +448,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			return match.replace( /<!--\{cke_protected\}([\s\S]+?)-->/g, function( match, data )
 			{
 				store[ store.id ] = decodeURIComponent( data );
-				return '{cke_protected_'+ store.id++  + '}';
-			})
+				return '{cke_protected_'+ ( store.id++ )  + '}';
+			});
 		});
 	}
 

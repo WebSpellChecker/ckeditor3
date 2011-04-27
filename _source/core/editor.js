@@ -575,7 +575,7 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 		 * @returns {Boolean} "true" if the command has been successfuly
 		 *		executed, otherwise "false".
 		 * @example
-		 * editorInstance.execCommand( 'Bold' );
+		 * editorInstance.execCommand( 'bold' );
 		 */
 		execCommand : function( commandName, data )
 		{

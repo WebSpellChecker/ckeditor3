@@ -715,8 +715,8 @@ CKEDITOR.lang['he'] =
 	{
 		title		: 'אודות CKEditor',
 		dlgTitle	: 'אודות CKEditor',
-		help	: 'Check $1 for help.', // MISSING
-		userGuide : 'CKEditor User\'s Guide', // MISSING
+		help	: 'היכנסו ל$1 לעזרה.',
+		userGuide : 'מדריך המשתמש של CKEditor',
 		moreInfo	: 'למידע נוסף בקרו באתרנו:',
 		copy		: 'Copyright &copy; $1. כל הזכויות שמורות.'
 	},
@@ -749,17 +749,17 @@ CKEDITOR.lang['he'] =
 
 	toolbarGroups :
 	{
-		document : 'Document', // MISSING
-		clipboard : 'Clipboard/Undo', // MISSING
-		editing : 'Editing', // MISSING
-		forms : 'Forms', // MISSING
-		basicstyles : 'Basic Styles', // MISSING
-		paragraph : 'Paragraph', // MISSING
-		links : 'Links', // MISSING
-		insert : 'Insert', // MISSING
-		styles : 'Styles', // MISSING
-		colors : 'Colors', // MISSING
-		tools : 'Tools' // MISSING
+		document : 'מסמך',
+		clipboard : 'לוח הגזירים (Clipboard)/צעד אחרון',
+		editing : 'עריכה',
+		forms : 'טפסים',
+		basicstyles : 'עיצוב בסיסי',
+		paragraph : 'פסקה',
+		links : 'קישורים',
+		insert : 'הכנסה',
+		styles : 'עיצוב',
+		colors : 'צבעים',
+		tools : 'כלים'
 	},
 
 	bidi :
@@ -770,41 +770,41 @@ CKEDITOR.lang['he'] =
 
 	docprops : 
 	{
-		label : 'Document Properties', // MISSING
-		title : 'Document Properties', // MISSING
-		design : 'Design', // MISSING
-		meta : 'Meta Tags', // MISSING
-		chooseColor : 'Choose', // MISSING
-		other : 'Other...', // MISSING
-		docTitle :	'Page Title', // MISSING
-		charset : 	'Character Set Encoding', // MISSING
-		charsetOther : 'Other Character Set Encoding', // MISSING
-		charsetASCII : 'ASCII', // MISSING
-		charsetCE : 'Central European', // MISSING
-		charsetCT : 'Chinese Traditional (Big5)', // MISSING
-		charsetCR : 'Cyrillic', // MISSING
-		charsetGR : 'Greek', // MISSING
-		charsetJP : 'Japanese', // MISSING
-		charsetKR : 'Korean', // MISSING
-		charsetTR : 'Turkish', // MISSING
-		charsetUN : 'Unicode (UTF-8)', // MISSING
-		charsetWE : 'Westren European', // MISSING
-		docType : 'Document Type Heading', // MISSING
-		docTypeOther : 'Other Document Type Heading', // MISSING
-		xhtmlDec : 'Include XHTML Declarations', // MISSING
-		bgColor : 'Background Color', // MISSING
-		bgImage : 'Background Image URL', // MISSING
-		bgFixed : 'Non-scrolling (Fixed) Background', // MISSING
-		txtColor : 'Text Color', // MISSING
-		margin : 'Page Margins', // MISSING
-		marginTop : 'Top', // MISSING
-		marginLeft : 'Left', // MISSING
-		marginRight : 'Right', // MISSING
-		marginBottom : 'Bottom', // MISSING
-		metaKeywords : 'Document Indexing Keywords (comma separated)', // MISSING
-		metaDescription : 'Document Description', // MISSING
-		metaAuthor : 'Author', // MISSING
-		metaCopyright : 'Copyright', // MISSING
-		previewHtml : '<p>This is some <strong>sample text</strong>. You are using <a href="javascript:void(0)">CKEditor</a>.</p>' // MISSING
+		label : 'מאפייני מסמך',
+		title : 'מאפייני מסמך',
+		design : 'עיצוב',
+		meta : 'תגי Meta',
+		chooseColor : 'בחירה',
+		other : 'אחר...',
+		docTitle :	'כותרת עמוד',
+		charset : 	'קידוד תווים',
+		charsetOther : 'קידוד תווים אחר',
+		charsetASCII : 'ASCII',
+		charsetCE : 'מרכז אירופאי',
+		charsetCT : 'סיני מסורתי (Big5)',
+		charsetCR : 'קירילי',
+		charsetGR : 'יווני',
+		charsetJP : 'יפני',
+		charsetKR : 'קוריאני',
+		charsetTR : 'טורקי',
+		charsetUN : 'יוניקוד (UTF-8)',
+		charsetWE : 'מערב אירופאי',
+		docType : 'כותר סוג מסמך',
+		docTypeOther : 'כותר סוג מסמך אחר',
+		xhtmlDec : 'כלול הכרזות XHTML',
+		bgColor : 'צבע רקע',
+		bgImage : 'כתובת של תמונת רקע',
+		bgFixed : 'רקע לא נגלל (צמוד)',
+		txtColor : 'צבע טקסט',
+		margin : 'מרווחי עמוד',
+		marginTop : 'עליון',
+		marginLeft : 'שמאלי',
+		marginRight : 'ימני',
+		marginBottom : 'תחתון',
+		metaKeywords : 'מילות מפתח של המסמך (מופרדות בפסיק)',
+		metaDescription : 'תיאור המסמך',
+		metaAuthor : 'מחבר/ת',
+		metaCopyright : 'זכויות יוצרים',
+		previewHtml : '<p>זהו <strong>טקסט הדגמה</strong>. את/ה משתמש/ת ב<a href="javascript:void(0)">CKEditor</a>.</p>'
 	}
 };

@@ -34,8 +34,8 @@ CKEDITOR.lang['en-gb'] =
 	editorTitle : 'Rich text editor, %1, press ALT 0 for help.',
 
 	// ARIA descriptions.
-	toolbar	: 'Toolbar',
-	editor	: 'Rich Text Editor',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Rich Text Editor',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Source',

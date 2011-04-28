@@ -34,8 +34,8 @@ CKEDITOR.lang['cs'] =
 	editorTitle : 'Textový editor, %1, nápovědu zobrazíte stiskem ALT 0.',
 
 	// ARIA descriptions.
-	toolbar	: 'Panel nástrojů',
-	editor	: 'Textový editor',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Textový editor',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Zdroj',

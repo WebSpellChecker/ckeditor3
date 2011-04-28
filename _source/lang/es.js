@@ -34,8 +34,8 @@ CKEDITOR.lang['es'] =
 	editorTitle : 'Editor de texto, %1, pulse ALT 0 para ayuda.',
 
 	// ARIA descriptions.
-	toolbar	: 'Barra de herramientas',
-	editor	: 'Editor de texto enriquecido',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Editor de texto enriquecido',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Fuente HTML',

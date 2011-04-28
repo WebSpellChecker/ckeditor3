@@ -179,7 +179,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						output.push( expanded ? '>' : ' style="display:none">' );
 
 						// Sends the ARIA label.
-						output.push( '<span id="', labelId, '" class="cke_voice_label">', editor.lang.toolbar, '</span>' );
+						output.push( '<span id="', labelId, '" class="cke_voice_label">', editor.lang.toolbars, '</span>' );
 
 						var toolbars = editor.toolbox.toolbars,
 							toolbar =

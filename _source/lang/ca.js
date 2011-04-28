@@ -34,8 +34,8 @@ CKEDITOR.lang['ca'] =
 	editorTitle : 'Editor de text enriquit, %1, prem ALT 0 per obtenir ajuda.',
 
 	// ARIA descriptions.
-	toolbar	: 'Barra d\'eines',
-	editor	: 'Editor de text enriquit',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Editor de text enriquit',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Codi font',

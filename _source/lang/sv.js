@@ -33,8 +33,8 @@ CKEDITOR.lang['sv'] =
 	editorTitle : 'Rich text editor, %1, tryck ALT 0 för hjälp.',
 
 	// ARIA descriptions.
-	toolbar	: 'Verktygsfält',
-	editor	: 'Rich Text Editor',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Rich Text Editor',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Källa',

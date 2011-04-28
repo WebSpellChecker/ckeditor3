@@ -33,8 +33,8 @@ CKEDITOR.lang['tr'] =
 	editorTitle : 'Zengin metin editörü, %1, yardım için ALT 0 tuşuna basın.',
 
 	// ARIA descriptions.
-	toolbar	: 'Toolbar',
-	editor	: 'Zengin Metin Editörü',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Zengin Metin Editörü',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Kaynak',

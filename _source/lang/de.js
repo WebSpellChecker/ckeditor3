@@ -34,8 +34,8 @@ CKEDITOR.lang['de'] =
 	editorTitle : 'WYSIWYG-Editor, %1, drücken Sie ALT 0 für Hilfe.',
 
 	// ARIA descriptions.
-	toolbar	: 'Symbolleiste',
-	editor	: 'WYSIWYG-Editor',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'WYSIWYG-Editor',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Quellcode',

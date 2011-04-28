@@ -34,8 +34,8 @@ CKEDITOR.lang['fo'] =
 	editorTitle : 'Rich text editor, %1, trýst ALT og 0 fyri vegleiðing.',
 
 	// ARIA descriptions.
-	toolbar	: 'Toolbar',
-	editor	: 'Rich Text Editor',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Rich Text Editor',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Kelda',

@@ -34,8 +34,8 @@ CKEDITOR.lang['zh-cn'] =
 	editorTitle : '所见即所得编辑器, %1, 按 ALT+0 查看帮助。',
 
 	// ARIA descriptions.
-	toolbar	: '工具栏',
-	editor	: '所见即所得编辑器',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: '所见即所得编辑器',
 
 	// Toolbar buttons without dialogs.
 	source			: '源码',

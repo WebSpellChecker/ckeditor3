@@ -34,8 +34,8 @@ CKEDITOR.lang['hu'] =
 	editorTitle : 'HTML szerkesztő',
 
 	// ARIA descriptions.
-	toolbar	: 'Eszköztár',
-	editor	: 'HTML szerkesztő',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'HTML szerkesztő',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Forráskód',

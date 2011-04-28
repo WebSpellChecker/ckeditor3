@@ -34,8 +34,8 @@ CKEDITOR.lang['pl'] =
 	editorTitle : 'Edytor tekstu sformatowanego, %1, w celu uzyskania pomocy naciśnij ALT 0.',
 
 	// ARIA descriptions.
-	toolbar	: 'Pasek narzędzi',
-	editor	: 'Edytor tekstu sformatowanego',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Edytor tekstu sformatowanego',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Źródło dokumentu',

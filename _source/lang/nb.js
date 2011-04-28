@@ -34,8 +34,8 @@ CKEDITOR.lang['nb'] =
 	editorTitle : 'Rikteksteditor, %1, trykk ALT 0 for hjelp.',
 
 	// ARIA descriptions.
-	toolbar	: 'Verktøylinje',
-	editor	: 'Rikteksteditor',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Rikteksteditor',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Kilde',

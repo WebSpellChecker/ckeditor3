@@ -33,8 +33,8 @@ CKEDITOR.lang['pt-br'] =
 	editorTitle : 'Editor de Texto, %1, pressione ALT 0 para obter ajuda.',
 
 	// ARIA descriptions.
-	toolbar	: 'Barra de Ferramentas',
-	editor	: 'Editor de Texto',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Editor de Texto',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Código-Fonte',

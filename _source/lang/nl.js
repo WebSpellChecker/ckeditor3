@@ -34,8 +34,8 @@ CKEDITOR.lang['nl'] =
 	editorTitle : 'Tekstverwerker, %1, druk op ALT 0 voor hulp.',
 
 	// ARIA descriptions.
-	toolbar	: 'Werkbalk',
-	editor	: 'Tekstverwerker',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Tekstverwerker',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Code',

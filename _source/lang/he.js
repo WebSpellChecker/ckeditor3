@@ -34,8 +34,8 @@ CKEDITOR.lang['he'] =
 	editorTitle : 'עורך טקסט עשיר, %1, לחץ אלט (ALT) + 0 לעזרה.',
 
 	// ARIA descriptions.
-	toolbar	: 'סרגל הכלים',
-	editor	: 'עורך טקסט עשיר',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'עורך טקסט עשיר',
 
 	// Toolbar buttons without dialogs.
 	source			: 'מקור',

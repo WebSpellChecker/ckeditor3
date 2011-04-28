@@ -34,8 +34,8 @@ CKEDITOR.lang['fi'] =
 	editorTitle : 'Rikastekstieditori, %1, paina ALT 0 nähdäksesi ohjeen.',
 
 	// ARIA descriptions.
-	toolbar	: 'Työkalupalkki',
-	editor	: 'Rikastekstieditori',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Rikastekstieditori',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Koodi',

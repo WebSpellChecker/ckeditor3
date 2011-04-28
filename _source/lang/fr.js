@@ -34,8 +34,8 @@ CKEDITOR.lang['fr'] =
 	editorTitle : 'Éditeur de Texte Enrichi, %1, appuyez sur ALT-0 pour l\'aide.',
 
 	// ARIA descriptions.
-	toolbar	: 'Barre d\'outils',
-	editor	: 'Éditeur de Texte Enrichi',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Éditeur de Texte Enrichi',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Source',

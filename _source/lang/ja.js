@@ -34,8 +34,8 @@ CKEDITOR.lang['ja'] =
 	editorTitle : 'リッチテキストエディタ, %1, ヘルプは ALT 0 を押してください',
 
 	// ARIA descriptions.
-	toolbar	: 'ツールバー',
-	editor	: 'リッチテキストエディタ',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'リッチテキストエディタ',
 
 	// Toolbar buttons without dialogs.
 	source			: 'ソース',

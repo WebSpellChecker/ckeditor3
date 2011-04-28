@@ -34,8 +34,8 @@ CKEDITOR.lang['uk'] =
 	editorTitle : 'Текстовий редактор, %1, натисніть ALT 0 для довідки.',
 
 	// ARIA descriptions.
-	toolbar	: 'Панель інструментів',
-	editor	: 'Текстовий редактор',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Текстовий редактор',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Джерело',

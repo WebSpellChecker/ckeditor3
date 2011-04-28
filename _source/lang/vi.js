@@ -34,8 +34,8 @@ CKEDITOR.lang['vi'] =
 	editorTitle : 'Bộ soạn thảo, %1, nhấn ALT + 0 để xem hướng dẫn.',
 
 	// ARIA descriptions.
-	toolbar	: 'Thanh công cụ',
-	editor	: 'Bộ soạn thảo',
+	toolbars	: 'Editor toolbars', // MISSING
+	editor		: 'Bộ soạn thảo',
 
 	// Toolbar buttons without dialogs.
 	source			: 'Mã HTML',

@@ -78,7 +78,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						while ( !toolbar || !toolbar.items.length )
 						{
 							toolbar = keystroke == 9 ?
-								( ( toolbar ? toolbar.next : item.toolbar.next ) || editor.toolbox.toolbars[ 0 ] ) : 
+								( ( toolbar ? toolbar.next : item.toolbar.next ) || editor.toolbox.toolbars[ 0 ] ) :
 								( ( toolbar ? toolbar.previous : item.toolbar.previous ) || editor.toolbox.toolbars[ editor.toolbox.toolbars.length - 1 ] );
 
 							// Look for the first item that accepts focus.
@@ -410,7 +410,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							output.push( '<span class="cke_separator" role="separator"></span>' );
 							return {};
 						}
-					}
+					};
 				}
 			});
 		}

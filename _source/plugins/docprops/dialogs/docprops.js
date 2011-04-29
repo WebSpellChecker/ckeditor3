@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -98,6 +98,7 @@ CKEDITOR.dialog.add( 'docProps', function( editor )
 			if ( ret )
 				return result;
 			this.setValue( result );
+			return null;
 		};
 	}
 	function commitMargin( name )
@@ -433,7 +434,7 @@ CKEDITOR.dialog.add( 'docProps', function( editor )
 							{
 								type : 'vbox',
 								children : [
-									colorField( 'txtColor', 'txtColor', 
+									colorField( 'txtColor', 'txtColor',
 									{
 										setup : function( doc, html, head, body )
 										{

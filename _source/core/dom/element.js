@@ -901,8 +901,8 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 				var $attr = this.$.attributes.getNamedItem( name );
 				return !!( $attr && $attr.specified );
 			}
-			
-			return ( CKEDITOR.env.ie && CKEDITOR.env.version < 8 ) ? 
+
+			return ( CKEDITOR.env.ie && CKEDITOR.env.version < 8 ) ?
 					function( name )
 					{
 						// On IE < 8 the name attribute cannot be retrieved

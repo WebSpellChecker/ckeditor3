@@ -742,7 +742,7 @@ CKEDITOR.tools.extend( CKEDITOR.editor.prototype,
 			if ( this.readOnly != !makeEditable )
 			{
 				this.readOnly = !makeEditable;
-				
+
 				// Fire the readOnly event so the editor features can update
 				// their state accordingly.
 				this.fire( 'readOnly' );

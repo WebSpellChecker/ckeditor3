@@ -768,7 +768,7 @@ CKEDITOR.lang['zh-cn'] =
 		rtl : '文字方向为从右至左'
 	},
 
-	docprops : 
+	docprops :
 	{
 		label : 'Document Properties', // MISSING
 		title : 'Document Properties', // MISSING

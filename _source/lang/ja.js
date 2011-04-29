@@ -768,7 +768,7 @@ CKEDITOR.lang['ja'] =
 		rtl : 'テキストの向き : 右から左へ'
 	},
 
-	docprops : 
+	docprops :
 	{
 		label : 'Document Properties', // MISSING
 		title : 'Document Properties', // MISSING

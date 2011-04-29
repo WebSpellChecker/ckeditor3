@@ -768,7 +768,7 @@ CKEDITOR.lang['de'] =
 		rtl : 'Leserichtung von Rechts nach Links'
 	},
 
-	docprops : 
+	docprops :
 	{
 		label : 'Document Properties', // MISSING
 		title : 'Document Properties', // MISSING

@@ -16,7 +16,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	function onSelectionChange( evt )
 	{
 		if ( evt.editor.readOnly )
-			return;
+			return null;
 
 		var editor = evt.editor,
 			elementPath = evt.data.path,

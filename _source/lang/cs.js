@@ -768,7 +768,7 @@ CKEDITOR.lang['cs'] =
 		rtl : 'Orientace textu zprava do leva'
 	},
 
-	docprops : 
+	docprops :
 	{
 		label : 'Document Properties', // MISSING
 		title : 'Document Properties', // MISSING

@@ -768,7 +768,7 @@ CKEDITOR.lang['af'] =
 		rtl : 'Skryfrigting van regs na links'
 	},
 
-	docprops : 
+	docprops :
 	{
 		label : 'Document Properties', // MISSING
 		title : 'Document Properties', // MISSING

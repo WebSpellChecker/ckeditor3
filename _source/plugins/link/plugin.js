@@ -32,7 +32,7 @@ CKEDITOR.plugins.add( 'link',
 		// Add the CSS styles for anchor placeholders.
 
 		var side = ( editor.lang.dir == 'rtl' ? 'right' : 'left' );
-		var basicCss = 
+		var basicCss =
 			'background:url(' + CKEDITOR.getUrl( this.path + 'images/anchor.gif' ) + ') no-repeat ' + side + ' center;' +
 			'border:1px dotted #00f;';
 
@@ -173,7 +173,7 @@ CKEDITOR.plugins.add( 'link',
 						{
 							var attributes = element.attributes;
 							if ( !attributes.name )
-								return;
+								return null;
 
 							var isEmpty = !element.children.length;
 
@@ -194,6 +194,8 @@ CKEDITOR.plugins.add( 'link',
 							}
 							else if ( CKEDITOR.plugins.link.fakeAnchor && isEmpty )
 								return editor.createFakeParserElement( element, 'cke_anchor', 'anchor' );
+
+							return null;
 						}
 					}
 				});
@@ -219,7 +221,7 @@ CKEDITOR.plugins.add( 'link',
 				{
 					if ( name == 'a' )
 					{
-						if ( CKEDITOR.plugins.link.tryRestoreFakeAnchor( editor, element ) || 
+						if ( CKEDITOR.plugins.link.tryRestoreFakeAnchor( editor, element ) ||
 							( element.getAttribute( 'name' ) && ( !element.getAttribute( 'href' ) || !element.getChildCount() ) ) )
 						{
 							return 'anchor';

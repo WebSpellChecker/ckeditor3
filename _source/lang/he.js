@@ -768,7 +768,7 @@ CKEDITOR.lang['he'] =
 		rtl : 'כיוון טקסט מימין לשמאל (RTL)'
 	},
 
-	docprops : 
+	docprops :
 	{
 		label : 'מאפייני מסמך',
 		title : 'מאפייני מסמך',

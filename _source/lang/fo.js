@@ -768,7 +768,7 @@ CKEDITOR.lang['fo'] =
 		rtl : 'Tekstkós frá høgru til vinstru'
 	},
 
-	docprops : 
+	docprops :
 	{
 		label : 'Document Properties', // MISSING
 		title : 'Document Properties', // MISSING

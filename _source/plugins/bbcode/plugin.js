@@ -1,4 +1,4 @@
-﻿﻿/*
+﻿/*
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -113,13 +113,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		regex = new RegExp( '&(' + regex.join( '|' ) + ');', 'g' );
 
-		return function ( html )
+		return function( html )
 		{
 			return html.replace( regex, function( match, entity )
 			{
 				return entities[ entity ];
-			})
-		}
+			});
+		};
 	})();
 
 	CKEDITOR.BBCodeParser = function()
@@ -686,7 +686,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						  if ( citeText )
 						  {
 							  var cite = new CKEDITOR.htmlParser.element( 'cite' );
-							  cite.add( new CKEDITOR.htmlParser.text( citeText.replace( /^"|"$/g, '' ) ) )
+							  cite.add( new CKEDITOR.htmlParser.text( citeText.replace( /^"|"$/g, '' ) ) );
 							  delete element.attributes.cite;
 							  element.children.unshift( cite );
 						  }
@@ -707,7 +707,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								  element.name = 'a';
 								  element.attributes.href = 'mailto:' + element.children[ 0 ].value;
 							  }
-							  
+
 							  delete element.attributes.bbcode;
 						  }
 					  },
@@ -726,7 +726,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					  a : function( element )
 					  {
 						  if ( !element.attributes.href )
-							  element.attributes.href = element.children[ 0 ].value
+							  element.attributes.href = element.children[ 0 ].value;
 					  },
 					  'smiley' : function( element )
 					  {
@@ -762,12 +762,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							tagName = convertMap[ tagName ];
 						else if ( tagName == 'span' )
 						{
-							if ( value = style.color )
+							if ( ( value = style.color ) )
 							{
 								tagName = 'color';
 								value = RGBToHex( value );
 							}
-							else if ( value = style[ 'font-size' ] )
+							else if ( ( value = style[ 'font-size' ] ) )
 							{
 								var percentValue = value.match( /(\d+)%$/ );
 								if ( percentValue )
@@ -779,7 +779,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 						else if ( tagName == 'ol' || tagName == 'ul' )
 						{
-							if ( value = style[ 'list-style-type'] )
+							if ( ( value = style[ 'list-style-type'] ) )
 							{
 								switch ( value )
 								{
@@ -819,7 +819,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 						else if ( tagName == 'a' )
 						{
-							if ( value = attributes.href )
+							if ( ( value = attributes.href ) )
 							{
 								if ( value.indexOf( 'mailto:' ) !== -1 )
 								{
@@ -854,6 +854,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						element.name = tagName;
 						value && ( element.attributes.option = value );
+
+						return null;
 					},
 
 					// Remove any bogus br from the end of a pseudo block,
@@ -881,21 +883,21 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				  } );
 			  } );
 		  },
-		  
+
 		  afterInit : function( editor )
 		  {
 			  var filters;
 			  if ( editor._.elementsPath  )
 			  {
 				  // Eliminate irrelevant elements from displaying, e.g body and p.
-				  if ( filters = editor._.elementsPath.filters )
+				  if ( ( filters = editor._.elementsPath.filters ) )
 					filters.push( function( element )
 						{
 							var htmlName = element.getName(),
 								name = tagnameMap[ htmlName ] || false;
 
 							// Specialized anchor presents as email.
-							if ( name == 'link' && element.getAttribute( 'href' ).indexOf( 'mailto:' ) == 0 )
+							if ( name == 'link' && element.getAttribute( 'href' ).indexOf( 'mailto:' ) === 0 )
 								name = 'email';
 							// Styled span could be either size or color.
 							else if ( htmlName == 'span' )
@@ -908,7 +910,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							else if ( name == 'img' )
 							{
 								var src = element.data( 'cke-saved-src' );
-								if ( src && src.indexOf( editor.config.smiley_path ) == 0 )
+								if ( src && src.indexOf( editor.config.smiley_path ) === 0 )
 									name = 'smiley';
 							}
 
@@ -919,5 +921,3 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	  } );
 
 })();
-
-

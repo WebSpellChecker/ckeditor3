@@ -768,7 +768,7 @@ CKEDITOR.lang['uk'] =
 		rtl : 'Напрямок тексту справа наліво'
 	},
 
-	docprops : 
+	docprops :
 	{
 		label : 'Document Properties', // MISSING
 		title : 'Document Properties', // MISSING

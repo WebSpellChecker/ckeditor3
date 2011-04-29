@@ -2243,7 +2243,7 @@ CKEDITOR.DIALOG_RESIZE_BOTH = 3;
 					classes[ elementDefinition.className ] = 1;
 				if ( elementDefinition.disabled )
 					classes[ 'cke_disabled' ] = 1;
-				
+
 				var attributeClasses = ( attributes['class'] && attributes['class'].split ) ? attributes['class'].split( ' ' ) : [];
 				for ( i = 0 ; i < attributeClasses.length ; i++ )
 				{

@@ -1,4 +1,4 @@
-/*
+﻿/*
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -105,9 +105,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				editor.getStylesSet( function( stylesDefinitions )
 					{
 							// Rules that must be skipped
-						var skipSelectors = editor.config.stylesheetParser_skipSelectors || /(^body\.|^\.)/i,
+						var skipSelectors = editor.config.stylesheetParser_skipSelectors || ( /(^body\.|^\.)/i ),
 							// Rules that are valid
-							validSelectors = editor.config.stylesheetParser_validSelectors || /\w+\.\w+/;
+							validSelectors = editor.config.stylesheetParser_validSelectors || ( /\w+\.\w+/ );
 
 						// Add the styles found in the document
 						editor._.stylesDefinitions = stylesDefinitions.concat( LoadStylesCSS( editor.document.$, skipSelectors, validSelectors ) );

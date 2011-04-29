@@ -46,7 +46,7 @@ CKEDITOR.plugins.add( 'pagebreak',
 				var target = evt.data.getTarget();
 				if ( target.is( 'div' ) && target.hasClass( 'cke_pagebreak')  )
 					editor.getSelection().selectElement( target );
-			})
+			});
 		});
 	},
 

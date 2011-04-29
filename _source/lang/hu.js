@@ -768,7 +768,7 @@ CKEDITOR.lang['hu'] =
 		rtl : 'Szöveg iránya jobbról balra'
 	},
 
-	docprops : 
+	docprops :
 	{
 		label : 'Document Properties', // MISSING
 		title : 'Document Properties', // MISSING

@@ -116,7 +116,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		var switchLockRatio = function( dialog, value )
 		{
 			if ( !dialog.getContentElement( 'info', 'ratioLock' ) )
-				return;
+				return null;
 
 			var oImageOriginal = dialog.originalElement;
 

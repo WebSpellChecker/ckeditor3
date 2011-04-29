@@ -192,6 +192,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						{
 							var toolbarId,
 								toolbarObj = 0,
+								toolbarName,
 								row = toolbar[ r ],
 								items;
 
@@ -221,15 +222,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							for ( var i = 0 ; i < items.length ; i++ )
 							{
 								var item,
-									itemName = items[ i ];
+									itemName = items[ i ],
+									canGroup;
 
-								if ( itemName == '-' )
-									item = CKEDITOR.ui.separator;
-								else
-									item = editor.ui.create( itemName );
+								item = editor.ui.create( itemName );
 
 								if ( item )
 								{
+									canGroup = item.canGroup !== false;
+
 									// Initialize the toolbar first, if needed.
 									if ( !toolbarObj )
 									{
@@ -239,11 +240,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										toolbarName = row.name && ( editor.lang.toolbarGroups[ row.name ] || row.name );
 
 										// Output the toolbar opener.
-										output.push( '<span id="', toolbarId, '" class="cke_toolbar ',
-											( item.canGroup ? 'cke_toolbar_grouped' : 'cke_toolbar_ungrouped' ), '"',
+										output.push( '<span id="', toolbarId, '" class="cke_toolbar"',
 											( toolbarName ? ' aria-labelledby="'+ toolbarId +  '_label"' : '' ),
 											' role="toolbar">' );
-										
+
 										// If a toolbar name is available, send the voice label.
 										toolbarName && output.push( '<span id="', toolbarId, '_label" class="cke_voice_label">', toolbarName, '</span>' );
 
@@ -261,7 +261,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										}
 									}
 
-									if ( item.canGroup )
+									if ( canGroup )
 									{
 										if ( !groupStarted )
 										{
@@ -398,23 +398,26 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			});
 
 			editor.addCommand( 'toolbarFocus', commands.toolbarFocus );
+
+			editor.ui.add( '-', CKEDITOR.UI_SEPARATOR, {} );
+			editor.ui.addHandler( CKEDITOR.UI_SEPARATOR,
+			{
+				create: function()
+				{
+					return {
+						render : function( editor, output )
+						{
+							output.push( '<span class="cke_separator" role="separator"></span>' );
+							return {};
+						}
+					}
+				}
+			});
 		}
 	});
 })();
 
-/**
- * The UI element that renders a toolbar separator.
- * @type Object
- * @example
- */
-CKEDITOR.ui.separator =
-{
-	render : function( editor, output )
-	{
-		output.push( '<span class="cke_separator" role="separator"></span>' );
-		return {};
-	}
-};
+CKEDITOR.UI_SEPARATOR = 'separator';
 
 /**
  * The "theme space" to which rendering the toolbar. For the default theme,

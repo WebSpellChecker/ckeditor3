@@ -16,7 +16,7 @@ CKEDITOR.plugins.add( 'button',
  * @constant
  * @example
  */
-CKEDITOR.UI_BUTTON = 1;
+CKEDITOR.UI_BUTTON = 'button';
 
 /**
  * Represents a button UI element. This class should not be called directly. To
@@ -59,8 +59,6 @@ CKEDITOR.ui.button.handler =
 {
 CKEDITOR.ui.button.prototype =
 {
-	canGroup : true,
-
 	/**
 	 * Renders the button.
 	 * @param {CKEDITOR.editor} editor The editor instance which this button is

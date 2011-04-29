@@ -106,7 +106,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	display: none;
 }
 
-.cke_skin_kama .cke_toolbar.cke_toolbar_grouped
+.cke_skin_kama .cke_toolgroup
 {
 	-moz-border-radius:5px;
 	-webkit-border-radius: 5px;
@@ -122,7 +122,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	display: inline;
 }
 
-.cke_skin_kama .cke_rtl .cke_toolbar.cke_toolbar_grouped
+.cke_skin_kama .cke_rtl .cke_toolgroup
 {
 	float: right;
 	margin-right: 0;

@@ -18,7 +18,7 @@ CKEDITOR.plugins.add( 'richcombo',
  * @constant
  * @example
  */
-CKEDITOR.UI_RICHCOMBO = 3;
+CKEDITOR.UI_RICHCOMBO = 'richcombo';
 
 CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 {

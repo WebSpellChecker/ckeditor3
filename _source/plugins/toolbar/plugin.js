@@ -393,8 +393,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						instance = items[ i ];
 						if ( instance.clickFn ) CKEDITOR.tools.removeFunction( instance.clickFn );
 						if ( instance.keyDownFn ) CKEDITOR.tools.removeFunction( instance.keyDownFn );
-
-						if ( instance.index ) CKEDITOR.ui.button._.instances[ instance.index ] = null;
 					}
 				}
 			});

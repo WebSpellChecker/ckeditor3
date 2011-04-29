@@ -165,14 +165,14 @@ CKEDITOR.ui.richCombo = CKEDITOR.tools.createClass(
 			instance.keyDownFn = keyDownFn;
 
 			output.push(
-				'<span class="cke_rcombo">',
+				'<span class="cke_rcombo" role="presentation">',
 				'<span id=', id );
 
 			if ( this.className )
 				output.push( ' class="', this.className, ' cke_off"');
 
 			output.push(
-				'>',
+				' role="presentation">',
 					'<span id="' + id+ '_label" class=cke_label>', this.label, '</span>',
 					'<a hidefocus=true title="', this.title, '" tabindex="-1"',
 						env.gecko && env.version >= 10900 && !env.hc ? '' : ' href="javascript:void(\'' + this.label + '\')"',

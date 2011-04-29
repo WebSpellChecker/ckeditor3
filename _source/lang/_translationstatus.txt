@@ -33,6 +33,7 @@ hu.js      Found: 511 Missing: 60
 is.js      Found: 295 Missing: 276
 it.js      Found: 388 Missing: 183
 ja.js      Found: 470 Missing: 101
+ka.js      Found: 570 Missing: 1
 km.js      Found: 263 Missing: 308
 ko.js      Found: 281 Missing: 290
 lt.js      Found: 294 Missing: 277

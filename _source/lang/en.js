@@ -788,7 +788,7 @@ CKEDITOR.lang['en'] =
 		charsetKR : 'Korean',
 		charsetTR : 'Turkish',
 		charsetUN : 'Unicode (UTF-8)',
-		charsetWE : 'Westren European',
+		charsetWE : 'Western European',
 		docType : 'Document Type Heading',
 		docTypeOther : 'Other Document Type Heading',
 		xhtmlDec : 'Include XHTML Declarations',

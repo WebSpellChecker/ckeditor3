@@ -788,7 +788,7 @@ CKEDITOR.lang['da'] =
 		charsetKR : 'Korean', // MISSING
 		charsetTR : 'Turkish', // MISSING
 		charsetUN : 'Unicode (UTF-8)', // MISSING
-		charsetWE : 'Westren European', // MISSING
+		charsetWE : 'Western European', // MISSING
 		docType : 'Document Type Heading', // MISSING
 		docTypeOther : 'Other Document Type Heading', // MISSING
 		xhtmlDec : 'Include XHTML Declarations', // MISSING

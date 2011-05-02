@@ -461,12 +461,15 @@ CKEDITOR.dialog.add( 'docProps', function( editor )
 										},
 										commit : function( doc, html, head, body )
 										{
-											body.removeAttribute( 'bgcolor' );
-											var val = this.getValue();
-											if ( val )
-												body.setStyle( 'background-color', val );
-											else
-												resetStyle( body, 'background-color', 'transparent' );
+											if ( this.isChanged() )
+											{
+												body.removeAttribute( 'bgcolor' );
+												var val = this.getValue();
+												if ( val )
+													body.setStyle( 'background-color', val );
+												else
+													resetStyle( body, 'background-color', 'transparent' );
+											}
 										}
 									}),
 									{

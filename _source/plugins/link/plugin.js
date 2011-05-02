@@ -161,7 +161,7 @@ CKEDITOR.plugins.add( 'link',
 		var dataProcessor = editor.dataProcessor,
 			dataFilter = dataProcessor && dataProcessor.dataFilter,
 			htmlFilter = dataProcessor && dataProcessor.htmlFilter,
-			pathFilters = editor._.elementsPath.filters;
+			pathFilters = editor._.elementsPath && editor._.elementsPath.filters;
 
 		if ( dataFilter )
 		{

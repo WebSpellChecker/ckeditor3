@@ -14,13 +14,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			editor.addCommand( 'enter', {
 				modes : { wysiwyg:1 },
 				editorFocus : false,
-				exec : enter
+				exec : function( editor ){ enter( editor ); }
 			});
 
 			editor.addCommand( 'shiftEnter', {
 				modes : { wysiwyg:1 },
 				editorFocus : false,
-				exec : shiftEnter
+				exec : function( editor ){ shiftEnter( editor ); }
 			});
 
 			var keystrokes = editor.keystrokeHandler.keystrokes;

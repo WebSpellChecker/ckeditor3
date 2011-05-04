@@ -50,10 +50,10 @@ CKEDITOR.dialog.add( 'anchor', function( editor )
 				// Empty anchor
 				if ( range.collapsed )
 				{
-					if ( CKEDITOR.env.ie && CKEDITOR.env.version < 9 )
-						attributes['class'] = 'cke_anchor_empty';
+					if ( CKEDITOR.plugins.link.synAnchorSelector )
+						attributes[ 'class' ] = 'cke_anchor_empty';
 
-					if ( CKEDITOR.env.ie && CKEDITOR.env.version < 8 )
+					if ( CKEDITOR.plugins.link.emptyAnchorFix )
 					{
 						attributes[ 'contenteditable' ] = 'false';
 						attributes[ 'data-cke-editable' ] = 1;

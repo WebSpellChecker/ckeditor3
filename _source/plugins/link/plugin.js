@@ -47,8 +47,7 @@ CKEDITOR.plugins.add( 'link',
 				// Show the arrow cursor for the anchor image (FF at least).
 				'cursor:auto;' +
 			'}' +
-			( ( CKEDITOR.env.ie && CKEDITOR.env.version > 8 ) ? 'a[name]:empty,' : '' ) +
-			'a.cke_anchor_empty' +
+			( CKEDITOR.plugins.link.synAnchorSelector ? 'a.cke_anchor_empty' : 'a[name]:empty' ) +
 			'{' +
 				// Make empty anchor selectable on IE.
 				'display:inline-block;' +
@@ -275,8 +274,8 @@ CKEDITOR.plugins.link =
 	// elements must be used for them.
 	fakeAnchor : CKEDITOR.env.opera || CKEDITOR.env.webkit,
 
-	// For browsers that don't support CSS3 a[name]:empty().
-	synAnchorSelector : CKEDITOR.env.ie && CKEDITOR.env.version < 9,
+	// For browsers that don't support CSS3 a[name]:empty(), note IE9 is included because of #7783.
+	synAnchorSelector : CKEDITOR.env.ie,
 
 	// For browsers that have editing issue with empty anchor.
 	emptyAnchorFix : CKEDITOR.env.ie && CKEDITOR.env.version < 8,

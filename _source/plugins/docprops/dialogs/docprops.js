@@ -440,9 +440,9 @@ CKEDITOR.dialog.add( 'docProps', function( editor )
 										{
 											this.setValue( body.getComputedStyle( 'color' ) );
 										},
-										commit : function( doc, html, head, body )
+										commit : function( doc, html, head, body, isPreview )
 										{
-											if ( this.isChanged() )
+											if ( this.isChanged() || isPreview )
 											{
 												body.removeAttribute( 'text' );
 												var val = this.getValue();
@@ -459,9 +459,9 @@ CKEDITOR.dialog.add( 'docProps', function( editor )
 											var val = body.getComputedStyle( 'background-color' ) || '';
 											this.setValue( val == 'transparent' ? '' : val );
 										},
-										commit : function( doc, html, head, body )
+										commit : function( doc, html, head, body, isPreview )
 										{
-											if ( this.isChanged() )
+											if ( this.isChanged() || isPreview )
 											{
 												body.removeAttribute( 'bgcolor' );
 												var val = this.getValue();

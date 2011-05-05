@@ -740,7 +740,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 												{
 													id : 'ratioLock',
 													type : 'html',
-													id : 'htmlButtons',
 													style : 'margin-top:30px;width:40px;height:40px;',
 													onLoad : function()
 													{

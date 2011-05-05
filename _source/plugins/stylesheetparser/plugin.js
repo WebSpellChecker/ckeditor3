@@ -92,30 +92,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	// Register a plugin named "stylesheetparser".
 	CKEDITOR.plugins.add( 'stylesheetparser',
 	{
-		init : function( editor )
+		requires: [ 'styles' ],
+		onLoad : function()
 		{
-			editor.on( 'mode', function( e )
+			var obj = CKEDITOR.editor.prototype;
+			obj.getStylesSet = CKEDITOR.tools.override( obj.getStylesSet,  function( org )
 			{
-				if ( editor.mode != 'wysiwyg' )
-					return;
-
-				// Do this only once
-				e.removeListener();
-
-				editor.getStylesSet( function( stylesDefinitions )
+				return function( callback )
+				{
+					var self = this;
+					org.call( this, function( definitions )
 					{
-							// Rules that must be skipped
-						var skipSelectors = editor.config.stylesheetParser_skipSelectors || ( /(^body\.|^\.)/i ),
+						// Rules that must be skipped
+						var skipSelectors = self.config.stylesheetParser_skipSelectors || ( /(^body\.|^\.)/i ),
 							// Rules that are valid
-							validSelectors = editor.config.stylesheetParser_validSelectors || ( /\w+\.\w+/ );
+							validSelectors = self.config.stylesheetParser_validSelectors || ( /\w+\.\w+/ );
 
-						// Add the styles found in the document
-						editor._.stylesDefinitions = stylesDefinitions.concat( LoadStylesCSS( editor.document.$, skipSelectors, validSelectors ) );
-
-						// Refresh the styles combo
-						var combo = editor.ui._.items[ 'Styles' ];
-						combo && combo.args[ 0 ].reset();
-					} );
+						callback( ( self._.stylesDefinitions = definitions.concat( LoadStylesCSS( self.document.$, skipSelectors, validSelectors ) ) ) );
+					});
+				};
 			});
 
 		}

@@ -196,12 +196,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					editor.fire( 'elementsPathUpdate', { space : space } );
 				});
 
-			editor.on( 'contentDomUnload', function()
-				{
-					// If the spaceElement hasn't been initialized, don't try to do it at this time
-					// Only reuse existing reference.
-					spaceElement && spaceElement.setHtml( emptyHtml );
-				});
+			function empty()
+			{
+				spaceElement && spaceElement.setHtml( emptyHtml );
+				delete editor._.elementsPath.list;
+			}
+
+			editor.on( 'readOnly', empty );
+			editor.on( 'contentDomUnload', empty );
 
 			editor.addCommand( 'elementsPathFocus', commands.toolbarFocus );
 		}

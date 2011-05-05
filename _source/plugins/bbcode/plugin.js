@@ -435,6 +435,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var currentDtd = CKEDITOR.dtd[ currentNode.name ];
 			if ( !currentDtd || currentDtd[ '#' ] )
 			{
+				checkPendingBrs();
 				checkPending();
 
 				text.replace(/([\r\n])|[^\r\n]*/g, function( piece, lineBreak )

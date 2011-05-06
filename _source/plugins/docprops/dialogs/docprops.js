@@ -673,7 +673,7 @@ CKEDITOR.dialog.add( 'docProps', function( editor )
 											head = doc.getHead(),
 											body = doc.getBody();
 										self.commitContent( doc, html, head, body, 1 );
-									}, 0 );
+									}, 50 );
 								}
 							});
 							CKEDITOR.document.getById( 'cke_docProps_preview_iframe' ).getAscendant( 'table' ).setStyle( 'height', '100%' );

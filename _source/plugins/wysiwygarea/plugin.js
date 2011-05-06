@@ -462,7 +462,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		init : function( editor )
 		{
-			var fixForBody = ( editor.config.enterMode != CKEDITOR.ENTER_BR )
+			var fixForBody = ( editor.config.enterMode != CKEDITOR.ENTER_BR && editor.config.autoParagraph !== false )
 				? editor.config.enterMode == CKEDITOR.ENTER_DIV ? 'div' : 'p' : false;
 
 			var frameLabel = editor.lang.editorTitle.replace( '%1', editor.name );

@@ -47,11 +47,13 @@ CKEDITOR.plugins.add( 'link',
 				// Show the arrow cursor for the anchor image (FF at least).
 				'cursor:auto;' +
 			'}' +
-			( CKEDITOR.plugins.link.synAnchorSelector ? 'a.cke_anchor_empty' : 'a[name]:empty' ) +
-			'{' +
-				// Make empty anchor selectable on IE.
-				'display:inline-block;' +
-			'}' +
+			( CKEDITOR.env.ie ? (
+				'a.cke_anchor_empty' +
+				'{' +
+					// Make empty anchor selectable on IE.
+					'display:inline-block;' +
+				'}'
+				) : '' ) +
 			'img.cke_anchor' +
 			'{' +
 				basicCss +

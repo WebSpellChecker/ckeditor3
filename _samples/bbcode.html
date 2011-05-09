@@ -22,12 +22,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	<div class="description">
 	<p>
 		This sample shows how to configure CKEditor to output <a href="http://en.wikipedia.org/wiki/BBCode">BBCode</a> format instead of HTML.
-		Please note that the editor configuration was modify to reflect what is needed in a BBCode editing environment.
+		Please note that the editor configuration was modified to reflect what is needed in a BBCode editing environment.
 		Smiley images, for example, were stripped to the emoticons that are commonly used in some BBCode dialects.
 	</p>
 	<p>
 		Please note that currently there is no standard for the BBCode markup language, so its implementation
-		for different platforms (message boards) can vary. This means that before using CKEditor to
+		for different platforms (message boards, blogs etc.) can vary. This means that before using CKEditor to
 		output BBCode you may need to adjust the implementation to your own environment.
 	</p>
 	<p>
@@ -37,7 +37,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	<pre class="samples">
 CKEDITOR.replace( 'editor1',
 	{
-		extraPlugins : 'bbcode',
+		<strong>extraPlugins : 'bbcode',</strong>
 		removePlugins : 'bidi,button,dialogadvtab,div,filebrowser,flash,format,forms,horizontalrule,iframe,indent,justify,liststyle,pagebreak,showborders,stylescombo,table,tabletools,templates',
 		toolbar :
 		[

@@ -23,10 +23,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	<p>
 		This sample shows how to configure CKEditor instances to use the
 		<strong>Stylesheet Parser</strong> (<code>stylesheetparser</code>) plugin that fills
-		the Styles combo based on the CSS rules available in the document stylesheet.
+		the <strong>Styles</strong> drop-down list based on the CSS rules available in the document stylesheet.
 	</p>
 	<p>
-		To add a CKEditor instance using the <strong>stylesheetparser</strong> plugin, insert
+		To add a CKEditor instance using the <code>stylesheetparser</code> plugin, insert
 		the following JavaScript call into your code:
 	</p>
 	<pre class="samples">CKEDITOR.replace( '<em>textarea_id</em>',
@@ -52,7 +52,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	<form action="sample_posteddata.php" method="post">
 		<p>
 			<label for="editor1">
-				Editor 1:</label>
+				CKEditor using the <code>stylesheetparser</code> plugin with its default configuration:</label>
 			<textarea cols="80" id="editor1" name="editor1" rows="10">&lt;p&gt;This is some &lt;strong&gt;sample text&lt;/strong&gt;. You are using &lt;a href="http://ckeditor.com/"&gt;CKEditor&lt;/a&gt;.&lt;/p&gt;</textarea>
 			<script type="text/javascript">
 			//<![CDATA[
@@ -67,11 +67,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				{
 					extraPlugins : 'stylesheetparser',
 					/*
-					 * Style sheet for the contents
+					 * Stylesheet for the contents.
 					 */
 					contentsCss : 'assets/parsesample.css',
 					/*
-					 *  Don't load the default Styles configuration
+					 *  Do not load the default Styles configuration.
 					 */
 					stylesSet : []
 				});

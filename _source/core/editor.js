@@ -165,7 +165,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		 * @name CKEDITOR.editor.prototype.readOnly
 		 * @type Boolean
 		 * @since 3.6
-		 * @see CKEDITOR.editor.prototype.setReadOnly
+		 * @see CKEDITOR.editor#setReadOnly
 		 */
 		editor.readOnly = !!( editor.config.readOnly || editor.element.getAttribute( 'disabled' ) );
 
@@ -1033,8 +1033,9 @@ CKEDITOR.on( 'loaded', function()
  */
 
 /**
- * Event fired after {@link CKEDITOR.editor.prototype.readOnly} property changes.
+ * Event fired after {@link CKEDITOR.editor#readOnly} property changes.
  * @name CKEDITOR.editor#readOnly
  * @event
+ * @since 3.6
  * @param {CKEDITOR.editor} editor This editor instance.
  */

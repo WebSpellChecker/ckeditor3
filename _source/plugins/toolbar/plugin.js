@@ -537,6 +537,7 @@ CKEDITOR.config.toolbarCanCollapse = true;
  * the toolbar. The TAB key will still be used to quickly jump among the
  * toolbar groups.
  * @name CKEDITOR.config.toolbarGroupCycling
+ * @since 3.6
  * @type Boolean
  * @default true
  * @example

@@ -1335,6 +1335,7 @@ CKEDITOR.config.ignoreEmptyParagraph = true;
  * Whether automatically create wrapping blocks around inline contents inside document body,
  * this helps to ensure the integrality of the block enter mode.
  * <strong>Note:</strong> Changing the default value might introduce unpredictable usability issues.
+ * @name CKEDITOR.config.autoParagraph
  * @since 3.6
  * @type Boolean
  * @default true

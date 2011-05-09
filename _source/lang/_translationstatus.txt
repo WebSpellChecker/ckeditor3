@@ -43,7 +43,7 @@ ms.js      Found: 253 Missing: 318
 nb.js      Found: 520 Missing: 51
 nl.js      Found: 512 Missing: 59
 no.js      Found: 520 Missing: 51
-pl.js      Found: 521 Missing: 50
+pl.js      Found: 571 Missing: 0
 pt-br.js   Found: 505 Missing: 66
 pt.js      Found: 270 Missing: 301
 ro.js      Found: 289 Missing: 282

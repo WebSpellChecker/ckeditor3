@@ -72,8 +72,19 @@ CKEDITOR.plugins.add( 'domiterator' );
 				// Block encountered.
 				if ( current.type == CKEDITOR.NODE_ELEMENT && current.isBlockBoundary( !this.enlargeBr && { br : 1 } ) )
 				{
+					// Block is just on wanted list.
 					if ( current.getName() in blocklist )
 						block = current;
+					else if ( !current.getChildCount() )
+					{
+						// An empty path block is encountered, e.g. an empty paragraph.
+						if ( current.getName() in CKEDITOR.dtd.$block )
+							block = current;
+						// Not a path block, but an empty block limit that could carry text, 
+						// e.g. an empty table cell, so have to establish a real block in it. (#7220)
+						else if ( CKEDITOR.dtd[ current.getName() ][ '#' ] )
+							block = current.append( doc.createElement( fixBlockTag || 'p' ) );
+					}
 				}
 				// At the beginning inside of a block.
 				else

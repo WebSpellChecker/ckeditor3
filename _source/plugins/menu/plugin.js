@@ -195,7 +195,7 @@ CKEDITOR.plugins.add( 'menu',
 				}
 
 				// Get the element representing the current item.
-				var element = this._.panel.getBlock( this.id ).element.getDocument().getById( this.id + String( index ) );
+				var element = this._.panel.getBlock( this.id ).element.getDocument().getById( this.id + '_item_' + String( index ) );
 
 				// Show the submenu.
 				menu.show( element, 2 );
@@ -398,7 +398,7 @@ CKEDITOR.plugins.add( 'menu',
 		{
 			render : function( menu, index, output )
 			{
-				var id = menu.id + String( index ),
+				var id = menu.id + '_item_' + String( index ),
 					state = ( typeof this.state == 'undefined' ) ? CKEDITOR.TRISTATE_OFF : this.state;
 
 				var classes = ' cke_' + (

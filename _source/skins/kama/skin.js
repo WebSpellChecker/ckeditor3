@@ -1,4 +1,4 @@
-﻿/*
+﻿﻿/*
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -173,18 +173,21 @@ CKEDITOR.skins.add( 'kama', (function()
 			editor.on( 'menuShow', function( event )
 			{
 				var panel = event.data[ 0 ];
-				var iframe = panel.element.getElementsByTag( 'iframe' ).getItem( 0 ).getFrameDocument();
-
-				// Add stylesheet if missing.
-				if ( !iframe.getById( 'cke_ui_color' ) )
+				var panelFrame = panel._iframe;
+				if ( panelFrame )
 				{
-					var node = getStylesheet( iframe );
-					uiColorMenus.push( node );
+					var frameDoc = this._.iframe.getFrameDocument();
+					// Add stylesheet if missing.
+					if ( !frameDoc.getById( 'cke_ui_color' ) )
+					{
+						var node = getStylesheet( frameDoc );
+						uiColorMenus.push( node );
 
-					var color = editor.getUiColor();
-					// Set uiColor for new menu.
-					if ( color )
-						updateStylesheets( [ node ], uiColorMenuCss, [ [ uiColorRegexp, color ] ] );
+						var color = editor.getUiColor();
+						// Set uiColor for new menu.
+						if ( color )
+							updateStylesheets( [ node ], uiColorMenuCss, [ [ uiColorRegexp, color ] ] );
+					}
 				}
 			});
 

@@ -93,7 +93,7 @@ CKEDITOR.ui.panel.prototype =
 		output.push(
 				'">' );
 
-		if ( this.forceIFrame || this.css.length )
+		if ( this.forceIFrame )
 		{
 			output.push(
 						'<iframe id="', id, '_frame"' +
@@ -122,83 +122,91 @@ CKEDITOR.ui.panel.prototype =
 		return id;
 	},
 
-	getHolderElement : function()
+	getHolderElement : ( function()
 	{
-		var holder = this._.holder;
-
-		if ( !holder )
+		function keyHandler( evt )
 		{
-			if ( this.forceIFrame || this.css.length )
+			var keystroke = evt.data.getKeystroke(),
+				dir = this.document.getById( this.id ).getAttribute( 'dir' );
+
+			// Delegate key processing to block.
+			if ( this._.onKeyDown && this._.onKeyDown( keystroke ) === false )
 			{
-				var iframe = this.document.getById( this.id + '_frame' ),
-					parentDiv = iframe.getParent(),
-					dir = parentDiv.getAttribute( 'dir' ),
-					className = parentDiv.getParent().getAttribute( 'class' ),
-					langCode = parentDiv.getParent().getAttribute( 'lang' ),
-					doc = iframe.getFrameDocument();
-
-				var onLoad = CKEDITOR.tools.addFunction( CKEDITOR.tools.bind( function( ev )
-					{
-						this.isLoaded = true;
-						if ( this.onLoad )
-							this.onLoad();
-					}, this ) );
-
-				var data =
-					'<!DOCTYPE html>' +
-					'<html dir="' + dir + '" class="' + className + '_container" lang="' + langCode + '">' +
-						'<head>' +
-							'<style>.' + className + '_container{visibility:hidden}</style>' +
-						'</head>' +
-						'<body class="cke_' + dir + ' cke_panel_frame ' + CKEDITOR.env.cssClass + '" style="margin:0;padding:0"' +
-						' onload="( window.CKEDITOR || window.parent.CKEDITOR ).tools.callFunction(' + onLoad + ');"></body>' +
-						// It looks strange, but for FF2, the styles must go
-						// after <body>, so it (body) becames immediatelly
-						// available. (#3031)
-						CKEDITOR.tools.buildStyleHtml( this.css ) +
-					'<\/html>';
-
-				doc.write( data );
-
-				var win = doc.getWindow();
-
-				// Register the CKEDITOR global.
-				win.$.CKEDITOR = CKEDITOR;
-
-				// Arrow keys for scrolling is only preventable with 'keypress' event in Opera (#4534).
-				doc.on( 'key' + ( CKEDITOR.env.opera? 'press':'down' ), function( evt )
-					{
-						var keystroke = evt.data.getKeystroke(),
-							dir = this.document.getById( this.id ).getAttribute( 'dir' );
-
-						// Delegate key processing to block.
-						if ( this._.onKeyDown && this._.onKeyDown( keystroke ) === false )
-						{
-							evt.data.preventDefault();
-							return;
-						}
-
-						// ESC/ARROW-LEFT(ltr) OR ARROW-RIGHT(rtl)
-						if ( keystroke == 27 || keystroke == ( dir == 'rtl' ? 39 : 37 ) )
-						{
-							if ( this.onEscape && this.onEscape( keystroke ) === false )
-								evt.data.preventDefault();
-						}
-					},
-					this );
-
-				holder = doc.getBody();
-				holder.unselectable();
-				CKEDITOR.env.air && CKEDITOR.tools.callFunction( onLoad );
+				evt.data.preventDefault();
+				return;
 			}
-			else
-				holder = this.document.getById( this.id );
 
-			this._.holder = holder;
+			// ESC/ARROW-LEFT(ltr) OR ARROW-RIGHT(rtl)
+			if ( keystroke == 27 || keystroke == ( dir == 'rtl' ? 39 : 37 ) )
+			{
+				if ( this.onEscape && this.onEscape( keystroke ) === false )
+					evt.data.preventDefault();
+			}
 		}
 
-		return holder;
-	},
+		return function()
+		{
+			var holder = this._.holder, target;
+
+			if ( !holder )
+			{
+				if ( this.forceIFrame )
+				{
+					var iframe = this.document.getById( this.id + '_frame' ),
+							parentDiv = iframe.getParent(),
+							dir = parentDiv.getAttribute( 'dir' ),
+							className = parentDiv.getParent().getAttribute( 'class' ),
+							langCode = parentDiv.getParent().getAttribute( 'lang' ),
+							doc = iframe.getFrameDocument();
+
+					var onLoad = CKEDITOR.tools.addFunction( CKEDITOR.tools.bind( function( ev )
+																				  {
+																					  this.isLoaded = true;
+																					  if ( this.onLoad )
+																						  this.onLoad();
+																				  }, this ) );
+
+					var data =
+							'<!DOCTYPE html>' +
+									'<html dir="' + dir + '" class="' + className + '" lang="' + langCode + '">' +
+									'<head>' +
+									'<style>.' + className + '_container{visibility:hidden}</style>' +
+									'</head>' +
+									'<body class="cke_' + dir + ' cke_panel_frame ' + CKEDITOR.env.cssClass + '" style="margin:0;padding:0"' +
+									' onload="( window.CKEDITOR || window.parent.CKEDITOR ).tools.callFunction(' + onLoad + ');"></body>' +
+								// It looks strange, but for FF2, the styles must go
+								// after <body>, so it (body) becames immediatelly
+								// available. (#3031)
+									CKEDITOR.tools.buildStyleHtml( this.css ) +
+									'<\/html>';
+
+					doc.write( data );
+
+					var win = doc.getWindow();
+
+					// Register the CKEDITOR global.
+					win.$.CKEDITOR = CKEDITOR;
+
+
+					target = doc;
+					holder = doc.getBody();
+					holder.unselectable();
+					CKEDITOR.env.air && CKEDITOR.tools.callFunction( onLoad );
+				}
+				else
+				{
+					holder = this.document.getById( this.id );
+					target = this.element;
+				}
+
+				// Arrow keys for scrolling is only preventable with 'keypress' event in Opera (#4534).
+				target.on( 'key' + ( CKEDITOR.env.opera ? 'press' : 'down' ), keyHandler, this );
+				this._.holder = holder;
+			}
+
+			return holder;
+		};
+	} )(),
 
 	addBlock : function( name, block )
 	{

@@ -31,6 +31,78 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
     font-family: Arial,Helvetica,Tahoma,Verdana,Sans-Serif;
 }
 
+.cke_skin_kama h1
+{
+	font-size: 1.8em;
+}
+.cke_skin_kama h2
+{
+	font-size: 1.6em;
+}
+.cke_skin_kama h3
+{
+	font-size: 1.4em;
+}
+.cke_skin_kama h4
+{
+	font-size: 1.2em;
+}
+.cke_skin_kama h5
+{
+	font-size: 1em;
+}
+.cke_skin_kama h6
+{
+	font-size: 0.8em;
+}
+
+.cke_skin_kama h1,
+.cke_skin_kama h2,
+.cke_skin_kama h3,
+.cke_skin_kama h4,
+.cke_skin_kama h5,
+.cke_skin_kama h6
+{
+	font-weight: bolder;
+}
+
+.cke_skin_kama pre,
+.cke_skin_kama code,
+.cke_skin_kama kbd,
+.cke_skin_kama samp,
+.cke_skin_kama tt
+{
+	font-family: monospace;
+}
+
+.cke_skin_kama address,
+.cke_skin_kama cite,
+.cke_skin_kama var
+{
+	font-style: italic;
+}
+
+.cke_skin_kama ins
+{
+	text-decoration: underline;
+}
+
+.cke_skin_kama del
+{
+	text-decoration: 	line-through;
+}
+
+.cke_skin_kama big
+{
+	font-size: 15px;
+}
+.cke_skin_kama small
+{
+	font-size: 10px;
+}
+
+
+cke_skin_kama
 .cke_skin_kama .cke_rtl *,
 .cke_skin_kama .cke_rtl a:hover,
 .cke_skin_kama .cke_rtl a:link,

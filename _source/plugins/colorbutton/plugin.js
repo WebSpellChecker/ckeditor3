@@ -153,12 +153,12 @@ CKEDITOR.plugins.add( 'colorbutton',
 					' onclick="CKEDITOR.tools.callFunction(', clickFn, ',null,\'', type, '\');return false;"' +
 					' href="javascript:void(\'', lang.auto, '\')"' +
 					' role="option" aria-posinset="1" aria-setsize="', total, '">' +
-					'<table role="presentation" cellspacing=0 cellpadding=0 width="100%">' +
+					'<table role="presentation" cellspacing=0 cellpadding=0 style="width:100%">' +
 						'<tr>' +
 							'<td>' +
 								'<span class="cke_colorbox" id="', colorBoxId, '"></span>' +
 							'</td>' +
-							'<td colspan=7 align=center>',
+							'<td colspan=7 style="text-align:center">',
 								lang.auto,
 							'</td>' +
 						'</tr>' +
@@ -206,6 +206,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 								' title="', lang.more, '"' +
 								' onclick="CKEDITOR.tools.callFunction(', clickFn, ',\'?\',\'', type, '\');return false;"' +
 								' href="javascript:void(\'', lang.more, '\')"',
+								' style="text-align:center"',
 								' role="option" aria-posinset="', total, '" aria-setsize="', total, '">',
 								lang.more,
 							'</a>' +

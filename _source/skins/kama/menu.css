@@ -130,12 +130,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	margin-left: 24px;
 	background-color: #fff;
 }
-/* Set these after the document has been loaded and we know the dimensions*/
-.cke_skin_kama .cke_frameLoaded .cke_menuitem .cke_label
-{
-	filter: alpha(opacity=70); /* IE */
-	opacity: 0.70; /* Safari, Opera and Mozilla */
-}
 
 .cke_rtl .cke_skin_kama .cke_menuitem .cke_label
 {

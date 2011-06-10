@@ -96,8 +96,9 @@ CKEDITOR.plugins.add( 'listblock',
 							'<li id=', id, ' class=cke_panel_listItem role=presentation>' +
 								'<a id="', id, '_option" _cke_focus=1 hidefocus=true' +
 									' title="', title || value, '"' +
-									' href="javascript:void(\'', value, '\')"' +
-									' onclick="CKEDITOR.tools.callFunction(', this._.getClick(), ',\'', value, '\'); return false;"',
+									' href="javascript:void(\'', value, '\')" ' +
+									( CKEDITOR.env.ie ? 'onclick="return false;" onmouseup' : 'onclick' ) +		// #188
+										'="CKEDITOR.tools.callFunction(', this._.getClick(), ',\'', value, '\'); return false;"',
 									' role="option"' +
 									' aria-posinset="' + ++this._.size + '">',
 									html || value,
@@ -201,8 +202,14 @@ CKEDITOR.plugins.add( 'listblock',
 
 					unmark : function( value )
 					{
-						this.element.getDocument().getById( this._.items[ value ] ).removeClass( 'cke_selected' );
-						this.onUnmark && this.onUnmark( this._.items[ value ] );
+						var doc = this.element.getDocument(),
+							itemId = this._.items[ value ],
+							item = doc.getById( itemId );
+
+						item.removeClass( 'cke_selected' );
+						doc.getById( itemId + '_option' ).removeAttribute( 'aria-selected' );
+
+						this.onUnmark && this.onUnmark( item );
 					},
 
 					unmarkAll : function()
@@ -212,7 +219,10 @@ CKEDITOR.plugins.add( 'listblock',
 
 						for ( var value in items )
 						{
-							doc.getById( items[ value ] ).removeClass( 'cke_selected' );
+							var itemId = items[ value ];
+
+							doc.getById( itemId ).removeClass( 'cke_selected' );
+							doc.getById( itemId + '_option' ).removeAttribute( 'aria-selected' );
 						}
 
 						this.onUnmark && this.onUnmark();

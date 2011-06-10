@@ -163,6 +163,10 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 					// filter but not the children.
 					if ( !writeName )
 					{
+						// Fix broken parent refs.
+						for ( var c = 0, length = this.children.length ; c < length ; c++ )
+							this.children[ c ].parent = element.parent;
+
 						this.writeChildrenHtml.call( element, writer, isChildrenFiltered ? null : filter );
 						return;
 					}

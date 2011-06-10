@@ -49,6 +49,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	for ( i = 0 ; i < names.length ; i++ )
 		attributesMap[ names[i] ][0]['default'] = attributesMap[ names[i] ][1]['default'] = true;
 
+	var defaultToPixel = CKEDITOR.tools.cssLength;
+
 	function loadValue( objectNode, embedNode, paramMap )
 	{
 		var attributes = attributesMap[ this.id ];
@@ -124,7 +126,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			switch ( attrDef.type )
 			{
 				case ATTRTYPE_OBJECT:
-					if ( !objectNode )
+					// Avoid applying the data attribute when not needed (#7733)
+					if ( !objectNode || ( attrDef.name == 'data' && embedNode && !objectNode.hasAttribute( 'data' ) ) )
 						continue;
 					var value = this.getValue();
 					if ( isRemove || isCheckbox && value === attrDef[ 'default' ] )
@@ -366,22 +369,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									id : 'width',
 									style : 'width:95px',
 									label : editor.lang.common.width,
-									validate : CKEDITOR.dialog.validate.integer( editor.lang.common.invalidWidth ),
+									validate : CKEDITOR.dialog.validate.htmlLength( editor.lang.common.invalidHtmlLength.replace( '%1', editor.lang.common.width ) ),
 									setup : function( objectNode, embedNode, paramMap, fakeImage )
 									{
 										loadValue.apply( this, arguments );
-										if ( fakeImage )
-										{
-											var fakeImageWidth = parseInt( fakeImage.$.style.width, 10 );
-											if ( !isNaN( fakeImageWidth ) )
-												this.setValue( fakeImageWidth );
-										}
+										fakeImage && this.setValue( fakeImage.getStyle( 'width' ) );
 									},
 									commit : function( objectNode, embedNode, paramMap, extraStyles )
 									{
 										commitValue.apply( this, arguments );
-										if ( this.getValue() )
-											extraStyles.width = this.getValue() + 'px';
+										var val = this.getValue();
+										val && ( extraStyles.width = defaultToPixel( val ) );
 									}
 								},
 								{
@@ -389,22 +387,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									id : 'height',
 									style : 'width:95px',
 									label : editor.lang.common.height,
-									validate : CKEDITOR.dialog.validate.integer( editor.lang.common.invalidHeight ),
+									validate : CKEDITOR.dialog.validate.htmlLength( editor.lang.common.invalidHtmlLength.replace( '%1', editor.lang.common.height ) ),
 									setup : function( objectNode, embedNode, paramMap, fakeImage )
 									{
 										loadValue.apply( this, arguments );
-										if ( fakeImage )
-										{
-											var fakeImageHeight = parseInt( fakeImage.$.style.height, 10 );
-											if ( !isNaN( fakeImageHeight ) )
-												this.setValue( fakeImageHeight );
-										}
+										fakeImage && this.setValue( fakeImage.getStyle( 'height' ) );
 									},
 									commit : function( objectNode, embedNode, paramMap, extraStyles )
 									{
 										commitValue.apply( this, arguments );
-										if ( this.getValue() )
-											extraStyles.height = this.getValue() + 'px';
+										var val = this.getValue();
+										val && ( extraStyles.height = defaultToPixel( val ) );
 									}
 								},
 								{

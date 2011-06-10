@@ -13,6 +13,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		frameborder : { 'true' : '1', 'false' : '0' }
 	};
 
+	var defaultToPixel = CKEDITOR.tools.cssLength;
+
 	function loadValue( iframeNode )
 	{
 		var isCheckbox = this instanceof CKEDITOR.ui.dialog.checkbox;
@@ -61,7 +63,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					var iframeNode = editor.restoreRealElement( fakeImage );
 					this.iframeNode = iframeNode;
 
-					this.setupContent( iframeNode, fakeImage );
+					this.setupContent( iframeNode );
 				}
 			},
 			onOk : function()
@@ -123,22 +125,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									style : 'width:100%',
 									labelLayout : 'vertical',
 									label : commonLang.width,
-									validate : CKEDITOR.dialog.validate.integer( commonLang.invalidWidth ),
+									validate : CKEDITOR.dialog.validate.htmlLength( commonLang.invalidHtmlLength.replace( '%1', commonLang.width ) ),
+									getValue : defaultToPixel,
 									setup : function( iframeNode, fakeImage )
 									{
 										loadValue.apply( this, arguments );
-										if ( fakeImage )
-										{
-											var fakeImageWidth = parseInt( fakeImage.$.style.width, 10 );
-											if ( !isNaN( fakeImageWidth ) )
-												this.setValue( fakeImageWidth );
-										}
+										fakeImage && this.setValue( fakeImage.getStyle( 'width' ) );
 									},
 									commit : function( iframeNode, extraStyles )
 									{
 										commitValue.apply( this, arguments );
-										if ( this.getValue() )
-											extraStyles.width = this.getValue() + 'px';
+										var val = this.getValue();
+										val && ( extraStyles.width = val );
 									}
 								},
 								{
@@ -147,22 +145,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									style : 'width:100%',
 									labelLayout : 'vertical',
 									label : commonLang.height,
-									validate : CKEDITOR.dialog.validate.integer( commonLang.invalidHeight ),
+									validate : CKEDITOR.dialog.validate.htmlLength( commonLang.invalidHtmlLength.replace( '%1', commonLang.height ) ),
+									getValue : defaultToPixel,
 									setup : function( iframeNode, fakeImage )
 									{
 										loadValue.apply( this, arguments );
-										if ( fakeImage )
-										{
-											var fakeImageHeight = parseInt( fakeImage.$.style.height, 10 );
-											if ( !isNaN( fakeImageHeight ) )
-												this.setValue( fakeImageHeight );
-										}
+										fakeImage && this.setValue( fakeImage.getStyle( 'height' ) );
 									},
 									commit : function( iframeNode, extraStyles )
 									{
 										commitValue.apply( this, arguments );
-										if ( this.getValue() )
-											extraStyles.height = this.getValue() + 'px';
+										var val = this.getValue();
+										val && ( extraStyles.height = val );
 									}
 								},
 								{

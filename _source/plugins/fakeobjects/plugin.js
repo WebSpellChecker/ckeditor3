@@ -168,8 +168,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			width && element.setAttribute( 'width', replaceCssLength( element.getAttribute( 'width' ), width ) );
 			height && element.setAttribute( 'height', replaceCssLength( element.getAttribute( 'height' ), height ) );
 		}
-		
+
 		return element;
-	}
+	};
 
 })();

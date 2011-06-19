@@ -42,7 +42,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 						block.element.addClass( 'cke_colorblock' );
 						block.element.setHtml( renderColors( panel, type, colorBoxId ) );
 						// The block should not have scrollbars (#5933, #6056)
-						block.element.getDocument().getBody().setStyle( 'overflow', 'hidden' );
+						panel._.iframe && block.element.getDocument().getBody().setStyle( 'overflow', 'hidden' );
 
 						CKEDITOR.ui.fire( 'ready', this );
 
@@ -79,7 +79,7 @@ CKEDITOR.plugins.add( 'colorbutton',
 						if ( !color || color == 'transparent' )
 							color = '#ffffff';
 
-						this._.panel._.iframe.getFrameDocument().getById( colorBoxId ).setStyle( 'background-color', color );
+						this._.panel.getDoc().getById( colorBoxId ).setStyle( 'background-color', color );
 					}
 				});
 		}

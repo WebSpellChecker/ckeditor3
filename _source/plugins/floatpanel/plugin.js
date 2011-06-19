@@ -1,4 +1,4 @@
-﻿/*
+﻿﻿/*
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -11,30 +11,6 @@ CKEDITOR.plugins.add( 'floatpanel',
 (function()
 {
 	var panels = {};
-	var isShowing = false;
-
-	function getPanel( editor, doc, parentElement, definition, level )
-	{
-		// Generates the panel key: docId-eleId-skinName-langDir[-uiColor][-CSSs][-level]
-		var key = CKEDITOR.tools.genKey( doc.getUniqueId(), parentElement.getUniqueId(), editor.skinName, editor.lang.dir,
-			editor.uiColor || '', definition.css || '', level || '' );
-
-		var panel = panels[ key ];
-
-		if ( !panel )
-		{
-			panel = panels[ key ] = new CKEDITOR.ui.panel( doc, definition );
-			panel.element = parentElement.append( CKEDITOR.dom.element.createFromHtml( panel.renderHtml( editor ), doc ) );
-
-			panel.element.setStyles(
-				{
-					display : 'none',
-					position : 'absolute'
-				});
-		}
-
-		return panel;
-	}
 
 	function getClickOutsidePanel( opener )
 	{
@@ -63,16 +39,60 @@ CKEDITOR.plugins.add( 'floatpanel',
 		};
 	}
 
+	function onPanelFrameBlur( ev )
+	{
+		// As we are using capture to register the listener,
+		// the blur event may get fired even when focusing
+		// inside the window itself, so we must ensure the
+		// target is out of it.
+		var target;
+		if ( ( target = ev.data.getTarget() )
+				  && target.getName && target.getName() != 'iframe' )
+				return;
+
+		if ( !this._.activeChild )
+		{
+			// Panel close is caused by user's navigating away the focus, e.g. click outside the panel.
+			// DO NOT restore focus in this case.
+			delete this._.returnFocus;
+			this.hide();
+		}
+	}
+
 	CKEDITOR.ui.floatPanel = CKEDITOR.tools.createClass(
 	{
 		$ : function( editor, parentElement, definition, level )
 		{
-			var panelIframe = definition.forceIFrame || editor.config.panelUseIFrame !== false;
+			function getPanel()
+			{
+				// Generates the panel key: docId-eleId-skinName-langDir-panelFrame[-uiColor][-CSSs][-level]
+				var key = CKEDITOR.tools.genKey( parentElement.getUniqueId(), editor.skinName, editor.lang.dir, definition.forceIFrame,
+					editor.uiColor || '', definition.css || '', level || '' );
+
+				var panel = panels[ key ],
+					doc = parentElement.getDocument();
+
+				if ( !panel )
+				{
+					panel = panels[ key ] = new CKEDITOR.ui.panel( doc, definition );
+					panel.element = parentElement.append( CKEDITOR.dom.element.createFromHtml( panel.renderHtml( editor ), doc ) );
+
+					panel.element.setStyles(
+						{
+							display : 'none',
+							position : 'absolute'
+						});
+				}
+
+				return panel;
+			}
+
+			definition.forceIFrame = definition.forceIFrame || editor.config.panelUseIFrame !== false;
 
 			var doc = parentElement.getDocument(),
-				panel = getPanel( editor, doc, parentElement, definition, level || 0 ),
+				panel = getPanel(),
 				element = panel.element,
-				iframe = panelIframe ? element.getFirst().getFirst() : null;
+				iframe = definition.forceIFrame ? element.getFirst().getFirst() : null;
 
 			this.element = element;
 
@@ -127,16 +147,12 @@ CKEDITOR.plugins.add( 'floatpanel',
 				var panel = this._.panel,
 					block = panel.showBlock( name );
 
-				this.allowBlur( false );
-				isShowing = 1;
-
 				// Record from where the focus is when open panel.
 				this._.returnFocus = this._.editor.focusManager.hasFocus ? this._.editor : new CKEDITOR.dom.element( CKEDITOR.document.$.activeElement );
 
 
 				var element = this.element,
 					iframe = this._.iframe,
-					definition = this._.definition,
 					position = offsetParent.getDocumentPosition( element.getDocument() ),
 					rtl = this._.dir == 'rtl';
 
@@ -169,65 +185,6 @@ CKEDITOR.plugins.add( 'floatpanel',
 				// To allow the context menu to decrease back their width
 				element.getFirst().removeStyle( 'width' );
 
-				// Configure the IFrame blur event. Do that only once.
-				if ( iframe )
-				{
-					if ( !this._.blurSet )
-					{
-						// Non IE prefer the event into a window object.
-						var focused = CKEDITOR.env.ie ? iframe : new CKEDITOR.dom.window( iframe.$.contentWindow );
-
-						// With addEventListener compatible browsers, we must
-						// useCapture when registering the focus/blur events to
-						// guarantee they will be firing in all situations. (#3068, #3222 )
-						CKEDITOR.event.useCapture = true;
-
-						focused.on( 'blur', function( ev )
-							{
-								if ( !this.allowBlur() )
-									return;
-
-								// As we are using capture to register the listener,
-								// the blur event may get fired even when focusing
-								// inside the window itself, so we must ensure the
-								// target is out of it.
-								var target;
-								if ( CKEDITOR.env.ie && !this.allowBlur()
-									 || ( target = ev.data.getTarget() )
-										  && target.getName && target.getName() != 'iframe' )
-										return;
-
-								if ( this.visible && !this._.activeChild && !isShowing )
-								{
-									// Panel close is caused by user's navigating away the focus, e.g. click outside the panel.
-									// DO NOT restore focus in this case.
-									delete this._.returnFocus;
-									this.hide();
-								}
-							},
-							this );
-
-						focused.on( 'focus', function()
-							{
-								this._.focused = true;
-								this.hideChild();
-								this.allowBlur( true );
-							},
-							this );
-
-						CKEDITOR.event.useCapture = false;
-
-						this._.blurSet = 1;
-					}
-				}
-				else
-				{
-					// Close on clicking outside of panel or doc blurs.
-					this._.clickOutside = getClickOutsidePanel( offsetParent );
-					CKEDITOR.document.on( 'mousedown', this._.clickOutside, this );
-					( CKEDITOR.env.ie ? new CKEDITOR.dom.window( window ) : CKEDITOR.document )[ 'on' ]( 'blur', this.hide, this );
-				}
-
 				panel.onEscape = CKEDITOR.tools.bind( function( keystroke )
 					{
 						if ( this.onEscape && this.onEscape( keystroke ) === false )
@@ -252,7 +209,7 @@ CKEDITOR.plugins.add( 'floatpanel',
 								if ( CKEDITOR.env.gecko || CKEDITOR.env.opera )
 									widthNode = widthNode.parentNode;
 
-								if ( CKEDITOR.env.ie )
+								if ( iframe && CKEDITOR.env.ie )
 									widthNode = widthNode.document.body;
 
 								var width = widthNode.scrollWidth;
@@ -305,10 +262,10 @@ CKEDITOR.plugins.add( 'floatpanel',
 							// If IE is in RTL, we have troubles with absolute
 							// position and horizontal scrolls. Here we have a
 							// series of hacks to workaround it. (#6146)
-							if ( CKEDITOR.env.ie )
+							if ( CKEDITOR.env.ie && iframe )
 							{
-								var offsetParent = new CKEDITOR.dom.element( element.$.offsetParent ),
-									scrollParent = offsetParent;
+								var layoutParent = new CKEDITOR.dom.element( element.$.offsetParent ),
+									scrollParent = layoutParent;
 
 								// Quirks returns <body>, but standards returns <html>.
 								if ( scrollParent.getName() == 'html' )
@@ -320,7 +277,7 @@ CKEDITOR.plugins.add( 'floatpanel',
 									if ( CKEDITOR.env.ie8Compat )
 										left -= element.getDocument().getDocumentElement().$.scrollLeft * 2;
 									else
-										left -= ( offsetParent.$.scrollWidth - offsetParent.$.clientWidth );
+										left -= ( layoutParent.$.scrollWidth - layoutParent.$.clientWidth );
 								}
 							}
 
@@ -338,33 +295,76 @@ CKEDITOR.plugins.add( 'floatpanel',
 									left : left + 'px'
 								} );
 							element.setOpacity( 1 );
+
+							// Move focus to the opened panel container.
+							iframe ? iframe.$.contentWindow.focus() : innerElement.focus();
+
+							CKEDITOR.tools.setTimeout( function()
+							{
+								// Configure the IFrame blur event. Do that only once.
+								if ( iframe )
+								{
+									// Non IE prefer the event into a window object.
+									var focused = CKEDITOR.env.ie ? iframe : new CKEDITOR.dom.window( iframe.$.contentWindow );
+
+									// With addEventListener compatible browsers, we must
+									// useCapture when registering the focus/blur events to
+									// guarantee they will be firing in all situations. (#3068, #3222 )
+									CKEDITOR.event.useCapture = true;
+
+									this._.panelFrameBlurs = onPanelFrameBlur;
+
+									this._.panelFrameFocus = function()
+										{
+											this._.focused = true;
+											this.hideChild();
+										};
+
+									focused.on( 'blur', this._.panelFrameBlurs, this );
+									focused.on( 'focus', this._.panelFrameFocus, this );
+
+									CKEDITOR.event.useCapture = false;
+
+									this._.blurSet = 1;
+								}
+								else
+								{
+									// Close on clicking outside of panel or doc blurs.
+									this._.clickOutside = getClickOutsidePanel( layoutParent );
+									CKEDITOR.document.on( 'mousedown', this._.clickOutside, this );
+									( CKEDITOR.env.ie ? new CKEDITOR.dom.window( window ) : CKEDITOR.document )[ 'on' ]( 'blur', this.hide, this );
+								}
+
+							}, 0, this );
+
 						} , this );
 
 						!iframe || panel.isLoaded ? panelLoad() : panel.onLoad = panelLoad;
 
-						// Set the panel frame focus, so the blur event gets fired.
-						CKEDITOR.tools.setTimeout( function()
-						{
-							iframe ? iframe.$.contentWindow.focus() : element.focus();
-							// We need this get fired manually because of unfired focus() function.
-							this.allowBlur( true );
-						}, 0, this);
 					},  CKEDITOR.env.air ? 200 : 0, this);
-				this.visible = 1;
 
 				if ( this.onShow )
 					this.onShow.call( this );
 
-				isShowing = 0;
 			},
 
 			hide : function( returnFocus )
 			{
-				if ( this.visible && ( !this.onHide || this.onHide.call( this ) !== true ) )
+				if ( ( !this.onHide || this.onHide.call( this ) !== true ) )
 				{
-					if ( this._.iframe )
+					var iframe = this._.iframe;
+
+					if ( iframe )
+					{
 						// Blur previously focused element in panel frame. (#6671)
-						CKEDITOR.env.gecko && this._.iframe.getFrameDocument().$.activeElement.blur();
+						CKEDITOR.env.gecko && iframe.getFrameDocument().$.activeElement.blur();
+						// Non IE prefer the event into a window object.
+						var target = CKEDITOR.env.ie ? iframe : new CKEDITOR.dom.window( iframe.$.contentWindow );
+						target.removeListener( 'focus', this._.panelFrameFocus );
+						target.removeListener( 'blur', this._.panelFrameBlurs );
+						delete this._.panelFrameFocus;
+						delete this._.panelFrameBlurs;
+					}
 					else
 					{
 						CKEDITOR.document.removeListener( 'mousedown', this._.clickOutside );
@@ -374,7 +374,6 @@ CKEDITOR.plugins.add( 'floatpanel',
 
 					this.hideChild();
 					this.element.setStyle( 'display', 'none' );
-					this.visible = 0;
 					this.element.getFirst().removeCustomData( 'activePanel' );
 
 					// Return focus properly. (#6247)
@@ -388,15 +387,6 @@ CKEDITOR.plugins.add( 'floatpanel',
 						focusReturn.focus();
 					}
 				}
-			},
-
-			allowBlur : function( allow )	// Prevent editor from hiding the panel. #3222.
-			{
-				var panel = this._.panel;
-				if ( allow != undefined )
-					panel.allowBlur = allow;
-
-				return panel.allowBlur;
 			},
 
 			showAsChild : function( panel, blockName, offsetParent, corner, offsetX, offsetY )
@@ -447,6 +437,12 @@ CKEDITOR.plugins.add( 'floatpanel',
 					delete this._.activeChild;
 					activeChild.hide();
 				}
+			},
+
+			getDoc : function()
+			{
+				var frame = this._.iframe;
+				return frame ? frame.getFrameDocument() : this.element.getDocument();
 			}
 		}
 	});

@@ -58,7 +58,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					{
 						css : editor.skin.editor.css.concat( config.contentsCss ),
 						multiSelect : true,
-						attributes : { 'aria-label' : lang.panelTitle }
+						attributes : { 'aria-label' : lang.panelTitle },
+						forceIFrame : true
 					},
 
 					init : function()

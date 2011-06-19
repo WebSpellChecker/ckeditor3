@@ -85,6 +85,7 @@ CKEDITOR.ui.panel.prototype =
 					' id=', id,
 					' dir=', editor.lang.dir,
 					' role="presentation"' +
+					' tabIndex="-1"' + 	// Allow panel to be focused.
 					' class="cke_panel cke_', editor.lang.dir );
 
 		if ( this.className )

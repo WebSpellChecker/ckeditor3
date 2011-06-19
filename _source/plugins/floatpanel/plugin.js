@@ -87,7 +87,8 @@ CKEDITOR.plugins.add( 'floatpanel',
 				return panel;
 			}
 
-			definition.forceIFrame = definition.forceIFrame || editor.config.panelUseIFrame !== false;
+			if ( editor.config.panelUseIFrame )
+				definition.forceIFrame = true;
 
 			var doc = parentElement.getDocument(),
 				panel = getPanel(),
@@ -473,7 +474,7 @@ CKEDITOR.plugins.add( 'floatpanel',
  * from editor's content style sheet assigned by {@link CKEDITOR.config.contentCss}.
  * @name CKEDITOR.config.panelUseIFrame
  * @type Boolean
- * @default true
+ * @default false
  * @example
- * config.panelUseIFrame = false;
+ * config.panelUseIFrame = true;
  */

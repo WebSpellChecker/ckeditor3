@@ -1354,6 +1354,12 @@ CKEDITOR.dom.range = function( document )
 					fromInside = ( !enlargeable && this.checkEndOfBlock()
 							|| enlargeable && blockBoundary.contains( enlargeable ) );
 
+					if ( tailBr && !tailBr.getNext( nonWhitespaceOrBookmarkEval ) )
+					{
+						fromInside = 1;
+						blockBoundary = tailBr.getParent();
+					}
+
 					if ( ( unit == CKEDITOR.ENLARGE_BLOCKS || unit == CKEDITOR.ENLARGE_LIST_ITEMS ) && fromInside )
 					{
 						while ( ! ( blockBoundary.is( 'body' ) || blockBoundary.getNext( toSkip ) ) )
@@ -1366,12 +1372,12 @@ CKEDITOR.dom.range = function( document )
 								blockBoundary, fromInside ?
 									CKEDITOR.POSITION_BEFORE_END :
 									CKEDITOR.POSITION_BEFORE_START );
-					}
 
-					// We must include the <br> at the end of range if there's
-					// one and we're expanding list item contents
-					if ( tailBr )
-						this.setEndAfter( tailBr );
+						// We must include the <br> at the end of range if there's
+						// one and we're expanding list item contents
+						if ( tailBr )
+							this.setEndAfter( tailBr );
+					}
 			}
 		},
 

@@ -47,7 +47,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		{
 			var state = editor.getCommand( 'blockquote' ).state,
 				selection = editor.getSelection(),
-				range = selection && selection.getRanges( true )[0];
+				range = selection && selection.getRanges( true )[0],
+				enterBr = editor.config.enterMode == CKEDITOR.ENTER_BR;
 
 			if ( !range )
 				return;
@@ -93,12 +94,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				}
 			}
 
-			var iterator = range.createIterator(),
-				block;
-			iterator.enlargeBr = editor.config.enterMode != CKEDITOR.ENTER_BR;
-
 			if ( state == CKEDITOR.TRISTATE_OFF )
 			{
+				var iterator = range.createIterator(),
+					block;
+				iterator.enlargeBr = !enterBr;
+
 				var paragraphs = [];
 				while ( ( block = iterator.getNextParagraph() ) )
 					paragraphs.push( block );
@@ -176,108 +177,49 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 			else if ( state == CKEDITOR.TRISTATE_ON )
 			{
-				var moveOutNodes = [],
-					database = {};
+				var blockquote = range.getCommonAncestor().getAscendant( 'blockquote', 1 );
 
-				while ( ( block = iterator.getNextParagraph() ) )
+				range.enlarge( enterBr ? CKEDITOR.ENLARGE_LIST_ITEMS : CKEDITOR.ENLARGE_BLOCKS );
+
+				// Fixing the case where blockquote element itself is enlarged, don't leak outside of it.
+				// e.g. <blockquote>no other block</blockquote>.
+				if ( range.startContainer.contains( blockquote ) )
+					range.setStartAt( blockquote, CKEDITOR.POSITION_AFTER_START );
+				if ( range.endContainer.contains( blockquote ) )
+					range.setEndAt( blockquote, CKEDITOR.POSITION_BEFORE_END );
+
+				var isStart = range.checkBoundaryOfElement( blockquote, CKEDITOR.START ),
+					isEnd = range.checkBoundaryOfElement( blockquote, CKEDITOR.END ),
+					frag = range.extractContents();
+
+				if ( isStart )
+					frag.insertBefore( blockquote );
+				else if ( isEnd )
+					frag.insertAfterNode( blockquote );
+				else
 				{
-					var bqParent = null,
-						bqChild = null;
-					while ( block.getParent() )
-					{
-						if ( block.getParent().getName() == 'blockquote' )
-						{
-							bqParent = block.getParent();
-							bqChild = block;
-							break;
-						}
-						block = block.getParent();
-					}
-
-					// Remember the blocks that were recorded down in the moveOutNodes array
-					// to prevent duplicates.
-					if ( bqParent && bqChild && !bqChild.getCustomData( 'blockquote_moveout' ) )
-					{
-						moveOutNodes.push( bqChild );
-						CKEDITOR.dom.element.setMarker( database, bqChild, 'blockquote_moveout', true );
-					}
+					var marker = editor.document.createElement( 'span' );
+					range.insertNode( marker );
+					marker.breakParent( blockquote );
+					frag.replace( marker );
 				}
 
-				CKEDITOR.dom.element.clearAllMarkers( database );
-
-				var movedNodes = [],
-					processedBlockquoteBlocks = [];
-
-				database = {};
-				while ( moveOutNodes.length > 0 )
-				{
-					var node = moveOutNodes.shift();
-					bqBlock = node.getParent();
-
-					// If the node is located at the beginning or the end, just take it out
-					// without splitting. Otherwise, split the blockquote node and move the
-					// paragraph in between the two blockquote nodes.
-					if ( !node.getPrevious() )
-						node.remove().insertBefore( bqBlock );
-					else if ( !node.getNext() )
-						node.remove().insertAfter( bqBlock );
-					else
-					{
-						node.breakParent( node.getParent() );
-						processedBlockquoteBlocks.push( node.getNext() );
-					}
-
-					// Remember the blockquote node so we can clear it later (if it becomes empty).
-					if ( !bqBlock.getCustomData( 'blockquote_processed' ) )
-					{
-						processedBlockquoteBlocks.push( bqBlock );
-						CKEDITOR.dom.element.setMarker( database, bqBlock, 'blockquote_processed', true );
-					}
-
-					movedNodes.push( node );
-				}
-
-				CKEDITOR.dom.element.clearAllMarkers( database );
-
-				// Clear blockquote nodes that have become empty.
-				for ( i = processedBlockquoteBlocks.length - 1 ; i >= 0 ; i-- )
-				{
-					bqBlock = processedBlockquoteBlocks[i];
-					if ( noBlockLeft( bqBlock ) )
-						bqBlock.remove();
-				}
-
-				if ( editor.config.enterMode == CKEDITOR.ENTER_BR )
-				{
-					var firstTime = true;
-					while ( movedNodes.length )
-					{
-						node = movedNodes.shift();
-
-						if ( node.getName() == 'div' )
-						{
-							docFrag = new CKEDITOR.dom.documentFragment( editor.document );
-							var needBeginBr = firstTime && node.getPrevious() &&
-									!( node.getPrevious().type == CKEDITOR.NODE_ELEMENT && node.getPrevious().isBlockBoundary() );
-							if ( needBeginBr )
-								docFrag.append( editor.document.createElement( 'br' ) );
-
-							var needEndBr = node.getNext() &&
-								!( node.getNext().type == CKEDITOR.NODE_ELEMENT && node.getNext().isBlockBoundary() );
-							while ( node.getFirst() )
-								node.getFirst().remove().appendTo( docFrag );
-
-							if ( needEndBr )
-								docFrag.append( editor.document.createElement( 'br' ) );
-
-							docFrag.replace( node );
-							firstTime = false;
-						}
-					}
-				}
+				if ( blockquote.isEmptyBlock() )
+					blockquote.remove();
 			}
 
 			selection.selectBookmarks( bookmarks );
+
+			// Fix those moved out pseudo paragraphs in block enter mode.
+			if ( !enterBr )
+			{
+				bookmarks = selection.createBookmarks();
+				range = selection.getRanges()[ 0 ];
+				var iterator = range.createIterator();
+				while ( iterator.getNextParagraph() );
+				selection.selectBookmarks( bookmarks );
+			}
+
 			editor.focus();
 		}
 	};

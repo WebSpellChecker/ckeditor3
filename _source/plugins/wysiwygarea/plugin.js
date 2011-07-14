@@ -531,7 +531,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								'';
 
 						iframe = CKEDITOR.dom.element.createFromHtml( '<iframe' +
-  							' style="width:100%;height:100%"' +
   							' frameBorder="0"' +
   							' title="' + frameLabel + '"' +
   							' src="' + src + '"' +

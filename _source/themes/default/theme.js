@@ -96,26 +96,8 @@ CKEDITOR.themes.add( 'default', (function()
 			var contentsHtml	= editor.fire( 'themeSpace', { space : 'contents', html : '' } ).html;
 			var bottomHtml		= editor.fireOnce( 'themeSpace', { space : 'bottom', html : '' } ).html;
 
-			var height	= contentsHtml && editor.config.height;
-
 			var tabIndex = editor.config.tabIndex || editor.element.getAttribute( 'tabindex' ) || 0;
 
-			// The editor height is considered only if the contents space got filled.
-			if ( !contentsHtml )
-				height = 'auto';
-			else if ( !isNaN( height ) )
-				height += 'px';
-
-			var style = '';
-			var width	= editor.config.width;
-
-			if ( width )
-			{
-				if ( !isNaN( width ) )
-					width += 'px';
-
-				style += "width: " + width + ";";
-			}
 
 			var sharedTop		= topHtml && checkSharedSpace( editor, 'top' ),
 				sharedBottoms	= checkSharedSpace( editor, 'bottom' );
@@ -130,7 +112,7 @@ CKEDITOR.themes.add( 'default', (function()
 				hiddenSkins[ editor.skinClass ] = 1;
 
 			var container = CKEDITOR.dom.element.createFromHtml( [
-				'<span' +
+				'<table' +
 					' id="cke_', name, '"' +
 					' class="', editor.skinClass, ' ', editor.id, ' cke_editor_', name, '"' +
 					' dir="', editor.lang.dir, '"' +
@@ -139,24 +121,22 @@ CKEDITOR.themes.add( 'default', (function()
 						( CKEDITOR.env.webkit? ' tabindex="' + tabIndex + '"' : '' ) +
 					' role="application"' +
 					' aria-labelledby="cke_', name, '_arialbl"' +
-					( style ? ' style="' + style + '"' : '' ) +
 					'>' +
-					'<span id="cke_', name, '_arialbl" class="cke_voice_label">' + editor.lang.editor + '</span>' +
-					'<span class="' , CKEDITOR.env.cssClass, '" role="presentation">' +
-						'<span class="cke_wrapper cke_', editor.lang.dir, '" role="presentation">' +
-							'<table class="cke_editor" border="0" cellspacing="0" cellpadding="0" role="presentation"><tbody>' +
+					'<tr class="cke_wrapper ' , CKEDITOR.env.cssClass, '" role="presentation">' +
+						'<td class="cke_wrapper cke_', editor.lang.dir, '" role="presentation">' +
+						'<label id="cke_', name, '_arialbl" class="cke_voice_label">' + editor.lang.editor + '</label>' +
+							'<table class="cke_editor" role="presentation">' +
 								'<tr', topHtml		? '' : ' style="display:none"', ' role="presentation"><td id="cke_top_'		, name, '" class="cke_top" role="presentation">'	, topHtml		, '</td></tr>' +
-								'<tr', contentsHtml	? '' : ' style="display:none"', ' role="presentation"><td id="cke_contents_', name, '" class="cke_contents" style="height:', height, '" role="presentation">', contentsHtml, '</td></tr>' +
+								'<tr', contentsHtml	? '' : ' style="display:none"', ' role="presentation"><td id="cke_contents_', name, '" class="cke_contents" role="presentation">', contentsHtml, '</td></tr>' +
 								'<tr', bottomHtml	? '' : ' style="display:none"', ' role="presentation"><td id="cke_bottom_'	, name, '" class="cke_bottom" role="presentation">'	, bottomHtml	, '</td></tr>' +
-							'</tbody></table>' +
+							'</table>' +
 							//Hide the container when loading skins, later restored by skin css.
 							hideSkin +
-						'</span>' +
-					'</span>' +
-				'</span>' ].join( '' ) );
+						'</td>' +
+					'</tr>' +
+				'</table>' ].join( '' ) );
 
-			container.getChild( [1, 0, 0, 0, 0] ).unselectable();
-			container.getChild( [1, 0, 0, 0, 2] ).unselectable();
+			container.unselectable();
 
 			if ( elementMode == CKEDITOR.ELEMENT_MODE_REPLACE )
 				container.insertAfter( element );
@@ -187,6 +167,8 @@ CKEDITOR.themes.add( 'default', (function()
 				var toolbarSpace = this.sharedSpaces && this.sharedSpaces[ this.config.toolbarLocation ];
 				toolbarSpace && toolbarSpace.getParent().getParent()[ func ]( 'cke_mixed_dir_content' );
 			});
+
+			editor.resize( editor.config.width, editor.config.height );
 
 			editor.fireOnce( 'themeLoaded' );
 			editor.fireOnce( 'uiReady' );
@@ -331,18 +313,26 @@ CKEDITOR.editor.prototype.resize = function( width, height, isContentHeight, res
 	// WEBKIT BUG: Webkit requires that we put the editor off from display when we
 	// resize it. If we don't, the browser crashes!
 	CKEDITOR.env.webkit && outer.setStyle( 'display', 'none' );
+
 	// Set as border box width. (#5353)
-	outer.setSize( 'width',  width, true );
+	isNaN( width ) ? outer.setStyle( 'width', width ) : outer.setSize( 'width',  width, true );
+
 	if ( CKEDITOR.env.webkit )
 	{
 		outer.$.offsetWidth;
 		outer.setStyle( 'display', '' );
 	}
 
-	// Get the height delta between the outer table and the content area.
-	// If we're setting the content area's height, then we don't need the delta.
-	var delta = isContentHeight ? 0 : ( outer.$.offsetHeight || 0 ) - ( contents.$.clientHeight || 0 );
-	contents.setStyle( 'height', Math.max( height - delta, 0 ) + 'px' );
+	// Liquid layout is supported for Firefox and Webkit, where content space takes up the maximum
+	// amount of space available after the entire editor's size changes, e.g. when browser window
+	// width shrinks, toolbar items are thus wrapped (toolbar height increase), editor's height should
+	// remains, in other browsers instead, editor height is always converted to content space height.
+	var isOuterHeight = CKEDITOR.env.gecko || CKEDITOR.env.webkit;
+
+	var target = isOuterHeight ?  outer : contents;
+	var delta = isOuterHeight ^ isContentHeight ? 0 : ( outer.$.offsetHeight || 0 ) - ( contents.$.clientHeight || 0 );
+
+	target.setStyle( 'height', Math.max( height + ( isOuterHeight ? 1 : -1 ) * delta, 0 ) + 'px' );
 
 	// Emit a resize event.
 	this.fire( 'resize' );

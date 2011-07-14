@@ -258,7 +258,7 @@ CKEDITOR.config =
 	 * config.height = '25em';
 	 * config.height = '300px';
 	 */
-	height : 200,
+	height : 300,
 
 	/**
 	 * Comma separated list of plugins to load and initialize for an editor
@@ -400,7 +400,7 @@ CKEDITOR.config =
 	 * @example
 	 * config.width = '75%';
 	 */
-	width : '',
+	width : '100%',
 
 	/**
 	 * The base Z-index for floating dialogs and popups.

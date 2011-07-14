@@ -5,40 +5,11 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 .cke_skin_kama
 {
-	display: block;
-}
-
-/* Main editor only settings. */
-span.cke_skin_kama
-{
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
 	border-radius: 5px;
 	border: 1px solid #D3D3D3;
 	padding: 5px;
-}
-
-.cke_skin_kama span.cke_browser_webkit,
-.cke_skin_kama span.cke_browser_gecko18
-{
-	display: block;
-}
-
-.cke_skin_kama .cke_wrapper
-{
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border-radius: 5px;
-	background-color: #d3d3d3;
-	background-image: url(images/sprites.png);
-	background-repeat: repeat-x;
-	background-position: 0 -1950px;
-	display: block;
-	/* IE Quirks: editor chrome overflow horizontally without an explicit width. */
-	_display: inline-block;
-	padding: 5px;
-
-	/*background-color: Red;*/
 }
 
 .cke_shared .cke_skin_kama .cke_wrapper
@@ -54,12 +25,28 @@ span.cke_skin_kama
 
 .cke_skin_kama .cke_editor
 {
-	display: inline-table;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	background-color: #d3d3d3;
+	background-image: url(images/sprites.png);
+	background-repeat: repeat-x;
+	background-position: 0 -1950px;
 	width: 100%;
+	height: 100%;
 }
-.cke_skin_kama .cke_browser_webkit .cke_editor
+
+.cke_skin_kama .cke_top
 {
-	display: table;	/* #6684 */
+	padding:5px 5px 0px;
+}
+.cke_skin_kama .cke_contents
+{
+	padding:0px 5px;
+}
+.cke_skin_kama .cke_bottom
+{
+	padding:0px 5px 5px;
 }
 
 .cke_skin_kama .ltr .cke_browser_ie iframe
@@ -77,9 +64,11 @@ span.cke_skin_kama
 	display: table;
 }
 
-.cke_skin_kama .cke_contents
+/* Content space takes up the maximum amount of  spaces available.*/
+.cke_skin_kama .cke_browser_gecko .cke_contents,
+.cke_skin_kama .cke_browser_webkit .cke_contents
 {
-	margin: 5px;
+	height: 100%;
 }
 
 .cke_skin_kama .cke_hc .cke_contents
@@ -89,6 +78,8 @@ span.cke_skin_kama
 
 .cke_skin_kama .cke_contents iframe
 {
+	width:100%;
+	height:100%;
 	background-color: #fff;
 }
 

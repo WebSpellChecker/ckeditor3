@@ -12,7 +12,19 @@ CKEDITOR.themes.add( 'default', (function()
 {
 	var hiddenSkins = {};
 
-	function checkSharedSpace( editor, spaceName )
+	/*
+	 * Wrap the editor UI structure with environment selectors.
+	 */
+	function envHtml( editor, html )
+	{
+		var envs = [ 'cke_'+editor.lang.dir, CKEDITOR.env.cssClass, editor.skinClass ];
+		editor.config.sharedSpaces && envs.push( 'cke_shared' );
+		for ( var i = 0; i < envs.length; i++ )
+			html = '<span class="' + envs[ i ] + '">' + html + '</span>';
+		return html;
+	}
+
+	function buildSharedSpace( editor, spaceName, spaceContent )
 	{
 		var container,
 			element;
@@ -27,18 +39,17 @@ CKEDITOR.themes.add( 'default', (function()
 		if ( element )
 		{
 			// Creates an HTML structure that reproduces the editor class hierarchy.
-			var html =
-				'<span class="cke_shared "' +
-				' dir="'+ editor.lang.dir + '"' +
-				'>' +
-				'<span class="' + editor.skinClass + ' ' + editor.id + ' cke_editor_' + editor.name + '">' +
-				'<span class="' + CKEDITOR.env.cssClass + '">' +
-				'<span class="cke_wrapper cke_' + editor.lang.dir + '">' +
-				'<span class="cke_editor">' +
-				'<div class="cke_' + spaceName + '">' +
-				'</div></span></span></span></span></span>';
+			var html = envHtml( editor,
+					'<div class="cke_container">' +
+						'<div class="cke_editor">' +
+							'<div class="cke_' + spaceName + '">' + spaceContent +
+								'<div class="cke_clear_float"></div>' +
+							'</div>' +
+						'</div>' +
+					'</div>'
+			);
 
-			var mainContainer = element.append( CKEDITOR.dom.element.createFromHtml( html, element.getDocument() ) );
+			var mainContainer = element.append( CKEDITOR.dom.element.createFromHtml( html ) );
 
 			// Only the first container starts visible. Others get hidden.
 			if ( element.getCustomData( 'cke_hasshared' ) )
@@ -78,6 +89,8 @@ CKEDITOR.themes.add( 'default', (function()
 		return container;
 	}
 
+	function listOfClass() { return Array.prototype.join.call( arguments, ' ' ); }
+
 	return /** @lends CKEDITOR.theme */ {
 		build : function( editor, themePath )
 		{
@@ -99,11 +112,11 @@ CKEDITOR.themes.add( 'default', (function()
 			var tabIndex = editor.config.tabIndex || editor.element.getAttribute( 'tabindex' ) || 0;
 
 
-			var sharedTop		= topHtml && checkSharedSpace( editor, 'top' ),
-				sharedBottoms	= checkSharedSpace( editor, 'bottom' );
+			if ( buildSharedSpace( editor, 'top', topHtml ) )
+				topHtml = '';
 
-			sharedTop		&& ( sharedTop.setHtml( topHtml )		, topHtml = '' );
-			sharedBottoms	&& ( sharedBottoms.setHtml( bottomHtml ), bottomHtml = '' );
+			if ( buildSharedSpace( editor, 'bottom', bottomHtml ) )
+				bottomHtml = '';
 
 			var hideSkin = '<style>.' + editor.skinClass + '{visibility:hidden;}</style>';
 			if ( hiddenSkins[ editor.skinClass ] )
@@ -111,37 +124,41 @@ CKEDITOR.themes.add( 'default', (function()
 			else
 				hiddenSkins[ editor.skinClass ] = 1;
 
-			var container = CKEDITOR.dom.element.createFromHtml( [
+			var id = 'cke_editor_' + name,
+				labelId =  id + '_label',
+				containerCls = listOfClass( 'cke_container', editor.id );
+
+			var chrome = CKEDITOR.dom.element.createFromHtml( envHtml( editor, [
+				'<label id="'+ labelId +'" class="cke_voice_label">' + editor.lang.editor + '</label>' +
 				'<table' +
-					' id="cke_', name, '"' +
-					' class="', editor.skinClass, ' ', editor.id, ' cke_editor_', name, '"' +
+					' id="', id, '"' +
+					' class="'+ containerCls +'"' +
 					' dir="', editor.lang.dir, '"' +
-					' title="', ( CKEDITOR.env.gecko ? ' ' : '' ), '"' +
 					' lang="', editor.langCode, '"' +
 						( CKEDITOR.env.webkit? ' tabindex="' + tabIndex + '"' : '' ) +
 					' role="application"' +
-					' aria-labelledby="cke_', name, '_arialbl"' +
+					' aria-labelledby="'+ labelId +
 					'>' +
-					'<tr class="cke_wrapper ' , CKEDITOR.env.cssClass, '" role="presentation">' +
-						'<td class="cke_wrapper cke_', editor.lang.dir, '" role="presentation">' +
-						'<label id="cke_', name, '_arialbl" class="cke_voice_label">' + editor.lang.editor + '</label>' +
+					'<tr role="presentation">' +
+						'<td role="presentation">' +
 							'<table class="cke_editor" role="presentation">' +
 								'<tr', topHtml		? '' : ' style="display:none"', ' role="presentation"><td id="cke_top_'		, name, '" class="cke_top" role="presentation">'	, topHtml		, '</td></tr>' +
 								'<tr', contentsHtml	? '' : ' style="display:none"', ' role="presentation"><td id="cke_contents_', name, '" class="cke_contents" role="presentation">', contentsHtml, '</td></tr>' +
 								'<tr', bottomHtml	? '' : ' style="display:none"', ' role="presentation"><td id="cke_bottom_'	, name, '" class="cke_bottom" role="presentation">'	, bottomHtml	, '</td></tr>' +
 							'</table>' +
-							//Hide the container when loading skins, later restored by skin css.
-							hideSkin +
 						'</td>' +
 					'</tr>' +
-				'</table>' ].join( '' ) );
-
-			container.unselectable();
+				'</table>' +
+				//Hide the container when loading skins, later restored by skin css.
+				hideSkin
+			].join( '' ) ) );
 
 			if ( elementMode == CKEDITOR.ELEMENT_MODE_REPLACE )
-				container.insertAfter( element );
+				chrome.insertAfter( element );
 			else
-				element.append( container );
+				element.append( chrome );
+
+			var container = CKEDITOR.document.getById( id );
 
 			/**
 			 * The DOM element that holds the main editor interface.
@@ -153,6 +170,8 @@ CKEDITOR.themes.add( 'default', (function()
 			 */
 			editor.container = container;
 
+			// Disallow text selection over editor chrome.
+			container.unselectable();
 			// Disable browser context menu for editor's chrome.
 			container.disableContextMenu();
 
@@ -161,7 +180,7 @@ CKEDITOR.themes.add( 'default', (function()
 			{
 				var func = ( editor.lang.dir != evt.data ? 'add' : 'remove' ) + 'Class';
 
-				container.getChild( 1 )[ func ]( 'cke_mixed_dir_content' );
+				container[ func ]( 'cke_mixed_dir_content' );
 
 				// Put the mixed direction class on the respective element also for shared spaces.
 				var toolbarSpace = this.sharedSpaces && this.sharedSpaces[ this.config.toolbarLocation ];

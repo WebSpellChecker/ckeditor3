@@ -72,7 +72,7 @@ CKEDITOR.focusManager.prototype =
 
 			var editor = this._.editor;
 
-			editor.container.getChild( 1 ).addClass( 'cke_focus' );
+			editor.container.addClass( 'cke_focus' );
 
 			this.hasFocus = true;
 			editor.fire( 'focus' );
@@ -119,7 +119,7 @@ CKEDITOR.focusManager.prototype =
 		{
 			var editor = this._.editor;
 
-			editor.container.getChild( 1 ).removeClass( 'cke_focus' );
+			editor.container.removeClass( 'cke_focus' );
 
 			this.hasFocus = false;
 			editor.fire( 'blur' );

@@ -1,0 +1,174 @@
+/*
+Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
+For licensing, see LICENSE.html or http://ckeditor.com/license
+*/
+.cke_skin_kama
+{
+ 	.cke_container
+	{
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		border: 1px solid #D3D3D3;
+		padding: 3px;
+		border-collapse: separate;
+	}
+
+	 .cke_editor
+	{
+		-moz-border-radius: 5px;
+		-webkit-border-radius: 5px;
+		border-radius: 5px;
+		background-color: #d3d3d3;
+		background-image: url(images/sprites.png);
+		background-repeat: repeat-x;
+		background-position: 0 -1950px;
+		width: 100%;
+		height: 100%;
+
+		 .cke_browser_ie6 &,
+		 .cke_browser_ie7 &
+		{
+			display: inline-block;
+		}
+	}
+
+	 .cke_top
+	{
+		padding:5px 5px 0px;
+	}
+
+	 .cke_contents
+	{
+		padding:0px 5px;
+		.cke_shared &
+		{
+			padding: 5px;
+		}
+	}
+
+	 .cke_bottom
+	{
+		padding:0px 5px 5px;
+	}
+
+	// Content space takes up the maximum amount of  spaces available.
+	 .cke_contents
+	{
+		.cke_browser_gecko &,
+	 	.cke_browser_webkit &
+		 {
+			height: 100%;
+		 }
+
+		.cke_hc &
+		{
+			border: 1px solid black;
+		}
+
+		iframe
+		{
+			width:100%;
+			height:100%;
+			background-color: #fff;
+
+			.cke_browser_ie.cke_browser_quirks &,
+			{
+				position: absolute;
+				top: 0;
+			}
+		}
+
+		 textarea
+		{
+			font-family: 'Courier New' , Monospace;
+			font-size: small;
+			background-color: #fff;
+			white-space: pre;
+			.cke_browser_iequirks &
+			{
+				// For IE6+Quirks only
+				_white-space: normal;
+			}
+
+			.cke_browser_ie6 &,
+			.cke_browser_ie7 &
+			{
+				position: absolute;
+			}
+		}
+	}
+
+	 .cke_focus
+	{
+		outline: auto 5px -webkit-focus-ring-color;
+	}
+
+	 .cke_resizer
+	{
+		width: 12px;
+		height: 12px;
+		margin-top: 9px;
+		display: block;
+		float: right;
+		// resizer.gif
+		background-image: url(images/sprites.png);
+		_background-image: url(images/sprites_ie6.png);
+		background-position: 0 -1428px;
+		background-repeat: no-repeat;
+		cursor: se-resize;
+		.cke_browser_air &
+		{
+			cursor: move;
+		}
+ 		 .cke_browser_opera &
+   		{
+   			display: table;
+   		}
+		.cke_maximized &
+		{
+			display: none;
+		}
+	}
+
+	.cke_resizer_rtl
+	{
+		cursor: sw-resize;
+		background-position: 0 -1455px;
+		float: left;
+	}
+
+	 .cke_resizer_horizontal
+	{
+		cursor: e-resize;
+	}
+
+	 .cke_resizer_vertical,
+	{
+		cursor: n-resize;
+	}
+
+	// All voice labels are not displayed.
+	 .cke_voice_label
+	{
+		display: none;
+	}
+
+	legend.cke_voice_label
+	{
+		.cke_browser_ie &
+		{
+			position: absolute;
+			display: block;
+			width: 0;
+			height: 0;
+			overflow: hidden;
+		}
+	}
+
+	.cke_clear_float
+	{
+		clear:both;
+	}
+}
+

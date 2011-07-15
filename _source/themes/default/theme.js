@@ -17,8 +17,8 @@ CKEDITOR.themes.add( 'default', (function()
 	 */
 	function envHtml( editor, html )
 	{
-		var envs = [ 'cke_'+editor.lang.dir, CKEDITOR.env.cssClass, editor.skinClass ];
-		editor.config.sharedSpaces && envs.push( 'cke_shared' );
+		var envs = [ editor.skinClass, 'cke_'+editor.lang.dir, CKEDITOR.env.cssClass ];
+		editor.config.sharedSpaces && envs.splice( 1, 0, 'cke_shared' );
 		for ( var i = 0; i < envs.length; i++ )
 			html = '<span class="' + envs[ i ] + '">' + html + '</span>';
 		return html;

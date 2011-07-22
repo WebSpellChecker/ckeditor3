@@ -1,4 +1,4 @@
-﻿/*
+﻿?/*
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -65,6 +65,7 @@ CKEDITOR.htmlParser.fragment = function()
 		var parser = new CKEDITOR.htmlParser(),
 			fragment = contextNode || new CKEDITOR.htmlParser.fragment(),
 			pendingInline = [],
+			pendingBlocks = [],
 			pendingBRs = [],
 			currentNode = fragment,
 		    // Indicate we're inside a <pre> element, spaces should be touched differently.
@@ -128,7 +129,22 @@ CKEDITOR.htmlParser.fragment = function()
 		{
 			// Ignore any element that has already been added.
 			if ( element.previous !== undefined )
+			{
+				currentNode = target;
 				return;
+			}
+
+			if ( element._.removeIfEmpty )
+			{
+				currentNode = element.returnPoint;
+				delete element._.removeIfEmpty;
+				// Ignore pending block that has no content.
+				if ( !element.children.length )
+				{
+					currentNode = target;
+					return;
+				}
+			}
 
 			target = target || currentNode || fragment;
 
@@ -185,6 +201,24 @@ CKEDITOR.htmlParser.fragment = function()
 			}
 			else
 				currentNode = moveCurrent ? target : savedCurrent;
+
+			// Checking pending blocks.
+			var pendingBlocks = element._.pendingBlocks; 
+
+			var block;
+			while( block = pendingBlocks.shift() )
+			{
+				// Get a clone for the pending block.
+				block = block.clone();
+				// Mark the block as remove if empty
+				block._.removeIfEmpty = 1;
+
+				// Add it to the current node and make it the current.
+				block.parent = currentNode;
+				currentNode = block;
+			}
+
+			delete element._.pendingBlocks;
 		}
 
 		parser.onTagOpen = function( tagName, attributes, selfClosing, optionalClose )
@@ -268,6 +302,15 @@ CKEDITOR.htmlParser.fragment = function()
 						if ( currentName in CKEDITOR.dtd.$inline )
 							pendingInline.unshift( currentNode );
 
+						// Unintentionally closed blocks are to be continued 
+						// after adding this element.
+						if ( currentName in CKEDITOR.dtd.$block
+								&& !( currentName in CKEDITOR.dtd.$empty ) )
+						{
+							currentNode._.removeIfEmpty = 1;
+							element._.pendingBlocks.push( currentNode );
+						}
+
 						// The most common case where we just need to close the
 						// current one and append the new one to the parent.
 						if ( currentNode.parent )
@@ -348,12 +391,7 @@ CKEDITOR.htmlParser.fragment = function()
 				if ( candidate._.isBlockLike )
 					sendPendingBRs();
 
-				addElement( candidate, candidate.parent );
-
-				// The parent should start receiving new nodes now, except if
-				// addElement changed the currentNode.
-				if ( candidate == currentNode )
-					currentNode = currentNode.parent;
+				addElement( candidate, candidate.parent, 1 );
 
 				pendingInline = pendingInline.concat( newPendingInline );
 			}

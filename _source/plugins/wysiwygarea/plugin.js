@@ -46,11 +46,25 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		};
 	}
 
+	function postFixPaste( range )
+	{
+		var walker = new CKEDITOR.dom.walker( range.clone() );
+
+		// Collect invalid structured and wrongly styled (Webkit only) elements for later fixing.
+		var next, invalids = [], extras = [], type = CKEDITOR.dom.walker.nodeType( CKEDITOR.NODE_ELEMENT );
+		walker.evaluator = type;
+		while( next = walker.next() )
+		{
+			if ( next.is( 'span' ) && next.hasClass( 'Apple-style-span' ) )
+				extras.push( next );
+		}
+
+		for ( var j = 0, extra; extra = extras[ j ], j < extras.length; j++ )
+			extra.remove( 1 );
+	}
+
 	function doInsertHtml( data )
 	{
-		if ( this.dataProcessor )
-			data = this.dataProcessor.toHtml( data );
-
 		if ( !data )
 			return;
 
@@ -61,73 +75,62 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		if ( range.checkReadOnly() )
 			return;
 
-		// Opera: force block splitting when pasted content contains block. (#7801)
-		if ( CKEDITOR.env.opera )
+		var selIsLocked = selection.isLocked;
+		selIsLocked && selection.unlock();
+
+		// Easy way of removing content from current selection.
+		if ( !range.collapsed )
+			this.document.$.execCommand( 'Delete', false, null );
+
+		data += '<span id="cke_caret">\ufeff</span>';
+
+		selection.reset();
+		range = selection.getRanges()[ 0 ];
+		var path = new CKEDITOR.dom.elementPath( range.startContainer );
+		var root = path.lastElement;
+		if ( !path.blockLimit.equals( root ) )
 		{
-			var path = new CKEDITOR.dom.elementPath( range.startContainer );
-			if ( path.block )
-			{
-				var nodes = CKEDITOR.htmlParser.fragment.fromHtml( data, false ).children;
-				for ( var i = 0, count = nodes.length; i < count; i++ )
-				{
-					if ( nodes[ i ]._.isBlockLike )
-					{
-						range.splitBlock( this.enterMode == CKEDITOR.ENTER_DIV ? 'div' : 'p' );
-						range.insertNode( range.document.createText( '' ) );
-						range.select();
-						break;
-					}
-				}
-			}
-		}
+			var parent;
+			while( !( parent = root.getParent() ).equals( path.blockLimit ) )
+				root = parent;
 
-		if ( CKEDITOR.env.ie )
-		{
-			var selIsLocked = selection.isLocked;
-
-			if ( selIsLocked )
-				selection.unlock();
-
-			var $sel = selection.getNative();
-
-			// Delete control selections to avoid IE bugs on pasteHTML.
-			if ( $sel.type == 'Control' )
-				$sel.clear();
-			else if ( selection.getType() == CKEDITOR.SELECTION_TEXT )
-			{
-				// Due to IE bugs on handling contenteditable=false blocks
-				// (#6005), we need to make some checks and eventually
-				// delete the selection first.
-
-				range = selection.getRanges()[ 0 ];
-				var endContainer = range && range.endContainer;
-
-				if ( endContainer &&
-						endContainer.type == CKEDITOR.NODE_ELEMENT &&
-						endContainer.getAttribute( 'contenteditable' ) == 'false' &&
-						range.checkBoundaryOfElement( endContainer, CKEDITOR.END ) )
-				{
-					range.setEndAfter( range.endContainer );
-					range.deleteContents();
-				}
-			}
-
-			try
-			{
-				$sel.createRange().pasteHTML( data );
-			}
-			catch (e) {}
-
-			if ( selIsLocked )
-				this.getSelection().lock();
+			var marker = this.document.createText( '{cke_paste_marker}' );
+			range.insertNode( marker );
+			data = root.getOuterHtml().replace( '{cke_paste_marker}', data );
+			marker.remove();
 		}
 		else
-			this.document.$.execCommand( 'inserthtml', false, data );
+		{
+			root = CKEDITOR.dom.element.createFromHtml( '<span id="cke_paste_marker"></span>');
+			range.insertNode( root );
+		}
+
+		if ( this.dataProcessor )
+			data = this.dataProcessor.toHtml( data, false, false );
+
+		var fixRange = new CKEDITOR.dom.range( this.document );
+		fixRange.setStartBefore( root );
+		fixRange.setEndAfter( root );
+		var bm = fixRange.createBookmark();
+		root.replaceWithHtml( data );
+		fixRange.moveToBookmark( bm );
+
+		// Fixing schema-violated elements and redundant styles that may occur
+		// at start of pasted content.
+		postFixPaste( fixRange );
+
+		// Move selection to the end of pasted content.
+		var marker = this.document.getById( 'cke_caret' );
+		range.moveToPosition( marker, CKEDITOR.POSITION_BEFORE_START );
+		marker.remove();
+		range.select();
+
+		selIsLocked && this.getSelection().lock();
 
 		// Webkit does not scroll to the cursor position after pasting (#5558)
 		if ( CKEDITOR.env.webkit )
 		{
-			selection = this.getSelection();
+			selection.reset();
 			selection.scrollIntoView();
 		}
 	}

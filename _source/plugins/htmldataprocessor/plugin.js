@@ -484,7 +484,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	CKEDITOR.htmlDataProcessor.prototype =
 	{
-		toHtml : function( data, fixForBody )
+		toHtml : function( data, fixForBody, nativeParsing )
 		{
 			// The source data is already HTML, but we need to clean
 			// it up and apply the filter.
@@ -512,12 +512,15 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// eat it up. (#5789)
 			data = protectPreFormatted( data );
 
-			// Call the browser to help us fixing a possibly invalid HTML
-			// structure.
-			var div = new CKEDITOR.dom.element( 'div' );
-			// Add fake character to workaround IE comments bug. (#3801)
-			div.setHtml( 'a' + data );
-			data = div.getHtml().substr( 1 );
+			if ( nativeParsing !== false )
+			{
+				// Call the browser to help us fixing a possibly invalid HTML
+				// structure.
+				var div = new CKEDITOR.dom.element( 'div' );
+				// Add fake character to workaround IE comments bug. (#3801)
+				div.setHtml( 'a' + data );
+				data = div.getHtml().substr( 1 );
+			}
 
 			// Unprotect "some" of the protected elements at this point.
 			data = unprotectElementNames( data );

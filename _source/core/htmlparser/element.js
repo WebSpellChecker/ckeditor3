@@ -56,7 +56,8 @@ CKEDITOR.htmlParser.element = function( name, attributes )
 	this._ =
 	{
 		isBlockLike : isBlockLike,
-		hasInlineStarted : isEmpty || !isBlockLike
+		hasInlineStarted : isEmpty || !isBlockLike,
+		pendingBlocks : []
 	};
 };
 

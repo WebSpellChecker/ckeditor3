@@ -378,6 +378,21 @@ CKEDITOR.tools.extend( CKEDITOR.dom.element.prototype,
 		{
 			return ( this.$.innerHTML = html );
 		},
+		
+		replaceWithHtml : function( html )
+		{
+			var temp = this.getDocument().createElement( 'body' );
+			temp.setHtml( html );
+
+			var child = temp.getLast();
+			while ( child )
+			{
+				child.clone( 1, 1 ).insertAfter( this );
+				child = child.getPrevious();
+			}
+
+			this.remove();
+		},
 
 		/**
 		 * Sets the element contents as plain text.

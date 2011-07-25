@@ -9,6 +9,47 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 (function()
 {
+	var composite = CKEDITOR.tools.extend( {}, CKEDITOR.dtd.table, CKEDITOR.dtd.ul, CKEDITOR.dtd.ol, CKEDITOR.dtd.dl );
+
+	var bookmarkRegExp = /<span[^>]+data-cke-bookmark[^<]*?<\/span>/ig;
+
+	/*
+	 *	Convert bookmarks that been protected into comments node
+	 *	back to original within the specified element.
+	 */
+	function restoreBookmarks( element )
+	{
+		var doc = element.getDocument();
+		var walkRange = new CKEDITOR.dom.range( doc );
+		walkRange.selectNodeContents( element );
+		var walker = new CKEDITOR.dom.walker( walkRange );
+		walker.evaluator = CKEDITOR.dom.walker.nodeType( CKEDITOR.NODE_COMMENT );
+		var comment, bookmarks = [], text;
+		while( comment = walker.next() )
+		{
+			if ( /^\{cke_bookmark\}(.*)/.test( comment.$.nodeValue ) )
+				bookmarks.push( comment );
+		}
+
+		for ( var i = 0; i < bookmarks.length; i++ )
+		{
+			comment = bookmarks[ i ];
+			comment.$.nodeValue.replace(/^\{cke_bookmark\}(.*)/gi, function( match, str )
+			{
+				var bm = CKEDITOR.dom.element.createFromHtml( str );
+				bm.replace( comment );
+			});
+		}
+	}
+
+	/*
+	*  Protect bookmarks into comments.
+	 */
+	function protectBookmarks( html )
+	{
+		return html.replace( bookmarkRegExp, function( match ) { return '<!--{cke_bookmark}' + match + '-->'; } );
+	}
+
 	// Tries to execute any of the paste, cut or copy commands in IE. Returns a
 	// boolean indicating that the operation succeeded.
 	var execIECommand = function( editor, command )
@@ -389,7 +430,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							{
 								// The very last guard to make sure the
 								// paste has successfully happened.
-								if ( !( data = CKEDITOR.tools.trim( data.replace( /<span[^>]+data-cke-bookmark[^<]*?<\/span>/ig,'' ) ) ) )
+								if ( !( data = CKEDITOR.tools.trim( data.replace( bookmarkRegExp, '' ) ) ) )
 									return;
 
 								var dataTransfer = {};
@@ -397,6 +438,54 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								editor.fire( 'paste', dataTransfer );
 							} );
 						});
+
+					// Copy editor outputted data format instead of raw HTML.
+					body.on( 'copy', function()
+					{
+						var sel = editor.getSelection();
+						var bms = sel.createBookmarks2();
+						var bms2 = sel.createBookmarks( 1 );
+
+						// Find the element that enclose the entire selection,
+						// composite structure like table and list are to be fully included.
+						var root = sel.getCommonAncestor();
+						while( ! ( root.type == CKEDITOR.NODE_ELEMENT && !composite[ root.getName() ] ) )
+							root = root.getParent();
+
+						// Bookmarks are copied too, but then need to be protected
+						// to survive from the parsing.
+						var data = protectBookmarks( root.getOuterHtml() );
+
+						// We can destroy the bookmarks now.
+						sel.selectBookmarks( bms2 );
+
+						if ( editor.dataProcessor )
+							data = editor.dataProcessor.toDataFormat( data, false );
+
+						// Create a (invisible) container to temporarily hold the outputted data.
+						var copybin = new CKEDITOR.dom.element( 'div' );
+						copybin.setStyles(
+							{
+								position : 'absolute',
+								// Position the bin exactly at the position of the selected element
+								// to avoid any subsequent document scroll.
+								top : sel.getStartElement().getDocumentPosition().y + 'px',
+								width : '1px',
+								height : '1px',
+								overflow : 'hidden'
+							});
+						copybin.setStyle( editor.config.contentsLangDirection == 'ltr' ? 'left' : 'right', '-1000px' );
+						copybin.appendTo( body );
+						copybin.setHtml( data );
+
+						// Restore the bookmarks from protected form
+						// and make the final selection, waiting for the copy.
+						restoreBookmarks( copybin );
+						sel.selectBookmarks( bms2 );
+
+						// Cleanup and restoring after copy has completed.
+						setTimeout( function() { copybin.remove(); editor.getSelection().selectBookmarks( bms ); } );
+					});
 
 					// Dismiss the (wrong) 'beforepaste' event fired on context menu open. (#7953)
 					body.on( 'contextmenu', function()

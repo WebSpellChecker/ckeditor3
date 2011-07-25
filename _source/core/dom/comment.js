@@ -17,7 +17,8 @@ CKEDITOR.dom.comment = CKEDITOR.tools.createClass(
 		if ( typeof text == 'string' )
 			text = ( ownerDocument ? ownerDocument.$ : document ).createComment( text );
 
-		this.base( text );
+		// Call the base constructor.
+		CKEDITOR.dom.domObject.call( this, text );
 	},
 
 	proto :

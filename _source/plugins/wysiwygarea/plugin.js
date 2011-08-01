@@ -51,15 +51,29 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		var walker = new CKEDITOR.dom.walker( range.clone() );
 
 		// Collect invalid structured and wrongly styled (Webkit only) elements for later fixing.
-		var next, invalids = [], extras = [], type = CKEDITOR.dom.walker.nodeType( CKEDITOR.NODE_ELEMENT );
+		var next,  toRemove = [], type = CKEDITOR.dom.walker.nodeType( CKEDITOR.NODE_ELEMENT );
 		walker.evaluator = type;
 		while( next = walker.next() )
 		{
+			// Webkit verbose styling spans.
 			if ( next.is( 'span' ) && next.hasClass( 'Apple-style-span' ) )
-				extras.push( next );
+				toRemove.push( next );
+
+			// Detecting empty blocks that were generated at the
+			// boundaries of the pasted content, eventually get rid of them.
+			if ( next.is( 'span' ) && next.data( 'cke-bookmark' ) )
+			{
+				var testRange = new CKEDITOR.dom.range( range.document );
+				testRange.selectNodeContents( next );
+				if ( testRange.checkEndOfBlock() && testRange.checkStartOfBlock() )
+				{
+					var path = new CKEDITOR.dom.elementPath( next );
+					toRemove.push( path.block );
+				}
+			}
 		}
 
-		for ( var j = 0, extra; extra = extras[ j ], j < extras.length; j++ )
+		for ( var j = 0, extra; extra = toRemove[ j ], j < toRemove.length; j++ )
 			extra.remove( 1 );
 	}
 
@@ -69,7 +83,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			return;
 
 		// HTML insertion only considers the first range.
-		var selection = this.getSelection(),
+		var doc = this.document,
+			selection = this.getSelection(),
 			range = selection.getRanges()[ 0 ];
 
 		if ( range.checkReadOnly() )
@@ -82,7 +97,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		if ( !range.collapsed )
 			this.document.$.execCommand( 'Delete', false, null );
 
-		data += '<span id="cke_caret">\ufeff</span>';
+		// Markers are created to make it easier to check the boundaries of pasted result later.
+		data = '<span id="cke_paste_start" data-cke-bookmark="1">\ufeff</span>' + data;
+		data += '<span id="cke_paste_end" data-cke-bookmark="1">\ufeff</span>';
 
 		selection.reset();
 		range = selection.getRanges()[ 0 ];
@@ -120,7 +137,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		postFixPaste( fixRange );
 
 		// Move selection to the end of pasted content.
-		var marker = this.document.getById( 'cke_caret' );
+		doc.getById( 'cke_paste_start' ).remove();
+		var marker = doc.getById( 'cke_paste_end' );
 		range.moveToPosition( marker, CKEDITOR.POSITION_BEFORE_START );
 		marker.remove();
 		range.select();

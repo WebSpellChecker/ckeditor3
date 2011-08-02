@@ -443,7 +443,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					body.on( 'copy', function()
 					{
 						var sel = editor.getSelection();
-						var bms = sel.createBookmarks2();
+
+						// Bookmarks are required to properly replicate
+						// the copy bin selection.
 						var bms2 = sel.createBookmarks( 1 );
 
 						// Find the element that enclose the entire selection,
@@ -456,8 +458,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						// to survive from the parsing.
 						var data = protectBookmarks( root.getOuterHtml() );
 
-						// We can destroy the bookmarks now.
+						// We can destroy the temporary bookmarks now.
 						sel.selectBookmarks( bms2 );
+
+						// This virtual bookmark is created for restoring the
+						// document selection later.
+						var bms = sel.createBookmarks2();
 
 						if ( editor.dataProcessor )
 							data = editor.dataProcessor.toDataFormat( data, false );

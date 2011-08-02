@@ -469,7 +469,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							data = editor.dataProcessor.toDataFormat( data, false );
 
 						// Create a (invisible) container to temporarily hold the outputted data.
-						var copybin = new CKEDITOR.dom.element( CKEDITOR.env.webkit ? 'div' : 'body' );
+						var copybin = new CKEDITOR.dom.element( 'body' );
 						copybin.setStyles(
 							{
 								position : 'absolute',
@@ -481,7 +481,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								overflow : 'hidden'
 							});
 						copybin.setStyle( editor.config.contentsLangDirection == 'ltr' ? 'left' : 'right', '-1000px' );
-						copybin.appendTo( CKEDITOR.env.webkit ? body : body.getParent() );
+						copybin.appendTo( body.getParent() );
 						copybin.setHtml( data );
 
 						// Restore the bookmarks from protected form

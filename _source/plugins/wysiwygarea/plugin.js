@@ -413,8 +413,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			// 1. It is really displayed as block; (#7221)
 			// 2. It doesn't end with one inner block; (#7467)
 			// 3. It doesn't have bogus br yet.
+			// 4. It's an editable block.
 			if ( pathBlock
 					&& pathBlock.isBlockBoundary()
+					&& !pathBlock.isReadOnly()
 					&& !( lastNode && lastNode.type == CKEDITOR.NODE_ELEMENT && lastNode.isBlockBoundary() )
 					&& !pathBlock.is( 'pre' )
 					&& !pathBlock.getBogus() )

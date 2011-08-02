@@ -1,4 +1,4 @@
-﻿/*
+﻿﻿/*
 Copyright (c) 2003-2011, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
@@ -63,24 +63,23 @@ CKEDITOR.plugins.add( 'pagebreak',
 		{
 			htmlFilter.addRules(
 			{
-				attributes : {
-					'class' : function( value, element )
+				elements :
+				{
+					'div' : function( element )
 					{
-						var className =  value.replace( 'cke_pagebreak', '' );
-						if ( className != value )
+						var className =  element.attributes[ 'class' ];
+						if ( className && className.indexOf( 'cke_pagebreak' ) != -1 )
 						{
-							var span = CKEDITOR.htmlParser.fragment.fromHtml( '<span style="display: none;">&nbsp;</span>' );
-							element.children.length = 0;
-							element.add( span );
 							var attrs = element.attributes;
+							delete attrs[ 'class' ];
 							delete attrs[ 'aria-label' ];
 							delete attrs.contenteditable;
 							delete attrs.title;
+							element.children.length = 0;
 						}
-						return className;
 					}
 				}
-			}, 5 );
+			}, 20 );
 		}
 
 		if ( dataFilter )
@@ -96,19 +95,23 @@ CKEDITOR.plugins.add( 'pagebreak',
 								child = style && element.children.length == 1 && element.children[ 0 ],
 								childStyle = child && ( child.name == 'span' ) && child.attributes.style;
 
-							if ( childStyle && ( /page-break-after\s*:\s*always/i ).test( style ) && ( /display\s*:\s*none/i ).test( childStyle ) )
+							if ( /page-break-after\s*:\s*always/i.test( style ) )
 							{
-								attributes.contenteditable = "false";
-								attributes[ 'class' ] = "cke_pagebreak";
-								attributes[ 'data-cke-display-name' ] = "pagebreak";
-								attributes[ 'aria-label' ] = label;
-								attributes[ 'title' ] = label;
-
-								element.children.length = 0;
+								if ( !element.children.length
+										// Back-compat.
+										|| childStyle && /display\s*:\s*none/i .test( childStyle ) )
+								{
+									attributes.contenteditable = "false";
+									attributes[ 'class' ] = "cke_pagebreak";
+									attributes[ 'data-cke-display-name' ] = "pagebreak";
+									attributes[ 'aria-label' ] = label;
+									attributes[ 'title' ] = label;
+									element.children.length = 0;
+								}
 							}
 						}
 					}
-				});
+				}, 5 );
 		}
 	},
 

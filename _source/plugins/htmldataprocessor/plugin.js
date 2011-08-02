@@ -66,6 +66,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		return function( node )
 		{
+			if ( node.attributes.contenteditable == 'false' )
+				return;
+
 			trimFillers( node, !isOutput );
 
 			if ( blockNeedsExtension( node, !isOutput, emptyBlockFiller ) )

@@ -411,6 +411,11 @@ CKEDITOR.htmlParser.fragment = function()
 					return;
 			}
 
+			// Close elements that doesn't accept text.
+			var dtd;
+			while ( ( dtd = CKEDITOR.dtd[ currentNode.name ] ) && !dtd[ '#' ] )
+				addElement( currentNode, currentNode.parent, 1 );
+
 			sendPendingBRs();
 			checkPending();
 

@@ -973,6 +973,31 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								joinNextLineToCursor( editor, cursor, range );
 								evt.cancel();
 							}
+							else
+							{
+								var list = path.contains( listNodeNames ), li;
+								// Backspace pressed at the start of list, in first list item. (#9129)
+								if ( list && range.checkBoundaryOfElement( list, CKEDITOR.START ) )
+								{
+									li = path.contains( CKEDITOR.dtd.$listItem );
+
+									// Outdent the list item if:
+									// 1. Inside of empty list item.
+									// 2. No content to merge before.
+									if ( range.checkBoundaryOfElement( li, CKEDITOR.START ) )
+									{
+										previous = list.getPrevious( nonEmpty );
+										if ( range.checkBoundaryOfElement( li, CKEDITOR.END ) ||
+										     !previous ||
+										     // A special case of "no content to merge before"
+										     previous.is( 'table' ) )
+										{
+											editor.execCommand( 'outdent' );
+											evt.cancel();
+										}
+									}
+								}
+							}
 						}
 						else
 						{

@@ -81,7 +81,13 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		function singletonBlock( node )
 		{
 			var body = range.document.getBody();
-			return !node.is( 'body' ) && body.getChildCount() == 1;
+
+			if ( node.isBlockBoundary() &&
+			     range.checkBoundaryOfElement( body, CKEDITOR.START ) &&
+			     range.checkBoundaryOfElement( body, CKEDITOR.END ) )
+			{
+				return true;
+			}
 		}
 
 		var start = range.startContainer,

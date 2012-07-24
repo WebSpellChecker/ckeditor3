@@ -767,9 +767,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 						domDocument.getDocumentElement().addClass( domDocument.$.compatMode );
 						// Override keystroke behaviors.
-						editor.on( 'key', function( evt )
+						editable && domDocument.on( 'keydown', function( evt )
 						{
-							var keyCode = evt.data.keyCode;
+							var keyCode = evt.data.getKeystroke();
 
 							// Backspace OR Delete.
 							if ( keyCode in { 8 : 1, 46 : 1 } )
@@ -799,7 +799,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 									editor.fire( 'saveSnapshot' );
 
-									evt.cancel();
+									evt.data.preventDefault();
 								}
 								else
 								{
@@ -823,7 +823,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 										editor.fire( 'saveSnapshot' );
 
-										evt.cancel();
+										evt.data.preventDefault();
 									}
 									else if ( path.blockLimit.is( 'td' ) &&
 											  ( parent = path.blockLimit.getAscendant( 'table' ) ) &&
@@ -843,7 +843,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 										editor.fire( 'saveSnapshot' );
 
-										evt.cancel();
+										evt.data.preventDefault();
 									}
 
 								}
@@ -865,7 +865,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										range = new CKEDITOR.dom.range( domDocument );
 										range[ keyCode == 33 ? 'moveToElementEditStart' : 'moveToElementEditEnd']( body );
 										range.select();
-										evt.cancel();
+										evt.data.preventDefault();
 									}
 								}
 

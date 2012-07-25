@@ -539,7 +539,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									return;
 								}
 
-								savedRange = nativeSel && sel.getRanges()[ 0 ];
+								// Not break because of this. (#9132)
+								try{ savedRange = nativeSel && sel.getRanges()[ 0 ]; } catch( er ) {}
 
 								checkSelectionChangeTimeout.call( editor );
 							}

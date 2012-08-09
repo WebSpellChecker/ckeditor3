@@ -771,7 +771,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	CKEDITOR.plugins.tabletools =
 	{
-		requires : [ 'table', 'dialog', 'contextmenu' ],
+		requires : [ 'table', 'dialog' ],
 
 		init : function( editor )
 		{

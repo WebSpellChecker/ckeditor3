@@ -468,7 +468,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		};
 
 		// Parse it.
-		parser.parse( CKEDITOR.tools.htmlEncode( source ) );
+		parser.parse( source );
 
 		// Close all hanging nodes.
 		while ( currentNode.type )

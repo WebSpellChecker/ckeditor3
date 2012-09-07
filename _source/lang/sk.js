@@ -120,6 +120,7 @@ CKEDITOR.lang['sk'] =
 		alignTop		: 'Nahor',
 		alignMiddle		: 'Na stred',
 		alignBottom		: 'Dole',
+		invalidValue	: 'Invalid value.', // MISSING
 		invalidHeight	: 'Výška musí byť číslo.',
 		invalidWidth	: 'Šírka musí byť číslo.',
 		invalidCssLength	: 'Špecifikovaná hodnota pre pole "%1" musí byť kladné číslo s alebo bez platnej CSS mernej jednotky (px, %, in, cm, mm, em, ex, pt alebo pc).',

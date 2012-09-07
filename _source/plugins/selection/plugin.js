@@ -78,12 +78,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 					&& node.getName() in CKEDITOR.dtd.$removeEmpty;
 		}
 
-		function singletonBlock( node )
-		{
-			var body = range.document.getBody();
-			return !node.is( 'body' ) && body.getChildCount() == 1;
-		}
-
 		var start = range.startContainer,
 			offset = range.startOffset;
 
@@ -91,9 +85,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			return false;
 
 		// 1. Empty inline element. <span>^</span>
-		// 2. Adjoin to inline element. <p><strong>text</strong>^</p>
-		// 3. The only empty block in document. <body><p>^</p></body> (#7222)
-		return !CKEDITOR.tools.trim( start.getHtml() ) ? isInlineCt( start ) || singletonBlock( start )
+		// 2. Empty block. <p>^</p> (#7222)
+		// 3. Adjoin to inline element. <p><strong>text</strong>^</p>
+		return !CKEDITOR.tools.trim( start.getHtml() ) ? isInlineCt( start ) || start.isBlockBoundary()
 				: isInlineCt( start.getChild( offset - 1 ) ) || isInlineCt( start.getChild( offset ) );
 	}
 
@@ -565,6 +559,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 					if ( CKEDITOR.env.webkit )
 					{
+						// Before keystroke is handled by editor, check to remove the filling char.
 						doc.on( 'keydown', function( evt )
 						{
 							var key = evt.data.getKey();
@@ -585,7 +580,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									removeFillingChar( editor.document );
 							}
 
-						}, null, null, 10 );
+						}, null, null, -1 );
 					}
 				});
 

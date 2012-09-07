@@ -784,7 +784,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			   CKEDITOR.dtd[ node.getName() ][ '#' ];
 	}
 
-	// Merge the visual line content at the cursor range into the block.
+	// Join visually two block lines.
 	function joinNextLineToCursor( editor, cursor, nextCursor )
 	{
 		editor.fire( 'saveSnapshot' );
@@ -798,7 +798,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		// Kill original bogus;
 		var currentPath = new CKEDITOR.dom.elementPath( cursor.startContainer );
-		var currentLi = currentPath.lastElement.getAscendant( 'li', 1 );
+		var currentBlock = currentPath.lastElement.getAscendant( 'li', 1 ) || currentPath.block;
 
 		var bogus = currentPath.block.getBogus();
 		bogus && bogus.remove();
@@ -815,8 +815,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		else
 			cursor.startContainer.append( frag );
 
-		var nextPath = new CKEDITOR.dom.elementPath( nextCursor.startContainer );
-		var nextLi = nextCursor.startContainer.getAscendant( 'li', 1 );
+		var nextPath = new CKEDITOR.dom.elementPath( nextCursor.startContainer ),
+			nextLi = nextCursor.startContainer.getAscendant( 'li', 1 );
 
 		// Move the sub list nested in the next list item.
 		if ( nextLi )
@@ -825,14 +825,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			if ( sublist )
 			{
 				// If next line is in the sub list of the current list item.
-				if ( currentLi.contains( nextLi ) )
+				if ( currentBlock.contains( nextLi ) )
 				{
 					mergeChildren( sublist, nextLi.getParent(), nextLi );
 					sublist.remove();
 				}
 				// Migrate the sub list to current list item.
 				else
-					currentLi.append( sublist );
+					currentBlock.append( sublist );
 			}
 		}
 
@@ -918,18 +918,18 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						if ( !range.collapsed )
 							return;
 
+						var path = new CKEDITOR.dom.elementPath( range.startContainer );
 						var isBackspace = key == 8;
 						var body = editor.document.getBody();
 						var walker = new CKEDITOR.dom.walker( range.clone() );
 						walker.evaluator = function( node ) { return nonEmpty( node ) && !blockBogus( node ); };
+						walker.guard = function( node, isOut ) { return !( isOut && node.type == CKEDITOR.NODE_ELEMENT && node.is( 'table' ) ) };
 
 						var cursor = range.clone();
 
 						if ( isBackspace )
 						{
 							var previous, joinWith;
-
-							var path = new CKEDITOR.dom.elementPath( range.startContainer );
 
 							// Join a sub list's first line, with the previous visual line in parent.
 							if ( ( previous = path.contains( listNodeNames ) ) &&
@@ -973,10 +973,44 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								joinNextLineToCursor( editor, cursor, range );
 								evt.cancel();
 							}
+							else
+							{
+								var list = path.contains( listNodeNames ), li;
+								// Backspace pressed at the start of list outdents the first list item. (#9129)
+								if ( list && range.checkBoundaryOfElement( list, CKEDITOR.START ) )
+								{
+									li = list.getFirst( nonEmpty );
+
+									if ( range.checkBoundaryOfElement( li, CKEDITOR.START ) )
+									{
+										previous = list.getPrevious( nonEmpty );
+
+										// Only if the list item contains a sub list, do nothing but
+										// simply move cursor backward one character.
+										if ( getSubList( li ) )
+										{
+											if ( previous ) {
+												range.moveToElementEditEnd( previous );
+												range.select();
+											}
+
+											evt.cancel();
+										}
+										else
+										{
+											editor.execCommand( 'outdent' );
+											evt.cancel();
+										}
+									}
+								}
+							}
 						}
 						else
 						{
-							var li = range.startContainer.getAscendant( 'li', 1 );
+							var next,
+								nextLine,
+								li = range.startContainer.getAscendant( 'li', 1 );
+
 							if ( li )
 							{
 								walker.range.setEndAt( body, CKEDITOR.POSITION_BEFORE_END );
@@ -1007,11 +1041,46 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								if ( isAtEnd && next )
 								{
 									// Put cursor range there.
-									var nextLine = range.clone();
+									nextLine = range.clone();
 									nextLine.moveToElementEditStart( next );
 
 									joinNextLineToCursor( editor, cursor, nextLine );
 									evt.cancel();
+								}
+							}
+							else
+							{
+								// Handle Del key pressed before the list.
+								walker.range.setEndAt( body, CKEDITOR.POSITION_BEFORE_END );
+								next = walker.next();
+
+								if ( next && next.type == CKEDITOR.NODE_ELEMENT &&
+								     next.getName() in listNodeNames )
+								{
+									// The start <li>
+									next = next.getFirst( nonEmpty );
+
+									// Simply remove the current empty block, move cursor to the
+									// subsequent list.
+									if ( path.block &&
+									     range.checkStartOfBlock() &&
+									     range.checkEndOfBlock() )
+									{
+										path.block.remove();
+										range.moveToElementEditStart( next );
+										range.select();
+										evt.cancel();
+									}
+
+									// Preventing the default (merge behavior), but simply move
+									// the cursor one character forward if subsequent list item
+									// contains sub list.
+									else if ( getSubList( next )  )
+									{
+										range.moveToElementEditStart( next );
+										range.select();
+										evt.cancel();
+									}
 								}
 							}
 						}

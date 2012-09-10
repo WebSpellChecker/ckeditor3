@@ -46,14 +46,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 				selIsLocked && this.getSelection().lock();
 
+				var that = this;
 				// Save snaps after the whole execution completed.
 				// This's a workaround for make DOM modification's happened after
 				// 'insertElement' to be included either, e.g. Form-based dialogs' 'commitContents'
 				// call.
-				CKEDITOR.tools.setTimeout( function()
+				setTimeout( function()
 				   {
-					   this.fire( 'saveSnapshot' );
-				   }, 0, this );
+						 try { that.fire( 'saveSnapshot' ); }
+						 // IEs < 9 may requires a further delay to save snapshot, after pasting. (#9132)
+						 catch ( e ) { setTimeout( function(){ that.fire( 'saveSnapshot' ); }, 200 ); }
+					 }, 0 );
 			}
 		};
 	}

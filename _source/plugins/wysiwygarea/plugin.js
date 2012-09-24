@@ -772,6 +772,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						// Override keystroke behaviors.
 						editor.on( 'key', function( evt )
 						{
+							if ( editor.mode != 'wysiwyg' )
+								return;
+
 							var keyCode = evt.data.keyCode;
 
 							// Backspace OR Delete.

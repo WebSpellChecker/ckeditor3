@@ -797,14 +797,29 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		var bm = cursor.createBookmark();
 
 		// Kill original bogus;
-		var currentPath = new CKEDITOR.dom.elementPath( cursor.startContainer );
-		var currentBlock = currentPath.lastElement.getAscendant( 'li', 1 ) || currentPath.block;
+		var currentPath = new CKEDITOR.dom.elementPath( cursor.startContainer ),
+				pathBlock = currentPath.block,
+				currentBlock = currentPath.lastElement.getAscendant( 'li', 1 ) || pathBlock,
+				nextPath = new CKEDITOR.dom.elementPath( nextCursor.startContainer ),
+				nextLi = nextPath.contains( CKEDITOR.dtd.$listItem ),
+				nextList = nextPath.contains( CKEDITOR.dtd.$list ),
+				last;
 
-		var bogus = currentPath.block.getBogus();
-		bogus && bogus.remove();
+		// Remove bogus node the current block/pseudo block.
+		if ( pathBlock )
+		{
+			var bogus = pathBlock.getBogus();
+			bogus && bogus.remove();
+		}
+		else if ( nextList )
+		{
+			last = nextList.getPrevious( nonEmpty );
+			if ( last && blockBogus( last ) )
+				last.remove();
+		}
 
 		// Kill the tail br in extracted.
-		var last = frag.getLast();
+		last = frag.getLast();
 		if ( last && last.type == CKEDITOR.NODE_ELEMENT && last.is( 'br' ) )
 			last.remove();
 
@@ -814,9 +829,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			frag.insertBefore( nextNode );
 		else
 			cursor.startContainer.append( frag );
-
-		var nextPath = new CKEDITOR.dom.elementPath( nextCursor.startContainer ),
-			nextLi = nextCursor.startContainer.getAscendant( 'li', 1 );
 
 		// Move the sub list nested in the next list item.
 		if ( nextLi )
@@ -923,6 +935,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						var body = editor.document.getBody();
 						var walker = new CKEDITOR.dom.walker( range.clone() );
 						walker.evaluator = function( node ) { return nonEmpty( node ) && !blockBogus( node ); };
+
+						// Backspace/Del behavior at the start/end of table is handled in core.
 						walker.guard = function( node, isOut ) { return !( isOut && node.type == CKEDITOR.NODE_ELEMENT && node.is( 'table' ) ) };
 
 						var cursor = range.clone();
@@ -1079,6 +1093,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									{
 										range.moveToElementEditStart( next );
 										range.select();
+										evt.cancel();
+									}
+									// Merge the first list item with the current line.
+									else
+									{
+										nextLine = range.clone();
+										nextLine.moveToElementEditStart( next );
+										joinNextLineToCursor( editor, cursor, nextLine );
 										evt.cancel();
 									}
 								}

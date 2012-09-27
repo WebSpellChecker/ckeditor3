@@ -263,6 +263,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			editor.on( 'contentDom', function()
 				{
 					var doc = editor.document,
+						outerDoc = CKEDITOR.document,
 						body = doc.getBody(),
 						html = doc.getDocumentElement();
 
@@ -430,7 +431,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 											// Handle drag directions.
 											textRng.setEndPoint(
-												textRng.compareEndPoints( 'StartToStart', rngEnd ) < 0 ?
+												startRng.compareEndPoints( 'StartToStart', rngEnd ) < 0 ?
 												'EndToEnd' :
 												'StartToStart',
 												rngEnd );
@@ -438,6 +439,22 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 											// Update selection with new range.
 											textRng.select();
 										}
+									}
+
+									function removeListeners()
+									{
+										outerDoc.removeListener( 'mouseup', onSelectEnd );
+										html.removeListener( 'mouseup', onSelectEnd );
+									}
+
+									function onSelectEnd()
+									{
+
+										html.removeListener( 'mousemove', onHover );
+										removeListeners();
+
+										// Make it in effect on mouse up. (#9022)
+										textRng.select();
 									}
 
 									evt = evt.data;
@@ -449,17 +466,12 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 										// Start to build the text range.
 										var textRng = body.$.createTextRange();
 										moveRangeToPoint( textRng, evt.$.x, evt.$.y );
+										// Records the dragging start of the above text range.
+										var startRng = textRng.duplicate();
 
 										html.on( 'mousemove', onHover );
-
-										html.on( 'mouseup', function( evt )
-										{
-											html.removeListener( 'mousemove', onHover );
-											evt.removeListener();
-
-											// Make it in effect on mouse up. (#9022)
-											textRng.select();
-										} );
+										outerDoc.on( 'mouseup', onSelectEnd );
+										html.on( 'mouseup', onSelectEnd );
 									}
 								});
 							}
@@ -467,26 +479,36 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 							// It's much simpler for IE > 8, we just need to reselect the reported range.
 							if ( CKEDITOR.env.ie8 )
 							{
-								html.on( 'mousedown', function( evt ) {
-
+								html.on( 'mousedown', function( evt )
+								{
 									if ( evt.data.getTarget().is( 'html' ) )
 									{
-										html.on( 'mouseup', function( evt )
-										{
-											evt.removeListener();
-
-											// The event is not fired when clicking on the scrollbars,
-											// so we can safely check the following to understand
-											// whether the empty space following <body> has been clicked.
-												var sel = CKEDITOR.document.$.selection,
-													range = sel.createRange();
-												// The selection range is reported on host, but actually it should applies to the content doc.
-												if ( sel.type != 'None' && range.parentElement().ownerDocument == doc.$ )
-													range.select();
-										} );
+										// Limit the text selection mouse move inside of editable. (#9715)
+										outerDoc.on( 'mouseup', onSelectEnd );
+										html.on( 'mouseup', onSelectEnd )
 									}
 
 								});
+
+								function removeListeners()
+								{
+									outerDoc.removeListener( 'mouseup', onSelectEnd );
+									html.removeListener( 'mouseup', onSelectEnd );
+								}
+
+								function onSelectEnd()
+								{
+									removeListeners();
+
+									// The event is not fired when clicking on the scrollbars,
+									// so we can safely check the following to understand
+									// whether the empty space following <body> has been clicked.
+										var sel = CKEDITOR.document.$.selection,
+											range = sel.createRange();
+										// The selection range is reported on host, but actually it should applies to the content doc.
+										if ( sel.type != 'None' && range.parentElement().ownerDocument == doc.$ )
+											range.select();
+								}
 							}
 
 						}

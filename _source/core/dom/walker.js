@@ -413,8 +413,14 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	{
 		return function( node )
 		{
-			var isWhitespace = node && ( node.type == CKEDITOR.NODE_TEXT )
-							&& !CKEDITOR.tools.trim( node.getText() );
+			var isWhitespace;
+			if ( node && node.type == CKEDITOR.NODE_TEXT )
+			{
+				// whitespace, as well as the text cursor filler node we used in Webkit. (#9384)
+				isWhitespace = !CKEDITOR.tools.trim( node.getText() ) ||
+					CKEDITOR.env.webkit && node.getText() == '\u200b';
+			}
+
 			return !! ( isReject ^ isWhitespace );
 		};
 	};
@@ -443,6 +449,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				// 2. Empty inline elements, e.g. <b></b> we're checking here
 				// 'offsetHeight' instead of 'offsetWidth' for properly excluding
 				// all sorts of empty paragraph, e.g. <br />.
+				invisible = !node.$.offsetHeight;
+			}
+
+			return !! ( isReject ^ invisible );
 				invisible = !node.$.offsetHeight;
 			}
 

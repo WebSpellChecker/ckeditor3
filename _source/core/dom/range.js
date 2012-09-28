@@ -347,16 +347,17 @@ CKEDITOR.dom.range = function( document )
 
 	// Creates the appropriate node evaluator for the dom walker used inside
 	// check(Start|End)OfBlock.
-	function getCheckStartEndBlockEvalFunction( isStart )
+	function getCheckStartEndBlockEvalFunction()
 	{
 		var skipBogus = false,
+			whitespaces = CKEDITOR.dom.walker.whitespaces(),
 			bookmarkEvaluator = CKEDITOR.dom.walker.bookmark( true ),
 			isBogus = CKEDITOR.dom.walker.bogus();
 
 		return function( node )
 		{
-			// First ignore bookmark nodes.
-			if ( bookmarkEvaluator( node ) )
+			// First skip empty nodes.
+			if ( bookmarkEvaluator( node ) || whitespaces( node ) )
 				return true;
 
 			// Skip the bogus node at the end of block.
@@ -388,16 +389,22 @@ CKEDITOR.dom.range = function( document )
 	// text node and non-empty elements unless it's being bookmark text.
 	function elementBoundaryEval( checkStart )
 	{
+		var whitespaces = CKEDITOR.dom.walker.whitespaces(),
+			bookmark = CKEDITOR.dom.walker.bookmark( 1 );
+
 		return function( node )
 		{
+			// First skip empty nodes.
+			if ( bookmark( node ) || whitespaces( node ) )
+				return true;
+
 			// Tolerant bogus br when checking at the end of block.
 			// Reject any text node unless it's being bookmark
 			// OR it's spaces.
 			// Reject any element unless it's being invisible empty. (#3883)
 			return !checkStart && isBogus( node ) ||
-					( node.type == CKEDITOR.NODE_TEXT ?
-				   	   !CKEDITOR.tools.trim( node.getText() ) || !!node.getParent().data( 'cke-bookmark' )
-				   	   : node.getName() in CKEDITOR.dtd.$removeEmpty );
+						 node.type == CKEDITOR.NODE_ELEMENT &&
+						 node.getName() in CKEDITOR.dtd.$removeEmpty;
 		};
 	}
 
@@ -1841,7 +1848,7 @@ CKEDITOR.dom.range = function( document )
 			walkerRange.setStartAt( path.block || path.blockLimit, CKEDITOR.POSITION_AFTER_START );
 
 			var walker = new CKEDITOR.dom.walker( walkerRange );
-			walker.evaluator = getCheckStartEndBlockEvalFunction( true );
+			walker.evaluator = getCheckStartEndBlockEvalFunction();
 
 			return walker.checkBackward();
 		},

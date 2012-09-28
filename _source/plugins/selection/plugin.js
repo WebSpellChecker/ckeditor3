@@ -75,7 +75,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		function isTextCt( node, isAtEnd )
 		{
 			if ( !node || node.type == CKEDITOR.NODE_TEXT )
-				return;
+				return false;
 
 			var testRng = range.clone();
 			return testRng[ 'moveToElementEdit' + ( isAtEnd ? 'End' : 'Start' ) ]( node );
@@ -494,7 +494,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									{
 										// Limit the text selection mouse move inside of editable. (#9715)
 										outerDoc.on( 'mouseup', onSelectEnd );
-										html.on( 'mouseup', onSelectEnd )
+										html.on( 'mouseup', onSelectEnd );
 									}
 
 								});
@@ -1770,7 +1770,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	};
 
 	var notWhitespaces = CKEDITOR.dom.walker.whitespaces( true ),
-			isVisible = CKEDITOR.dom.walker.invisible( 1 );
+			isVisible = CKEDITOR.dom.walker.invisible( 1 ),
 			fillerTextRegex = /\ufeff|\u00a0/,
 			nonCells = { table:1,tbody:1,tr:1 };
 

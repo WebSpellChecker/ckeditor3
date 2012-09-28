@@ -937,7 +937,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						walker.evaluator = function( node ) { return nonEmpty( node ) && !blockBogus( node ); };
 
 						// Backspace/Del behavior at the start/end of table is handled in core.
-						walker.guard = function( node, isOut ) { return !( isOut && node.type == CKEDITOR.NODE_ELEMENT && node.is( 'table' ) ) };
+						walker.guard = function( node, isOut ) { return !( isOut && node.type == CKEDITOR.NODE_ELEMENT && node.is( 'table' ) ); };
 
 						var cursor = range.clone();
 
@@ -1021,9 +1021,8 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 						}
 						else
 						{
-							var next,
-								nextLine,
-								li = range.startContainer.getAscendant( 'li', 1 );
+							var next, nextLine;
+							li = range.startContainer.getAscendant( 'li', 1 );
 
 							if ( li )
 							{
@@ -1035,7 +1034,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 								// Indicate cursor at the visual end of an list item.
 								var isAtEnd = 0;
 
-								var next = walker.next();
+								next = walker.next();
 
 								// When list item contains a sub list.
 								if ( next && next.type == CKEDITOR.NODE_ELEMENT &&

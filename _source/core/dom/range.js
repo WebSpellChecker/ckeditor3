@@ -1870,15 +1870,53 @@ CKEDITOR.dom.range = function( document )
 			walkerRange.setEndAt( path.block || path.blockLimit, CKEDITOR.POSITION_BEFORE_END );
 
 			var walker = new CKEDITOR.dom.walker( walkerRange );
-			walker.evaluator = getCheckStartEndBlockEvalFunction( false );
+			walker.evaluator = getCheckStartEndBlockEvalFunction();
 
 			return walker.checkForward();
 		},
 
 		/**
-		 * Check if elements at which the range boundaries anchor are read-only,
-		 * with respect to "contenteditable" attribute.
+		 * Traverse with {@link CKEDITOR.dom.walker} to retrieve the previous element before the range start.
+		 * @param {Function} evaluator Function used as the walker's evaluator.
+		 * @param {Function} [guard] Function used as the walker's guard.
+		 * @param {CKEDITOR.dom.element} [boundary] A range ancestor element in which the traversal is limited,
+		 * default to the root editable if not defined.
+		 *
+		 * @return {CKEDITOR.dom.element|null} The returned node from the traversal.
 		 */
+		getPreviousNode : function( evaluator, guard, boundary ) {
+
+			var walkerRange = this.clone();
+			walkerRange.collapse( 1 );
+			walkerRange.setStartAt( boundary || this.document.getBody(), CKEDITOR.POSITION_AFTER_START );
+
+			var walker = new CKEDITOR.dom.walker( walkerRange );
+			walker.evaluator = evaluator;
+			walker.guard = guard;
+			return walker.previous();
+		},
+
+		/**
+		 * Traverse with {@link CKEDITOR.dom.walker} to retrieve the next element before the range start.
+		 * @param {Function} evaluator Function used as the walker's evaluator.
+		 * @param {Function} [guard] Function used as the walker's guard.
+		 * @param {CKEDITOR.dom.element} [boundary] A range ancestor element in which the traversal is limited,
+		 * default to the root editable if not defined.
+		 *
+		 * @return {CKEDITOR.dom.element|null} The returned node from the traversal.
+		 */
+		getNextNode: function( evaluator, guard, boundary )
+		{
+			var walkerRange = this.clone();
+			walkerRange.collapse();
+			walkerRange.setEndAt( boundary || this.document.getBody(), CKEDITOR.POSITION_BEFORE_END );
+
+			var walker = new CKEDITOR.dom.walker( walkerRange );
+			walker.evaluator = evaluator;
+			walker.guard = guard;
+			return walker.next();
+		},
+
 		checkReadOnly : ( function()
 		{
 			function checkNodesEditable( node, anotherEnd )

@@ -72,23 +72,32 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	function rangeRequiresFix( range )
 	{
-		function isInlineCt( node )
+		function isTextCt( node, isAtEnd )
 		{
-			return node && node.type == CKEDITOR.NODE_ELEMENT
-					&& node.getName() in CKEDITOR.dtd.$removeEmpty;
+			if ( !node || node.type == CKEDITOR.NODE_TEXT )
+				return;
+
+			var testRng = range.clone();
+			return testRng[ 'moveToElementEdit' + ( isAtEnd ? 'End' : 'Start' ) ]( node );
 		}
 
-		var start = range.startContainer,
-			offset = range.startOffset;
+		var ct = range.startContainer;
 
-		if ( start.type == CKEDITOR.NODE_TEXT )
-			return false;
+		var previous = range.getPreviousNode( isVisible, null, ct ),
+			next = range.getNextNode( isVisible, null, ct );
 
-		// 1. Empty inline element. <span>^</span>
-		// 2. Empty block. <p>^</p> (#7222)
-		// 3. Adjoin to inline element. <p><strong>text</strong>^</p>
-		return !CKEDITOR.tools.trim( start.getHtml() ) ? isInlineCt( start ) || start.isBlockBoundary()
-				: isInlineCt( start.getChild( offset - 1 ) ) || isInlineCt( start.getChild( offset ) );
+		// Any adjacent text container may absorb the cursor, e.g.
+		// <p><strong>text</strong>^foo</p>
+		// <p>foo^<strong>text</strong></p>
+		// <div>^<p>foo</p></div>
+		if ( isTextCt( previous ) || isTextCt( next, 1 ) )
+			return true;
+
+		// Empty block/inline element is also affected. <span>^</span>, <p>^</p> (#7222)
+		if ( !( previous || next ) && !( ct.isBlockBoundary() && ct.getBogus() ) )
+			return true;
+
+		return false;
 	}
 
 	var selectAllCmd =
@@ -1759,11 +1768,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			start.scrollIntoView();
 		}
 	};
-})();
 
-( function()
-{
 	var notWhitespaces = CKEDITOR.dom.walker.whitespaces( true ),
+			isVisible = CKEDITOR.dom.walker.invisible( 1 );
 			fillerTextRegex = /\ufeff|\u00a0/,
 			nonCells = { table:1,tbody:1,tr:1 };
 

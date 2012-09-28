@@ -453,10 +453,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			}
 
 			return !! ( isReject ^ invisible );
-				invisible = !node.$.offsetHeight;
-			}
-
-			return !! ( isReject ^ invisible );
 		};
 	};
 

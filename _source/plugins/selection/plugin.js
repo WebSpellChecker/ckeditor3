@@ -469,8 +469,10 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 									evt = evt.data;
 
 									// We're sure that the click happens at the region
-									// below body, but not on scrollbar.
-									if ( evt.getTarget().is( 'html' )  )
+									// outside body, but not on scrollbar.
+									if ( evt.getTarget().is( 'html' ) &&
+											 evt.$.x < html.$.clientWidth &&
+											 evt.$.y < html.$.clientHeight )
 									{
 										// Start to build the text range.
 										var textRng = body.$.createTextRange();

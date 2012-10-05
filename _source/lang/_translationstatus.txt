@@ -37,6 +37,7 @@ ja.js      Found: 495 Missing: 83
 ka.js      Found: 570 Missing: 8
 km.js      Found: 286 Missing: 292
 ko.js      Found: 304 Missing: 274
+ku.js      Found: 578 Missing: 0
 lt.js      Found: 577 Missing: 1
 lv.js      Found: 294 Missing: 284
 mk.js      Found: 0 Missing: 578

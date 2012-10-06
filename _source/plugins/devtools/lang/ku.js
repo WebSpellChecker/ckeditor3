@@ -9,7 +9,7 @@ CKEDITOR.plugins.setLang( 'devtools', 'ku',
 	{
 		title		: 'زانیاری توخم',
 		dialogName	: 'ناوی په‌نجه‌ره‌ی دیالۆگ',
-		tabName		: 'ناوی بازده‌ر (تاب)',
+		tabName		: 'ناوی بازده‌ر تاب',
 		elementId	: 'ناسنامه‌ی توخم',
 		elementType	: 'جۆری توخم'
 	}

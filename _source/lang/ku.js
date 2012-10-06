@@ -3,7 +3,9 @@ Copyright (c) 2003-2012, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
- // MISSING
+/**
+* @fileOverview 
+*/
 
 /**#@+
    @type String
@@ -710,7 +712,7 @@ CKEDITOR.lang['ku'] =
 		dic_restore		: 'گه‌ڕاندنه‌وه',
 		dic_delete		: 'سڕینه‌وه',
 		dic_rename		: 'گۆڕینی ناو',
-		dic_info		: 'Brukerordboken lagres først i en informasjonskapsel på din maskin, men det er en begrensning på hvor mye som kan lagres her. Når ordboken blir for stor til å lagres i en informasjonskapsel, vil vi i stedet lagre ordboken på vår server. For å lagre din personlige ordbok på vår server, burde du velge et navn for ordboken din. Hvis du allerede har lagret en ordbok, vennligst skriv inn ordbokens navn og klikk på Gjenopprett-knappen.',
+		dic_info		: 'له‌بنچینه‌دا فه‌رهه‌نگی به‌کارهێنه‌ر کۆگاکردن کراوه‌ له‌ شه‌کرۆکه Cookie, هه‌رچۆنێك بێت شه‌کۆرکه سنووردار کراوه له‌ قه‌باره کۆگاکردن.کاتێك فه‌رهه‌نگی به‌کارهێنه‌ر گه‌یشته‌ ئه‌م خاڵه‌ی که‌ناتوانرێت زیاتر کۆگاکردن بکرێت له‌ شه‌کرۆکه‌، ئه‌وسا فه‌رهه‌نگه‌که‌ پێویسته‌ کۆگابکرێت له‌ ڕاژه‌که‌ی ئێمه‌.‌ بۆ کۆگاکردنی زانیاری تایبه‌تی فه‌رهه‌نگه‌که‌ له‌ ڕاژه‌که‌ی ئێمه, پێویسته‌ ناوێك هه‌ڵبژێریت بۆ فه‌رهه‌نگه‌که‌. گه‌ر تۆ فه‌رهه‌نگێکی کۆگاکراوت هه‌یه‌, تکایه‌ ناوی فه‌رهه‌نگه‌که‌ بنووسه‌ وه‌ کلیکی دوگمه‌ی گه‌ڕاندنه‌وه‌ بکه.',
 
 		aboutTab		: 'ده‌رباره‌ی'
 	},
@@ -793,19 +795,19 @@ CKEDITOR.lang['ku'] =
 		charsetTR : 'تورکیا',
 		charsetUN : 'Unicode (UTF-8)',
 		charsetWE : 'ڕۆژئاوای ئه‌وروپا',
-		docType : 'سه‌رپه‌ڕه‌ی جۆری به‌ڵگه‌نامه',
-		docTypeOther : 'سه‌رپه‌ڕه‌ی جۆری به‌ڵگه‌نامه‌ی تر',
+		docType : 'سه‌رپه‌ڕه‌ی جۆری په‌ڕه',
+		docTypeOther : 'سه‌رپه‌ڕه‌ی جۆری په‌ڕه‌ی تر',
 		xhtmlDec : 'به‌یاننامه‌کانی XHTML له‌گه‌ڵدابێت',
 		bgColor : 'ڕه‌نگی پاشبنه‌ما',
-		bgImage : 'به‌سته‌ری وێنه‌ی پاشبنه‌ما',
-		bgFixed : 'کردنه‌وه‌ی پاشبنه‌مای وێنه',
+		bgImage : 'ناونیشانی به‌سته‌ری وێنه‌ی پاشبنه‌ما',
+		bgFixed : 'بێ هاتووچوپێکردنی (چه‌سپاو) پاشبنه‌مای وێنه',
 		txtColor : 'ڕه‌نگی ده‌ق',
 		margin : 'ته‌نیشت په‌ڕه‌',
 		marginTop : 'سه‌ره‌وه',
 		marginLeft : 'چه‌پ',
 		marginRight : 'ڕاست',
 		marginBottom : 'ژێره‌وه',
-		metaKeywords : 'ووشه‌ سه‌ره‌کیه‌کان(به‌ کۆما لێکیان جیابکه‌وه)',
+		metaKeywords : 'به‌ڵگه‌نامه‌ی وشه‌ی کاریگه‌ر(به‌ کۆما لێکیان جیابکه‌وه)',
 		metaDescription : 'پێناسه‌ی لاپه‌ڕه',
 		metaAuthor : 'نووسه‌ر',
 		metaCopyright : 'مافی بڵاوکردنه‌وه‌ی',

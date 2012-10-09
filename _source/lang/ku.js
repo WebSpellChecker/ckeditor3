@@ -38,9 +38,9 @@ CKEDITOR.lang['ku'] =
 	editor		: 'سه‌رنووسه‌ی ده‌قی به‌پیت',
 
 	// Toolbar buttons without dialogs.
-	source			: 'سه‌رچاوه',
-	newPage			: 'په‌ڕه‌کی نوێ',
-	save			: 'پاشکه‌وتکردن',
+	source			: 'سەرچاوه',
+	newPage			: 'پەڕەیەکی نوێ',
+	save			: 'پاشکەوتکردن',
 	preview			: 'پێشبینین',
 	cut				: 'بڕین',
 	copy			: 'له‌به‌رگرنته‌وه',
@@ -185,7 +185,7 @@ CKEDITOR.lang['ku'] =
 		advisoryTitle		: 'ڕاوێژکاری سه‌ردێڕ',
 		advisoryContentType	: 'جۆری ناوه‌ڕۆکی ڕاویژکار',
 		cssClasses		: 'شێوازی چینی په‌ڕه‌',
-		charset			: 'به‌سته‌ری سه‌رچاوه‌ی نووسه',
+		charset			: 'بەستەری سەرچاوەی نووسه',
 		styles			: 'شێواز',
 		rel			: 'په‌یوه‌ندی (rel)',
 		selectAnchor		: 'هه‌ڵبژاردنی له‌نگه‌رێك',

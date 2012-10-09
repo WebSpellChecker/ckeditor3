@@ -341,7 +341,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	isNotWhitespace = CKEDITOR.dom.walker.whitespaces( true );
 
 	// Gecko need a key event to 'wake up' the editing
-	// ability when document is empty.(#3864, #5781)
+	// ability when document is empty.(#3864)
 	function activateEditing( editor )
 	{
 		var win = editor.window,
@@ -397,8 +397,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		if ( CKEDITOR.env.gecko )
 		{
-			activateEditing( editor );
-
 			// Ensure bogus br could help to move cursor (out of styles) to the end of block. (#7041)
 			var pathBlock = path.block || path.blockLimit,
 				lastNode = pathBlock && pathBlock.getLast( isNotEmpty );

@@ -94,7 +94,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			return true;
 
 		// Empty block/inline element is also affected. <span>^</span>, <p>^</p> (#7222)
-		if ( !( previous || next ) && !( ct.isBlockBoundary() && ct.getBogus() ) )
+		if ( !( previous || next ) && !( ct.type == CKEDITOR.NODE_ELEMENT && ct.isBlockBoundary() && ct.getBogus() ) )
 			return true;
 
 		return false;

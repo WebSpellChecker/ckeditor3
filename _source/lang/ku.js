@@ -34,124 +34,124 @@ CKEDITOR.lang['ku'] =
 	editorHelp : 'کلیکی ALT له‌گه‌ڵ 0 بکه‌ بۆ یارمه‌تی',
 
 	// ARIA descriptions.
-	toolbars	: 'تووڵامرازی ده‌سکاریکه‌ر',
-	editor		: 'سه‌رنووسه‌ی ده‌قی به‌پیت',
+	toolbars	: 'تووڵاەرازی دەسکاریکەر',
+	editor		: 'سەرنووسەی دەقی بەپیت',
 
 	// Toolbar buttons without dialogs.
-	source			: 'سەرچاوه',
+	source			: 'سەرچاوە',
 	newPage			: 'پەڕەیەکی نوێ',
 	save			: 'پاشکەوتکردن',
 	preview			: 'پێشبینین',
 	cut				: 'بڕین',
-	copy			: 'له‌به‌رگرنته‌وه',
+	copy			: 'لەبەرگرنتەوه',
 	paste			: 'لکاندن',
 	print			: 'چاپکردن',
 	underline		: 'ژێرهێڵ',
-	bold			: 'قه‌ڵه‌و',
+	bold			: 'قەڵەو',
 	italic			: 'لار',
-	selectAll		: 'نیشانکردنی هه‌مووی',
-	removeFormat	: 'لابردنی داڕشته‌که',
+	selectAll		: 'نیشانکردنی هەمووی',
+	removeFormat	: 'لابردنی داڕشتەکە',
 	strike			: 'لێدان',
 	subscript		: 'ژێرنووس',
-	superscript		: 'سه‌رنووس',
+	superscript		: 'سەرنووس',
 	horizontalrule	: 'دانانی هێلی ئاسۆیی',
-	pagebreak		: 'دانانی پشووی په‌ڕه‌ بۆ چاپکردن',
-	pagebreakAlt		: 'پشووی په‌ڕه',
-	unlink			: 'لابردنی به‌سته‌ر',
-	undo			: 'پووچکردنه‌وه',
-	redo			: 'هه‌ڵگه‌ڕاندنه‌وه',
+	pagebreak		: 'دانانی پشووی پەڕە بۆ چاپکردن',
+	pagebreakAlt		: 'پشووی پەڕە',
+	unlink			: 'لابردنی بەستەر',
+	undo			: 'پووچکردنەوه',
+	redo			: 'هەڵگەڕاندنەوه',
 
 	// Common messages and labels.
 	common :
 	{
-		browseServer	: 'هێنانی ڕاژه',
-		url				: 'ناونیشانی به‌سته‌ر',
+		browseServer	: 'هێنانی ڕاژە',
+		url				: 'ناونیشانی بەستەر',
 		protocol		: 'پڕۆتۆکۆڵ',
 		upload			: 'بارکردن',
-		uploadSubmit	: 'ناردنی بۆ ڕاژه',
-		image			: 'وێنه',
+		uploadSubmit	: 'ناردنی بۆ ڕاژە',
+		image			: 'وێنە',
 		flash			: 'فلاش',
-		form			: 'داڕشته',
-		checkbox		: 'خانه‌ی نیشانکردن',
-		radio			: 'جێگره‌وه‌ی دوگمه',
-		textField		: 'خانه‌ی ده‌ق',
-		textarea		: 'ڕووبه‌ری ده‌ق',
-		hiddenField		: 'شاردنه‌وی خانه',
-		button			: 'دوگمه',
-		select			: 'هه‌ڵبژارده‌ی خانه',
-		imageButton		: 'دوگمه‌ی وێنه',
-		notSet			: '<هیچ دانه‌دراوه>',
-		id				: 'ناسنامه',
+		form			: 'داڕشتە',
+		checkbox		: 'خانەی نیشانکردن',
+		radio			: 'جێگرەوەی دوگمە',
+		textField		: 'خانەی دەق',
+		textarea		: 'ڕووبەری دەق',
+		hiddenField		: 'شاردنەوی خانە',
+		button			: 'دوگمە',
+		select			: 'هەڵبژاردەی خانە',
+		imageButton		: 'دوگمەی وێنە',
+		notSet			: '<هیچ دانەدراوە>',
+		id				: 'ناسنامە',
 		name			: 'ناو',
-		langDir			: 'ئاراسته‌ی زمان',
-		langDirLtr		: 'چه‌پ بۆ ڕاست (LTR)',
-		langDirRtl		: 'ڕاست بۆ چه‌پ (RTL)',
+		langDir			: 'ئاراستەی زمان',
+		langDirLtr		: 'چەپ بۆ ڕاست (LTR)',
+		langDirRtl		: 'ڕاست بۆ چەپ (RTL)',
 		langCode		: 'هێمای زمان',
-		longDescr		: 'پێناسه‌ی درێژی به‌سته‌ر',
-		cssClass		: 'شێوازی چینی په‌ڕه',
-		advisoryTitle	: 'ڕاوێژکاری سه‌ردێڕ',
+		longDescr		: 'پێناسەی درێژی بەستەر',
+		cssClass		: 'شێوازی چینی په‌ڕە',
+		advisoryTitle	: 'ڕاوێژکاری سەردێڕ',
 		cssStyle		: 'شێواز',
-		ok				: 'باشه',
-		cancel			: 'هه‌ڵوه‌شاندن',
+		ok				: 'باشە',
+		cancel			: 'هەڵوەشاندن',
 		close			: 'داخستن',
 		preview			: 'پێشبینین',
 		generalTab		: 'گشتی',
 		advancedTab		: 'په‌ره‌سه‌ندوو',
-		validateNumberFailed : 'ئه‌م نرخه‌ ژماره‌ نیه، تکایه‌ نرخێکی ژماره‌ بنووسه.',
-		confirmNewPage	: 'سه‌رجه‌م گۆڕانکاریکه‌ان و پێکهاته‌کانی ناوه‌ووه‌ له‌ده‌ست ده‌ده‌ی گه‌ر بێتوو پاشکه‌وتی نه‌که‌ی یه‌که‌م جار، تۆ هه‌ر دڵنیایی له‌کردنه‌وه‌ی په‌نجه‌ره‌کی نوێ؟',
-		confirmCancel	: 'هه‌ندێك هه‌ڵبژارده‌ گۆڕدراوه. تۆ دڵنیایی له‌داخستنی ئه‌م دیالۆگه؟',
-		options			: 'هه‌ڵبژارده',
+		validateNumberFailed : 'ئەم نرخە ژمارە نیه، تکایە نرخێکی ژمارە بنووسە.',
+		confirmNewPage	: 'سەرجەم گۆڕانکاریەکان و پێکهاتەکانی ناوەووە لەدەست دەدەی گەر بێتوو پاشکەوتی نەکەی یەکەم جار، تۆ هەر دڵنیایی لەکردنەوەی پەنجەرەکی نوێ؟',
+		confirmCancel	: 'هەندێك هەڵبژاردە گۆڕدراوە. تۆ دڵنیایی له‌داخستنی ئەم دیالۆگە؟',
+		options			: 'هەڵبژاردە',
 		target			: 'ئامانج',
-		targetNew		: 'په‌نجه‌ره‌یه‌کی نوێ (_blank)',
-		targetTop		: 'لووتکه‌ی په‌نجه‌ره (_top)',
-		targetSelf		: 'له‌هه‌مان په‌نجه‌ره (_self)',
-		targetParent	: 'په‌نجه‌ره‌ی باوان (_parent)',
-		langDirLTR		: 'چه‌پ بۆ ڕاست (LTR)',
-		langDirRTL		: 'ڕاست بۆ چه‌پ (RTL)',
+		targetNew		: 'پەنجەرەیه‌کی نوێ (_blank)',
+		targetTop		: 'لووتکەی پەنجەرە (_top)',
+		targetSelf		: 'لەهەمان پەنجەرە (_self)',
+		targetParent	: 'پەنجەرەی باوان (_parent)',
+		langDirLTR		: 'چەپ بۆ ڕاست (LTR)',
+		langDirRTL		: 'ڕاست بۆ چەپ (RTL)',
 		styles			: 'شێواز',
-		cssClasses		: 'شێوازی چینی په‌ڕه',
+		cssClasses		: 'شێوازی چینی پەڕە',
 		width			: 'پانی',
 		height			: 'درێژی',
-		align			: 'ڕێککه‌ره‌وه',
-		alignLeft		: 'چه‌پ',
+		align			: 'ڕێککەرەوە',
+		alignLeft		: 'چەپ',
 		alignRight		: 'ڕاست',
-		alignCenter		: 'ناوه‌ڕاست',
-		alignTop		: 'سه‌ره‌وه‌',
-		alignMiddle		: 'ناوه‌ند',
-		alignBottom		: 'ژێره‌وه',
+		alignCenter		: 'ناوەڕاست',
+		alignTop		: 'سەرەوە',
+		alignMiddle		: 'ناوەند',
+		alignBottom		: 'ژێرەوە',
 		invalidValue	: 'نرخێکی نادرووست.',
-		invalidHeight	: 'درێژی ده‌بێت ژماره‌ بێت.',
-		invalidWidth	: 'پانی ده‌بێت ژماره‌ بێت.',
-		invalidCssLength	: 'ئه‌م نرخه‌ی دراوه‌ بۆ خانه‌ی "%1" ده‌بێت ژماره‌کی درووست بێت یان بێ ناونیشانی ئامرازی (px, %, in, cm, mm, em, ex, pt, یان pc).',
-		invalidHtmlLength	: 'ئه‌م نرخه‌ی دراوه‌ بۆ خانه‌ی "%1" ده‌بێت ژماره‌کی درووست بێت یان بێ ناونیشانی ئامرازی HTML (px یان %).',
+		invalidHeight	: 'درێژی دەبێت ژمارە بێت.',
+		invalidWidth	: 'پانی دەبێت ژمارە بێت.',
+		invalidCssLength	: 'ئەم نرخەی دراوە بۆ خانەی "%1" دەبێت ژمارەکی درووست بێت یان بێ ناونیشانی ئامرازی (px, %, in, cm, mm, em, ex, pt, یان pc).',
+		invalidHtmlLength	: 'ئەم نرخەی دراوە بۆ خانەی "%1" دەبێت ژمارەکی درووست بێت یان بێ ناونیشانی ئامرازی HTML (px یان %).',
 		invalidInlineStyle	: 'دانه‌ی نرخی شێوازی ناوهێڵ ده‌بێت پێکهاتبێت له‌یه‌ك یان زیاتری داڕشته‌ "ناو : نرخ", جیاکردنه‌وه‌ی به‌فاریزه‌وخاڵ',
 		cssLengthTooltip	: 'ژماره‌یه‌ك بنووسه‌ بۆ نرخی piksel یان ئامرازێکی درووستی CSS (px, %, in, cm, mm, em, ex, pt, یان pc).',
 
 		// Put the voice-only part of the label in the span.
-		unavailable		: '%1<span class="cke_accessibility">, ئاماده‌ نیه</span>'
+		unavailable		: '%1<span class="cke_accessibility">, ئامادە نیە</span>'
 	},
 
 	contextmenu :
 	{
-		options : 'هه‌ڵبژارده‌ی لیسته‌ی کلیکی ده‌ستی ڕاست'
+		options : 'هەڵبژاردەی لیستەی کلیکی دەستی ڕاست'
 	},
 
 	// Special char dialog.
 	specialChar		:
 	{
-		toolbar		: 'دانانه‌ی نووسه‌ی تایبه‌تی',
-		title		: 'هه‌ڵبژاردنی نووسه‌ی تایبه‌تی',
-		options : 'هه‌ڵبژارده‌ی نووسه‌ی تایبه‌تی'
+		toolbar		: 'دانانەی نووسەی تایبەتی',
+		title		: 'هەڵبژاردنی نووسەی تایبەتی',
+		options : 'هەڵبژاردەی نووسەی تایبەتی'
 	},
 
 	// Link dialog.
 	link :
 	{
-		toolbar		: 'دانان/ڕێکخستنی به‌سته‌ر',
+		toolbar		: 'دانان/ڕێکخستنی بەستەر',
 		other 		: '<هیتر>',
-		menu		: 'چاکسازی به‌سته‌ر',
-		title		: 'به‌سته‌ر',
-		info		: 'زانیاری به‌سته‌ر',
+		menu		: 'چاکسازی بەستەر',
+		title		: 'بەستەر',
+		info		: 'زانیاری بەستەر',
 		target		: 'ئامانج',
 		upload		: 'بارکردن',
 		advanced	: 'پێشکه‌وتوو',
@@ -512,10 +512,10 @@ CKEDITOR.lang['ku'] =
 		eleTitle : '%1 توخم'
 	},
 
-	numberedlist	: 'دانان/لابردنی ژماره‌ی لیست',
+	numberedlist	: 'دانان/لابردنی ژمارەی لیست',
 	bulletedlist	: 'دانان/لابردنی خاڵی لیست',
 	indent			: 'زیادکردنی بۆشایی',
-	outdent			: 'که‌مکردنه‌وه‌ی بۆشایی',
+	outdent			: 'کەمکردنەوەی بۆشایی',
 
 	justify :
 	{
@@ -525,13 +525,13 @@ CKEDITOR.lang['ku'] =
 		block	: 'هاوستوونی'
 	},
 
-	blockquote : 'به‌ربه‌ستکردنی وته‌ی وه‌رگیراو',
+	blockquote : 'بەربەستکردنی وتەی وەرگیراو',
 
 	clipboard :
 	{
 		title		: 'لکاندن',
-		cutError	: 'پارێزی وێبگه‌ڕه‌که‌ت ڕێگه‌نادات به سه‌رنووسه‌که‌ له‌بڕینی خۆکار. تکایه‌ له‌بری ئه‌مه‌ ئه‌م فه‌رمانه‌ به‌کاربهێنه‌ به‌داگرتنی کلیلی (Ctrl/Cmd+X).',
-		copyError	: 'پارێزی وێبگه‌ڕه‌که‌ت ڕێگه‌نادات به سه‌رنووسه‌که‌ له‌ لکاندنی ده‌قی خۆکار. تکایه‌ له‌بری ئه‌مه‌ ئه‌م فه‌رمانه‌ به‌کاربهێنه‌ به‌داگرتنی کلیلی (Ctrl/Cmd+C).',
+		cutError	: 'پارێزی وێبگەڕەکەت ڕێگه‌نادات بە سەرنووسەکە له‌بڕینی خۆکار. تکایە لەبری ئەمە ئەم فەرمانە بەکاربهێنە بەداگرتنی کلیلی (Ctrl/Cmd+X).',
+		copyError	: 'پارێزی وێبگەڕەکەت ڕێگه‌نادات بەسەرنووسەکە لە لکاندنی دەقی خۆکار. تکایە لەبری ئەمە ئەم فەرمانە بەکاربهێنە بەداگرتنی کلیلی (Ctrl/Cmd+C).',
 		pasteMsg	: 'تکایه‌ بیلکێنه‌ له‌ناوه‌وه‌ی ئه‌م سنوقه له‌ڕێی ته‌خته‌کلیله‌که‌ت به‌باکارهێنانی کلیلی (<STRONG>Ctrl/Cmd+V</STRONG>) دووای کلیکی باشه‌ بکه.',
 		securityMsg	: 'به‌هۆی شێوه‌پێدانی پارێزی وێبگه‌ڕه‌که‌ت، سه‌رنووسه‌که‌ ناتوانێت ده‌ستبگه‌یه‌نێت به‌هه‌ڵگیراوه‌که ڕاسته‌وخۆ. بۆیه‌ پێویسته دووباره‌ بیلکێنیت له‌م په‌نجه‌ره‌یه‌.',
 		pasteArea	: 'ناوچه‌ی لکاندن'
@@ -561,7 +561,7 @@ CKEDITOR.lang['ku'] =
 		emptyListMsg	: '(هیچ ڕووکارێك دیارینه‌کراوه)'
 	},
 
-	showBlocks : 'نیشاندانی به‌ربه‌سته‌کان',
+	showBlocks : 'نیشاندانی بەربەستەکان',
 
 	stylesCombo :
 	{
@@ -727,8 +727,8 @@ CKEDITOR.lang['ku'] =
 		copy		: 'مافی له‌به‌رگرتنه‌وه‌ی &copy; $1. گشتی پارێزراوه.'
 	},
 
-	maximize : 'ئه‌وپه‌ڕی گه‌وره‌یی',
-	minimize : 'ئه‌وپه‌ڕی بچووکی',
+	maximize : 'ئەوپه‌ڕی گەورەیی',
+	minimize : 'ئەوپەڕی بچووکی',
 
 	fakeobjects :
 	{
@@ -739,7 +739,7 @@ CKEDITOR.lang['ku'] =
 		unknown		: 'به‌رکارێکی نه‌ناسراو'
 	},
 
-	resize : 'ڕابکێشه‌ بۆ گۆڕینی قه‌باره‌که‌ی',
+	resize : 'ڕابکێشە بۆ گۆڕینی قەبارەکەی',
 
 	colordialog :
 	{
@@ -750,7 +750,7 @@ CKEDITOR.lang['ku'] =
 		clear		: 'پاککردنه‌وه'
 	},
 
-	toolbarCollapse	: 'شاردنه‌وی هێڵی تووڵامراز',
+	toolbarCollapse	: 'شاردنەوی هێڵی تووڵامراز',
 	toolbarExpand	: 'نیشاندانی هێڵی تووڵامراز',
 
 	toolbarGroups :

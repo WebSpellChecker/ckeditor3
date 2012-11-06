@@ -39,7 +39,7 @@ km.js      Found: 286 Missing: 292
 ko.js      Found: 304 Missing: 274
 ku.js      Found: 578 Missing: 0
 lt.js      Found: 577 Missing: 1
-lv.js      Found: 294 Missing: 284
+lv.js      Found: 578 Missing: 0
 mk.js      Found: 0 Missing: 578
 mn.js      Found: 389 Missing: 189
 ms.js      Found: 276 Missing: 302

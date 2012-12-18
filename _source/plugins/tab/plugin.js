@@ -13,6 +13,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	var blurCommand =
 		{
+			readOnly : 1,
 			exec : function( editor )
 			{
 				editor.container.focusNext( true, editor.tabIndex );
@@ -21,6 +22,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 	var blurBackCommand =
 		{
+			readOnly : 1,
 			exec : function( editor )
 			{
 				editor.container.focusPrevious( true, editor.tabIndex );

@@ -697,7 +697,7 @@ CKEDITOR.lang['ku'] =
 		ignoreAll		: 'پشتگوێخستنی هه‌مووی',
 		addWord			: 'زیادکردنی ووشه',
 		emptyDic		: 'ناوی فه‌رهه‌نگ نابێت خاڵی بێت.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'هه‌ڵبژارده',
 		allCaps			: 'پشتگوێخستنی وشانه‌ی پێکهاتووه له‌پیتی گه‌وره‌',
 		ignoreDomainNames : 'پشتگوێخستنی دۆمه‌ین',

@@ -698,7 +698,7 @@ CKEDITOR.lang['af'] =
 		ignoreAll		: 'Ignoreer alles',
 		addWord			: 'Voeg woord by',
 		emptyDic		: 'Woordeboeknaam mag nie leeg wees nie.',
-
+		noSuggestions	: 'Geen voorstel',
 		optionsTab		: 'Opsies',
 		allCaps			: 'Ignoreer woorde in hoofletters',
 		ignoreDomainNames : 'Ignoreer domeinname',

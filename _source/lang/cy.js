@@ -698,7 +698,7 @@ CKEDITOR.lang['cy'] =
 		ignoreAll		: 'Anwybyddu pob',
 		addWord			: 'Ychwanegu Gair',
 		emptyDic		: 'Ni ddylai enw\'r geiriadur fod yn wag.',
-
+		noSuggestions	: 'Dim awgrymiadau',
 		optionsTab		: 'Opsiynau',
 		allCaps			: 'Anwybyddu Geiriau Nodau Uwch i Gyd',
 		ignoreDomainNames : 'Anwybyddu Enwau Parth',

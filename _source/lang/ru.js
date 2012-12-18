@@ -698,7 +698,7 @@ CKEDITOR.lang['ru'] =
 		ignoreAll		: 'Пропустить всё',
 		addWord			: 'Добавить слово',
 		emptyDic		: 'Вы должны указать название словаря.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'Параметры',
 		allCaps			: 'Игнорировать слова из заглавных букв',
 		ignoreDomainNames : 'Игнорировать доменные имена',

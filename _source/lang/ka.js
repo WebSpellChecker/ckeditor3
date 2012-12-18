@@ -698,7 +698,7 @@ CKEDITOR.lang['ka'] =
 		ignoreAll		: 'ყველას უგულებელყოფა',
 		addWord			: 'სიტყვის დამატება',
 		emptyDic		: 'ლექსიკონის სიტყვა არ უნდა იყოს ცარიელი.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'პარამეტრები',
 		allCaps			: 'დიდი ასოებით დაწერილი სიტყვების უგულებელყოფა',
 		ignoreDomainNames : 'დომენური სახელების უგულებელყოფა',

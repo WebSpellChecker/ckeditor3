@@ -698,7 +698,7 @@ CKEDITOR.lang['et'] =
 		ignoreAll		: 'Eira kõiki',
 		addWord			: 'Lisa sõna',
 		emptyDic		: 'Sõnaraamatu nimi ei tohi olla tühi.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'Valikud',
 		allCaps			: 'Läbivate suurtähtedega sõnade eiramine',
 		ignoreDomainNames : 'Domeeninimede eiramine',

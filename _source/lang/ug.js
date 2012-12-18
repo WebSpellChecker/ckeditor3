@@ -697,7 +697,7 @@ CKEDITOR.lang['ug'] =
 		ignoreAll		: 'ھەممىسىگە پەرۋا قىلما',
 		addWord			: 'سۆز قوش',
 		emptyDic		: 'لۇغەت ئاتى بوش قالمايدۇ',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'تاللانما',
 		allCaps			: 'چوڭ ھەرپتە يېزىلغان ھەممە سۆزگە پەرۋا قىلما',
 		ignoreDomainNames : 'دائىرە ئاتىغا پەرۋا قىلما',

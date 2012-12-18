@@ -698,7 +698,7 @@ CKEDITOR.lang['hu'] =
 		ignoreAll		: 'Összes kihagyása',
 		addWord			: 'Szó hozzáadása',
 		emptyDic		: 'A szótár nevét meg kell adni.',
-
+		noSuggestions	: 'Nincs javaslat',
 		optionsTab		: 'Beállítások',
 		allCaps			: 'Nagybetűs szavak kihagyása',
 		ignoreDomainNames : 'Domain nevek kihagyása',

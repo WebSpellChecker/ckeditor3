@@ -698,7 +698,7 @@ CKEDITOR.lang['gu'] =
 		ignoreAll		: 'બધા ઇગ્નોર ',
 		addWord			: 'શબ્દ ઉમેરવો',
 		emptyDic		: 'ડિક્સનરીનું નામ ખાલી ના હોય.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'વિકલ્પો',
 		allCaps			: 'ઓલ-કેપ્સ વર્ડ છોડી દો.',
 		ignoreDomainNames : 'ડોમેન નામ છોડી દો.',

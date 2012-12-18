@@ -697,7 +697,7 @@ CKEDITOR.lang['pt-br'] =
 		ignoreAll		: 'Ignorar todas',
 		addWord			: 'Adicionar palavra',
 		emptyDic		: 'O nome do dicionário não deveria estar vazio.',
-
+		noSuggestions	: 'sem sugestões de ortografia',
 		optionsTab		: 'Opções',
 		allCaps			: 'Ignorar palavras maiúsculas',
 		ignoreDomainNames : 'Ignorar nomes de domínio',

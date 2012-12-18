@@ -698,7 +698,7 @@ CKEDITOR.lang['gl'] =
 		ignoreAll		: 'Ignore All', // MISSING
 		addWord			: 'Add Word', // MISSING
 		emptyDic		: 'Dictionary name should not be empty.', // MISSING
-
+		noSuggestions	: 'Sen candidatos',
 		optionsTab		: 'Options', // MISSING
 		allCaps			: 'Ignore All-Caps Words', // MISSING
 		ignoreDomainNames : 'Ignore Domain Names', // MISSING

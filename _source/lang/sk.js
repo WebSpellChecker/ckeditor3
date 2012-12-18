@@ -698,7 +698,7 @@ CKEDITOR.lang['sk'] =
 		ignoreAll		: 'Ignorovať všetko',
 		addWord			: 'Pridať slovo',
 		emptyDic		: 'Názov slovníka by nemal byť prázdny.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'Možnosti',
 		allCaps			: 'Ignorovať slová písané veľkými písmenami',
 		ignoreDomainNames : 'Iznorovať názvy domén',

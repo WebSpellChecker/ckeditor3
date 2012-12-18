@@ -697,7 +697,7 @@ CKEDITOR.lang['tr'] =
 		ignoreAll		: 'Tümünü Yoksay',
 		addWord			: 'Kelime Ekle',
 		emptyDic		: 'Sözlük adı boş olamaz.',
-
+		noSuggestions	: 'Öneri Yok',
 		optionsTab		: 'Seçenekler',
 		allCaps			: 'Tüm büyük küçük kelimeleri yoksay',
 		ignoreDomainNames : 'Domain adlarını yoksay',

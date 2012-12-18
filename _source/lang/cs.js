@@ -698,7 +698,7 @@ CKEDITOR.lang['cs'] =
 		ignoreAll		: 'Přeskočit vše',
 		addWord			: 'Přidat slovo',
 		emptyDic		: 'Název slovníku nesmí být prázdný.',
-
+		noSuggestions	: 'Zádné návrhy',
 		optionsTab		: 'Nastavení',
 		allCaps			: 'Ignorovat slova tvořená velkými písmeny',
 		ignoreDomainNames : 'Ignorovat doménová jména',

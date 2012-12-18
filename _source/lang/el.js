@@ -698,7 +698,7 @@ CKEDITOR.lang['el'] =
 		ignoreAll		: 'Να αγνοηθούν όλα',
 		addWord			: 'Προσθήκη στο λεξικό',
 		emptyDic		: 'Το όνομα του λεξικού δεν πρέπει να είναι κενό.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'Επιλογές',
 		allCaps			: 'Να αγνοούνται όλες οι λέξεις σε κεφαλαία',
 		ignoreDomainNames : 'Ignore Domain Names', // MISSING

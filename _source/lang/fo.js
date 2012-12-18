@@ -698,7 +698,7 @@ CKEDITOR.lang['fo'] =
 		ignoreAll		: 'Ignorera alt',
 		addWord			: 'Legg orð afturat',
 		emptyDic		: 'Heiti á orðabók eigur ikki at vera tómt.',
-
+		noSuggestions	: 'Einki uppskot',
 		optionsTab		: 'Uppseting',
 		allCaps			: 'Loyp orð við bert stórum stavum um',
 		ignoreDomainNames : 'loyp økisnøvn um',

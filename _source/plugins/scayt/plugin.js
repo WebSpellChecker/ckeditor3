@@ -658,10 +658,7 @@ CKEDITOR.plugins.scayt =
 							return null;
 
 						var sLang = scayt_control.getLang(),
-							_r = {},
 							items_suggestion = window.scayt.getSuggestion( word, sLang );
-						if ( !items_suggestion || !items_suggestion.length )
-							return null;
 						// Remove unused commands and menuitems
 						for ( var m in moreSuggestions )
 						{
@@ -686,49 +683,60 @@ CKEDITOR.plugins.scayt =
 						var contextCommands = editor.config.scayt_contextCommands || 'all';
 						contextCommands = contextCommands.split( '|' );
 
-						for ( var i = 0, l = items_suggestion.length; i < l; i += 1 )
-						{
-							var commandName = 'scayt_suggestion_' + items_suggestion[i].replace( ' ', '_' );
-							var exec = ( function( el, s )
-								{
-									return {
-										exec: function()
-										{
-											scayt_control.replace( el, s );
-										}
-									};
-								})( node, items_suggestion[i] );
+						if ( items_suggestion && items_suggestion.length ) {
+							for ( var i = 0, l = items_suggestion.length; i < l; i += 1 )
+							{
+								var commandName = 'scayt_suggestion_' + items_suggestion[i].replace( ' ', '_' );
+								var exec = ( function( el, s )
+									{
+										return {
+											exec: function()
+											{
+												scayt_control.replace(el, s);
+											}
+										};
+									})( node, items_suggestion[i] );
 
-							if ( i < maxSuggestions )
-							{
-								addButtonCommand( editor, 'button_' + commandName, items_suggestion[i],
-									commandName, exec, 'scayt_suggest', i + 1 );
-								_r[ commandName ] = CKEDITOR.TRISTATE_OFF;
-								mainSuggestions[ commandName ] = CKEDITOR.TRISTATE_OFF;
+								if ( i < maxSuggestions )
+								{
+									addButtonCommand( editor, 'button_' + commandName, items_suggestion[i],
+										commandName, exec, 'scayt_suggest', i + 1 );
+									mainSuggestions[ commandName ] = CKEDITOR.TRISTATE_OFF;
+								}
+								else if ( moreSuggestionsUnable == 'on' )
+								{
+									addButtonCommand( editor, 'button_' + commandName, items_suggestion[i],
+										commandName, exec, 'scayt_moresuggest', i + 1 );
+									moreSuggestions[ commandName ] = CKEDITOR.TRISTATE_OFF;
+									moreSuggestionsUnableAdded = true;
+								}
 							}
-							else if ( moreSuggestionsUnable == 'on' )
+
+							if ( moreSuggestionsUnableAdded )
 							{
-								addButtonCommand( editor, 'button_' + commandName, items_suggestion[i],
-									commandName, exec, 'scayt_moresuggest', i + 1 );
-								moreSuggestions[ commandName ] = CKEDITOR.TRISTATE_OFF;
-								moreSuggestionsUnableAdded = true;
+								// Register the More suggestions group;
+								editor.addMenuItem( 'scayt_moresuggest',
+								{
+									label : editor.lang.scayt.moreSuggestions,
+									group : 'scayt_moresuggest',
+									order : 10,
+									getItems : function()
+									{
+										return moreSuggestions;
+									}
+								});
+								mainSuggestions[ 'scayt_moresuggest' ] = CKEDITOR.TRISTATE_OFF;
 							}
 						}
-
-						if ( moreSuggestionsUnableAdded )
-						{
-							// Register the More suggestions group;
-							editor.addMenuItem( 'scayt_moresuggest',
+						else {
+							// "No suggestions" feature
+							editor.addMenuItem( 'scayt_nosuggest',
 							{
-								label : lang.moreSuggestions,
-								group : 'scayt_moresuggest',
-								order : 10,
-								getItems : function()
-								{
-									return moreSuggestions;
-								}
+								label : editor.lang.scayt.noSuggestions ? editor.lang.scayt.noSuggestions : (editor.lang.spellCheck.noSuggestions ? editor.lang.spellCheck.noSuggestions : 'No suggestions'),
+								group : 'scayt_suggest',
+								order : 1
 							});
-							mainSuggestions[ 'scayt_moresuggest' ] = CKEDITOR.TRISTATE_OFF;
+							mainSuggestions[ 'scayt_nosuggest' ] = CKEDITOR.TRISTATE_OFF;
 						}
 
 						if ( in_array( 'all', contextCommands )  || in_array( 'ignore', contextCommands)  )

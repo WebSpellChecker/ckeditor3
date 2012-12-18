@@ -698,7 +698,7 @@ CKEDITOR.lang['lv'] =
 		ignoreAll		: 'Ignorēt visu',
 		addWord			: 'Pievienot vārdu',
 		emptyDic		: 'Vārdnīcas nosaukums nevar būt tukšs.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'Uzstādījumi',
 		allCaps			: 'Ignorēt vārdus ar lielajiem burtiem',
 		ignoreDomainNames : 'Ignorēt domēnu nosaukumus',

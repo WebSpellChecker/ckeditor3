@@ -697,7 +697,7 @@ CKEDITOR.lang['sv'] =
 		ignoreAll		: 'Ignorera alla',
 		addWord			: 'Lägg till ord',
 		emptyDic		: 'Ordlistans namn får ej vara tomt.',
-
+		noSuggestions	: 'Förslag saknas',
 		optionsTab		: 'Inställningar',
 		allCaps			: 'Ignorera alla ord med enbart versaler',
 		ignoreDomainNames : 'Ignorera domännamn',

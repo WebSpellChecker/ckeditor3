@@ -698,7 +698,7 @@ CKEDITOR.lang['vi'] =
 		ignoreAll		: 'Bỏ qua tất cả',
 		addWord			: 'Thêm từ',
 		emptyDic		: 'Tên của từ điển không được để trống.',
-
+		noSuggestions	: 'Không đưa ra gợi ý về từ',
 		optionsTab		: 'Tùy chọn',
 		allCaps			: 'Không phân biệt chữ HOA chữ thường',
 		ignoreDomainNames : 'Bỏ qua tên miền',

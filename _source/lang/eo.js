@@ -698,7 +698,7 @@ CKEDITOR.lang['eo'] =
 		ignoreAll		: 'Ignori ĉion',
 		addWord			: 'Almeti la vorton',
 		emptyDic		: 'La vortaronomo ne devus esti malplena.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'Opcioj',
 		allCaps			: 'Ignori la vortojn skribitajn nur per ĉefliteroj',
 		ignoreDomainNames : 'Ignori domajnajn nomojn',

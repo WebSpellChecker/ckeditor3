@@ -35,10 +35,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 
 		var createInstance = function()	// Create new instance every time Document is created.
 		{
-			if(typeof plugin.instances[ editor.name ] != 'undefined' || plugin.instances[ editor.name ] != null)
-			{
+			if( plugin.instances[ editor.name ] )
 				plugin.instances[ editor.name ].destroy();
-			}
+
 			var config = editor.config;
 			// Initialise Scayt instance.
 			var oParams = {};

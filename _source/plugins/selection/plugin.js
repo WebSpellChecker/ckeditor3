@@ -1587,11 +1587,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				if ( !sel )
 					return;
 
-				// Opera: The above hack work around a *visually wrong* text selection that
-				// happens in certain situation. (#6874)
-				if ( CKEDITOR.env.opera )
-					this.document.$.execCommand( 'SelectAll', false );
-
 				if ( ranges.length )
 				{
 					sel.removeAllRanges();

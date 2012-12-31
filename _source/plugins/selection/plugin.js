@@ -705,8 +705,6 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 	 */
 	CKEDITOR.SELECTION_ELEMENT	= 3;
 
-	var isMSSelection = CKEDITOR.env.ie && CKEDITOR.env.version < 10;
-
 	/**
 	 * Manipulates the selection in a DOM document.
 	 * @constructor
@@ -732,7 +730,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		 * IE BUG: The selection's document may be a different document than the
 		 * editor document. Return null if that is the case.
 		 */
-		if ( isMSSelection )
+		if ( CKEDITOR.env.ie )
 		{
 			// Avoid breaking because of it. (#8836)
 			try
@@ -769,13 +767,17 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		 * @example
 		 * var selection = editor.getSelection().<strong>getNative()</strong>;
 		 */
-		getNative : function()
-		{
-			if ( this._.cache.nativeSel !== undefined )
-				return this._.cache.nativeSel;
-
-			return ( this._.cache.nativeSel = isMSSelection ? this.document.$.selection : this.document.getWindow().$.getSelection() );
-		},
+		getNative :
+			CKEDITOR.env.ie ?
+				function()
+				{
+					return this._.cache.nativeSel || ( this._.cache.nativeSel = this.document.$.selection );
+				}
+			:
+				function()
+				{
+					return this._.cache.nativeSel || ( this._.cache.nativeSel = this.document.getWindow().$.getSelection() );
+				},
 
 		/**
 		 * Gets the type of the current selection. The following values are
@@ -796,7 +798,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		 *     alert( 'A text is selected' );
 		 */
 		getType :
-			isMSSelection ?
+			CKEDITOR.env.ie ?
 				function()
 				{
 					var cache = this._.cache;
@@ -873,7 +875,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 		 */
 		getRanges : (function()
 		{
-			var func = isMSSelection ?
+			var func = CKEDITOR.env.ie ?
 				( function()
 				{
 					function getNodeIndex( node ) { return new CKEDITOR.dom.node( node ).getIndex(); }
@@ -1430,10 +1432,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			var text = '',
 				nativeSel = this.getNative();
 			if ( this.getType() == CKEDITOR.SELECTION_TEXT )
-				text = isMSSelection ?
-				   nativeSel.type == 'Control' ? '' :
-				   nativeSel.createRange().text :
-				   nativeSel.toString();
+				text = CKEDITOR.env.ie ? nativeSel.createRange().text : nativeSel.toString();
 
 			return ( cache.selectedText = text );
 		},
@@ -1564,7 +1563,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 				return;
 			}
 
-			if ( isMSSelection )
+			if ( CKEDITOR.env.ie )
 			{
 				if ( ranges.length > 1 )
 				{
@@ -1778,7 +1777,7 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 			nonCells = { table:1,tbody:1,tr:1 };
 
 	CKEDITOR.dom.range.prototype.select =
-			isMSSelection ?
+		CKEDITOR.env.ie ?
 			// V2
 			function( forceExpand )
 			{

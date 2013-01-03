@@ -289,6 +289,9 @@ if ( !CKEDITOR.env )
 
 			if ( env.quirks )
 				env.cssClass += ' cke_browser_iequirks';
+
+			if ( document.documentMode && document.documentMode >=9 )
+				env.cssClass += ' cke_browser_ie9plus';
 		}
 
 		if ( env.gecko && version < 10900 )

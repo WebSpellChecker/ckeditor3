@@ -698,7 +698,7 @@ CKEDITOR.lang['eu'] =
 		ignoreAll		: 'Denak baztertu',
 		addWord			: 'Hitza Gehitu',
 		emptyDic		: 'Hiztegiaren izena ezin da hutsik egon.',
-
+		noSuggestions	: 'Iradokizunik ez',
 		optionsTab		: 'Aukerak',
 		allCaps			: 'Ignore All-Caps Words', // MISSING
 		ignoreDomainNames : 'Ignore Domain Names', // MISSING

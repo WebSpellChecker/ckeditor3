@@ -698,7 +698,7 @@ CKEDITOR.lang['fr-ca'] =
 		ignoreAll		: 'Ignore All', // MISSING
 		addWord			: 'Add Word', // MISSING
 		emptyDic		: 'Dictionary name should not be empty.', // MISSING
-
+		noSuggestions	: 'Pas de suggestion',
 		optionsTab		: 'Options', // MISSING
 		allCaps			: 'Ignore All-Caps Words', // MISSING
 		ignoreDomainNames : 'Ignore Domain Names', // MISSING

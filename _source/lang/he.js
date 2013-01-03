@@ -698,7 +698,7 @@ CKEDITOR.lang['he'] =
 		ignoreAll		: 'התעלמות מהכל',
 		addWord			: 'הוספת מילה',
 		emptyDic		: 'יש לבחור מילון.',
-
+		noSuggestions	: 'אין הצעות',
 		optionsTab		: 'אפשרויות',
 		allCaps			: 'התעלם ממילים שכל אותיותיהן גדולות',
 		ignoreDomainNames : 'התעלם משמות מתחם',

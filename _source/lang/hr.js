@@ -698,7 +698,7 @@ CKEDITOR.lang['hr'] =
 		ignoreAll		: 'Zanemari sve',
 		addWord			: 'Dodaj riječ',
 		emptyDic		: 'Naziv rječnika ne smije biti prazno.',
-
+		noSuggestions	: 'Nema preporuke',
 		optionsTab		: 'Opcije',
 		allCaps			: 'Ignoriraj riječi s velikim slovima',
 		ignoreDomainNames : 'Ignoriraj nazive domena',

@@ -120,7 +120,7 @@ CKEDITOR.lang['sk'] =
 		alignTop		: 'Nahor',
 		alignMiddle		: 'Na stred',
 		alignBottom		: 'Dole',
-		invalidValue	: 'Invalid value.', // MISSING
+		invalidValue	: 'Neplatná hodnota.',
 		invalidHeight	: 'Výška musí byť číslo.',
 		invalidWidth	: 'Šírka musí byť číslo.',
 		invalidCssLength	: 'Špecifikovaná hodnota pre pole "%1" musí byť kladné číslo s alebo bez platnej CSS mernej jednotky (px, %, in, cm, mm, em, ex, pt alebo pc).',
@@ -698,7 +698,7 @@ CKEDITOR.lang['sk'] =
 		ignoreAll		: 'Ignorovať všetko',
 		addWord			: 'Pridať slovo',
 		emptyDic		: 'Názov slovníka by nemal byť prázdny.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'Možnosti',
 		allCaps			: 'Ignorovať slová písané veľkými písmenami',
 		ignoreDomainNames : 'Iznorovať názvy domén',

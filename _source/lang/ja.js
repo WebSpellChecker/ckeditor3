@@ -698,7 +698,7 @@ CKEDITOR.lang['ja'] =
 		ignoreAll		: 'すべて無視',
 		addWord			: '語句追加',
 		emptyDic		: '辞書名は必ず入力してください',
-
+		noSuggestions	: '該当なし',
 		optionsTab		: 'オプション',
 		allCaps			: '全て大文字の単語を無視',
 		ignoreDomainNames : 'ドメイン名を無視',

@@ -698,7 +698,7 @@ CKEDITOR.lang['da'] =
 		ignoreAll		: 'Ignorér alle',
 		addWord			: 'Tilføj ord',
 		emptyDic		: 'Ordbogsnavn må ikke være tom.',
-
+		noSuggestions	: 'Ingen forslag',
 		optionsTab		: 'Indstillinger',
 		allCaps			: 'Ignorer alle store bogstaver',
 		ignoreDomainNames : 'Ignorér domænenavne',

@@ -698,7 +698,7 @@ CKEDITOR.lang['ar'] =
 		ignoreAll		: 'تجاهل الكل',
 		addWord			: 'إضافة كلمة',
 		emptyDic		: 'اسم القاموس يجب ألا يكون فارغاً.',
-
+		noSuggestions	: 'لا توجد إقتراحات',
 		optionsTab		: 'خيارات',
 		allCaps			: 'Ignore All-Caps Words', // MISSING
 		ignoreDomainNames : 'Ignore Domain Names', // MISSING

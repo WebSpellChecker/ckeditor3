@@ -361,7 +361,9 @@ For licensing, see LICENSE.html or http://ckeditor.com/license
 }
 
 .cke_skin_kama .cke_browser_gecko .cke_rtl .cke_button .cke_label,
-.cke_skin_kama .cke_browser_gecko .cke_rtl .cke_break
+.cke_skin_kama .cke_browser_gecko .cke_rtl .cke_break,
+.cke_skin_kama .cke_browser_ie8 .cke_rtl .cke_break,
+.cke_skin_kama .cke_browser_ie9plus .cke_rtl .cke_break
 {
 	float: right;
 }

@@ -698,7 +698,7 @@ CKEDITOR.lang['fi'] =
 		ignoreAll		: 'Ohita kaikki',
 		addWord			: 'Lisää sana',
 		emptyDic		: 'Sanakirjan nimi on annettava.',
-
+		noSuggestions	: 'Ei ehdotuksia',
 		optionsTab		: 'Asetukset',
 		allCaps			: 'Ohita sanat, jotka on kirjoitettu kokonaan isoilla kirjaimilla',
 		ignoreDomainNames : 'Ohita verkkotunnukset',

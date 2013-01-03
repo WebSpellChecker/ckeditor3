@@ -698,7 +698,7 @@ CKEDITOR.lang['fa'] =
 		ignoreAll		: 'عبور کردن از همه',
 		addWord			: 'افزودن Word',
 		emptyDic		: 'نام دیکشنری نباید خالی باشد.',
-
+		noSuggestions	: 'No suggestions', // MISSING
 		optionsTab		: 'گزینهها',
 		allCaps			: 'نادیده گرفتن همه کلاه-واژهها',
 		ignoreDomainNames : 'عبور از نامهای دامنه',

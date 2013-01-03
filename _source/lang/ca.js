@@ -698,7 +698,7 @@ CKEDITOR.lang['ca'] =
 		ignoreAll		: 'Ignora\'ls tots',
 		addWord			: 'Afegeix una paraula',
 		emptyDic		: 'El nom del diccionari no hauria d\'estar buit.',
-
+		noSuggestions	: 'Cap suggeriment',
 		optionsTab		: 'Opcions',
 		allCaps			: 'Ignora paraules en majúscules',
 		ignoreDomainNames : 'Ignora els noms de domini',

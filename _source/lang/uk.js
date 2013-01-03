@@ -698,7 +698,7 @@ CKEDITOR.lang['uk'] =
 		ignoreAll		: 'Пропустити всі',
 		addWord			: 'Додати слово',
 		emptyDic		: 'Назва словника повинна бути вказана.',
-
+		noSuggestions	: 'Немає варіантів',
 		optionsTab		: 'Опції',
 		allCaps			: 'Пропустити прописні слова',
 		ignoreDomainNames : 'Пропустити доменні назви',

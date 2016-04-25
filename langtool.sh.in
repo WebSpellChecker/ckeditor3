@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+# Copyright (c) 2003-2010, CKSource - Frederico Knabben. All rights reserved.
+# For licensing, see LICENSE.html or http://ckeditor.com/license
+
+if [ -L $0 ] ; then
+    DIR=$(dirname $(readlink -f $0)) ;
+else
+    DIR=$(dirname $0) ;
+fi ;
+
+# pushd $DIR
+java -Xms32m -Xmx512m -jar ../langtool/langtool/langtool.jar ${CKEDITOR_BUILD_DIR}/release/_source/lang
+# popd

@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2003-2013, CKSource - Frederico Knabben. All rights reserved.
+Copyright (c) 2003-2015, CKSource - Frederico Knabben. All rights reserved.
 For licensing, see LICENSE.html or http://ckeditor.com/license
 */
 
@@ -11,7 +11,11 @@ CKEDITOR.dialog.add( 'checkspell', function( editor )
 		errorBoxId = 'cke_error_' + number,
 		interval,
 		protocol = document.location.protocol || 'http:',
-		errorMsg = editor.lang.spellCheck.notAvailable;
+		errorMsg = editor.lang.spellCheck.notAvailable,
+		constraints = {
+			minWidth : 485,
+			minHeight : 380
+		};
 
 	var pasteArea = '<textarea'+
 			' style="display: none"' +
@@ -106,9 +110,6 @@ CKEDITOR.dialog.add( 'checkspell', function( editor )
 			framesetPath : framesetPath,
 			iframePath : pluginPath + 'ciframe.html',
 
-			// Styles defining.
-			schemaURI : pluginPath + 'wsc.css',
-
 			userDictionaryName: editor.config.wsc_userDictionaryName,
 			customDictionaryName: editor.config.wsc_customDictionaryIds && editor.config.wsc_customDictionaryIds.split(","),
 			domainName: editor.config.wsc_domainName
@@ -120,36 +121,90 @@ CKEDITOR.dialog.add( 'checkspell', function( editor )
 		CKEDITOR.document.getById( iframeId ).setStyle( 'display', 'block' );
 	}
 
+	function initView(dialog) {
+		var newViewSettings = {
+				left: parseInt(editor.config.wsc_left, 10),
+				top: parseInt(editor.config.wsc_top, 10),
+				width: parseInt(editor.config.wsc_width, 10),
+				height: parseInt(editor.config.wsc_height, 10)
+			},
+			viewSize = CKEDITOR.document.getWindow().getViewPaneSize(),
+			currentPosition = dialog.getPosition(),
+			currentSize = dialog.getSize(),
+			savePosition = 0;
+
+		if(!dialog._.resized) {
+			var wrapperHeight = currentSize.height - dialog.parts.contents.getSize('height',  !(CKEDITOR.env.gecko || CKEDITOR.env.opera || CKEDITOR.env.ie && CKEDITOR.env.quirks)),
+				wrapperWidth = currentSize.width - dialog.parts.contents.getSize('width', 1);
+
+			if(newViewSettings.width < constraints.minWidth || isNaN(newViewSettings.width)) {
+				newViewSettings.width = constraints.minWidth;
+			}
+			if(newViewSettings.width > viewSize.width - wrapperWidth) {
+				newViewSettings.width = viewSize.width - wrapperWidth;
+			}
+
+			if(newViewSettings.height < constraints.minHeight || isNaN(newViewSettings.height)) {
+				newViewSettings.height = constraints.minHeight;
+			}
+			if(newViewSettings.height > viewSize.height - wrapperHeight) {
+				newViewSettings.height = viewSize.height - wrapperHeight;
+			}
+
+			currentSize.width = newViewSettings.width + wrapperWidth;
+			currentSize.height = newViewSettings.height + wrapperHeight;
+
+			dialog._.fromResizeEvent = false;
+			dialog.resize(newViewSettings.width, newViewSettings.height);
+		}
+
+		if(!dialog._.moved) {
+			savePosition = isNaN(newViewSettings.left) && isNaN(newViewSettings.top) ? 0 : 1;
+
+			if(isNaN(newViewSettings.left)) {
+				newViewSettings.left = (viewSize.width - currentSize.width) / 2;
+			}
+			if(newViewSettings.left < 0) {
+				newViewSettings.left = 0;
+			}
+			if(newViewSettings.left > viewSize.width - currentSize.width) {
+				newViewSettings.left = viewSize.width - currentSize.width;
+			}
+
+			if(isNaN(newViewSettings.top)) {
+				newViewSettings.top = (viewSize.height - currentSize.height) / 2;
+			}
+			if(newViewSettings.top < 0) {
+				newViewSettings.top = 0;
+			}
+			if(newViewSettings.top > viewSize.height - currentSize.height) {
+				newViewSettings.top = viewSize.height - currentSize.height;
+			}
+
+			dialog.move(newViewSettings.left, newViewSettings.top, savePosition);
+		}
+	}
+
 	return {
 		title : editor.config.wsc_dialogTitle || editor.lang.spellCheck.title,
-		minWidth : 485,
-		minHeight : 380,
+		minWidth : constraints.minWidth,
+		minHeight : constraints.minHeight,
 		buttons : [ CKEDITOR.dialog.cancelButton ],
 		onShow : function()
 		{
+
 			var contentArea = this.getContentElement( 'general', 'content' ).getElement();
 			contentArea.setHtml( pasteArea );
 			contentArea.getChild( 2 ).setStyle( 'height', this._.contentSize.height + 'px' );
 
-			if ( typeof( window.doSpell ) != 'function' )
-			{
-				// Load script.
-				CKEDITOR.document.getHead().append(
-					CKEDITOR.document.createElement( 'script',
-						{
-							attributes :
-								{
-									type : 'text/javascript',
-									src : wscCoreUrl
-								}
-						})
-				);
-			}
+			CKEDITOR.scriptLoader.load(wscCoreUrl);
 
 			var sData = editor.getData();											// Get the data to be checked.
 			CKEDITOR.document.getById( textareaId ).setValue( sData );
 
 			interval = window.setInterval( burnSpelling( this, errorMsg ), 250 );
+
+			initView(this);
 		},
 		onHide : function()
 		{
@@ -188,5 +243,11 @@ CKEDITOR.dialog.on( 'resize', function( evt )
 
 		iframe && iframe.setSize( 'height', data.height );
 		iframe && iframe.setSize( 'width', data.width );
+
+		// add flag that indicate whether dialog has been resized by user
+		if(dialog._.fromResizeEvent && !dialog._.resized) {
+			dialog._.resized = true;
+		}
+		dialog._.fromResizeEvent = true;
 	}
 });

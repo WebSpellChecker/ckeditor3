@@ -39,7 +39,7 @@ add_custom_target(ckeditor ALL DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/ckeditor.buil
 
 install(
 	DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/release/release/
-	DESTINATION WebComponents/samples/editors/ckeditor
+	DESTINATION WebComponents/Samples/editors/ckeditor
 	PATTERN "_samples" EXCLUDE
 	PATTERN "_source" EXCLUDE
 	PATTERN ".git*" EXCLUDE
